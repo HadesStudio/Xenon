@@ -1,0 +1,19 @@
+database:
+  mongo:
+    connection:
+      enabled: false
+      url: ""
+    address: "127.0.0.1"
+    port: 27017
+    database_name: "Oxygen" # DATABASE MONGO
+    auth:
+      enabled: false
+      user: "admin"
+      password: ""
+  redis:
+    host: "127.0.0.1"
+    port: 6379
+    channel: "Oxygen"
+    auth:
+      enabled: false
+      pass: ""
