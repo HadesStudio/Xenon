@@ -52,6 +52,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.github.lalyos</groupId>
+            <artifactId>jfiglet</artifactId>
+            <version>0.0.9</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
@@ -62,7 +68,8 @@
             <groupId>dev.hely.lib</groupId>
             <artifactId>Library</artifactId>
             <version>2.3-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/libs/Library.jar</systemPath>
         </dependency>
 
         <dependency>

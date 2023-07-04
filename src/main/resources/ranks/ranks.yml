@@ -1,0 +1,11 @@
+Default:
+  name: 'Default'
+  prefix: '&a'
+  suffix: ''
+  default-rank: true
+  rank-color: 'GREEN'
+  weight: 50
+  inheritance:
+    - 'Default'
+  permissions:
+    - 'test.permission'
