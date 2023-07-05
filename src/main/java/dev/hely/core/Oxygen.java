@@ -9,12 +9,15 @@ import dev.hely.core.managers.database.mongo.MongoManager;
 import dev.hely.core.managers.modules.ModuleLoader;
 import dev.hely.core.profile.ProfileManager;
 import dev.hely.core.tag.TagManager;
+import dev.hely.core.utils.command.CommandManager;
 import dev.hely.lib.CC;
 import dev.hely.lib.adapter.BlockVectorAdapter;
 import dev.hely.lib.adapter.LocationAdapter;
 import dev.hely.lib.adapter.PotionEffectAdapter;
 import dev.hely.lib.adapter.VectorAdapter;
 import dev.hely.lib.configuration.Config;
+import dev.hely.lib.menu.MenuListener;
+import dev.hely.lib.menu.MenuManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -42,6 +45,7 @@ public class Oxygen extends JavaPlugin {
     @Getter private Config databaseConfig;
     @Getter private Config configuration;
     @Getter private Config ranksConfig;
+    @Getter private Config rankSettingsConfig;
 
     private Map<String, ModuleLoader> modules;
 
@@ -52,6 +56,8 @@ public class Oxygen extends JavaPlugin {
     private ProfileManager profileManager;
     private RankManager rankManager;
     private TagManager tagManager;
+    private CommandManager commandManager;
+    private MenuManager menuManager;
 
     private boolean debug_mode;
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
@@ -62,6 +68,7 @@ public class Oxygen extends JavaPlugin {
 
         startupMessages();
         setupConfig();
+        setDebugMode(true);
         initModules();
         setupModules();
     }
@@ -94,14 +101,19 @@ public class Oxygen extends JavaPlugin {
     }
 
     public void setupConfig(){
-        this.configuration = new Config(this, "config.yml");
-        this.databaseConfig = new Config(this, "databases" + File.separator + "databases.yml");
-        this.ranksConfig = new Config(this, "ranks" + File.separator + "ranks.yml");
+        this.configuration = new Config(this, "config");
+        this.databaseConfig = new Config(this, "databases" + File.separator + "databases");
+        this.ranksConfig = new Config(this, "ranks" + File.separator + "ranks");
+        this.rankSettingsConfig = new Config(this, "ranks" + File.separator + "rank-settings");
 
     }
 
     public void setupModules(){
+        menuManager = MenuManager.INSTANCE;
+        Oxygen.getInstance().getServer().getPluginManager().registerEvents(new MenuListener(this), this);
+
         profileManager = new ProfileManager(); // Does not use Module System.
+        this.loadModule(commandManager);
 
         this.loadModule(mongoManager);
         this.loadModule(redisManager);
@@ -109,6 +121,8 @@ public class Oxygen extends JavaPlugin {
         this.loadModule(tagManager);
     }
     public void initModules(){
+        commandManager = new CommandManager();
+
         redisManager = new RedisManager();
         mongoManager = new MongoManager();
         rankManager = new RankManager();
@@ -159,10 +173,18 @@ public class Oxygen extends JavaPlugin {
             return "&cFalse";
         }
     }
-
     public void setDebugMode(boolean status) {
         this.debug_mode = status;
         this.getConfiguration().getConfiguration().set("plugin-settings.debug-mode", this.debug_mode);
         this.getConfiguration().save();
+    }
+    public void debug_message(String message, ModuleLoader module) {
+        if (this.debug_mode) {
+            if (module != null) {
+                Bukkit.getConsoleSender().sendMessage(CC.translate(String.format("&c[Oxygen Debug] &4[%s] %s", module.getName(), CC.translate(message))));
+            } else {
+                Bukkit.getConsoleSender().sendMessage(CC.translate(message));
+            }
+        }
     }
 }

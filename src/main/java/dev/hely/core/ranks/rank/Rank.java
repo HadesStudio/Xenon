@@ -6,6 +6,7 @@ import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.Oxygen;
 import dev.hely.core.ranks.gson.GSONUtil;
 import dev.hely.core.ranks.rank.permission.PermissionData;
+import dev.hely.core.utils.ColorUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -31,12 +32,13 @@ public class Rank {
     private RankType type = RankType.NORMAL;
     private String prefix, suffix;
     private boolean defaultRank;
+    private boolean global_rank;
     private int weight;
     private List<PermissionData> permissionsData = new ArrayList<>();
     private List<String> bungeePermissions = new ArrayList<>();
     private List<String> inheritances = new ArrayList<>();
+    private List<String> servers = new ArrayList<>();
     private ChatColor display_color;
-
 
     public void save() {
         Document document = new Document();
@@ -46,14 +48,17 @@ public class Rank {
         document.put("suffix", suffix);
         document.put("defaultRank", defaultRank);
         document.put("weight", weight);
-        document.put("display_color", ChatColor.GRAY);
+        document.put("display_color", ColorUtil.convertChatColor(display_color));
+        document.put("global_rank", global_rank);
 
-        Type permissionType = new TypeToken<List<PermissionData>>() {}.getType();
-        document.put("permissionsData", Oxygen.PLAIN_GSON.toJson(permissionsData, permissionType));
+
+        document.put("permissionsData", Oxygen.PLAIN_GSON.toJson(permissionsData, GSONUtil.PERMISSION_DATA));
         document.put("bungeePermissions", Oxygen.PLAIN_GSON.toJson(bungeePermissions, GSONUtil.listStringType));
         document.put("inheritances", Oxygen.PLAIN_GSON.toJson(inheritances, GSONUtil.listStringType));
+        document.put("servers", Oxygen.PLAIN_GSON.toJson(servers, GSONUtil.listStringType));
 
         plugin.getMongoManager().getRanksCollection().replaceOne(Filters.eq("name", name), document, new ReplaceOptions().upsert(true));
+        Oxygen.getInstance().getRankManager().saveRanksToConfig();
     }
 
     public void load() {
@@ -66,11 +71,13 @@ public class Rank {
             setDefaultRank(document.getBoolean("defaultRank"));
             setWeight(document.getInteger("weight"));
             setDisplay_color(ChatColor.valueOf(document.getString("display_color")));
+            setGlobal_rank(document.getBoolean("global_rank"));
 
             Type permissionType = new TypeToken<List<PermissionData>>() {}.getType();
             setPermissionsData(Oxygen.PLAIN_GSON.fromJson(document.getString("permissionsData"), permissionType));
             setBungeePermissions(Oxygen.PLAIN_GSON.fromJson(document.getString("bungeePermissions"), GSONUtil.listStringType));
             setInheritances(Oxygen.PLAIN_GSON.fromJson(document.getString("inheritances"), GSONUtil.listStringType));
+            setServers(Oxygen.PLAIN_GSON.fromJson(document.getString("servers"), GSONUtil.listStringType));
         }
     }
 }

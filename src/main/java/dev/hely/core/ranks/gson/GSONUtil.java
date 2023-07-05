@@ -1,6 +1,7 @@
 package dev.hely.core.ranks.gson;
 
 import com.google.gson.reflect.TypeToken;
+import dev.hely.core.ranks.rank.permission.PermissionData;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -13,5 +14,5 @@ import java.util.List;
 public class GSONUtil {
 
     public static final Type listStringType = new TypeToken<List<String>>() {}.getType();
-
+    public static final Type PERMISSION_DATA = new TypeToken<List<PermissionData>>() {}.getType();
 }

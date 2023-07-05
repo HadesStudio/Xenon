@@ -1,0 +1,49 @@
+commands:
+  help:
+    message:
+      - "&7&l&m-----------------------------------"
+      - "&d&lRank System Help"
+      - "&7All commands and usages are listed below."
+      - ""
+      - "&d* &f/rank create <name> &7- Create a rank with specified name."
+      - "&d* &f/rank list &7- View a list of all created ranks."
+      - "&7&l&m-----------------------------------"
+  create:
+    usage: "&cCorrect Usage: /rank create <name>"
+    already-exist: "&cSorry, a rank with the name specified already exists."
+    invalid-string: "&cSorry, you can only create ranks with letters and numbers only."
+    created: "&aYou have successfully created a rank named '&d%rank_name%&a'."
+
+menu:
+  rank-list:
+    rank-button:
+      title: "%rank_name% Rank" # %rank_name%
+      material: "WOOL"
+      data:
+        ###################################################
+        #                    WARNING                      #
+        # This feature is only available if you are using #
+        #      the material value of "WHITE_WOOL".        #
+        ###################################################
+        match-display-color: true
+        ###################################################
+        #                    WARNING                      #
+        #   The data of the material will only change if  #
+        #     you have the above option set to false.     #
+        ###################################################
+        data: 0
+      lore:
+        # Available placeholders:
+        # %rank_color%, %rank_weight%, %rank_prefix%, %rank_suffix%, %%rank_inheritances%%, %rank_permissions_size%
+        - "&7&l&m-----------------------------------------"
+        - "&dColor: &f%rank_color%"
+        - "&dWeight: &f%rank_weight%"
+        - "&dPrefix: &f%rank_prefix%"
+        - "&dSuffix: &f%rank_suffix%"
+        - "&dInheritances: &f%rank_inheritances%"
+        - "&dPermissions: &f%rank_permissions_size%"
+        - ""
+        - "&dLeft-Click to view full permissions of this rank."
+        - "&dRight-Click to view this ranks inheritances."
+        - "&7&l&m-----------------------------------------"
+
