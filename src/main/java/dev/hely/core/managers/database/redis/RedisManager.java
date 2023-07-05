@@ -1,4 +1,4 @@
-package dev.hely.core.leandro.redis;
+package dev.hely.core.managers.database.redis;
 
 import dev.hely.core.Oxygen;
 import dev.hely.core.managers.modules.ModuleLoader;

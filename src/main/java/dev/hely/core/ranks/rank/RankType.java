@@ -1,4 +1,4 @@
-package dev.hely.core.leandro.rank;
+package dev.hely.core.ranks.rank;
 
 /**
  * Created By LeandroSSJ
@@ -6,10 +6,8 @@ package dev.hely.core.leandro.rank;
  * Protect Name Oxygen
  */
 public enum RankType {
-
     HIDDEN,
     STAFF,
     NORMAL,
     DEFAULT;
-
 }

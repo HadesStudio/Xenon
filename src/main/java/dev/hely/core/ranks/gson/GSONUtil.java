@@ -1,4 +1,4 @@
-package dev.hely.core.leandro.gson;
+package dev.hely.core.ranks.gson;
 
 import com.google.gson.reflect.TypeToken;
 

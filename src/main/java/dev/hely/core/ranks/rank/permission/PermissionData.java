@@ -1,4 +1,4 @@
-package dev.hely.core.leandro.rank.permission;
+package dev.hely.core.ranks.rank.permission;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,9 +16,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class PermissionData {
-
     private String permission;
     private boolean global;
     private List<String> servers;
-
 }

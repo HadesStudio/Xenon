@@ -1,21 +1,20 @@
-package dev.hely.core.leandro.rank;
+package dev.hely.core.ranks.rank;
 
 import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.Oxygen;
-import dev.hely.core.leandro.gson.GSONUtil;
-import dev.hely.core.leandro.rank.permission.PermissionData;
-import dev.hely.lib.CC;
+import dev.hely.core.ranks.gson.GSONUtil;
+import dev.hely.core.ranks.rank.permission.PermissionData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bson.Document;
+import org.bukkit.ChatColor;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created By LeandroSSJ
@@ -26,20 +25,18 @@ import java.util.UUID;
 @Setter
 @RequiredArgsConstructor
 public class Rank {
+    private Oxygen plugin = Oxygen.getInstance();
 
     private final String name;
-
     private RankType type = RankType.NORMAL;
     private String prefix, suffix;
     private boolean defaultRank;
     private int weight;
-
     private List<PermissionData> permissionsData = new ArrayList<>();
     private List<String> bungeePermissions = new ArrayList<>();
-
     private List<String> inheritances = new ArrayList<>();
+    private ChatColor display_color;
 
-    private Oxygen plugin = Oxygen.getInstance();
 
     public void save() {
         Document document = new Document();
@@ -49,6 +46,7 @@ public class Rank {
         document.put("suffix", suffix);
         document.put("defaultRank", defaultRank);
         document.put("weight", weight);
+        document.put("display_color", ChatColor.GRAY);
 
         Type permissionType = new TypeToken<List<PermissionData>>() {}.getType();
         document.put("permissionsData", Oxygen.PLAIN_GSON.toJson(permissionsData, permissionType));
@@ -67,6 +65,7 @@ public class Rank {
             setSuffix(document.getString("suffix"));
             setDefaultRank(document.getBoolean("defaultRank"));
             setWeight(document.getInteger("weight"));
+            setDisplay_color(ChatColor.valueOf(document.getString("display_color")));
 
             Type permissionType = new TypeToken<List<PermissionData>>() {}.getType();
             setPermissionsData(Oxygen.PLAIN_GSON.fromJson(document.getString("permissionsData"), permissionType));

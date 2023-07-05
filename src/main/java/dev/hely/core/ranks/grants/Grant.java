@@ -1,4 +1,4 @@
-package dev.hely.core.leandro.grants;
+package dev.hely.core.ranks.grants;
 
 import dev.hely.core.Oxygen;
 import lombok.*;
@@ -15,10 +15,9 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class Grant {
-
     private UUID uniqueId;
-    private String rank, addedBy, removedBy, addedReason;
-    private long addedAt, removedAt, duration;
+    private String rank_name, adder, remover, reason;
+    private long added_time, removed_time, duration;
     private boolean active, permanent;
     private String server = "Global";
 
@@ -29,7 +28,7 @@ public class Grant {
             return true;
         }
 
-        return (addedAt + duration) > System.currentTimeMillis();
+        return (added_time + duration) > System.currentTimeMillis();
     }
 
     public String getRemaining() {
@@ -42,7 +41,7 @@ public class Grant {
         } else if (!isActive()) {
             toReturn = "Expired";
         } else {
-            toReturn = DurationFormatUtils.formatDurationWords(addedAt + duration - System.currentTimeMillis(), true, true);
+            toReturn = DurationFormatUtils.formatDurationWords(added_time + duration - System.currentTimeMillis(), true, true);
         }
         return toReturn;
     }

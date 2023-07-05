@@ -3,8 +3,8 @@ package dev.hely.core;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.hely.core.leandro.rank.RankManager;
-import dev.hely.core.leandro.redis.RedisManager;
+import dev.hely.core.ranks.rank.RankManager;
+import dev.hely.core.managers.database.redis.RedisManager;
 import dev.hely.core.managers.database.mongo.MongoManager;
 import dev.hely.core.managers.modules.ModuleLoader;
 import dev.hely.core.profile.ProfileManager;
@@ -105,13 +105,14 @@ public class Oxygen extends JavaPlugin {
 
         this.loadModule(mongoManager);
         this.loadModule(redisManager);
+        this.loadModule(rankManager);
+        this.loadModule(tagManager);
     }
     public void initModules(){
         redisManager = new RedisManager();
         mongoManager = new MongoManager();
-
-        rankManager = new RankManager(this);
-        tagManager = new TagManager(this);
+        rankManager = new RankManager();
+        tagManager = new TagManager();
     }
 
 
