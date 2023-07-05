@@ -37,8 +37,8 @@ public class Tag {
         Document document = plugin.getMongoManager().getTagsCollection().find(Filters.eq("name", name)).first();
 
         if (document != null) {
-            this.prefix = CC.translate(document.getString("prefix"));
-            this.weight = document.getInteger("weight");
+            setPrefix(CC.translate(document.getString("prefix")));
+            setWeight(document.getInteger("weight"));
         }
     }
 

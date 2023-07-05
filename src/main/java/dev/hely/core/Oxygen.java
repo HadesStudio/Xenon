@@ -3,13 +3,11 @@ package dev.hely.core;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.hely.core.leandro.rank.RankManager;
+import dev.hely.core.leandro.redis.RedisManager;
 import dev.hely.core.managers.database.mongo.MongoManager;
-import dev.hely.core.managers.database.redis.RedisManager;
 import dev.hely.core.managers.modules.ModuleLoader;
-import dev.hely.core.managers.server.ServerManager;
-import dev.hely.core.profile.ProfileManagement;
 import dev.hely.core.profile.ProfileManager;
-import dev.hely.core.ranks.manager.RankManager;
 import dev.hely.lib.CC;
 import dev.hely.lib.adapter.BlockVectorAdapter;
 import dev.hely.lib.adapter.LocationAdapter;
@@ -20,7 +18,6 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.BlockVector;
@@ -38,18 +35,21 @@ import java.util.Map;
 
 @Getter
 public class Oxygen extends JavaPlugin {
-    private Map<String, ModuleLoader> modules;
+
     @Getter private static Oxygen instance;
-    @Getter private Config database_config;
-    @Getter private Config config;
+
+    @Getter private Config databaseConfig;
+    @Getter private Config configuration;
     @Getter private Config ranksConfig;
 
+    private Map<String, ModuleLoader> modules;
+
+
     private MongoManager mongoManager;
-    private ProfileManager profileManager;
     private RedisManager redisManager;
-    private ServerManager serverManager;
+
+    private ProfileManager profileManager;
     private RankManager rankManager;
-    private ProfileManagement profileManagement;
 
     private boolean debug_mode;
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
@@ -57,7 +57,6 @@ public class Oxygen extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        this.modules = modules;
 
         startupMessages();
         setupConfig();
@@ -93,29 +92,25 @@ public class Oxygen extends JavaPlugin {
     }
 
     public void setupConfig(){
-        this.config = new Config(this, "config.yml");
-        this.database_config = new Config(this, "databases" + File.separator + "databases.yml");
+        this.configuration = new Config(this, "config.yml");
+        this.databaseConfig = new Config(this, "databases" + File.separator + "databases.yml");
         this.ranksConfig = new Config(this, "ranks" + File.separator + "ranks.yml");
 
     }
 
     public void setupModules(){
         profileManager = new ProfileManager(); // Does not use Module System.
-        profileManagement = new ProfileManagement(this); // Does not use Module System.
 
         this.loadModule(mongoManager);
         this.loadModule(redisManager);
-        this.loadModule(serverManager);
-        this.loadModule(rankManager);
     }
     public void initModules(){
         redisManager = new RedisManager();
         mongoManager = new MongoManager();
-        serverManager = new ServerManager();
-        rankManager = new RankManager();
+
+        rankManager = new RankManager(this);
 
     }
-
 
 
     // Module Manager -- The below is for the module system.
@@ -128,6 +123,7 @@ public class Oxygen extends JavaPlugin {
             }
         }
     }
+
     private void unloadModule(ModuleLoader module) {
         if (module.isEnabled()) {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
@@ -137,6 +133,7 @@ public class Oxygen extends JavaPlugin {
             }
         }
     }
+
     public void reloadModule(ModuleLoader module) {
         if (module.isEnabled()) {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
@@ -146,10 +143,12 @@ public class Oxygen extends JavaPlugin {
             }
         }
     }
+
     // Debug Mode -- Useful for errors if setup properly...
     public boolean isDebugMode() {
         return this.debug_mode;
     }
+
     public String displayDebugStatus() {
         if (this.debug_mode) {
             return "&aTrue";
@@ -157,9 +156,10 @@ public class Oxygen extends JavaPlugin {
             return "&cFalse";
         }
     }
+
     public void setDebugMode(boolean status) {
         this.debug_mode = status;
-        this.getConfig().getConfiguration().set("plugin-settings.debug-mode", this.debug_mode);
-        this.getConfig().save();
+        this.getConfiguration().getConfiguration().set("plugin-settings.debug-mode", this.debug_mode);
+        this.getConfiguration().save();
     }
 }

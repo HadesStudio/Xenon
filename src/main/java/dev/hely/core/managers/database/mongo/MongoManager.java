@@ -17,32 +17,32 @@ import java.util.ArrayList;
  */
 @Getter
 public class MongoManager implements ModuleLoader {
-    public static final String MODULE_NAME = "Mongo Manager";
+
     private boolean enabled;
+
+    @Getter private MongoDatabase mongoDatabase;
 
     public MongoCollection<Document> profilesCollection;
     public MongoCollection<Document> ranksCollection;
     public MongoCollection<Document> punishmentsCollection;
     public MongoCollection<Document> tagsCollection;
 
-    @Getter private MongoDatabase mongoDatabase;
-
     @Override
     public void enable() {
-        if (!Oxygen.getInstance().getDatabase_config().getConfiguration().getBoolean("database.mongo.connection.enabled")) {
-            if (Oxygen.getInstance().getDatabase_config().getConfiguration().getBoolean("database.mongo.auth.enabled")) {
-                ServerAddress serverAddress = new ServerAddress(Oxygen.getInstance().getDatabase_config().getConfiguration().getString("database.mongo.address"), Oxygen.getInstance().getDatabase_config().getConfiguration().getInt("database.mongo.port"));
-                MongoCredential credential = MongoCredential.createCredential(Oxygen.getInstance().getDatabase_config().getConfiguration().getString("database.mongo.auth.user"),
-                        Oxygen.getInstance().getDatabase_config().getConfiguration().getString("database.mongo.database_name"),
-                        Oxygen.getInstance().getDatabase_config().getConfiguration().getString("database.mongo.auth.password").toCharArray());
+        if (!Oxygen.getInstance().getDatabaseConfig().getConfiguration().getBoolean("database.mongo.connection.enabled")) {
+            if (Oxygen.getInstance().getDatabaseConfig().getConfiguration().getBoolean("database.mongo.auth.enabled")) {
+                ServerAddress serverAddress = new ServerAddress(Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.address"), Oxygen.getInstance().getDatabaseConfig().getConfiguration().getInt("database.mongo.port"));
+                MongoCredential credential = MongoCredential.createCredential(Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.auth.user"),
+                        Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"),
+                        Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.auth.password").toCharArray());
 
-                mongoDatabase = new MongoClient(serverAddress, credential, MongoClientOptions.builder().build()).getDatabase(Oxygen.getInstance().getDatabase_config().getConfiguration().getString("database.mongo.database_name"));
+                mongoDatabase = new MongoClient(serverAddress, credential, MongoClientOptions.builder().build()).getDatabase(Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"));
             } else {
-                mongoDatabase = new MongoClient(Oxygen.getInstance().getDatabase_config().getConfiguration().getString("database.mongo.address"), Oxygen.getInstance().getDatabase_config().getConfiguration().getInt("database.mongo.port")).getDatabase(Oxygen.getInstance().getDatabase_config().getConfiguration().getString("database.mongo.database_name"));
+                mongoDatabase = new MongoClient(Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.address"), Oxygen.getInstance().getDatabaseConfig().getConfiguration().getInt("database.mongo.port")).getDatabase(Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"));
             }
         }else{
-            MongoClient client = new MongoClient(new MongoClientURI(Oxygen.getInstance().getDatabase_config().getConfiguration().getString("database.mongo.connection.url")));
-            mongoDatabase = client.getDatabase(Oxygen.getInstance().getDatabase_config().getConfiguration().getString("database.mongo.database_name"));
+            MongoClient client = new MongoClient(new MongoClientURI(Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.connection.url")));
+            mongoDatabase = client.getDatabase(Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"));
         }
 
         profilesCollection = mongoDatabase.getCollection("profiles");
@@ -50,12 +50,12 @@ public class MongoManager implements ModuleLoader {
         punishmentsCollection = mongoDatabase.getCollection("punishments");
         tagsCollection = mongoDatabase.getCollection("tags");
 
-        this.enabled = true;
+        enabled = true;
     }
 
     @Override
     public void disable() {
-        this.enabled = false;
+        enabled = false;
     }
 
     @Override
@@ -70,10 +70,6 @@ public class MongoManager implements ModuleLoader {
 
     @Override
     public String getName() {
-        return MODULE_NAME;
-    }
-
-    public boolean doesCollectionExist(String name) {
-        return this.mongoDatabase.listCollectionNames().into(new ArrayList<>()).contains(name);
+        return "Mongo Manager";
     }
 }
