@@ -43,6 +43,7 @@ public class Rank {
     public void save() {
         Document document = new Document();
 
+        document.put("name", name);
         document.put("type", type.name());
         document.put("prefix", prefix);
         document.put("suffix", suffix);
@@ -57,8 +58,8 @@ public class Rank {
         document.put("inheritances", Oxygen.PLAIN_GSON.toJson(inheritances, GSONUtil.listStringType));
         document.put("servers", Oxygen.PLAIN_GSON.toJson(servers, GSONUtil.listStringType));
 
-        plugin.getMongoManager().getRanksCollection().replaceOne(Filters.eq("name", name), document, new ReplaceOptions().upsert(true));
         Oxygen.getInstance().getRankManager().saveRanksToConfig();
+        plugin.getMongoManager().getRanksCollection().replaceOne(Filters.eq("name", name), document, new ReplaceOptions().upsert(true));
     }
 
     public void load() {

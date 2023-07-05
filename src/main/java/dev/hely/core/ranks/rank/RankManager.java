@@ -69,9 +69,8 @@ public class RankManager implements ModuleLoader {
             Oxygen.getInstance().debug_message("Successfully loaded " + rank.getName() + " rank.", Oxygen.getInstance().getRankManager());
         });
 
-        Rank defaultRank = this.getDefaultRank();
-        if (defaultRank == null) {
-            this.createMissingRank();
+        if (getRanks().size() == 0) {
+            this.createRank("Default");
             Oxygen.getInstance().debug_message("Creating the missing default rank because it is non-existent.", Oxygen.getInstance().getRankManager());
         }
     }
@@ -85,14 +84,6 @@ public class RankManager implements ModuleLoader {
         return this.ranks.stream().filter(rank -> rank.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
-    public Rank getDefaultRank() {
-        List<Rank> ranks = new ArrayList<>(this.ranks).stream().sorted(Comparator.comparingInt(Rank::getWeight).reversed()).filter(Rank::isDefaultRank).collect(Collectors.toList());
-        if (ranks.size() == 0) {
-            return null;
-        }
-        return ranks.get(0);
-    }
-
     public void createRank(String name) {
         Rank new_rank = new Rank(name);
         new_rank.setPrefix("");
@@ -102,26 +93,8 @@ public class RankManager implements ModuleLoader {
         new_rank.setWeight(1);
         new_rank.setType(RankType.DEFAULT);
 
-        new_rank.save();
-
+        saveRanks();
         this.ranks.add(new_rank);
-    }
-
-    public void createMissingRank() {
-        Rank defaultRank = this.getDefaultRank();
-        if (defaultRank == null) {
-            Rank rankData = new Rank("Default");
-            rankData.setPrefix("&a");
-            rankData.setSuffix("");
-            rankData.setDefaultRank(true);
-            rankData.setDisplay_color(ChatColor.GRAY);
-            rankData.setWeight(1);
-            rankData.setType(RankType.DEFAULT);
-            rankData.setGlobal_rank(true);
-
-            rankData.save();
-            this.ranks.add(rankData);
-        }
     }
 
     public void importRanks() {

@@ -29,6 +29,7 @@ import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -75,9 +76,11 @@ public class Oxygen extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (ModuleLoader module : this.modules.values()) {
-            this.unloadModule(module);
-            modules.remove(module);
+        Iterator var1 = this.modules.values().iterator();
+
+        while(var1.hasNext()) {
+            this.unloadModule((ModuleLoader)var1.next());
+            var1.remove();
         }
     }
 
@@ -181,7 +184,7 @@ public class Oxygen extends JavaPlugin {
     public void debug_message(String message, ModuleLoader module) {
         if (this.debug_mode) {
             if (module != null) {
-                Bukkit.getConsoleSender().sendMessage(CC.translate(String.format("&c[Oxygen Debug] &4[%s] %s", module.getName(), CC.translate(message))));
+                Bukkit.getConsoleSender().sendMessage(CC.translate(String.format("&c[Oxygen Debug (%s)] &4%s", module.getName(), CC.translate(message))));
             } else {
                 Bukkit.getConsoleSender().sendMessage(CC.translate(message));
             }
