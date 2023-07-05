@@ -43,7 +43,7 @@ public class Tag {
     }
 
     public void remove() {
-        // plugin.getTagManager().getTags().remove(name);
+        plugin.getTagManager().getTags().remove(this);
         plugin.getMongoManager().getTagsCollection().deleteOne(Filters.eq("name", this.name));
     }
 }

@@ -8,6 +8,7 @@ import dev.hely.core.leandro.redis.RedisManager;
 import dev.hely.core.managers.database.mongo.MongoManager;
 import dev.hely.core.managers.modules.ModuleLoader;
 import dev.hely.core.profile.ProfileManager;
+import dev.hely.core.tag.TagManager;
 import dev.hely.lib.CC;
 import dev.hely.lib.adapter.BlockVectorAdapter;
 import dev.hely.lib.adapter.LocationAdapter;
@@ -50,6 +51,7 @@ public class Oxygen extends JavaPlugin {
 
     private ProfileManager profileManager;
     private RankManager rankManager;
+    private TagManager tagManager;
 
     private boolean debug_mode;
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
@@ -109,7 +111,7 @@ public class Oxygen extends JavaPlugin {
         mongoManager = new MongoManager();
 
         rankManager = new RankManager(this);
-
+        tagManager = new TagManager(this);
     }
 
 
