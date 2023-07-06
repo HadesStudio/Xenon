@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.Oxygen;
+import dev.hely.core.punishment.PunishmentType;
 import dev.hely.core.ranks.grants.Grant;
 import dev.hely.core.profile.permission.ProfilePermission;
 import dev.hely.core.punishment.Punishment;
@@ -100,5 +101,66 @@ public class Profile {
         }
 
         loaded = true;
+    }
+
+
+    public Punishment getActivePunishmentByType(PunishmentType type) {
+        for (Punishment punishment : punishments) {
+            if (punishment.getType() == type && punishment.isActive()) {
+                return punishment;
+            }
+        }
+
+        return null;
+    }
+
+    public int getPunishmentCountByType(PunishmentType type) {
+        int i = 0;
+
+        for (Punishment punishment : punishments) {
+            if (punishment.getType() == type) i++;
+        }
+
+        return i;
+    }
+
+    public Punishment getActiveWarn() {
+        for (Punishment punishment : this.punishments) {
+            if (punishment.getType() == PunishmentType.WARN && punishment.isActive()) {
+                return punishment;
+            }
+        }
+
+        return null;
+    }
+
+    public Punishment getActiveMute() {
+        for (Punishment punishment : this.punishments) {
+            if (punishment.getType() == PunishmentType.MUTE && punishment.isActive()) {
+                return punishment;
+            }
+        }
+
+        return null;
+    }
+
+    public Punishment getActiveBan() {
+        for (Punishment punishment : this.punishments) {
+            if (punishment.getType() == PunishmentType.BAN && punishment.isActive()) {
+                return punishment;
+            }
+        }
+
+        return null;
+    }
+
+    public Punishment getActiveBlacklist() {
+        for (Punishment punishment : this.punishments) {
+            if (punishment.getType() == PunishmentType.BLACKLIST && punishment.isActive()) {
+                return punishment;
+            }
+        }
+
+        return null;
     }
 }

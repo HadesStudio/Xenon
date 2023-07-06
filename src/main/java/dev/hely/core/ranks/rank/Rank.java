@@ -26,6 +26,7 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 public class Rank {
+
     private Oxygen plugin = Oxygen.getInstance();
 
     private final String name;
