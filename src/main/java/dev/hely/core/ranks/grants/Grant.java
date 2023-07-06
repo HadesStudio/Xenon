@@ -16,8 +16,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Grant {
     private UUID uniqueId;
-    private String rank_name, adder, remover, reason;
-    private long added_time, removed_time, duration;
+    private String rankName, adder, remover, reason;
+    private long addedTime, removedTime, duration;
     private boolean active, permanent;
     private String server = "Global";
 
@@ -28,7 +28,7 @@ public class Grant {
             return true;
         }
 
-        return (added_time + duration) > System.currentTimeMillis();
+        return (addedTime + duration) > System.currentTimeMillis();
     }
 
     public String getRemaining() {
@@ -41,7 +41,7 @@ public class Grant {
         } else if (!isActive()) {
             toReturn = "Expired";
         } else {
-            toReturn = DurationFormatUtils.formatDurationWords(added_time + duration - System.currentTimeMillis(), true, true);
+            toReturn = DurationFormatUtils.formatDurationWords(addedTime + duration - System.currentTimeMillis(), true, true);
         }
         return toReturn;
     }

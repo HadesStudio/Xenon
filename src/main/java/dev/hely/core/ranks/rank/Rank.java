@@ -33,7 +33,7 @@ public class Rank {
     private RankType type = RankType.NORMAL;
     private String prefix, suffix;
     private boolean defaultRank;
-    private boolean global_rank;
+    private boolean globalRank;
     private int weight;
     private List<PermissionData> permissionsData = new ArrayList<>();
     private List<String> bungeePermissions = new ArrayList<>();
@@ -51,7 +51,7 @@ public class Rank {
         document.put("defaultRank", defaultRank);
         document.put("weight", weight);
         document.put("display_color", ColorUtil.convertChatColor(display_color));
-        document.put("global_rank", global_rank);
+        document.put("globalRank", globalRank);
 
 
         document.put("permissionsData", Oxygen.PLAIN_GSON.toJson(permissionsData, GSONUtil.PERMISSION_DATA));
@@ -73,7 +73,7 @@ public class Rank {
             setDefaultRank(document.getBoolean("defaultRank"));
             setWeight(document.getInteger("weight"));
             setDisplay_color(ChatColor.valueOf(document.getString("display_color")));
-            setGlobal_rank(document.getBoolean("global_rank"));
+            setGlobalRank(document.getBoolean("globalRank"));
 
             Type permissionType = new TypeToken<List<PermissionData>>() {}.getType();
             setPermissionsData(Oxygen.PLAIN_GSON.fromJson(document.getString("permissionsData"), permissionType));

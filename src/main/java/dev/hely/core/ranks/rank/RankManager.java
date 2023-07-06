@@ -121,7 +121,7 @@ public class RankManager implements ModuleLoader {
             rank.setInheritances(config.getStringList(key + ".inheritances"));
             rank.setWeight(config.getInt(key + ".weight"));
             rank.setType(RankType.valueOf(config.getString(key + ".rank-type", "DEFAULT")));
-            rank.setGlobal_rank(config.getBoolean(key + ".global-rank", true));
+            rank.setGlobalRank(config.getBoolean(key + ".global-rank", true));
             rank.setServers(config.getStringList(key + ".servers"));
 
             ChatColor color;
@@ -146,7 +146,7 @@ public class RankManager implements ModuleLoader {
             file.set(rankData.getName() + ".rank-type", rankData.getType().toString());
             file.set(rankData.getName() + ".prefix", rankData.getPrefix());
             file.set(rankData.getName() + ".default-rank", rankData.isDefaultRank());
-            file.set(rankData.getName() + ".global-rank", rankData.isGlobal_rank());
+            file.set(rankData.getName() + ".global-rank", rankData.isGlobalRank());
             file.set(rankData.getName() + ".weight", rankData.getWeight());
             file.set(rankData.getName() + ".permissions-data", Oxygen.PLAIN_GSON.toJson(rankData.getPermissionsData(), GSONUtil.PERMISSION_DATA));
             file.set(rankData.getName() + ".bungee-permissions", Oxygen.PLAIN_GSON.toJson(rankData.getBungeePermissions(), GSONUtil.listStringType));

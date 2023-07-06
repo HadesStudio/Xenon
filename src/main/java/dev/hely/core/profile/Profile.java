@@ -10,8 +10,12 @@ import dev.hely.core.punishment.PunishmentType;
 import dev.hely.core.ranks.grants.Grant;
 import dev.hely.core.profile.permission.ProfilePermission;
 import dev.hely.core.punishment.Punishment;
+import dev.hely.core.ranks.rank.Rank;
 import lombok.*;
 import org.bson.Document;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -30,6 +34,7 @@ public class Profile {
 
     private boolean loaded = false;
 
+    private Long firstSeen;
     private Long lastSeen;
 
     private List<Punishment> punishments = new ArrayList<>();
@@ -57,6 +62,7 @@ public class Profile {
         Document document = new Document();
         document.put("uniqueId", uniqueId.toString());
         document.put("name", name);
+        document.put("firstSeen", firstSeen);
         document.put("lastSeen", lastSeen);
         document.put("tag", tag);
         document.put("staffChat", staffChat);
@@ -77,6 +83,7 @@ public class Profile {
 
         if (document != null) {
             name = document.getString("name");
+            firstSeen = document.getLong("firstSeen");
             lastSeen = document.getLong("lastSeen");
             tag = document.getString("tag");
             staffChat = document.getBoolean("staffChat");
@@ -103,6 +110,32 @@ public class Profile {
         loaded = true;
     }
 
+    public void setupPermissionAttachments(Player player) {
+        for (PermissionAttachmentInfo attachmentInfo : player.getEffectivePermissions()) {
+            if (attachmentInfo.getAttachment() == null) {
+                continue;
+            }
+
+            attachmentInfo.getAttachment().getPermissions().forEach((permission, value) -> {
+                attachmentInfo.getAttachment().unsetPermission(permission);
+            });
+        }
+
+        PermissionAttachment attachment = player.addAttachment(plugin);
+        if (attachment == null) return;
+        attachment.getPermissions().keySet().forEach(attachment::unsetPermission);
+
+        List<Grant> currentGrants = new ArrayList<>(this.grants);
+        for (Grant grant : currentGrants) {
+            if (!grant.isActive()) continue;
+
+              // GRANTS RANKS SETUP PERMISSIONS
+        }
+
+
+
+        player.recalculatePermissions();
+    }
 
     public Punishment getActivePunishmentByType(PunishmentType type) {
         for (Punishment punishment : punishments) {
