@@ -1,7 +1,11 @@
 package dev.hely.core.profile;
 
 import dev.hely.core.Oxygen;
+import dev.hely.core.profile.packet.implement.StaffJoinPacket;
+import dev.hely.core.profile.packet.implement.StaffLeavePacket;
+import dev.hely.core.profile.packet.implement.StaffSwitchPacket;
 import dev.hely.lib.CC;
+import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +22,10 @@ import java.util.UUID;
  * Created on 29/06/2023
  * Protect Name Oxygen
  */
+@AllArgsConstructor
 public class ProfileListener implements Listener {
+
+    private Oxygen plugin;
 
     @EventHandler
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
@@ -32,7 +39,7 @@ public class ProfileListener implements Listener {
             return;
         }
 
-        Profile profile = Oxygen.getInstance().getProfileManager().getProfile(uuid, name);
+        Profile profile = plugin.getProfileManager().getProfile(uuid, name);
 
         if (profile == null || !profile.isLoaded()) {
             event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
@@ -57,13 +64,26 @@ public class ProfileListener implements Listener {
         event.setJoinMessage(null);
 
         Player player = event.getPlayer();
-        Profile profile = Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
         if (profile != null) {
+            profile.setupPermissionAttachments(player);
+
             if (profile.getFirstSeen() == null) {
                 profile.setFirstSeen(System.currentTimeMillis());
             }
-            profile.setupPermissionAttachments(player);
+
+            String serverName = plugin.getServerManager().getServerName();
+            if (player.hasPermission("oxygen.staff.alerts")) {
+                if (profile.getCurrentServer().equalsIgnoreCase("Unknown")) {
+                    plugin.getRedisModule().sendPacket(new StaffJoinPacket(player.getName(), serverName));
+                } else {
+                    plugin.getRedisModule().sendPacket(new StaffSwitchPacket(player.getName(), serverName, profile.getCurrentServer()));
+                }
+            }
+
+            profile.setCurrentServer(serverName);
+
             profile.save();
         }
     }
@@ -74,17 +94,22 @@ public class ProfileListener implements Listener {
         event.setQuitMessage(null);
 
         Player player = event.getPlayer();
-        Profile profile = Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId());
-
-        profile.setLastSeen(System.currentTimeMillis());
+        Profile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
         if (profile.isLoaded()) {
+            profile.setLastSeen(System.currentTimeMillis());
+
+            String serverName = plugin.getServerManager().getServerName();
+            if (player.hasPermission("oxygen.staff.alerts")) {
+                plugin.getRedisModule().sendPacket(new StaffLeavePacket(player.getName(), serverName));
+            }
+
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     profile.save(true);
                 }
-            }.runTaskAsynchronously(Oxygen.getInstance());
+            }.runTaskAsynchronously(plugin);
         }
     }
 }

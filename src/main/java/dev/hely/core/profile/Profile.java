@@ -42,6 +42,9 @@ public class Profile {
     private Long firstSeen;
     private Long lastSeen;
 
+    private String currentServer = "Unknown";
+    private String lastServer;
+
     private List<Punishment> punishments = new ArrayList<>();
     private List<Grant> grants = new ArrayList<>();
     private List<ProfilePermission> profilePermissions = new ArrayList<>();
@@ -76,6 +79,7 @@ public class Profile {
         document.put("addresses", addresses);
         document.put("firstSeen", firstSeen);
         document.put("lastSeen", lastSeen);
+        document.put("lastServer", lastServer);
         document.put("tag", tag);
         document.put("staffChat", staffChat);
         document.put("adminChat", adminChat);
@@ -106,6 +110,7 @@ public class Profile {
             addresses = Oxygen.PLAIN_GSON.fromJson(document.getString("addresses"), GSONUtil.listStringType);
             firstSeen = document.getLong("firstSeen");
             lastSeen = document.getLong("lastSeen");
+            lastServer = document.getString("lastServer");
             tag = document.getString("tag");
             staffChat = document.getBoolean("staffChat");
             adminChat = document.getBoolean("adminChat");

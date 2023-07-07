@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.hely.core.configuration.Language;
 import dev.hely.core.modules.listener.ListenerModule;
+import dev.hely.core.profile.packet.ProfilePacketListener;
 import dev.hely.core.ranks.rank.RankManager;
 import dev.hely.core.modules.database.redis.RedisModule;
 import dev.hely.core.modules.database.mongo.MongoModule;
@@ -150,6 +151,7 @@ public class Oxygen extends JavaPlugin {
     }
 
     public void setupPackets(){
+        redisModule.registerListener(new ProfilePacketListener());
         redisModule.registerListener(new TagPacketListener(tagManager));
     }
 

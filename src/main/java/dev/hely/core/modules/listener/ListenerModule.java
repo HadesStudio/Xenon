@@ -26,7 +26,7 @@ public class ListenerModule implements ModuleLoader {
 
         registerListener(
                 new BukkitPermissionListener(),
-                new ProfileListener(),
+                new ProfileListener(plugin),
                 new PunishmentListener(),
                 new NoteListener());
 
