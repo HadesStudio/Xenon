@@ -1,0 +1,8 @@
+Oxygen:
+  name: "Oxygen"
+  prefix: "&d&l#Oxygen"
+  weight: 10
+Void:
+  name: "Void"
+  prefix: "&3&l#Void"
+  weight: 5

@@ -1,15 +1,30 @@
 package dev.hely.core.modules.database.redis;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import dev.hely.core.Oxygen;
 import dev.hely.core.modules.ModuleLoader;
-import dev.hely.core.tag.Tag;
+import dev.hely.core.modules.database.redis.packet.Packet;
+import dev.hely.core.modules.database.redis.packet.PacketListener;
+import dev.hely.core.modules.database.redis.packet.annotation.IncomingPacketHandler;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPubSub;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Created By LeandroSSJ
@@ -26,6 +41,9 @@ public class RedisModule implements ModuleLoader {
     private String channel;
     private JedisPool jedisPool;
 
+    private Multimap<Object, Method> listeners;
+    private Set<String> channels;
+
     @Override
     public void enable() {
         String host = Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.redis.host");
@@ -37,14 +55,20 @@ public class RedisModule implements ModuleLoader {
         this.jedisPool = new JedisPool(new JedisPoolConfig(), host, port, 30_000, this.password.isEmpty() ? null : this.password, 0, null);
         this.jedisPool.getResource();
 
-        this.connect();
+        this.listeners = ArrayListMultimap.create();
+        this.channels = new HashSet<>();
+
+        this.subscribeJedis();
 
         enabled = true;
     }
 
     @Override
     public void disable() {
-        // redis close
+        if (jedisPool != null) {
+            jedisPool.close();
+        }
+
         enabled = false;
     }
 
@@ -63,78 +87,68 @@ public class RedisModule implements ModuleLoader {
         return "Redis Manager";
     }
 
-    public void connect() {
-        new Thread(() -> this.runCommand(jedis -> {
-            jedis.subscribe(new JedisPubSub() {
-                @Override
-                public void onMessage(String channel, String message) {
-                    if (channel.equalsIgnoreCase(Oxygen.getInstance().getRedisModule().getChannel())) {
-                        String[] args = message.split(";");
-                        String packet = args[0];
+    public void registerListener(PacketListener listener) {
+        List<Method> declaredMethods = Arrays.asList(listener.getClass().getDeclaredMethods());
+        if (declaredMethods.stream().noneMatch(method -> method.isAnnotationPresent(IncomingPacketHandler.class))) return;
 
-                        if (packet.equalsIgnoreCase("staffchat")) { // EXAMPLE
-                            String server = args[1];
-                            String staff = args[2];
+        Set<Method> methods = declaredMethods.stream()
+                .filter(method -> method.isAnnotationPresent(IncomingPacketHandler.class))
+                .filter(method -> method.getParameters().length == 1)
+                .collect(Collectors.toSet());
 
-                            // STAFF JOINED SERVER
-                        }
+        methods.forEach(method -> channels.addAll(Arrays.asList(getChannel() + "@" + method.getParameterTypes()[0].getSimpleName())));
 
-                        if (packet.equalsIgnoreCase("tag")) {
-                            String status = args[1];
-                            if (status.equalsIgnoreCase("update")) {
-                                String remove = args[2];
-                                Tag tag = Oxygen.getInstance().getTagManager().getTag(args[3]);
-
-                                if (remove.equalsIgnoreCase("remove")){
-                                    if (tag != null) {
-                                        tag.remove();
-                                    }
-                                } else {
-                                    if (tag != null) {
-                                        tag.load();
-                                    } else {
-                                        Tag newTag = new Tag(args[3]);
-                                        newTag.load();
-
-                                        Oxygen.getInstance().getTagManager().getTags().add(newTag);
-                                    }
-                                }
-                            }
-
-
-                            if (status.equalsIgnoreCase("import")) {
-
-                            }
-                        }
-
-                    }
-                }
-            }, this.channel);
-        })).start();
+        listeners.putAll(listener, methods);
     }
 
-    public void write(String message) {
-        Jedis jedis = this.jedisPool.getResource();
+    public void sendPacket(Packet packet) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            String channel = getChannel() + '@' + packet.getClass().getSimpleName();
 
-        if (jedis != null) {
-            if (!this.password.isEmpty()) {
-                jedis.auth(password);
-            }
-
-            jedis.publish(channel, message);
+            jedis.publish(channel, Oxygen.PLAIN_GSON.toJson(packet));
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
-    public void runCommand(Consumer<Jedis> consumer) {
-        Jedis jedis = this.jedisPool.getResource();
+    private JedisPubSub getJedisPubSub() {
+        JedisPubSub jedisPubSub = new JedisPubSub() {
+            @Override
+            public void onMessage(String channel, String message) {
+                for (Map.Entry<Object, Method> entry : listeners.entries()) {
+                    if (Objects.equals(getChannel() + '@' + entry.getValue().getParameterTypes()[0].getSimpleName(), channel)) {
+                        try {
+                            entry.getValue().invoke(entry.getKey(), Oxygen.PLAIN_GSON.fromJson(message, entry.getValue().getParameterTypes()[0]));
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        };
 
+        return jedisPubSub;
+    }
+
+
+    public void runCommand(Consumer<Jedis> consumer) {
+        Jedis jedis = jedisPool.getResource();
         if (jedis != null) {
             if (!this.password.isEmpty()) {
                 jedis.auth(password);
             }
 
             consumer.accept(jedis);
-            this.jedisPool.returnResource(jedis);
+            jedisPool.returnResource(jedis);
         }
+    }
+
+    public void subscribeJedis() {
+        CompletableFuture.runAsync(() -> {
+            runCommand(command -> command.subscribe(getJedisPubSub(), channels.toArray(new String[0])));
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        });
     }
 }

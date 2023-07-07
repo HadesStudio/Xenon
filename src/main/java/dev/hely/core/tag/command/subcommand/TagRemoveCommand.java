@@ -3,6 +3,7 @@ package dev.hely.core.tag.command.subcommand;
 import dev.hely.core.Oxygen;
 import dev.hely.core.configuration.Language;
 import dev.hely.core.tag.Tag;
+import dev.hely.core.tag.packet.implement.TagUpdatePacket;
 import dev.hely.core.utils.command.sub.SubCommand;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
@@ -33,8 +34,7 @@ public class TagRemoveCommand extends SubCommand {
             return;
         }
 
-        Oxygen.getInstance().getRedisModule().write("tag;update;remove;" + tag.getName());
-
+        Oxygen.getInstance().getRedisModule().sendPacket(new TagUpdatePacket(tag.getName(), true));
         sender.sendMessage(CC.translate(Language.TAG_REMOVE_REMOVED).replace("%tag_name%", tag.getPrefix() == null ? tag.getName() : tag.getPrefix()));
 
         tag.remove();

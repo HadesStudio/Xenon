@@ -3,6 +3,7 @@ package dev.hely.core.tag.command.subcommand;
 import dev.hely.core.Oxygen;
 import dev.hely.core.configuration.Language;
 import dev.hely.core.tag.Tag;
+import dev.hely.core.tag.packet.implement.TagUpdatePacket;
 import dev.hely.core.utils.command.sub.SubCommand;
 import dev.hely.lib.CC;
 import dev.hely.lib.JavaUtil;
@@ -37,8 +38,7 @@ public class TagCreateCommand extends SubCommand {
         tag = new Tag(args[1]);
         tag.save();
 
-        Oxygen.getInstance().getRedisModule().write("tag;update;load;" + tag.getName());
-
+        Oxygen.getInstance().getRedisModule().sendPacket(new TagUpdatePacket(tag.getName(), false));
         sender.sendMessage(CC.translate(Language.TAG_CREATE_CREATED).replace("%tag_name%", args[1]));
     }
 }

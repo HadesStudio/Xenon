@@ -1,14 +1,20 @@
 package dev.hely.core.profile;
 
+import dev.hely.core.Oxygen;
+import dev.hely.core.profile.note.NoteListener;
+import dev.hely.core.profile.permission.bukkit.BukkitPermissionListener;
+import dev.hely.core.punishment.PunishmentListener;
 import dev.hely.core.utils.UUIDUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * Created By LeandroSSJ

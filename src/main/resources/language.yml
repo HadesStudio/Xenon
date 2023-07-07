@@ -8,6 +8,8 @@ tag:
     - "&d* &f/tag remove <tag> &7- Delete a tag."
     - "&d* &f/tag setprefix <tag> <prefix> &7- ."
     - "&d* &f/tag setweight <tag> <weight> &7- ."
+    - "&d* &f/tag import &7- ."
+    - "&d* &f/tag export &7- ."
     - "&d* &f/tag list &7- View a list of all created tags."
     - "&7&l&m-----------------------------------"
   create:
@@ -23,4 +25,8 @@ tag:
   setweight:
     usage: "&cUsage: /tag setweight <name> <weight>"
     updated: "&aYou have updated the '&r%tag_name%&a' tag weight to '&r%tag_weight%&a'!"
+  export:
+    exported: "&aThe tags have been exported to tags.yml!"
+  import:
+    imported: "&aThe tags have been imported from tags.yml!"
   dont-exists: "&cA tag with that name doesn't exists."

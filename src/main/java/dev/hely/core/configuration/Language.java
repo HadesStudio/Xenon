@@ -23,6 +23,8 @@ public class Language {
     public static String TAG_SETPREFIX_UPDATED;
     public static String TAG_SETWEIGHT_USAGE;
     public static String TAG_SETWEIGHT_UPDATED;
+    public static String TAG_IMPORT_IMPORTED;
+    public static String TAG_EXPORT_EXPORTED;
 
 
     public static void load(){
@@ -39,6 +41,8 @@ public class Language {
         TAG_SETPREFIX_UPDATED = language.getConfiguration().getString("tag.setprefix.updated");
         TAG_SETWEIGHT_USAGE = language.getConfiguration().getString("tag.setweight.usage");
         TAG_SETWEIGHT_UPDATED = language.getConfiguration().getString("tag.setweight.updated");
+        TAG_IMPORT_IMPORTED = language.getConfiguration().getString("tag.import.imported");
+        TAG_EXPORT_EXPORTED = language.getConfiguration().getString("tag.export.exported");
 
     }
 }

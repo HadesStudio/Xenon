@@ -12,8 +12,10 @@ import dev.hely.core.modules.ModuleLoader;
 import dev.hely.core.profile.ProfileManager;
 import dev.hely.core.server.ServerManager;
 import dev.hely.core.tag.TagManager;
+import dev.hely.core.tag.packet.TagPacketListener;
 import dev.hely.core.utils.command.CommandManager;
 import dev.hely.lib.CC;
+import dev.hely.lib.Tasks;
 import dev.hely.lib.adapter.BlockVectorAdapter;
 import dev.hely.lib.adapter.LocationAdapter;
 import dev.hely.lib.adapter.PotionEffectAdapter;
@@ -32,6 +34,7 @@ import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -46,14 +49,17 @@ public class Oxygen extends JavaPlugin {
 
     @Getter private static Oxygen instance;
 
-    @Getter private Config databaseConfig;
-    @Getter private Config configuration;
-    @Getter private Config languageConfig;
-    @Getter private Config ranksConfig;
-    @Getter private Config rankSettingsConfig;
+    private Tasks tasks;
+    private Config databaseConfig;
+    private Config configuration;
+    private Config languageConfig;
+    private Config ranksConfig;
+    private Config rankSettingsConfig;
+    private Config tagConfig;
+
+    public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
     private Map<String, ModuleLoader> modules;
-
 
     private MongoModule mongoModule;
     private RedisModule redisModule;
@@ -64,10 +70,8 @@ public class Oxygen extends JavaPlugin {
     private ServerManager serverManager;
     private CommandManager commandManager;
     private ListenerModule listenerModule;
-    private MenuManager menuManager;
 
     private boolean debug_mode;
-    public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
     @Override
     public void onEnable() {
@@ -78,16 +82,12 @@ public class Oxygen extends JavaPlugin {
         setDebugMode(true);
         initModules();
         setupModules();
+        setupPackets();
     }
 
     @Override
     public void onDisable() {
-        Iterator var1 = this.modules.values().iterator();
-
-        while(var1.hasNext()) {
-            this.unloadModule((ModuleLoader)var1.next());
-            var1.remove();
-        }
+        modules.forEach((s, moduleLoader) -> unloadModule(moduleLoader));
     }
 
     public void startupMessages() {
@@ -115,25 +115,13 @@ public class Oxygen extends JavaPlugin {
         this.databaseConfig = new Config(this, "databases" + File.separator + "databases");
         this.ranksConfig = new Config(this, "ranks" + File.separator + "ranks");
         this.rankSettingsConfig = new Config(this, "ranks" + File.separator + "rank-settings");
+        this.tagConfig = new Config(this, "tags");
 
         Language.load();
     }
-
-    public void setupModules(){
-        menuManager = MenuManager.INSTANCE;
-        Oxygen.getInstance().getServer().getPluginManager().registerEvents(new MenuListener(this), this);
-
-        profileManager = new ProfileManager(); // Does not use Module System.
-        this.loadModule(commandManager);
-        this.loadModule(listenerModule);
-
-        this.loadModule(mongoModule);
-        this.loadModule(redisModule);
-        this.loadModule(rankManager);
-        this.loadModule(tagManager);
-        this.loadModule(serverManager);
-    }
     public void initModules(){
+        tasks = new Tasks(this);
+
         commandManager = new CommandManager();
         listenerModule = new ListenerModule();
 
@@ -144,6 +132,26 @@ public class Oxygen extends JavaPlugin {
         serverManager = new ServerManager();
     }
 
+    public void setupModules(){
+        MenuManager.INSTANCE.onEnable(this);
+
+        profileManager = new ProfileManager();
+
+        modules = new HashMap<>();
+
+        this.loadModule(commandManager);
+        this.loadModule(listenerModule);
+
+        this.loadModule(mongoModule);
+        this.loadModule(redisModule);
+        this.loadModule(rankManager);
+        this.loadModule(tagManager);
+        this.loadModule(serverManager);
+    }
+
+    public void setupPackets(){
+        redisModule.registerListener(new TagPacketListener(tagManager));
+    }
 
     // Module Manager -- The below is for the module system.
     private void loadModule(ModuleLoader module) {
@@ -153,6 +161,7 @@ public class Oxygen extends JavaPlugin {
             if (this.debug_mode) {
                 bukkitCommandSender.sendMessage(CC.translate("&dModules: &aSuccessfully loaded &a&n"  + module + " Module&a."));
             }
+            modules.put(module.getName(), module);
         }
     }
 

@@ -1,5 +1,6 @@
 package dev.hely.core.tag;
 
+import com.mongodb.client.model.Filters;
 import dev.hely.core.Oxygen;
 import dev.hely.core.modules.ModuleLoader;
 import lombok.Getter;
@@ -60,6 +61,12 @@ public class TagManager implements ModuleLoader {
     public void saveTags(){
         this.tags.forEach(Tag::save);
     }
+
+    public void deleteTags(){
+        this.tags.clear();
+        plugin.getMongoModule().getTagsCollection().drop();
+    }
+
 
     public Tag getTag(String name) {
         return this.tags.stream().filter(tag -> tag.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
