@@ -1,6 +1,6 @@
 package dev.hely.core.utils.command;
 
-import dev.hely.core.managers.modules.ModuleLoader;
+import dev.hely.core.modules.ModuleLoader;
 import dev.hely.core.ranks.rank.commands.RankCommand;
 import dev.hely.core.utils.command.utils.ClassWrapper;
 import org.bukkit.Bukkit;

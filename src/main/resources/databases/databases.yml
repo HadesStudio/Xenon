@@ -24,8 +24,3 @@ database:
     database-id: 0
     auth: # Leave password field blank for no auth.
       password: ""
-  backbone-redis: # This is the configuration section for the BACKBONE REDIS DATABASE ONLY.
-    host: "127.0.0.1"
-    port: 6379
-    channel: "Oxygen"
-    database-id: 1

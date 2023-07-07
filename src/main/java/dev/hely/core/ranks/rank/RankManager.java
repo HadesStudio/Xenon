@@ -1,7 +1,7 @@
 package dev.hely.core.ranks.rank;
 
 import dev.hely.core.Oxygen;
-import dev.hely.core.managers.modules.ModuleLoader;
+import dev.hely.core.modules.ModuleLoader;
 import dev.hely.core.ranks.gson.GSONUtil;
 import dev.hely.core.ranks.rank.permission.PermissionData;
 import dev.hely.core.utils.ColorUtil;
@@ -15,7 +15,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created By LeandroSSJ

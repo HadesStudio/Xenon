@@ -6,10 +6,12 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.Oxygen;
+import dev.hely.core.profile.note.Note;
 import dev.hely.core.punishment.PunishmentType;
 import dev.hely.core.ranks.grants.Grant;
 import dev.hely.core.profile.permission.ProfilePermission;
 import dev.hely.core.punishment.Punishment;
+import dev.hely.core.ranks.gson.GSONUtil;
 import dev.hely.core.ranks.rank.Rank;
 import lombok.*;
 import org.bson.Document;
@@ -34,12 +36,16 @@ public class Profile {
 
     private boolean loaded = false;
 
+    private String currentAddress;
+    private List<String> addresses = new ArrayList<>();
+
     private Long firstSeen;
     private Long lastSeen;
 
     private List<Punishment> punishments = new ArrayList<>();
     private List<Grant> grants = new ArrayList<>();
     private List<ProfilePermission> profilePermissions = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
 
     private String tag;
 
@@ -62,6 +68,8 @@ public class Profile {
         Document document = new Document();
         document.put("uniqueId", uniqueId.toString());
         document.put("name", name);
+        document.put("currentAddress", currentAddress);
+        document.put("addresses", addresses);
         document.put("firstSeen", firstSeen);
         document.put("lastSeen", lastSeen);
         document.put("tag", tag);
@@ -74,6 +82,10 @@ public class Profile {
         Type profilePermissionType = new TypeToken<List<ProfilePermission>>() {}.getType();
         document.put("profilePermissions", Oxygen.PLAIN_GSON.toJson(this.profilePermissions, profilePermissionType));
 
+        Type notesType = new TypeToken<List<Note>>() {}.getType();
+        document.put("notes", Oxygen.PLAIN_GSON.toJson(this.notes, notesType));
+
+
         plugin.getMongoManager().getProfilesCollection().replaceOne(Filters.eq("uniqueId", uniqueId.toString()), document, new ReplaceOptions().upsert(true));
         if (leave) plugin.getProfileManager().getProfileMap().remove(uniqueId);
     }
@@ -83,6 +95,8 @@ public class Profile {
 
         if (document != null) {
             name = document.getString("name");
+            currentAddress = document.getString("currentAddress");
+            addresses = Oxygen.PLAIN_GSON.fromJson(document.getString("addresses"), GSONUtil.listStringType);
             firstSeen = document.getLong("firstSeen");
             lastSeen = document.getLong("lastSeen");
             tag = document.getString("tag");
@@ -95,6 +109,9 @@ public class Profile {
 
             Type profilePermissionType = new TypeToken<List<ProfilePermission>>() {}.getType();
             profilePermissions = Oxygen.PLAIN_GSON.fromJson(document.getString("profilePermissions"), profilePermissionType);
+
+            Type notesType = new TypeToken<List<Note>>() {}.getType();
+            if (document.containsKey("notes")) this.notes = Oxygen.PLAIN_GSON.fromJson(document.getString("notes"), notesType);
 
 
             try (MongoCursor<Document> mongoCursor = plugin.getMongoManager().getPunishmentsCollection().find(Filters.eq("targetUUID", uniqueId.toString())).iterator()) {

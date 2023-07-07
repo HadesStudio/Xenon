@@ -29,18 +29,21 @@ public class RankListCommand extends SubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
+
         if (Oxygen.getInstance().getRankManager().getRanks().size() == 0) {
-            sender.sendMessage(CC.translate("&cSomehow, their is no ranks created, please open a Hely Development discord ticket, as this should automatically create a default rank.."));
-            return false;
+            player.sendMessage(CC.translate("&cSomehow, their is no ranks created, please open a Hely Development discord ticket, as this should automatically create a default rank.."));
+            return;
         }
 
-        Oxygen.getInstance().debug_message("Attempting to open rank list menu for " + sender.getName() + " containing " + Oxygen.getInstance().getRankManager().getRanks().size() + " ranks.", Oxygen.getInstance().getRankManager());
+        Oxygen.getInstance().debug_message("Attempting to open rank list menu for " + player.getName() + " containing " + Oxygen.getInstance().getRankManager().getRanks().size() + " ranks.", Oxygen.getInstance().getRankManager());
+
         for (Rank rank : Oxygen.getInstance().getRankManager().getRanks()) {
             Oxygen.getInstance().debug_message(" * " + rank.getName(), Oxygen.getInstance().getRankManager());
         }
-        new RankListMenu().openMenu((Player)sender);
-        Oxygen.getInstance().debug_message("Successfully opened rank list menu for " + sender.getName() + " containing " + Oxygen.getInstance().getRankManager().getRanks().size() + " ranks.", Oxygen.getInstance().getRankManager());
-        return true;
+
+        new RankListMenu().openMenu(player);
+        Oxygen.getInstance().debug_message("Successfully opened rank list menu for " + player.getName() + " containing " + Oxygen.getInstance().getRankManager().getRanks().size() + " ranks.", Oxygen.getInstance().getRankManager());
     }
 }

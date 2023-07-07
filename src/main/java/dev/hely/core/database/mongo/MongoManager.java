@@ -1,14 +1,12 @@
-package dev.hely.core.managers.database.mongo;
+package dev.hely.core.database.mongo;
 
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import dev.hely.core.Oxygen;
-import dev.hely.core.managers.modules.ModuleLoader;
+import dev.hely.core.modules.ModuleLoader;
 import lombok.Getter;
 import org.bson.Document;
-
-import java.util.ArrayList;
 
 /**
  * Created By LeandroSSJ

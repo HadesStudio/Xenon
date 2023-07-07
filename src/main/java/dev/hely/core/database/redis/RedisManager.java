@@ -1,7 +1,7 @@
-package dev.hely.core.managers.database.redis;
+package dev.hely.core.database.redis;
 
 import dev.hely.core.Oxygen;
-import dev.hely.core.managers.modules.ModuleLoader;
+import dev.hely.core.modules.ModuleLoader;
 import lombok.Getter;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

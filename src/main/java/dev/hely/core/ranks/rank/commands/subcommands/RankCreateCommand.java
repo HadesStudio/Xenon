@@ -30,27 +30,26 @@ public class RankCreateCommand extends SubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args) {
-        if (args.length == 2) {
-            String rank_name = args[1];
-
-            if (Oxygen.getInstance().getRankManager().getRank(rank_name) != null) {
-                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.already-exist")));
-                return false;
-            }
-            if (!JavaUtil.isAlphanumeric(rank_name)) {
-                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.invalid-string")));
-                return false;
-            }
-
-            Oxygen.getInstance().getRankManager().createRank(rank_name);
-            sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.created").replace("%rank_name%", rank_name)));
-            return true;
-
-        } else {
+    public void execute(CommandSender sender, String[] args) {
+        if (args.length < 2) {
             sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.usage")));
+            return;
         }
-        return false;
+
+        String rank_name = args[1];
+
+        if (Oxygen.getInstance().getRankManager().getRank(rank_name) != null) {
+            sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.already-exist")));
+            return;
+        }
+
+        if (!JavaUtil.isAlphanumeric(rank_name)) {
+            sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.invalid-string")));
+            return;
+        }
+
+        Oxygen.getInstance().getRankManager().createRank(rank_name);
+        sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.created").replace("%rank_name%", rank_name)));
     }
 }
 

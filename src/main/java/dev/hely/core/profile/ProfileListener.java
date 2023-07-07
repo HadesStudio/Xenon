@@ -33,7 +33,14 @@ public class ProfileListener implements Listener {
         }
 
         Profile profile = Oxygen.getInstance().getProfileManager().getProfile(uuid, name);
-        profile.setLastSeen(System.currentTimeMillis());
+
+        if (!profile.getCurrentAddress().equalsIgnoreCase(event.getAddress().getHostAddress())) {
+            profile.setCurrentAddress(event.getAddress().getHostAddress());
+        }
+
+        if (!profile.getAddresses().contains(event.getAddress().getHostAddress())) {
+            profile.getAddresses().add(event.getAddress().getHostAddress());
+        }
 
         if (profile == null || !profile.isLoaded()) {
             event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
@@ -64,6 +71,8 @@ public class ProfileListener implements Listener {
 
         Player player = event.getPlayer();
         Profile profile = Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId());
+
+        profile.setLastSeen(System.currentTimeMillis());
 
         if (profile.isLoaded()) {
             new BukkitRunnable() {

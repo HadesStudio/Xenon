@@ -90,5 +90,5 @@ public abstract class SubCommand {
         return true;
     }
 
-    public abstract boolean execute(CommandSender sender, String[] args);
+    public abstract void execute(CommandSender sender, String[] args);
 }

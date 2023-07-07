@@ -5,7 +5,7 @@
 #    If you run into any bugs, or have suggestions, let us know on our discord!   #
 ###################################################################################
 
-plugin-settings:
-  server-name: "Hub" # This is the name of the server this plugin is currently installed in.
-  debug-mode: true # Do not edit the status of this via the config, use the debug mode command in game.
-  server-type: "BUNGEE" # Velocity, Bungee
+debug-mode: true # Do not edit the status of this via the config, use the debug mode command in game.
+
+server:
+  name: "Hub" # This is the name of the server this plugin is currently installed in.

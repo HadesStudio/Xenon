@@ -1,7 +1,7 @@
 package dev.hely.core.tag;
 
 import dev.hely.core.Oxygen;
-import dev.hely.core.managers.modules.ModuleLoader;
+import dev.hely.core.modules.ModuleLoader;
 import lombok.Getter;
 
 import java.util.ArrayList;

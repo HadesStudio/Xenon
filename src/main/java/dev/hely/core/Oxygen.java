@@ -4,10 +4,11 @@ import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.hely.core.ranks.rank.RankManager;
-import dev.hely.core.managers.database.redis.RedisManager;
-import dev.hely.core.managers.database.mongo.MongoManager;
-import dev.hely.core.managers.modules.ModuleLoader;
+import dev.hely.core.database.redis.RedisManager;
+import dev.hely.core.database.mongo.MongoManager;
+import dev.hely.core.modules.ModuleLoader;
 import dev.hely.core.profile.ProfileManager;
+import dev.hely.core.server.ServerManager;
 import dev.hely.core.tag.TagManager;
 import dev.hely.core.utils.command.CommandManager;
 import dev.hely.lib.CC;
@@ -57,6 +58,7 @@ public class Oxygen extends JavaPlugin {
     private ProfileManager profileManager;
     private RankManager rankManager;
     private TagManager tagManager;
+    private ServerManager serverManager;
     private CommandManager commandManager;
     private MenuManager menuManager;
 
@@ -122,6 +124,7 @@ public class Oxygen extends JavaPlugin {
         this.loadModule(redisManager);
         this.loadModule(rankManager);
         this.loadModule(tagManager);
+        this.loadModule(serverManager);
     }
     public void initModules(){
         commandManager = new CommandManager();
@@ -130,6 +133,7 @@ public class Oxygen extends JavaPlugin {
         mongoManager = new MongoManager();
         rankManager = new RankManager();
         tagManager = new TagManager();
+        serverManager = new ServerManager();
     }
 
 
@@ -176,11 +180,13 @@ public class Oxygen extends JavaPlugin {
             return "&cFalse";
         }
     }
+
     public void setDebugMode(boolean status) {
         this.debug_mode = status;
-        this.getConfiguration().getConfiguration().set("plugin-settings.debug-mode", this.debug_mode);
+        this.getConfiguration().getConfiguration().set("debug-mode", this.debug_mode);
         this.getConfiguration().save();
     }
+
     public void debug_message(String message, ModuleLoader module) {
         if (this.debug_mode) {
             if (module != null) {

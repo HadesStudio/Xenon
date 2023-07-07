@@ -1,4 +1,4 @@
-package dev.hely.core.managers;
+package dev.hely.core.modules;
 
 //============================================================
 // This file was created by DevDipin!
@@ -7,13 +7,22 @@ package dev.hely.core.managers;
 // If any questions, please contact on discord.
 //
 // File Information:
-//   Path: dev.hely.core.managers
-//   Date: Monday, July 03, 2023 - 2:24 PM
+//   Path: dev.hely.core.modules
+//   Date: Monday, July 03, 2023 - 2:25 PM
 //
 // Contact Information:
 //   Discord: Andrew!!#4468
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-public class Managers {
+public interface ModuleLoader {
+    void enable();
+
+    void disable();
+
+    void reload();
+
+    boolean isEnabled();
+
+    String getName();
 }

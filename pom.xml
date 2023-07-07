@@ -97,11 +97,11 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.mongodb</pattern>
-                                    <shadedPattern>dev.hely.core.managers.database.mongo.library</shadedPattern>
+                                    <shadedPattern>dev.hely.core.database.mongo.library</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>redis.clients.jedis</pattern>
-                                    <shadedPattern>dev.hely.core.managers.database.redis.library</shadedPattern>
+                                    <shadedPattern>dev.hely.core.database.redis.library</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>dev.hely.lib</pattern>
