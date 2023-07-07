@@ -1,7 +1,8 @@
-package dev.hely.core.database.redis;
+package dev.hely.core.modules.database.redis;
 
 import dev.hely.core.Oxygen;
 import dev.hely.core.modules.ModuleLoader;
+import dev.hely.core.tag.Tag;
 import lombok.Getter;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -16,7 +17,7 @@ import java.util.function.Consumer;
  * Protect Name Oxygen
  */
 @Getter
-public class RedisManager implements ModuleLoader {
+public class RedisModule implements ModuleLoader {
 
     private boolean enabled;
 
@@ -67,7 +68,7 @@ public class RedisManager implements ModuleLoader {
             jedis.subscribe(new JedisPubSub() {
                 @Override
                 public void onMessage(String channel, String message) {
-                    if (channel.equalsIgnoreCase(Oxygen.getInstance().getRedisManager().getChannel())) {
+                    if (channel.equalsIgnoreCase(Oxygen.getInstance().getRedisModule().getChannel())) {
                         String[] args = message.split(";");
                         String packet = args[0];
 
@@ -76,6 +77,34 @@ public class RedisManager implements ModuleLoader {
                             String staff = args[2];
 
                             // STAFF JOINED SERVER
+                        }
+
+                        if (packet.equalsIgnoreCase("tag")) {
+                            String status = args[1];
+                            if (status.equalsIgnoreCase("update")) {
+                                String remove = args[2];
+                                Tag tag = Oxygen.getInstance().getTagManager().getTag(args[3]);
+
+                                if (remove.equalsIgnoreCase("remove")){
+                                    if (tag != null) {
+                                        tag.remove();
+                                    }
+                                } else {
+                                    if (tag != null) {
+                                        tag.load();
+                                    } else {
+                                        Tag newTag = new Tag(args[3]);
+                                        newTag.load();
+
+                                        Oxygen.getInstance().getTagManager().getTags().add(newTag);
+                                    }
+                                }
+                            }
+
+
+                            if (status.equalsIgnoreCase("import")) {
+
+                            }
                         }
 
                     }

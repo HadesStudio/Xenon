@@ -1,13 +1,12 @@
 commands:
-  help:
-    message:
-      - "&7&l&m-----------------------------------"
-      - "&d&lRank System Help"
-      - "&7All commands and usages are listed below."
-      - ""
-      - "&d* &f/rank create <name> &7- Create a rank with specified name."
-      - "&d* &f/rank list &7- View a list of all created ranks."
-      - "&7&l&m-----------------------------------"
+  usage:
+    - "&7&l&m-----------------------------------"
+    - "&d&lRank System Help"
+    - "&7All commands and usages are listed below."
+    - ""
+    - "&d* &f/rank create <name> &7- Create a rank with specified name."
+    - "&d* &f/rank list &7- View a list of all created ranks."
+    - "&7&l&m-----------------------------------"
   create:
     usage: "&cCorrect Usage: /rank create <name>"
     already-exist: "&cSorry, a rank with the name specified already exists."

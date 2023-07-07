@@ -16,6 +16,7 @@ import org.bukkit.ChatColor;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created By LeandroSSJ
@@ -60,11 +61,11 @@ public class Rank {
         document.put("servers", Oxygen.PLAIN_GSON.toJson(servers, GSONUtil.listStringType));
 
         Oxygen.getInstance().getRankManager().saveRanksToConfig();
-        plugin.getMongoManager().getRanksCollection().replaceOne(Filters.eq("name", name), document, new ReplaceOptions().upsert(true));
+        plugin.getMongoModule().getRanksCollection().replaceOne(Filters.eq("name", name), document, new ReplaceOptions().upsert(true));
     }
 
     public void load() {
-        Document document = plugin.getMongoManager().getRanksCollection().find(Filters.eq("name", name)).first();
+        Document document = plugin.getMongoModule().getRanksCollection().find(Filters.eq("name", name)).first();
 
         if (document != null) {
             setType(RankType.valueOf(document.getString("type")));
@@ -81,5 +82,17 @@ public class Rank {
             setInheritances(Oxygen.PLAIN_GSON.fromJson(document.getString("inheritances"), GSONUtil.listStringType));
             setServers(Oxygen.PLAIN_GSON.fromJson(document.getString("servers"), GSONUtil.listStringType));
         }
+    }
+
+    public boolean getServer(String name) {
+        return this.servers.stream().filter(server -> server.equalsIgnoreCase(name)).findFirst().orElse(null) != null;
+    }
+
+    public boolean isServer() {
+        return this.globalRank || getServer(plugin.getServerManager().getServerName());
+    }
+
+    public List<String> getActivePermissions() {
+        return this.permissionsData.stream().filter(PermissionData::isActive).map(PermissionData::getPermission).collect(Collectors.toList());
     }
 }

@@ -40,12 +40,12 @@ public class RankCommand extends SubCommandHandler {
             if (subCommand != null) {
                 subCommand.execute(sender, args);
             } else {
-                for (String msg : Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getStringList("commands.help.message")) {
+                for (String msg : Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getStringList("commands.usage")) {
                     sender.sendMessage(CC.translate(msg));
                 }
             }
         } else {
-            for (String msg : Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getStringList("commands.help.message")) {
+            for (String msg : Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getStringList("commands.usage")) {
                 sender.sendMessage(CC.translate(msg));
             }
         }

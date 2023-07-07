@@ -3,9 +3,11 @@ package dev.hely.core;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.hely.core.configuration.Language;
+import dev.hely.core.modules.listener.ListenerModule;
 import dev.hely.core.ranks.rank.RankManager;
-import dev.hely.core.database.redis.RedisManager;
-import dev.hely.core.database.mongo.MongoManager;
+import dev.hely.core.modules.database.redis.RedisModule;
+import dev.hely.core.modules.database.mongo.MongoModule;
 import dev.hely.core.modules.ModuleLoader;
 import dev.hely.core.profile.ProfileManager;
 import dev.hely.core.server.ServerManager;
@@ -46,20 +48,22 @@ public class Oxygen extends JavaPlugin {
 
     @Getter private Config databaseConfig;
     @Getter private Config configuration;
+    @Getter private Config languageConfig;
     @Getter private Config ranksConfig;
     @Getter private Config rankSettingsConfig;
 
     private Map<String, ModuleLoader> modules;
 
 
-    private MongoManager mongoManager;
-    private RedisManager redisManager;
+    private MongoModule mongoModule;
+    private RedisModule redisModule;
 
     private ProfileManager profileManager;
     private RankManager rankManager;
     private TagManager tagManager;
     private ServerManager serverManager;
     private CommandManager commandManager;
+    private ListenerModule listenerModule;
     private MenuManager menuManager;
 
     private boolean debug_mode;
@@ -107,10 +111,12 @@ public class Oxygen extends JavaPlugin {
 
     public void setupConfig(){
         this.configuration = new Config(this, "config");
+        this.languageConfig = new Config(this, "language");
         this.databaseConfig = new Config(this, "databases" + File.separator + "databases");
         this.ranksConfig = new Config(this, "ranks" + File.separator + "ranks");
         this.rankSettingsConfig = new Config(this, "ranks" + File.separator + "rank-settings");
 
+        Language.load();
     }
 
     public void setupModules(){
@@ -119,18 +125,20 @@ public class Oxygen extends JavaPlugin {
 
         profileManager = new ProfileManager(); // Does not use Module System.
         this.loadModule(commandManager);
+        this.loadModule(listenerModule);
 
-        this.loadModule(mongoManager);
-        this.loadModule(redisManager);
+        this.loadModule(mongoModule);
+        this.loadModule(redisModule);
         this.loadModule(rankManager);
         this.loadModule(tagManager);
         this.loadModule(serverManager);
     }
     public void initModules(){
         commandManager = new CommandManager();
+        listenerModule = new ListenerModule();
 
-        redisManager = new RedisManager();
-        mongoManager = new MongoManager();
+        redisModule = new RedisModule();
+        mongoModule = new MongoModule();
         rankManager = new RankManager();
         tagManager = new TagManager();
         serverManager = new ServerManager();

@@ -47,6 +47,10 @@ public class Profile {
     private List<ProfilePermission> profilePermissions = new ArrayList<>();
     private List<Note> notes = new ArrayList<>();
 
+    private List<String> playerPermissions = new ArrayList<>(); // RANK PERMISSIONS
+    private List<String> bungeePermissions = new ArrayList<>(); // RANK BUNGEE PERMISSIONS
+
+
     private String tag;
 
     private boolean staffChat = false, adminChat = false;
@@ -86,15 +90,18 @@ public class Profile {
         document.put("notes", Oxygen.PLAIN_GSON.toJson(this.notes, notesType));
 
 
-        plugin.getMongoManager().getProfilesCollection().replaceOne(Filters.eq("uniqueId", uniqueId.toString()), document, new ReplaceOptions().upsert(true));
+        plugin.getMongoModule().getProfilesCollection().replaceOne(Filters.eq("uniqueId", uniqueId.toString()), document, new ReplaceOptions().upsert(true));
         if (leave) plugin.getProfileManager().getProfileMap().remove(uniqueId);
     }
 
     private void load() {
-        Document document = plugin.getMongoManager().getProfilesCollection().find(Filters.eq("uniqueId", uniqueId.toString())).first();
+        Document document = plugin.getMongoModule().getProfilesCollection().find(Filters.eq("uniqueId", uniqueId.toString())).first();
 
         if (document != null) {
-            name = document.getString("name");
+            if (name == null) {
+                name = document.getString("name");
+            }
+
             currentAddress = document.getString("currentAddress");
             addresses = Oxygen.PLAIN_GSON.fromJson(document.getString("addresses"), GSONUtil.listStringType);
             firstSeen = document.getLong("firstSeen");
@@ -114,7 +121,7 @@ public class Profile {
             if (document.containsKey("notes")) this.notes = Oxygen.PLAIN_GSON.fromJson(document.getString("notes"), notesType);
 
 
-            try (MongoCursor<Document> mongoCursor = plugin.getMongoManager().getPunishmentsCollection().find(Filters.eq("targetUUID", uniqueId.toString())).iterator()) {
+            try (MongoCursor<Document> mongoCursor = plugin.getMongoModule().getPunishmentsCollection().find(Filters.eq("targetUUID", uniqueId.toString())).iterator()) {
                 mongoCursor.forEachRemaining(punishmentDocument -> {
                     Punishment punishment = new Punishment();
 
@@ -142,12 +149,40 @@ public class Profile {
         if (attachment == null) return;
         attachment.getPermissions().keySet().forEach(attachment::unsetPermission);
 
-        List<Grant> currentGrants = new ArrayList<>(this.grants);
-        for (Grant grant : currentGrants) {
+        List<Grant> activeGrants = new ArrayList<>(this.grants);
+        for (Grant grant : activeGrants) {
             if (!grant.isActive()) continue;
 
-              // GRANTS RANKS SETUP PERMISSIONS
+            Rank activeRank = plugin.getRankManager().getRank(grant.getRankName());
+            if (activeRank != null && activeRank.isServer()) {
+                List<String> rankActivePermissions = new ArrayList<>(activeRank.getActivePermissions());
+
+                playerPermissions.addAll(rankActivePermissions);
+                bungeePermissions.addAll(activeRank.getBungeePermissions());
+
+
+                List<String> inheritances = new ArrayList<>(activeRank.getInheritances());
+                inheritances.forEach(inheritance -> {
+                    Rank rankInheritance = plugin.getRankManager().getRank(inheritance);
+
+                    if (rankInheritance != null && rankInheritance.isServer()) {
+                        List<String> inheritanceActivePermissions = new ArrayList<>(rankInheritance.getActivePermissions());
+
+                        playerPermissions.addAll(inheritanceActivePermissions);
+                        bungeePermissions.addAll(rankInheritance.getBungeePermissions());
+                    }
+                });
+            }
         }
+
+        this.profilePermissions.removeIf(ProfilePermission::isExpired);
+
+        List<ProfilePermission> activeProfilePermissions = new ArrayList<>(this.profilePermissions);
+        activeProfilePermissions.forEach(permission -> {
+            if (permission.isActive()) {
+                playerPermissions.add(permission.getPermission());
+            }
+        });
 
 
 

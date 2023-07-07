@@ -58,7 +58,7 @@ public class Punishment {
             document.put("duration", duration);
         }
 
-        plugin.getMongoManager().getPunishmentsCollection().replaceOne(Filters.eq("uniqueId", uniqueId.toString()), document, new ReplaceOptions().upsert(true));
+        plugin.getMongoModule().getPunishmentsCollection().replaceOne(Filters.eq("uniqueId", uniqueId.toString()), document, new ReplaceOptions().upsert(true));
     }
 
     public void load(Document document) {

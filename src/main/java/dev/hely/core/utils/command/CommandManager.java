@@ -2,6 +2,7 @@ package dev.hely.core.utils.command;
 
 import dev.hely.core.modules.ModuleLoader;
 import dev.hely.core.ranks.rank.commands.RankCommand;
+import dev.hely.core.tag.command.TagCommand;
 import dev.hely.core.utils.command.utils.ClassWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -9,7 +10,6 @@ import org.bukkit.command.defaults.BukkitCommand;
 
 public class CommandManager implements ModuleLoader {
     private CommandMap commandMap;
-    public static final String MODULE_NAME = "Command Manager";
     private boolean enabled;
 
     public boolean isEnabled() {
@@ -35,6 +35,7 @@ public class CommandManager implements ModuleLoader {
 
     public void setupCommand() {
         registerCommand(new RankCommand());
+        registerCommand(new TagCommand());
     }
 
 

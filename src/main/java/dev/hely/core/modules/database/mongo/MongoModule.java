@@ -1,4 +1,4 @@
-package dev.hely.core.database.mongo;
+package dev.hely.core.modules.database.mongo;
 
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
@@ -14,7 +14,7 @@ import org.bson.Document;
  * Protect Name Oxygen
  */
 @Getter
-public class MongoManager implements ModuleLoader {
+public class MongoModule implements ModuleLoader {
 
     private boolean enabled;
 

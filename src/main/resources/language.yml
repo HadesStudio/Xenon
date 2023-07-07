@@ -1,0 +1,26 @@
+tag:
+  usage:
+    - "&7&l&m-----------------------------------"
+    - "&d&lTag System Help"
+    - "&7All commands and usages are listed below."
+    - ""
+    - "&d* &f/tag create <name> &7- Create a tag with specified name."
+    - "&d* &f/tag remove <tag> &7- Delete a tag."
+    - "&d* &f/tag setprefix <tag> <prefix> &7- ."
+    - "&d* &f/tag setweight <tag> <weight> &7- ."
+    - "&d* &f/tag list &7- View a list of all created tags."
+    - "&7&l&m-----------------------------------"
+  create:
+    usage: "&cUsage: /tag create <name>"
+    already-exist: "&cA tag with that name already exists."
+    created: "&aTag '&f%tag_name%&a' &ahas been successfully created!"
+  remove:
+    usage: "&cUsage: /tag remove <name>"
+    removed: "&cTag '&f%tag_name%&c' has been successfully removed!"
+  setprefix:
+    usage: "&cUsage: /tag setprefix <name> <prefix>"
+    updated: "&aYou have updated the '&r%tag_name%&a' tag prefix to '&r%tag_prefix%&a'!"
+  setweight:
+    usage: "&cUsage: /tag setweight <name> <weight>"
+    updated: "&aYou have updated the '&r%tag_name%&a' tag weight to '&r%tag_weight%&a'!"
+  dont-exists: "&cA tag with that name doesn't exists."

@@ -26,7 +26,7 @@ import java.util.Collections;
 
 public class RankCreateCommand extends SubCommand {
     public RankCreateCommand() {
-        super("create", Collections.singletonList("new"), "oxygen.rank.list");
+        super("create", Collections.singletonList("new"), "oxygen.rank.create");
     }
 
     @Override

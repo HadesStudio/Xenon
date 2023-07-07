@@ -34,6 +34,14 @@ public class ProfileListener implements Listener {
 
         Profile profile = Oxygen.getInstance().getProfileManager().getProfile(uuid, name);
 
+        if (profile == null || !profile.isLoaded()) {
+            event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
+            event.setKickMessage(CC.translate("&cFailed to load your profile"));
+            return;
+        }
+
+        profile.setLastSeen(System.currentTimeMillis());
+
         if (!profile.getCurrentAddress().equalsIgnoreCase(event.getAddress().getHostAddress())) {
             profile.setCurrentAddress(event.getAddress().getHostAddress());
         }
@@ -42,11 +50,6 @@ public class ProfileListener implements Listener {
             profile.getAddresses().add(event.getAddress().getHostAddress());
         }
 
-        if (profile == null || !profile.isLoaded()) {
-            event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-            event.setKickMessage(CC.translate("&cFailed to load your profile"));
-            return;
-        }
     }
 
     @EventHandler
@@ -61,6 +64,7 @@ public class ProfileListener implements Listener {
                 profile.setFirstSeen(System.currentTimeMillis());
             }
             profile.setupPermissionAttachments(player);
+            profile.save();
         }
     }
 

@@ -30,11 +30,11 @@ public class Tag {
         document.put("prefix", this.prefix);
         document.put("weight", this.weight);
 
-        plugin.getMongoManager().getTagsCollection().replaceOne(Filters.eq("name", name), document, new UpdateOptions().upsert(true));
+        plugin.getMongoModule().getTagsCollection().replaceOne(Filters.eq("name", name), document, new UpdateOptions().upsert(true));
     }
 
     public void load() {
-        Document document = plugin.getMongoManager().getTagsCollection().find(Filters.eq("name", name)).first();
+        Document document = plugin.getMongoModule().getTagsCollection().find(Filters.eq("name", name)).first();
 
         if (document != null) {
             setPrefix(CC.translate(document.getString("prefix")));
@@ -44,6 +44,6 @@ public class Tag {
 
     public void remove() {
         plugin.getTagManager().getTags().remove(this);
-        plugin.getMongoManager().getTagsCollection().deleteOne(Filters.eq("name", this.name));
+        plugin.getMongoModule().getTagsCollection().deleteOne(Filters.eq("name", this.name));
     }
 }

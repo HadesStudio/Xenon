@@ -60,7 +60,7 @@ public class RankManager implements ModuleLoader {
         ranks.clear();
         Oxygen.getInstance().debug_message("Attempting to setup ranks.", Oxygen.getInstance().getRankManager());
 
-        plugin.getMongoManager().getRanksCollection().find().into(new ArrayList<>()).forEach(document -> {
+        plugin.getMongoModule().getRanksCollection().find().into(new ArrayList<>()).forEach(document -> {
             Rank rank = new Rank(document.getString("name"));
             rank.load();
 

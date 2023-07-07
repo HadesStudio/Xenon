@@ -49,7 +49,7 @@ public class TagManager implements ModuleLoader {
     public void setupTags(){
         this.tags.clear();
 
-        this.plugin.getMongoManager().getTagsCollection().find().into(new ArrayList<>()).forEach(document -> {
+        this.plugin.getMongoModule().getTagsCollection().find().into(new ArrayList<>()).forEach(document -> {
             Tag tag = new Tag(document.getString("name"));
             tag.load();
 
