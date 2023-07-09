@@ -1,3 +1,38 @@
+punishments:
+  broadcast:
+    blacklist:
+      message: "%target% &awas blacklisted by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+    ban:
+      message: "%target% &awas banned by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &cPermanent"
+  kick:
+    blacklist:
+      - '&cYour account has been blacklisted from the %server_name% Network.'
+      - '&cReason: %reason%'
+      - '&cThis type of punishment cannot be appealed.'
+    ban:
+      - '&cYour account has been suspended from the %server_name% Network.'
+      - '&cReason: %reason%'
+      - '&cAppeal at %teamspeak%'
+    temp-ban:
+      - '&cYour account has been suspended from the %server_name% Network.'
+      - '&cReason: %reason%'
+      - '&cExpires in %expire%'
+    kick:
+      - '&cYou have been kicked by %sender%'
+      - '&cReason: %reason%'
+
+
+
+
 tag:
   usage:
     - "&7&l&m-----------------------------------"
