@@ -57,6 +57,7 @@ public class Oxygen extends JavaPlugin {
     private Config ranksConfig;
     private Config rankSettingsConfig;
     private Config tagConfig;
+    private Config profileMenuConfig;
 
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
@@ -117,6 +118,7 @@ public class Oxygen extends JavaPlugin {
         this.ranksConfig = new Config(this, "ranks" + File.separator + "ranks");
         this.rankSettingsConfig = new Config(this, "ranks" + File.separator + "rank-settings");
         this.tagConfig = new Config(this, "tags");
+        this.profileMenuConfig = new Config(this, "menus" + File.separator + "profile-menu");
 
         Language.load();
     }

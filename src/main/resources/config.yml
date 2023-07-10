@@ -9,3 +9,29 @@ debug-mode: true # Do not edit the status of this via the config, use the debug 
 
 server:
   name: "Hub" # This is the name of the server this plugin is currently installed in.
+
+statistics-settings:
+  server-1:
+    enabled: true # Do you want to enable statistics for this server?
+    material-display: "DIAMOND_SWORD" # The material that is displayed for this server.
+    display-name: "&6&lHCF" # The name of the server.
+    use-hcf-core: true # This should ONLY be set to true if you are using a compatible HCF core on the server provided.
+    inventory-slot: 0 # The slot that the item is displayed in.
+  server-2:
+    enabled: false # Do you want to enable statistics for this server?
+    material-display: "BOW" # The material that is displayed for this server.
+    display-name: "&4&lPractice" # The name of the server.
+    use-hcf-core: false # This should ONLY be set to true if you are using a compatible HCF core on the server provided.
+    inventory-slot: 1 # The slot that the item is displayed in.
+  server-3:
+    enabled: false # Do you want to enable statistics for this server?
+    material-display: "GOLDEN_SWORD" # The material that is displayed for this server.
+    display-name: "&c&lKitmap" # The name of the server.
+    use-hcf-core: true # This should ONLY be set to true if you are using a compatible HCF core on the server provided.
+    inventory-slot: 2 # The slot that the item is displayed in.
+  server-4:
+    enabled: false # Do you want to enable statistics for this server?
+    material-display: "LAVA_BUCKET" # The material that is displayed for this server.
+    display-name: "&3&lSurvival" # The name of the server.
+    use-hcf-core: false # This should ONLY be set to true if you are using a compatible HCF core on the server provided.
+    inventory-slot: 3 # The slot that the item is displayed in.

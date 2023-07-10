@@ -7,6 +7,10 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.Oxygen;
 import dev.hely.core.profile.note.Note;
+import dev.hely.core.profile.profilesystem.impl.*;
+import dev.hely.core.profile.profilesystem.impl.serverstats.Statistics;
+import dev.hely.core.profile.profilesystem.impl.serverstats.StatisticsServer;
+import dev.hely.core.profile.profilesystem.impl.social.SocialMediaType;
 import dev.hely.core.punishment.PunishmentType;
 import dev.hely.core.ranks.grants.Grant;
 import dev.hely.core.profile.permission.ProfilePermission;
@@ -30,21 +34,17 @@ import java.util.*;
 @Getter
 @Setter
 public class Profile {
-
     private final UUID uniqueId;
     private String name;
-
     private boolean loaded = false;
-
     private String currentAddress;
     private List<String> addresses = new ArrayList<>();
-
     private Long firstSeen;
     private Long lastSeen;
-
     private String currentServer = "Unknown";
     private String lastServer;
-
+    private int totalKills;
+    private int totalDeaths;
     private List<Punishment> punishments = new ArrayList<>();
     private List<Grant> grants = new ArrayList<>();
     private List<ProfilePermission> profilePermissions = new ArrayList<>();
@@ -52,6 +52,18 @@ public class Profile {
 
     private List<String> playerPermissions = new ArrayList<>(); // RANK PERMISSIONS
     private List<String> bungeePermissions = new ArrayList<>(); // RANK BUNGEE PERMISSIONS
+
+
+    //For notifications / mail system / profile system:
+    private List<Notification> notifications = new ArrayList<>();
+    private List<NotificationType> notification_settings = new ArrayList<>();
+    private List<UUID> friends = new ArrayList<>();
+    private List<UUID> friendRequests = new ArrayList<>();
+    private Map<StatisticsServer, Statistics> statistics = new HashMap<>();
+    private Map<SocialMediaType, String> socialMedia = new HashMap<>();
+    private Preferences preferences;
+    private List<Comment> comments = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 
 
     private String tag;
@@ -63,6 +75,14 @@ public class Profile {
     public Profile(UUID uniqueId, String name) {
         this.uniqueId = uniqueId;
         this.name = name;
+
+        this.totalKills = 0;
+        this.totalDeaths = 0;
+
+        for (StatisticsServer value : StatisticsServer.values()) {
+            statistics.put(value, new Statistics(value));
+        }
+        this.preferences = new Preferences();
 
         load();
     }
@@ -83,15 +103,27 @@ public class Profile {
         document.put("tag", tag);
         document.put("staffChat", staffChat);
         document.put("adminChat", adminChat);
+        document.put("totalkills", totalKills);
+        document.put("totaldeaths", totalDeaths);
 
+        Type commentsType = new TypeToken<List<Comment>>() {}.getType();
+        document.put("comments", Oxygen.PLAIN_GSON.toJson(this.comments, commentsType));
+        Type messagesType = new TypeToken<List<Message>>() {}.getType();
+        document.put("messages", Oxygen.PLAIN_GSON.toJson(this.comments, messagesType));
+        Type friendsType = new TypeToken<List<UUID>>() {}.getType();
+        document.put("friends", Oxygen.PLAIN_GSON.toJson(this.friends, friendsType));
+        Type friendRequestsType = new TypeToken<List<UUID>>() {}.getType();
+        document.put("friendrequests", Oxygen.PLAIN_GSON.toJson(this.friendRequests, friendRequestsType));
         Type grantType = new TypeToken<List<Grant>>() {}.getType();
         document.put("grants", Oxygen.PLAIN_GSON.toJson(this.grants, grantType));
-
         Type profilePermissionType = new TypeToken<List<ProfilePermission>>() {}.getType();
         document.put("profilePermissions", Oxygen.PLAIN_GSON.toJson(this.profilePermissions, profilePermissionType));
-
         Type notesType = new TypeToken<List<Note>>() {}.getType();
         document.put("notes", Oxygen.PLAIN_GSON.toJson(this.notes, notesType));
+        Type statisticsType = new TypeToken<Map<StatisticsServer, Statistics>>() {}.getType();
+        document.put("statistics", Oxygen.PLAIN_GSON.toJson(this.statistics, statisticsType));
+        Type socialMediaType = new TypeToken<Map<SocialMediaType, String>>() {}.getType();
+        document.put("socialmedia", Oxygen.PLAIN_GSON.toJson(this.socialMedia, socialMediaType));
 
 
         plugin.getMongoModule().getProfilesCollection().replaceOne(Filters.eq("uniqueId", uniqueId.toString()), document, new ReplaceOptions().upsert(true));
@@ -125,6 +157,18 @@ public class Profile {
             Type notesType = new TypeToken<List<Note>>() {}.getType();
             if (document.containsKey("notes")) this.notes = Oxygen.PLAIN_GSON.fromJson(document.getString("notes"), notesType);
 
+            Type commentsType = new TypeToken<List<Comment>>() {}.getType();
+            comments = Oxygen.PLAIN_GSON.fromJson(document.getString("comments"), commentsType);
+            Type messagesType = new TypeToken<List<Message>>() {}.getType();
+            messages = Oxygen.PLAIN_GSON.fromJson(document.getString("messages"), messagesType);
+            Type friendsType = new TypeToken<List<UUID>>() {}.getType();
+            friends = Oxygen.PLAIN_GSON.fromJson(document.getString("friends"), friendsType);
+            Type friendRequestType = new TypeToken<List<UUID>>() {}.getType();
+            friendRequests = Oxygen.PLAIN_GSON.fromJson(document.getString("friendrequests"), friendRequestType);
+            Type statisticsType = new TypeToken<Map<StatisticsServer, Statistics>>() {}.getType();
+            statistics = Oxygen.PLAIN_GSON.fromJson(document.getString("statistics"), statisticsType);
+            Type socialMediaType = new TypeToken<Map<SocialMediaType, String>>() {}.getType();
+            socialMedia = Oxygen.PLAIN_GSON.fromJson(document.getString("socialmedia"), socialMediaType);
 
             try (MongoCursor<Document> mongoCursor = plugin.getMongoModule().getPunishmentsCollection().find(Filters.eq("targetUUID", uniqueId.toString())).iterator()) {
                 mongoCursor.forEachRemaining(punishmentDocument -> {
@@ -137,6 +181,21 @@ public class Profile {
         }
 
         loaded = true;
+    }
+
+    public void calculatePlayerStatistics() {
+        int kills = 0;
+        int deaths = 0;
+
+        for (Statistics value : this.statistics.values()) {
+            kills += value.getKills();
+            deaths += value.getDeaths();
+        }
+
+        this.totalKills = kills;
+        this.totalDeaths = deaths;
+
+        this.save();
     }
 
     public void setupPermissionAttachments(Player player) {

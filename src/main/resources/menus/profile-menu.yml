@@ -1,0 +1,64 @@
+title: "Your Profile" # %player%
+
+statistics-button:
+  slot: 0
+  title: "&4&lYour Statistics"
+  material: "PAPER"
+  data: 0
+  lore: # %player%, %total_kills%, %total_deaths%
+    - "&7This will view all your statistics across all servers."
+    - ""
+    - " &fGlobal Kills: &c%total_kills%"
+    - " &fGlobal Deaths: &c%total_deaths%"
+    - ""
+    - "&7Click here to view extended information."
+
+social-button:
+  slot: 1
+  title: "&4&lSocial Media"
+  material: "PAINTING"
+  data: 0
+  lore: # %player%, %total_kills%, %total_deaths%
+    - "&7Release your social media links to others."
+    - ""
+    - " &fSocials Linked: &c%total_linked%/5"
+    - ""
+    - "&7Click here to view extended information."
+
+profile-button:
+  slot: 2
+  title: "&4&lYour Profile"
+  material: "SKULL_ITEM" # If you want the players head to appear, use "SKULL_ITEM".
+  data: 0
+  lore: # %player%, %total_kills%, %total_deaths%
+    - "&7View all of your useful information."
+    - ""
+    - " &fRank: &c%rank%"
+    - " &fRank Duration: &c%rank_time%"
+    - ""
+    - "&7Click here to view extended information."
+
+friends-button:
+  slot: 3
+  title: "&4&lFriends"
+  material: "EYE_OF_ENDER"
+  data: 0
+  lore: # %player%, %total_kills%, %total_deaths%
+    - "&7You can manage all of your friends using this."
+    - ""
+    - " &fFriends: &c%friends_size%"
+    - " &fFriend Requests: &c%friend_requests_size%"
+    - ""
+    - "&7Click here to view all of your friends."
+
+notifications-button:
+  slot: 4
+  title: "&4&lNotifications"
+  material: "WATCH"
+  data: 0
+  lore: # %player%, %total_kills%, %total_deaths%
+    - "&7View all of your notifications."
+    - ""
+    - " &fUnread Notifications: &c%unread_size%"
+    - ""
+    - "&7Click here to view all notifications."

@@ -65,3 +65,43 @@ tag:
   import:
     imported: "&aThe tags have been imported from tags.yml!"
   dont-exists: "&cA tag with that name doesn't exists."
+
+
+profile-system:
+  notifications:
+    join: # %notification_amount%
+      - ""
+      - "&4&lNotifications"
+      - "&7You have %notification_amount% unread notifications!"
+      - "&7Use /notifications to view them."
+      - ""
+    new-notification:
+      - ""
+      - "&4&lNotifications"
+      - "&7You have just received a new notification!"
+      - "&7Use /notifications to view it."
+      - ""
+
+friends:
+  friend-add:
+    friend-self: "&cYou cannot send a friend request to yourself."
+    not-real: "&cThat player has never joined the server before."
+    already-friend: "&cYou are already friends with that player."
+    already-outgoing: "&cSorry, you already have an outgoing friend request to '&c&l%player%&c'."
+    added-friend-message: "&9&lFriends &7| &a%player% &fhas just added you as a friend! Click here to accept it."
+    hover-message: "&7Click here to add &9%player% &7as your friend."
+    sent:
+      - ""
+      - "&4&lNotifications"
+      - "&7You have sent a friend request to &a%player%&7."
+      - ""
+  friend-accept:
+    accept-self: "&cYou cannot send a friend request to yourself."
+    not-real: "&cThat player has never joined the server before."
+    already-friend: "&cYou are already friends with that player."
+    no-request: "&cYou have not received a friend request from that player."
+    added:
+      - ""
+      - "&4&lNotifications"
+      - "&7You are now friends with &a%player%&7."
+      - ""

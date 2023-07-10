@@ -1,12 +1,18 @@
 package dev.hely.core.profile;
 
 import dev.hely.core.Oxygen;
+import dev.hely.core.modules.database.redis.packet.annotation.IncomingPacketHandler;
 import dev.hely.core.profile.packet.implement.StaffJoinPacket;
 import dev.hely.core.profile.packet.implement.StaffLeavePacket;
 import dev.hely.core.profile.packet.implement.StaffSwitchPacket;
+import dev.hely.core.profile.profilesystem.packets.FriendRequestAcceptPacket;
+import dev.hely.core.profile.profilesystem.packets.FriendRequestSendPacket;
+import dev.hely.core.profile.profilesystem.packets.FriendSessionPacket;
+import dev.hely.core.profile.profilesystem.packets.NotificationSendPacket;
 import dev.hely.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -82,6 +88,20 @@ public class ProfileListener implements Listener {
                 }
             }
 
+            if (!profile.getNotifications().isEmpty()) {
+                Oxygen.getInstance().getServer().getScheduler().runTaskLater(Oxygen.getInstance(), () -> {
+                    if (!player.isOnline()) {
+                        return;
+                    }
+
+                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);
+                    for (String message : Oxygen.getInstance().getLanguageConfig().getConfiguration().getStringList("profile-system.notifications.join")) {
+                        player.sendMessage(CC.translate(message.replace("%notification_amount%", String.valueOf(profile.getNotifications().size()))));
+                    }
+                }, 5);
+            }
+
+            plugin.getRedisModule().sendPacket(new FriendSessionPacket(player.getName(), serverName, false));
             profile.setCurrentServer(serverName);
 
             profile.save();
@@ -111,5 +131,25 @@ public class ProfileListener implements Listener {
                 }
             }.runTaskAsynchronously(plugin);
         }
+    }
+
+    @IncomingPacketHandler
+    public void onNotification(FriendSessionPacket packet) {
+        packet.notifyPlayers();
+    }
+
+    @IncomingPacketHandler
+    public void onFriendAccept(FriendRequestAcceptPacket packet) {
+        packet.notifyPlayer();
+    }
+
+    @IncomingPacketHandler
+    public void onFriendSend(FriendRequestSendPacket packet) {
+        packet.notifyPlayer();
+    }
+
+    @IncomingPacketHandler
+    public void onNotificationSend(NotificationSendPacket packet) {
+        packet.notifyPlayer();
     }
 }
