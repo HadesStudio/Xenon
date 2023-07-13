@@ -13,6 +13,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPubSub;
+import redis.clients.jedis.exceptions.JedisException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -52,8 +53,14 @@ public class RedisModule implements ModuleLoader {
         this.auth = this.password != null && this.password.length() > 0;
         this.channel = Oxygen.getInstance().getDatabaseConfig().getConfiguration().getString("database.redis.channel");
 
-        this.jedisPool = new JedisPool(new JedisPoolConfig(), host, port, 30_000, this.password.isEmpty() ? null : this.password, 0, null);
-        this.jedisPool.getResource();
+        this.jedisPool = new JedisPool(new JedisPoolConfig(), host, port, 30_000);
+        if (!this.password.isEmpty()) {
+            try (Jedis jedis = this.jedisPool.getResource()){
+                jedis.auth(this.password);
+            } catch (JedisException ex) {
+                ex.printStackTrace();
+            }
+        }
 
         this.listeners = ArrayListMultimap.create();
         this.channels = new HashSet<>();
@@ -84,7 +91,7 @@ public class RedisModule implements ModuleLoader {
 
     @Override
     public String getName() {
-        return "Redis Manager";
+        return "Redis";
     }
 
     public void registerListener(PacketListener listener) {
@@ -134,10 +141,6 @@ public class RedisModule implements ModuleLoader {
     public void runCommand(Consumer<Jedis> consumer) {
         Jedis jedis = jedisPool.getResource();
         if (jedis != null) {
-            if (!this.password.isEmpty()) {
-                jedis.auth(password);
-            }
-
             consumer.accept(jedis);
             jedisPool.returnResource(jedis);
         }

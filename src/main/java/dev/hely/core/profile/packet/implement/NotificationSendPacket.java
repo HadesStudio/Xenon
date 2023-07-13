@@ -1,28 +1,27 @@
-package dev.hely.core.profile.profilesystem.packets;
+package dev.hely.core.profile.packet.implement;
 
 import dev.hely.core.Oxygen;
 import dev.hely.core.modules.database.redis.packet.Packet;
 import dev.hely.lib.CC;
+import dev.hely.lib.sound.SoundManager;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 @Getter
 @AllArgsConstructor
 public class NotificationSendPacket implements Packet {
+
     private final String targetName;
 
     public void notifyPlayer() {
-        for (Player loopPlayer : Oxygen.getInstance().getServer().getOnlinePlayers()) {
-            if (!loopPlayer.getName().equalsIgnoreCase(this.targetName)) {
-                continue;
-            }
+        for (Player onlinePlayers : Oxygen.getInstance().getServer().getOnlinePlayers()) {
+            if (!onlinePlayers.getName().equalsIgnoreCase(this.targetName)) continue;
 
-            loopPlayer.playSound(loopPlayer.getLocation(), Sound.NOTE_PLING, 1, 1);
+            SoundManager.INSTANCE.playSound(onlinePlayers, "NOTE_PLING");
 
             for (String message : Oxygen.getInstance().getLanguageConfig().getConfiguration().getStringList("profile-system.notifications.new-notification")) {
-                loopPlayer.sendMessage(CC.translate(message));
+                onlinePlayers.sendMessage(CC.translate(message));
             }
             break;
         }

@@ -1,5 +1,7 @@
 package dev.hely.core.utils.command;
 
+import dev.hely.core.commands.implement.staff.AdminChatCommand;
+import dev.hely.core.commands.implement.staff.StaffChatCommand;
 import dev.hely.core.modules.ModuleLoader;
 import dev.hely.core.ranks.rank.commands.RankCommand;
 import dev.hely.core.tag.command.TagCommand;
@@ -12,30 +14,37 @@ public class CommandManager implements ModuleLoader {
     private CommandMap commandMap;
     private boolean enabled;
 
+    @Override
     public boolean isEnabled() {
         return this.enabled;
     }
 
-
+    @Override
     public void reload() {
     }
 
+    @Override
     public void enable() {
         commandMap = getCommandMap();
         setupCommand();
     }
 
+    @Override
     public void disable() {
         this.enabled = false;
     }
 
+    @Override
     public String getName() {
-        return "Command Manager";
+        return "Command";
     }
 
     public void setupCommand() {
         registerCommand(new RankCommand());
         registerCommand(new TagCommand());
+
+        registerCommand(new AdminChatCommand());
+        registerCommand(new StaffChatCommand());
     }
 
 
@@ -44,6 +53,6 @@ public class CommandManager implements ModuleLoader {
     }
 
     public void registerCommand(BukkitCommand command) {
-        this.commandMap.register("Oxygen", command);
+        this.commandMap.register("oxygen", command);
     }
 }

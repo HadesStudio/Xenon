@@ -1,10 +1,9 @@
 package dev.hely.core.profile.packet;
 
+import dev.hely.core.configuration.Language;
 import dev.hely.core.modules.database.redis.packet.PacketListener;
 import dev.hely.core.modules.database.redis.packet.annotation.IncomingPacketHandler;
-import dev.hely.core.profile.packet.implement.StaffLeavePacket;
-import dev.hely.core.profile.packet.implement.StaffJoinPacket;
-import dev.hely.core.profile.packet.implement.StaffSwitchPacket;
+import dev.hely.core.profile.packet.implement.*;
 import dev.hely.lib.Messages;
 import lombok.AllArgsConstructor;
 
@@ -46,5 +45,49 @@ public class ProfilePacketListener implements PacketListener {
                 .replace("%player_name%", name)
                 .replace("%server%", toServer)
                 .replace("%from%", fromServer), "oxygen.staff.alerts");
+    }
+
+    @IncomingPacketHandler
+    public void onStaffChat(StaffChatPacket packet){
+        String name = packet.getPlayerName();
+        String server = packet.getServerName();
+        String message = packet.getMessage();
+
+        Messages.sendMessage(Language.STAFF_CHAT_FORMAT
+                .replace("%player%", name)
+                .replace("%server_name%", server)
+                .replace("%message%", message), "oxygen.staffchat");
+    }
+
+    @IncomingPacketHandler
+    public void onAdminChat(AdminChatPacket packet){
+        String name = packet.getPlayerName();
+        String server = packet.getServerName();
+        String message = packet.getMessage();
+
+        Messages.sendMessage(Language.ADMIN_CHAT_FORMAT
+                .replace("%player%", name)
+                .replace("%server_name%", server)
+                .replace("%message%", message), "oxygen.adminchat");
+    }
+
+    @IncomingPacketHandler
+    public void onNotification(FriendSessionPacket packet) {
+        packet.notifyPlayers();
+    }
+
+    @IncomingPacketHandler
+    public void onFriendAccept(FriendRequestAcceptPacket packet) {
+        packet.notifyPlayer();
+    }
+
+    @IncomingPacketHandler
+    public void onFriendSend(FriendRequestSendPacket packet) {
+        packet.notifyPlayer();
+    }
+
+    @IncomingPacketHandler
+    public void onNotificationSend(NotificationSendPacket packet) {
+        packet.notifyPlayer();
     }
 }

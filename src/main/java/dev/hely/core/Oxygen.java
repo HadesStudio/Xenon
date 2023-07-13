@@ -155,6 +155,8 @@ public class Oxygen extends JavaPlugin {
     public void setupPackets(){
         redisModule.registerListener(new ProfilePacketListener());
         redisModule.registerListener(new TagPacketListener(tagManager));
+
+        redisModule.subscribeJedis();
     }
 
     // Module Manager -- The below is for the module system.
@@ -163,7 +165,7 @@ public class Oxygen extends JavaPlugin {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
             module.enable();
             if (this.debug_mode) {
-                bukkitCommandSender.sendMessage(CC.translate("&dModules: &aSuccessfully loaded &a&n"  + module + " Module&a."));
+                bukkitCommandSender.sendMessage(CC.translate("&dModules: &aSuccessfully loaded &a&n"  + module.getName() + " Module&a."));
             }
             modules.put(module.getName(), module);
         }
@@ -174,7 +176,7 @@ public class Oxygen extends JavaPlugin {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
             module.disable();
             if (this.debug_mode) {
-                bukkitCommandSender.sendMessage(CC.translate("&dModules: &cSuccessfully unloaded &c&n"  + module + " Module&c."));
+                bukkitCommandSender.sendMessage(CC.translate("&dModules: &cSuccessfully unloaded &c&n"  + module.getName() + " Module&c."));
             }
         }
     }

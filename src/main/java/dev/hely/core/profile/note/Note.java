@@ -1,6 +1,5 @@
 package dev.hely.core.profile.note;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +10,6 @@ import java.util.UUID;
  * Created on 06/07/2023
  * Protect Name Oxygen
  */
-
 @Getter
 @Setter
 public class Note {

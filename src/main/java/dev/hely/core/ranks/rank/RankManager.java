@@ -53,7 +53,7 @@ public class RankManager implements ModuleLoader {
 
     @Override
     public String getName() {
-        return "Rank Manager";
+        return "Rank";
     }
 
     public void setupRanks(){

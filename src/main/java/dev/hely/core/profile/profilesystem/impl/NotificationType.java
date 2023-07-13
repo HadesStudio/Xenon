@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
-public enum  NotificationType {
+public enum NotificationType {
     PUNISHMENT_NOTIFICATION("Punishments", Material.TNT, "Get notified when you get punished", Arrays.asList("All Punishments", "Punishment Reasons", "Punishment Durations"));
 
     @Getter String displayName;

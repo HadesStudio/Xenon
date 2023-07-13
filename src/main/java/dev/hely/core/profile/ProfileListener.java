@@ -1,14 +1,10 @@
 package dev.hely.core.profile;
 
 import dev.hely.core.Oxygen;
-import dev.hely.core.modules.database.redis.packet.annotation.IncomingPacketHandler;
+import dev.hely.core.profile.packet.implement.FriendSessionPacket;
 import dev.hely.core.profile.packet.implement.StaffJoinPacket;
 import dev.hely.core.profile.packet.implement.StaffLeavePacket;
 import dev.hely.core.profile.packet.implement.StaffSwitchPacket;
-import dev.hely.core.profile.profilesystem.packets.FriendRequestAcceptPacket;
-import dev.hely.core.profile.profilesystem.packets.FriendRequestSendPacket;
-import dev.hely.core.profile.profilesystem.packets.FriendSessionPacket;
-import dev.hely.core.profile.profilesystem.packets.NotificationSendPacket;
 import dev.hely.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
@@ -59,10 +55,9 @@ public class ProfileListener implements Listener {
             profile.setCurrentAddress(event.getAddress().getHostAddress());
         }
 
-        if (!profile.getAddresses().contains(event.getAddress().getHostAddress())) {
+        /*if (!profile.getAddresses().contains(event.getAddress().getHostAddress())) {
             profile.getAddresses().add(event.getAddress().getHostAddress());
-        }
-
+        }*/
     }
 
     @EventHandler
@@ -131,25 +126,5 @@ public class ProfileListener implements Listener {
                 }
             }.runTaskAsynchronously(plugin);
         }
-    }
-
-    @IncomingPacketHandler
-    public void onNotification(FriendSessionPacket packet) {
-        packet.notifyPlayers();
-    }
-
-    @IncomingPacketHandler
-    public void onFriendAccept(FriendRequestAcceptPacket packet) {
-        packet.notifyPlayer();
-    }
-
-    @IncomingPacketHandler
-    public void onFriendSend(FriendRequestSendPacket packet) {
-        packet.notifyPlayer();
-    }
-
-    @IncomingPacketHandler
-    public void onNotificationSend(NotificationSendPacket packet) {
-        packet.notifyPlayer();
     }
 }

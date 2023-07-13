@@ -15,13 +15,12 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class Grant {
+
     private UUID uniqueId;
     private String rankName, adder, remover, reason;
     private long addedTime, removedTime, duration;
     private boolean active, permanent;
     private String server = "Global";
-
-    private Oxygen plugin = Oxygen.getInstance();
 
     public boolean isActive() {
         if (isPermanent()) {

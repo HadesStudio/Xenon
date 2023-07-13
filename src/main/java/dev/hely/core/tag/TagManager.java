@@ -44,7 +44,7 @@ public class TagManager implements ModuleLoader {
 
     @Override
     public String getName() {
-        return "Tag Manager";
+        return "Tag";
     }
 
     public void setupTags(){

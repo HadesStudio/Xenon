@@ -10,7 +10,6 @@ import lombok.Setter;
  * Created on 04/07/2023
  * Protect Name Oxygen
  */
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,7 +28,7 @@ public class ProfilePermission {
     }
 
     public boolean isExpired() {
-        if (this.duration >= 0) return this.duration < System.currentTimeMillis();
+        if (this.duration != -1 && this.duration != 0) return this.duration < System.currentTimeMillis();
         return false;
     }
 

@@ -43,6 +43,6 @@ public class ServerManager implements ModuleLoader {
 
     @Override
     public String getName() {
-        return "Server Manager";
+        return "Server";
     }
 }

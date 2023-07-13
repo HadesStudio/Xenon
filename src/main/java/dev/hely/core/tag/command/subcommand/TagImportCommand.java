@@ -38,6 +38,9 @@ public class TagImportCommand extends SubCommand {
             Oxygen.getInstance().getTagManager().getTags().add(tag);
         });
 
+        Oxygen.getInstance().getTagConfig().save();
+        Oxygen.getInstance().getTagConfig().reload();
+
         sender.sendMessage(CC.translate(Language.TAG_IMPORT_IMPORTED));
         Oxygen.getInstance().getTasks().runLater(() -> Oxygen.getInstance().getRedisModule().sendPacket(new TagImportPacket()), 10L);
     }

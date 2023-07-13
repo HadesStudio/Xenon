@@ -54,6 +54,6 @@ public class ListenerModule implements ModuleLoader {
 
     @Override
     public String getName() {
-        return "Listener Manager";
+        return "Listener";
     }
 }

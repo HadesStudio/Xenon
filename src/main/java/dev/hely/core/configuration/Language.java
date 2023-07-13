@@ -26,6 +26,14 @@ public class Language {
     public static String TAG_IMPORT_IMPORTED;
     public static String TAG_EXPORT_EXPORTED;
 
+    public static String ADMIN_CHAT_ENABLED;
+    public static String ADMIN_CHAT_DISABLED;
+    public static String ADMIN_CHAT_FORMAT;
+
+    public static String STAFF_CHAT_ENABLED;
+    public static String STAFF_CHAT_DISABLED;
+    public static String STAFF_CHAT_FORMAT;
+
 
     public static void load(){
         Config language = Oxygen.getInstance().getLanguageConfig();
@@ -44,5 +52,12 @@ public class Language {
         TAG_IMPORT_IMPORTED = language.getConfiguration().getString("tag.import.imported");
         TAG_EXPORT_EXPORTED = language.getConfiguration().getString("tag.export.exported");
 
+        ADMIN_CHAT_ENABLED = language.getConfiguration().getString("admin-chat.enabled");
+        ADMIN_CHAT_DISABLED = language.getConfiguration().getString("admin-chat.disabled");
+        ADMIN_CHAT_FORMAT = language.getConfiguration().getString("admin-chat.format");
+
+        STAFF_CHAT_ENABLED = language.getConfiguration().getString("staff-chat.enabled");
+        STAFF_CHAT_DISABLED = language.getConfiguration().getString("staff-chat.disabled");
+        STAFF_CHAT_FORMAT = language.getConfiguration().getString("staff-chat.format");
     }
 }

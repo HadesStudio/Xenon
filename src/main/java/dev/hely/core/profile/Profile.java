@@ -11,6 +11,7 @@ import dev.hely.core.profile.profilesystem.impl.*;
 import dev.hely.core.profile.profilesystem.impl.serverstats.Statistics;
 import dev.hely.core.profile.profilesystem.impl.serverstats.StatisticsServer;
 import dev.hely.core.profile.profilesystem.impl.social.SocialMediaType;
+import dev.hely.core.profile.staff.StaffProfile;
 import dev.hely.core.punishment.PunishmentType;
 import dev.hely.core.ranks.grants.Grant;
 import dev.hely.core.profile.permission.ProfilePermission;
@@ -34,17 +35,22 @@ import java.util.*;
 @Getter
 @Setter
 public class Profile {
+
     private final UUID uniqueId;
     private String name;
+
     private boolean loaded = false;
-    private String currentAddress;
+
+    private String currentAddress = "";
     private List<String> addresses = new ArrayList<>();
     private Long firstSeen;
     private Long lastSeen;
     private String currentServer = "Unknown";
-    private String lastServer;
+    private String lastServer = "";
+
     private int totalKills;
     private int totalDeaths;
+
     private List<Punishment> punishments = new ArrayList<>();
     private List<Grant> grants = new ArrayList<>();
     private List<ProfilePermission> profilePermissions = new ArrayList<>();
@@ -66,9 +72,9 @@ public class Profile {
     private List<Message> messages = new ArrayList<>();
 
 
-    private String tag;
+    private String tag = "";
 
-    private boolean staffChat = false, adminChat = false;
+    private StaffProfile staffProfile = new StaffProfile();
 
     private Oxygen plugin = Oxygen.getInstance();
 
@@ -82,6 +88,7 @@ public class Profile {
         for (StatisticsServer value : StatisticsServer.values()) {
             statistics.put(value, new Statistics(value));
         }
+
         this.preferences = new Preferences();
 
         load();
@@ -96,20 +103,22 @@ public class Profile {
         document.put("uniqueId", uniqueId.toString());
         document.put("name", name);
         document.put("currentAddress", currentAddress);
-        document.put("addresses", addresses);
+        document.put("addresses", Oxygen.PLAIN_GSON.toJson(document.getString("addresses"), GSONUtil.listStringType));
         document.put("firstSeen", firstSeen);
         document.put("lastSeen", lastSeen);
         document.put("lastServer", lastServer);
         document.put("tag", tag);
-        document.put("staffChat", staffChat);
-        document.put("adminChat", adminChat);
         document.put("totalkills", totalKills);
         document.put("totaldeaths", totalDeaths);
+
+        Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
+        document.put("staffProfile", Oxygen.PLAIN_GSON.toJson(this.staffProfile, staffProfileType));
+
 
         Type commentsType = new TypeToken<List<Comment>>() {}.getType();
         document.put("comments", Oxygen.PLAIN_GSON.toJson(this.comments, commentsType));
         Type messagesType = new TypeToken<List<Message>>() {}.getType();
-        document.put("messages", Oxygen.PLAIN_GSON.toJson(this.comments, messagesType));
+        document.put("messages", Oxygen.PLAIN_GSON.toJson(this.messages, messagesType));
         Type friendsType = new TypeToken<List<UUID>>() {}.getType();
         document.put("friends", Oxygen.PLAIN_GSON.toJson(this.friends, friendsType));
         Type friendRequestsType = new TypeToken<List<UUID>>() {}.getType();
@@ -144,8 +153,11 @@ public class Profile {
             lastSeen = document.getLong("lastSeen");
             lastServer = document.getString("lastServer");
             tag = document.getString("tag");
-            staffChat = document.getBoolean("staffChat");
-            adminChat = document.getBoolean("adminChat");
+
+            if (document.containsKey("staffProfile")) {
+                Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
+                staffProfile = Oxygen.PLAIN_GSON.fromJson(document.getString("staffProfile"), staffProfileType);
+            }
 
             Type grantType = new TypeToken<List<Grant>>() {}.getType();
             grants = Oxygen.PLAIN_GSON.fromJson(document.getString("grants"), grantType);
@@ -154,8 +166,10 @@ public class Profile {
             Type profilePermissionType = new TypeToken<List<ProfilePermission>>() {}.getType();
             profilePermissions = Oxygen.PLAIN_GSON.fromJson(document.getString("profilePermissions"), profilePermissionType);
 
-            Type notesType = new TypeToken<List<Note>>() {}.getType();
-            if (document.containsKey("notes")) this.notes = Oxygen.PLAIN_GSON.fromJson(document.getString("notes"), notesType);
+            if (document.containsKey("notes")) {
+                Type notesType = new TypeToken<List<Note>>() {}.getType();
+                notes = Oxygen.PLAIN_GSON.fromJson(document.getString("notes"), notesType);
+            }
 
             Type commentsType = new TypeToken<List<Comment>>() {}.getType();
             comments = Oxygen.PLAIN_GSON.fromJson(document.getString("comments"), commentsType);

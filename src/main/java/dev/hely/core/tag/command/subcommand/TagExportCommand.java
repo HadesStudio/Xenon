@@ -31,6 +31,7 @@ public class TagExportCommand extends SubCommand {
         });
 
         Oxygen.getInstance().getTagConfig().save();
+        Oxygen.getInstance().getTagConfig().reload();
 
         sender.sendMessage(CC.translate(Language.TAG_EXPORT_EXPORTED));
     }

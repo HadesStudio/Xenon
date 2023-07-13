@@ -5,9 +5,9 @@ import dev.hely.core.profile.profilesystem.impl.Notification;
 import dev.hely.core.profile.profilesystem.impl.serverstats.StatisticType;
 import dev.hely.core.profile.profilesystem.impl.serverstats.Statistics;
 import dev.hely.core.profile.profilesystem.impl.serverstats.StatisticsServer;
-import dev.hely.core.profile.profilesystem.packets.FriendRequestAcceptPacket;
-import dev.hely.core.profile.profilesystem.packets.FriendRequestSendPacket;
-import dev.hely.core.profile.profilesystem.packets.NotificationSendPacket;
+import dev.hely.core.profile.packet.implement.FriendRequestAcceptPacket;
+import dev.hely.core.profile.packet.implement.FriendRequestSendPacket;
+import dev.hely.core.profile.packet.implement.NotificationSendPacket;
 import dev.hely.core.utils.UUIDUtil;
 import dev.hely.lib.CC;
 import lombok.Getter;
@@ -116,14 +116,13 @@ public class ProfileManager {
     }
 
     public static boolean sendFriendRequest(Player sender, UUID target) {
-
         if (sender.getUniqueId().toString().equalsIgnoreCase(target.toString())) {
             sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("friends.friend-add.friend-self")));
             return false;
         }
 
-        final Profile senderProfile = Oxygen.getInstance().getProfileManager().getProfile(sender.getUniqueId());
-        final Profile targetProfile = Oxygen.getInstance().getProfileManager().getProfile(target);
+        Profile senderProfile = Oxygen.getInstance().getProfileManager().getProfile(sender.getUniqueId());
+        Profile targetProfile = Oxygen.getInstance().getProfileManager().getProfile(target);
 
         if (targetProfile == null) {
             sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("friends.friend-add.not-real")));
@@ -164,7 +163,6 @@ public class ProfileManager {
         }
 
         Profile targetProfile = Oxygen.getInstance().getProfileManager().getProfile(target);
-
         if (targetProfile == null) {
             sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("friends.friend-accept.not-real")));
             return false;
@@ -205,8 +203,7 @@ public class ProfileManager {
 
         playerProfile.getStatistics().putIfAbsent(statisticServer, new Statistics(statisticServer));
 
-        final Statistics statistics = playerProfile.getStatistics().get(statisticServer);
-
+        Statistics statistics = playerProfile.getStatistics().get(statisticServer);
         if (statistics == null) {
             return false;
         }
