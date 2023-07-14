@@ -157,7 +157,6 @@ public class Oxygen extends JavaPlugin {
         redisModule.registerListener(new TagPacketListener(tagManager));
     }
 
-    // Module Manager -- The below is for the module system.
     private void loadModule(ModuleLoader module) {
         if (!module.isEnabled()) {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
