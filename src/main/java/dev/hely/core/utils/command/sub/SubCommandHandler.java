@@ -1,6 +1,7 @@
 package dev.hely.core.utils.command.sub;
 
 import dev.hely.core.Oxygen;
+import dev.hely.core.configuration.Locale;
 import dev.hely.core.utils.command.CommandManager;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
@@ -39,9 +40,6 @@ public class SubCommandHandler extends BukkitCommand {
     }
 
     protected void addSubCommand(SubCommand command) {
-        if(this.isFactionCommandDisabled(command.getName())) {
-            return;
-        }
         this.subCommands.add(command);
     }
 
@@ -59,10 +57,6 @@ public class SubCommandHandler extends BukkitCommand {
         return null;
     }
 
-    private boolean isFactionCommandDisabled(String subCommandName) {
-        return this.commandName.equals("faction");
-    }
-
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
         if(args.length == 0) {
@@ -73,17 +67,17 @@ public class SubCommandHandler extends BukkitCommand {
         SubCommand sub = this.getSubCommand(args[0]);
 
         if(sub == null) {
-            sender.sendMessage(CC.translate("&cYou have specified a invalid command argument. Please follow the command usage."));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_ARGUMENT_NOT_FOUND));
             return true;
         }
 
         if(sub.isPlayerOnly && sender instanceof ConsoleCommandSender) {
-            sender.sendMessage(CC.translate("&cYou cannot execute this command in console!"));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_ONLY_PLAYER));
             return true;
         }
 
         if(sub.getPermission() != null && !sender.hasPermission(sub.getPermission())) {
-            sender.sendMessage(CC.translate("&cYou do not have sufficient permissions to execute this command."));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_NO_PERMISSION));
             return true;
         }
 

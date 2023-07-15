@@ -1,12 +1,11 @@
 package dev.hely.core.tag.command.subcommand;
 
 import dev.hely.core.Oxygen;
-import dev.hely.core.configuration.Language;
+import dev.hely.core.configuration.Locale;
 import dev.hely.core.tag.Tag;
 import dev.hely.core.tag.packet.implement.TagUpdatePacket;
 import dev.hely.core.utils.command.sub.SubCommand;
 import dev.hely.lib.CC;
-import dev.hely.lib.JavaUtil;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -25,13 +24,13 @@ public class TagCreateCommand extends SubCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(CC.translate(Language.TAG_CREATE_USAGE));
+            sender.sendMessage(CC.translate(Locale.TAG_CREATE_USAGE));
             return;
         }
 
         Tag tag = Oxygen.getInstance().getTagManager().getTag(args[1]);
         if (tag != null) {
-            sender.sendMessage(CC.translate(Language.TAG_CREATE_ALREADY_EXIST));
+            sender.sendMessage(CC.translate(Locale.TAG_CREATE_ALREADY_EXIST));
             return;
         }
 
@@ -39,6 +38,6 @@ public class TagCreateCommand extends SubCommand {
         tag.save();
 
         Oxygen.getInstance().getRedisModule().sendPacket(new TagUpdatePacket(tag.getName(), false));
-        sender.sendMessage(CC.translate(Language.TAG_CREATE_CREATED).replace("%tag_name%", args[1]));
+        sender.sendMessage(CC.translate(Locale.TAG_CREATE_CREATED).replace("%tag_name%", args[1]));
     }
 }

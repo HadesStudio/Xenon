@@ -65,8 +65,6 @@ public class RedisModule implements ModuleLoader {
         this.listeners = ArrayListMultimap.create();
         this.channels = new HashSet<>();
 
-        this.subscribeJedis();
-
         enabled = true;
     }
 

@@ -1,7 +1,6 @@
 package dev.hely.core.tag.command;
 
-import dev.hely.core.Oxygen;
-import dev.hely.core.configuration.Language;
+import dev.hely.core.configuration.Locale;
 import dev.hely.core.tag.command.subcommand.*;
 import dev.hely.core.utils.command.sub.SubCommand;
 import dev.hely.core.utils.command.sub.SubCommandHandler;
@@ -34,10 +33,10 @@ public class TagCommand extends SubCommandHandler {
             if (subCommand != null) {
                 subCommand.execute(sender, args);
             } else {
-                Language.TAG_USAGE.forEach(string -> sender.sendMessage(CC.translate(string)));
+                Locale.TAG_USAGE.forEach(string -> sender.sendMessage(CC.translate(string)));
             }
         } else {
-            Language.TAG_USAGE.forEach(string -> sender.sendMessage(CC.translate(string)));
+            Locale.TAG_USAGE.forEach(string -> sender.sendMessage(CC.translate(string)));
         }
         return false;
     }

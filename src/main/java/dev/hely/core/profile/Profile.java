@@ -18,14 +18,18 @@ import dev.hely.core.profile.permission.ProfilePermission;
 import dev.hely.core.punishment.Punishment;
 import dev.hely.core.ranks.gson.GSONUtil;
 import dev.hely.core.ranks.rank.Rank;
+import dev.hely.core.ranks.rank.RankType;
+import dev.hely.lib.CC;
 import lombok.*;
 import org.bson.Document;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created By LeandroSSJ
@@ -113,7 +117,6 @@ public class Profile {
 
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
         document.put("staffProfile", Oxygen.PLAIN_GSON.toJson(this.staffProfile, staffProfileType));
-
 
         Type commentsType = new TypeToken<List<Comment>>() {}.getType();
         document.put("comments", Oxygen.PLAIN_GSON.toJson(this.comments, commentsType));
@@ -262,10 +265,42 @@ public class Profile {
             }
         });
 
+        Rank rank = this.getActiveHighestRank();
 
+        String displayName = CC.translate(rank.getPrefix() + rank.getDisplay_color().toString() + name + rank.getSuffix());
+        if (!player.getDisplayName().equals(displayName + ChatColor.RESET)) {
+            player.setDisplayName(displayName + ChatColor.RESET);
+        }
 
         player.recalculatePermissions();
     }
+
+    public Rank getActiveHighestRank() {
+        Rank defaultRank = plugin.getRankManager().getDefaultRank();
+
+        if (defaultRank == null) {
+            defaultRank = new Rank("Default");
+            defaultRank.setDefaultRank(true);
+        }
+
+        return this.getActiveGrants().stream().filter(grant ->
+                 grant.getRank() != null && grant.getRank().getType() != RankType.HIDDEN)
+                .map(Grant::getRank)
+                .max(Comparator.comparingInt(Rank::getWeight))
+                .orElse(defaultRank);
+    }
+
+    public Grant getHighestGrant() {
+        return this.getActiveGrants().stream().filter(grant ->
+                grant.getRank() != null && grant.getRank().getType() != RankType.HIDDEN)
+                .max(Comparator.comparingInt(grant -> grant.getRank().getWeight()))
+                .orElse(null);
+    }
+
+    public List<Grant> getActiveGrants() {
+        return new ArrayList<>(this.grants).stream().filter(grant -> grant.isActive() && plugin.getRankManager().getRank(grant.getRankName()) != null).collect(Collectors.toList());
+    }
+
 
     public Punishment getActivePunishmentByType(PunishmentType type) {
         for (Punishment punishment : punishments) {

@@ -24,9 +24,9 @@ public class Punishment {
 
     private PunishmentType type;
     private UUID uniqueId, targetUUID;
-    private String addedBy, removedBy, addedReason, removedReason;
+    private String addedBy, removedBy, addedReason, removedReason, addedServer;
     private long addedAt, removedAt, duration = -1;
-    private boolean silent = true, removed = false;
+    private boolean silent = true, clear = false, removed = false;
 
     private Oxygen plugin = Oxygen.getInstance();
 
@@ -37,9 +37,11 @@ public class Punishment {
         document.put("type", type.name());
         document.put("targetUUID", targetUUID.toString());
         document.put("addedBy", addedBy);
+        document.put("addedServer", addedServer);
         document.put("addedReason", addedReason);
         document.put("addedAt", addedAt);
         document.put("silent", silent);
+        document.put("clear", clear);
         document.put("removed", removed);
 
         if (removedBy != null) {
@@ -67,9 +69,11 @@ public class Punishment {
             setUniqueId(UUID.fromString(document.getString("uniqueId")));
             setTargetUUID(UUID.fromString(document.getString("targetUUID")));
             setAddedBy(document.getString("addedBy"));
+            setAddedServer(document.getString("addedServer"));
             setAddedReason(document.getString("addedReason"));
             setAddedAt(document.getLong("addedAt"));
             setSilent(document.getBoolean("silent"));
+            setClear(document.getBoolean("clear"));
             setRemoved(document.getBoolean("removed"));
 
             if (document.containsKey("removedBy")) {
@@ -127,5 +131,38 @@ public class Punishment {
             toReturn = DurationFormatUtils.formatDurationWords(addedAt + duration - System.currentTimeMillis(), true, true);
         }
         return toReturn;
+    }
+
+    public String getKey(boolean undo) {
+        switch (type) {
+            case BLACKLIST: {
+                if (undo) return silent ? "un-blacklist-silent" : "un-blacklist";
+                return !silent ? "blacklist" : "blacklist-silent";
+            }
+
+            case BAN: {
+                if (undo) return silent ? "unban-silent" : "unban";
+                if (isPermanent()) return silent ? "ban-silent" : "ban";
+                return silent ? "temp-ban-silent" : "temp-ban";
+            }
+
+            case MUTE: {
+                if (undo) return silent ? "unmute-silent" : "unmute";
+                if (isPermanent()) return silent ? "mute-silent" : "mute";
+                return silent ? "temp-mute-silent" : "temp-mute";
+            }
+
+            case WARN: {
+                if (isPermanent()) return silent ? "warn-silent" : "warn";
+                return silent ? "temp-warn-silent" : "temp-warn";
+            }
+
+            case KICK: {
+                return !silent ? "kick" : "kick-silent";
+            }
+
+            default:
+                return "";
+        }
     }
 }

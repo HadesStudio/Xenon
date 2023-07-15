@@ -35,12 +35,12 @@ public class Rank {
     private String prefix, suffix;
     private boolean defaultRank;
     private boolean globalRank;
-    private int weight;
+    private int weight = 1;
     private List<PermissionData> permissionsData = new ArrayList<>();
     private List<String> bungeePermissions = new ArrayList<>();
     private List<String> inheritances = new ArrayList<>();
     private List<String> servers = new ArrayList<>();
-    private ChatColor display_color;
+    private ChatColor display_color = ChatColor.WHITE;
 
     public void save() {
         Document document = new Document();

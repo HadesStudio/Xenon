@@ -10,6 +10,12 @@ debug-mode: true # Do not edit the status of this via the config, use the debug 
 server:
   name: "Hub" # This is the name of the server this plugin is currently installed in.
 
+punishments:
+  join:
+    allow-banned: false
+    allow-blacklisted: false
+  default-reason: "Not Found"
+
 statistics-settings:
   server-1:
     enabled: true # Do you want to enable statistics for this server?

@@ -17,6 +17,6 @@ public class PunishmentExecutePacket implements Packet {
 
     private UUID uniqueId;
     private String sender;
-    private String target;
+    private UUID target;
 
 }

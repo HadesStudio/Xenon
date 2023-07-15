@@ -34,7 +34,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class MainProfileMenu extends Menu {
     private Profile profile;
-
     @Override
     public String getName() {
         return Oxygen.getInstance().getProfileMenuConfig().getConfiguration().getString("title").replace("%player%", profile.getName());

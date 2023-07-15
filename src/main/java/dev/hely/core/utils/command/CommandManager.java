@@ -1,5 +1,9 @@
 package dev.hely.core.utils.command;
 
+import dev.hely.core.commands.implement.punishment.*;
+import dev.hely.core.commands.implement.punishment.undo.UnBanCommand;
+import dev.hely.core.commands.implement.punishment.undo.UnBlacklistCommand;
+import dev.hely.core.commands.implement.punishment.undo.UnMuteCommand;
 import dev.hely.core.commands.implement.staff.AdminChatCommand;
 import dev.hely.core.commands.implement.staff.StaffChatCommand;
 import dev.hely.core.modules.ModuleLoader;
@@ -42,6 +46,17 @@ public class CommandManager implements ModuleLoader {
     public void setupCommand() {
         registerCommand(new RankCommand());
         registerCommand(new TagCommand());
+
+        registerCommand(new BlacklistCommand());
+        registerCommand(new BanCommand());
+        registerCommand(new TempBanCommand());
+        registerCommand(new MuteCommand());
+        registerCommand(new KickCommand());
+        registerCommand(new WarnCommand());
+        registerCommand(new UnBlacklistCommand());
+        registerCommand(new UnBanCommand());
+        registerCommand(new UnMuteCommand());
+
 
         registerCommand(new AdminChatCommand());
         registerCommand(new StaffChatCommand());

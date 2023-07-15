@@ -1,8 +1,7 @@
 package dev.hely.core.tag.command.subcommand;
 
 import dev.hely.core.Oxygen;
-import dev.hely.core.configuration.Language;
-import dev.hely.core.tag.Tag;
+import dev.hely.core.configuration.Locale;
 import dev.hely.core.utils.command.sub.SubCommand;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
@@ -33,6 +32,6 @@ public class TagExportCommand extends SubCommand {
         Oxygen.getInstance().getTagConfig().save();
         Oxygen.getInstance().getTagConfig().reload();
 
-        sender.sendMessage(CC.translate(Language.TAG_EXPORT_EXPORTED));
+        sender.sendMessage(CC.translate(Locale.TAG_EXPORT_EXPORTED));
     }
 }

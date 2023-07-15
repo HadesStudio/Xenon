@@ -1,6 +1,7 @@
 package dev.hely.core.ranks.grants;
 
 import dev.hely.core.Oxygen;
+import dev.hely.core.ranks.rank.Rank;
 import lombok.*;
 import org.apache.commons.lang.time.DurationFormatUtils;
 
@@ -43,5 +44,11 @@ public class Grant {
             toReturn = DurationFormatUtils.formatDurationWords(addedTime + duration - System.currentTimeMillis(), true, true);
         }
         return toReturn;
+    }
+
+    public Rank getRank() {
+        Rank rankData = Oxygen.getInstance().getRankManager().getRank(rankName);
+        if (rankData != null && rankData.isServer()) return rankData;
+        return null;
     }
 }

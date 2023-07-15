@@ -1,9 +1,8 @@
 package dev.hely.core.commands.implement.staff;
 
 import dev.hely.core.Oxygen;
-import dev.hely.core.configuration.Language;
+import dev.hely.core.configuration.Locale;
 import dev.hely.core.profile.Profile;
-import dev.hely.core.profile.packet.implement.AdminChatPacket;
 import dev.hely.core.profile.packet.implement.StaffChatPacket;
 import dev.hely.core.utils.ChatUtil;
 import dev.hely.core.utils.command.BaseCommand;
@@ -31,12 +30,12 @@ public class StaffChatCommand extends BaseCommand {
 
         if (args.length == 0) {
             profile.getStaffProfile().setStaffChat(!profile.getStaffProfile().isStaffChat());
-            player.sendMessage(profile.getStaffProfile().isStaffChat() ? CC.translate(Language.STAFF_CHAT_ENABLED) : CC.translate(Language.STAFF_CHAT_DISABLED));
+            player.sendMessage(profile.getStaffProfile().isStaffChat() ? CC.translate(Locale.STAFF_CHAT_ENABLED) : CC.translate(Locale.STAFF_CHAT_DISABLED));
             return;
         }
 
         Oxygen.getInstance().getRedisModule().sendPacket(new StaffChatPacket(
-                player.getName(),
+                player.getDisplayName(),
                 Oxygen.getInstance().getServerManager().getServerName(),
                 ChatUtil.joinArray(args, " ", 1)));
     }

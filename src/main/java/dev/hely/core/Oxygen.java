@@ -3,9 +3,10 @@ package dev.hely.core;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.hely.core.configuration.Language;
+import dev.hely.core.configuration.Locale;
 import dev.hely.core.modules.listener.ListenerModule;
 import dev.hely.core.profile.packet.ProfilePacketListener;
+import dev.hely.core.punishment.packet.PunishmentPacketListener;
 import dev.hely.core.ranks.rank.RankManager;
 import dev.hely.core.modules.database.redis.RedisModule;
 import dev.hely.core.modules.database.mongo.MongoModule;
@@ -22,7 +23,6 @@ import dev.hely.lib.adapter.LocationAdapter;
 import dev.hely.lib.adapter.PotionEffectAdapter;
 import dev.hely.lib.adapter.VectorAdapter;
 import dev.hely.lib.configuration.Config;
-import dev.hely.lib.menu.MenuListener;
 import dev.hely.lib.menu.MenuManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -36,7 +36,6 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -120,7 +119,7 @@ public class Oxygen extends JavaPlugin {
         this.tagConfig = new Config(this, "tags");
         this.profileMenuConfig = new Config(this, "menus" + File.separator + "profile-menu");
 
-        Language.load();
+        Locale.load();
     }
     public void initModules(){
         tasks = new Tasks(this);
@@ -154,6 +153,7 @@ public class Oxygen extends JavaPlugin {
 
     public void setupPackets(){
         redisModule.registerListener(new ProfilePacketListener());
+        redisModule.registerListener(new PunishmentPacketListener(this));
         redisModule.registerListener(new TagPacketListener(tagManager));
 
         redisModule.subscribeJedis();

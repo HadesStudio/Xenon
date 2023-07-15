@@ -1,7 +1,7 @@
 package dev.hely.core.commands.implement.staff;
 
 import dev.hely.core.Oxygen;
-import dev.hely.core.configuration.Language;
+import dev.hely.core.configuration.Locale;
 import dev.hely.core.profile.Profile;
 import dev.hely.core.profile.packet.implement.AdminChatPacket;
 import dev.hely.core.utils.ChatUtil;
@@ -10,7 +10,6 @@ import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -31,12 +30,12 @@ public class AdminChatCommand extends BaseCommand {
 
         if (args.length == 0) {
             profile.getStaffProfile().setAdminChat(!profile.getStaffProfile().isAdminChat());
-            player.sendMessage(profile.getStaffProfile().isAdminChat() ? CC.translate(Language.ADMIN_CHAT_ENABLED) : CC.translate(Language.ADMIN_CHAT_DISABLED));
+            player.sendMessage(profile.getStaffProfile().isAdminChat() ? CC.translate(Locale.ADMIN_CHAT_ENABLED) : CC.translate(Locale.ADMIN_CHAT_DISABLED));
             return;
         }
 
         Oxygen.getInstance().getRedisModule().sendPacket(new AdminChatPacket(
-                player.getName(),
+                player.getDisplayName(),
                 Oxygen.getInstance().getServerManager().getServerName(),
                 ChatUtil.joinArray(args, " ", 1)));
     }

@@ -1,10 +1,13 @@
 package dev.hely.core.profile;
 
 import dev.hely.core.Oxygen;
+import dev.hely.core.configuration.Locale;
 import dev.hely.core.profile.packet.implement.FriendSessionPacket;
 import dev.hely.core.profile.packet.implement.StaffJoinPacket;
 import dev.hely.core.profile.packet.implement.StaffLeavePacket;
 import dev.hely.core.profile.packet.implement.StaffSwitchPacket;
+import dev.hely.core.punishment.Punishment;
+import dev.hely.core.punishment.PunishmentType;
 import dev.hely.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
@@ -48,6 +51,8 @@ public class ProfileListener implements Listener {
             event.setKickMessage(CC.translate("&cFailed to load your profile"));
             return;
         }
+
+        if (onPunishmentKick(event, profile, uuid)) return;
 
         profile.setLastSeen(System.currentTimeMillis());
 
@@ -127,4 +132,48 @@ public class ProfileListener implements Listener {
             }.runTaskAsynchronously(plugin);
         }
     }
+
+
+    private boolean onPunishmentKick(AsyncPlayerPreLoginEvent event, Profile profile, UUID uuid) {
+        if (profile.getActiveBlacklist() != null) {
+            if (Locale.PUNISHMENTS_JOIN_ALLOW_BANNED) return false;
+            Punishment punishment = profile.getActiveBlacklist();
+
+            String finalMessage = Locale.PUNISHMENT_KICK.get("blacklist");
+
+            finalMessage = finalMessage.replace("%target%", profile.getName());
+            finalMessage = finalMessage.replace("%sender%", punishment.getAddedBy());
+            finalMessage = finalMessage.replace("%reason%", punishment.getAddedReason());
+            finalMessage = finalMessage.replace("%duration%", punishment.getRemaining());
+            finalMessage = finalMessage.replace("%expire%", punishment.getRemaining());
+
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, CC.translate(finalMessage));
+
+            plugin.getProfileManager().getProfileMap().remove(uuid);
+            return true;
+        }
+
+        if (profile.getActiveBan() != null) {
+            if (Locale.PUNISHMENTS_JOIN_ALLOW_BLACKLISTED) return false;
+            Punishment punishment = profile.getActiveBan();
+
+            String finalMessage = Locale.PUNISHMENT_KICK.get("ban");
+
+            finalMessage = finalMessage.replace("%target%", profile.getName());
+            finalMessage = finalMessage.replace("%sender%", punishment.getAddedBy());
+            finalMessage = finalMessage.replace("%reason%", punishment.getAddedReason());
+            finalMessage = finalMessage.replace("%duration%", punishment.getRemaining());
+            finalMessage = finalMessage.replace("%expire%", punishment.getRemaining());
+
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, CC.translate(finalMessage));
+
+            plugin.getProfileManager().getProfileMap().remove(uuid);
+            return true;
+        }
+
+        // DETECT ALTS BANNED
+
+        return false;
+    }
+
 }

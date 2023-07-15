@@ -1,3 +1,11 @@
+commands:
+  no-permission: "&c&cYou do not have sufficient permissions to execute this command."
+  argument-not-found: "&cArgument &f%argument% &ccould not be found."
+  only-player: "&cSorry, only players can execute this command."
+  only-console: "&cYou cannot execute this command."
+  never-played: "&cThe player by the name of '&c&l%player%&c' has never connected to the server."
+  offline-player: "&cThe player by the name of '&c&l%player%&c' is currently not connected to the server!"
+
 punishments:
   broadcast:
     blacklist:
@@ -6,6 +14,25 @@ punishments:
         enabled: true
         message:
           - "&eReason: &c%reason%"
+    blacklist-silent:
+      message: "%target% &awas &esilently &ablacklisted by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+    un-blacklist:
+      message: "%target% &awas un-blacklisted by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+    un-blacklist-silent:
+      message: "%target% &awas &esilently &aun-blacklisted by &4%sender%&c."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          
     ban:
       message: "%target% &awas banned by &4%sender%&a."
       hover:
@@ -13,25 +40,181 @@ punishments:
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
+    ban-silent:
+      message: "%target% &awas &esilently &abanned by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &cPermanent"
+    temp-ban:
+      message: "%target% &awas temporarily banned by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &c%duration%"
+    temp-ban-silent:
+      message: "%target% &awas &esilently &atemporarily banned by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &c%duration%"  
+    unban:
+      message: "%target% &awas unbanned by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+    unban-silent:
+      message: "%target% &awas &esilently &aunbanned by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+
+    mute:
+      message: "%target% &ahas been muted by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &cPermanent"
+    mute-silent:
+      message: "%target% &ahas been &esilently &amuted by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &cPermanent"
+    temp-mute:
+      message: "%target% &ahas been temporarily muted by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &c%duration%"
+    temp-mute-silent:
+      message: "%target% &ahas been &esilently &atemporarily muted by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &c%duration%"
+    unmute:
+      message: "%target% &awas un-muted by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+    unmute-silent:
+      message: "%target% &awas &esilently &aun-muted by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+    
+    
+    warn:
+      message: "%target% &awas warned by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &cPermanent"
+    warn-silent:
+      message: "%target% &awas &esilently &awarned by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &cPermanent"
+    temp-warn:
+      message: "%target% &awas temporarily warned by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &c%duration%"
+    temp-warn-silent:
+      message: "%target% &awas &esilently &atemporarily warned by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          - "&eDuration: &c%duration%"
+          
+      
+      
+    kick:
+      message: "%target% &awas kicked by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+    kick-silent:
+      message: "%target% &awas &esilent &akicked by &4%sender%&a."
+      hover:
+        enabled: true
+        message:
+          - "&eReason: &c%reason%"
+          
   kick:
     blacklist:
-      - '&cYour account has been blacklisted from the %server_name% Network.'
-      - '&cReason: %reason%'
-      - '&cThis type of punishment cannot be appealed.'
+      - "&cYour account has been blacklisted from the Oxygen Network."
+      - "&cReason: %reason%"
+      - "&cThis type of punishment cannot be appealed."
     ban:
-      - '&cYour account has been suspended from the %server_name% Network.'
-      - '&cReason: %reason%'
-      - '&cAppeal at %teamspeak%'
+      - "&cYour account has been suspended from the Oxygen Network."
+      - "&cReason: %reason%"
+      - "&cAppeal at %teamspeak%"
     temp-ban:
-      - '&cYour account has been suspended from the %server_name% Network.'
-      - '&cReason: %reason%'
-      - '&cExpires in %expire%'
+      - "&cYour account has been suspended from the Oxygen Network."
+      - "&cReason: %reason%"
+      - "&cExpires in %duration%"
     kick:
-      - '&cYou have been kicked by %sender%'
-      - '&cReason: %reason%'
+      - "&cYou have been kicked by %sender%"
+      - "&cReason: %reason%"
+  muted:
+    permanent: "&cYou have been permanently muted by &l%sender% &cfor &l%reason%&c."
+    temp: "&cYou have been temporarily muted by &l%sender% &cfor &l%reason% &cfor &l%duration%&c."
+  warned:
+    permanent: "&cYou have been permanently warned by &l%sender% &cfor &l%reason%&c."
+    temp: "&cYou have been temporarily warned by &l%sender% &cfor &l%reason% &cfor &l%duration%&c."
 
+blacklist:
+  usage: "&cUsage: /blacklist <player> <reason> (&b-s&c) (&b-c&c)"
+  already-blacklisted: "&cThat player has already been blacklisted."
 
+un-blacklist:
+  usage: "&cUsage: /unblacklist <player> <reason> (&b-s&c)"
+  not-blacklisted: "&cThat player is not blacklisted."
 
+ban:
+  usage: "&cUsage: /ban <player> <reason> (&b-s&c) (&b-c&c)"
+  already-banned: "&cThat player already has an active ban."
+
+temp-ban:
+  usage: "&cUsage: /tempban <player> <duration> <reason> (&b-s&c) (&b-c&c)"
+
+un-ban:
+  usage: "&cUsage: /unban <player> <reason> (&b-s&c)"
+  not-banned: "&cThat player is not banned."
+
+mute:
+  usage: "&cUsage: /mute <player> [optional:duration] <reason> (&b-s&c)"
+  already-muted: "&cThat player is already muted"
+
+un-mute:
+  usage: "&cUsage: /unmute <player> <reason> (&b-s&c)"
+  not-muted: "&cThat player is not muted."
+
+warn:
+  usage: "&cUsage: /warn <player> [optional:duration] <reason> (&b-s&c)"
+
+kick:
+  usage: "&cUsage: /warn <player> <reason> (&b-s&c)"
 
 tag:
   usage:

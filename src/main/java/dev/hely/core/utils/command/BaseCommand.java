@@ -1,5 +1,6 @@
 package dev.hely.core.utils.command;
 
+import dev.hely.core.configuration.Locale;
 import dev.hely.lib.CC;
 import dev.hely.lib.JavaUtil;
 import lombok.Getter;
@@ -56,7 +57,7 @@ public abstract class BaseCommand extends BukkitCommand {
 
     protected boolean checkOfflinePlayer(CommandSender sender, OfflinePlayer offlinePlayer, String name) {
         if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
-            sender.sendMessage(CC.translate("&cThe player by the name of '&c&l" + name + "&c' has never connected to the server.."));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", name));
             return false;
         }
         return true;
@@ -64,7 +65,7 @@ public abstract class BaseCommand extends BukkitCommand {
 
     protected boolean checkPlayer(CommandSender sender, Player player, String name) {
         if(player == null) {
-            sender.sendMessage(CC.translate("&cThe player by the name of '&c&l" + name + "&c' is currently not connected to the server!"));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_OFFLINE_PLAYER).replace("%player%", name));
             return false;
         }
         return true;
@@ -82,12 +83,12 @@ public abstract class BaseCommand extends BukkitCommand {
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
         if(isPlayerOnly() && sender instanceof ConsoleCommandSender) {
-            sender.sendMessage(CC.translate("&cYou cannot execute this command in console!"));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_ONLY_PLAYER));
             return true;
         }
 
         if(this.getPermission() != null && !sender.hasPermission(this.getPermission())) {
-            sender.sendMessage(CC.translate("&cYou do not have sufficient permissions to execute this command."));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_NO_PERMISSION));
             return true;
         }
 

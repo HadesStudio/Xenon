@@ -15,6 +15,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created By LeandroSSJ
@@ -81,6 +82,12 @@ public class RankManager implements ModuleLoader {
 
     public Rank getRank(String name) {
         return this.ranks.stream().filter(rank -> rank.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public Rank getDefaultRank() {
+        List<Rank> ranks = new ArrayList<>(this.ranks).stream().sorted(Comparator.comparingInt(Rank::getWeight).reversed()).filter(Rank::isDefaultRank).collect(Collectors.toList());
+        if (ranks.size() == 0) return null;
+        return ranks.get(0);
     }
 
     public void createRank(String name) {

@@ -1,6 +1,6 @@
 package dev.hely.core.profile.packet;
 
-import dev.hely.core.configuration.Language;
+import dev.hely.core.configuration.Locale;
 import dev.hely.core.modules.database.redis.packet.PacketListener;
 import dev.hely.core.modules.database.redis.packet.annotation.IncomingPacketHandler;
 import dev.hely.core.profile.packet.implement.*;
@@ -53,7 +53,7 @@ public class ProfilePacketListener implements PacketListener {
         String server = packet.getServerName();
         String message = packet.getMessage();
 
-        Messages.sendMessage(Language.STAFF_CHAT_FORMAT
+        Messages.sendMessage(Locale.STAFF_CHAT_FORMAT
                 .replace("%player%", name)
                 .replace("%server_name%", server)
                 .replace("%message%", message), "oxygen.staffchat");
@@ -65,7 +65,7 @@ public class ProfilePacketListener implements PacketListener {
         String server = packet.getServerName();
         String message = packet.getMessage();
 
-        Messages.sendMessage(Language.ADMIN_CHAT_FORMAT
+        Messages.sendMessage(Locale.ADMIN_CHAT_FORMAT
                 .replace("%player%", name)
                 .replace("%server_name%", server)
                 .replace("%message%", message), "oxygen.adminchat");
