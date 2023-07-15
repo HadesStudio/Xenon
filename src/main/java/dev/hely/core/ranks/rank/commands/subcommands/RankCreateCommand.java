@@ -17,9 +17,9 @@ package dev.hely.core.ranks.rank.commands.subcommands;
 
 import dev.hely.core.Oxygen;
 import dev.hely.core.ranks.rank.Rank;
+import dev.hely.core.ranks.rank.packet.implement.RankUpdatePacket;
 import dev.hely.core.utils.command.sub.SubCommand;
 import dev.hely.lib.CC;
-import dev.hely.lib.JavaUtil;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -36,20 +36,16 @@ public class RankCreateCommand extends SubCommand {
             return;
         }
 
-        String rank_name = args[1];
-
-        if (Oxygen.getInstance().getRankManager().getRank(rank_name) != null) {
+        Rank rank = Oxygen.getInstance().getRankManager().getRank(args[1]);
+        if (rank != null) {
             sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.already-exist")));
             return;
         }
 
-        if (!JavaUtil.isAlphanumeric(rank_name)) {
-            sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.invalid-string")));
-            return;
-        }
+        Oxygen.getInstance().getRankManager().createRank(rank.getName());
+        sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.created").replace("%rank_name%", rank.getName())));
 
-        Oxygen.getInstance().getRankManager().createRank(rank_name);
-        sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.created").replace("%rank_name%", rank_name)));
+        Oxygen.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(rank.getName()));
     }
 }
 

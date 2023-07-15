@@ -1,5 +1,6 @@
 package dev.hely.core.ranks.rank;
 
+import com.mongodb.client.model.Filters;
 import dev.hely.core.Oxygen;
 import dev.hely.core.modules.ModuleLoader;
 import dev.hely.core.ranks.gson.GSONUtil;
@@ -8,6 +9,7 @@ import dev.hely.core.utils.ColorUtil;
 import dev.hely.core.utils.PluginUtils;
 import dev.hely.lib.CC;
 import lombok.Getter;
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -91,17 +93,26 @@ public class RankManager implements ModuleLoader {
     }
 
     public void createRank(String name) {
-        Rank new_rank = new Rank(name);
-        new_rank.setPrefix("");
-        new_rank.setSuffix("");
-        new_rank.setDefaultRank(true);
-        new_rank.setDisplay_color(ChatColor.LIGHT_PURPLE);
-        new_rank.setWeight(1);
-        new_rank.setType(RankType.DEFAULT);
+        Rank rank = new Rank(name);
+        rank.setPrefix("");
+        rank.setSuffix("");
+        rank.setDefaultRank(true);
+        rank.setDisplay_color(ChatColor.LIGHT_PURPLE);
+        rank.setWeight(1);
+        rank.setType(RankType.DEFAULT);
 
+        this.ranks.add(rank);
         saveRanks();
-        this.ranks.add(new_rank);
     }
+
+    public void deleteRank(Rank rank) {
+        Document document = plugin.getMongoModule().getRanksCollection().find(Filters.eq("name", rank.getName())).first();
+        if (document != null) {
+            plugin.getMongoModule().getRanksCollection().deleteOne(document);
+        }
+        this.ranks.removeIf(rankList -> rankList.getName().equalsIgnoreCase(rank.getName()));
+    }
+
 
     public void importRanks() {
         this.ranks.clear();
