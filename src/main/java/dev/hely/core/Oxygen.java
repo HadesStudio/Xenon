@@ -159,7 +159,6 @@ public class Oxygen extends JavaPlugin {
         redisModule.subscribeJedis();
     }
 
-    // Module Manager -- The below is for the module system.
     private void loadModule(ModuleLoader module) {
         if (!module.isEnabled()) {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
