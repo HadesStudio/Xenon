@@ -16,11 +16,13 @@ package dev.hely.core.utils;
 //============================================================
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TimeFormatUtils {
-
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     private static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
 
     public static String getDetailedTime(long millis) {
@@ -224,5 +226,9 @@ public class TimeFormatUtils {
         }
 
         return found ? (totalTime * 1000L) + 1000L : -1;
+    }
+
+    public static String formatIntoCalendarString(Date date) {
+        return (dateFormat.format(date));
     }
 }

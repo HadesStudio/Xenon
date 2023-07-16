@@ -7,6 +7,24 @@ commands:
   offline-player: "&cThe player by the name of '&c&l%player%&c' is currently not connected to the server!"
 
 punishments:
+  history-menu:
+    pardon:
+      ban:
+        already-removed: "&cThis ban has already been removed by &c&n%remover%&c.."
+        enter-pardon-reason: "&cPlease enter in a reason for this &dPardon&c:"
+        pardoned: "&cYou have successfully pardoned this players ban."
+        no-permission: "&cYou do not have permission to &dPardon Bans&c."
+      blacklist:
+        already-removed: "&cThis blacklist has already been removed by &c&n%remover%&c.."
+        enter-pardon-reason: "&cPlease enter in a reason for this &dPardon&c:"
+        pardoned: "&cYou have successfully pardoned this players blacklist."
+        no-permission: "&cYou do not have permission to &dPardon Blacklists&c."
+      mute:
+        already-removed: "&cThis mute has already been removed by &c&n%remover%&c.."
+        enter-pardon-reason: "&cPlease enter in a reason for this &dPardon&c:"
+        pardoned: "&cYou have successfully pardoned this players mute."
+        no-permission: "&cYou do not have permission to &dPardon Mutes&c."
+
   broadcast:
     blacklist:
       message: "%target% &awas blacklisted by &4%sender%&a."
@@ -183,6 +201,9 @@ punishments:
     permanent: "&cYou have been permanently warned by &l%sender% &cfor &l%reason%&c."
     temp: "&cYou have been temporarily warned by &l%sender% &cfor &l%reason% &cfor &l%duration%&c."
 
+history:
+  usage: "&cUsage: /history <player>"
+
 blacklist:
   usage: "&cUsage: /blacklist <player> <reason> (&b-s&c) (&b-c&c)"
   already-blacklisted: "&cThat player has already been blacklisted."
@@ -251,6 +272,13 @@ tag:
 
 
 profile-system:
+  social-system:
+    updated-link: "&7You have successfully update your &d%type% Social Link&7!"
+    removed: "&cYou have successfully removed your &d%type% Social Link&c!"
+    setup-message: "&7Please type your &d%type% &7link in chat. You can always type 'CANCEL' to cancel this."
+    cancelled-setup: "&cYou have cancelled setting up your &d%type% Social Link&7!"
+    invalid-link: "&cYou have provided a invalid social link. Please try again."
+    setup-link: "&aYou have successfully setup your &d%type% Social Link&a!"
   notifications:
     join: # %notification_amount%
       - ""
@@ -264,6 +292,8 @@ profile-system:
       - "&7You have just received a new notification!"
       - "&7Use /notifications to view it."
       - ""
+    read-all: "&cYou have marked all notifications as read."
+    read: "&cYou have successfully marked this notification as read."
 
 friends:
   friend-add:

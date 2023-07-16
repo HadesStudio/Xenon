@@ -1,5 +1,6 @@
 package dev.hely.core.utils.command;
 
+import dev.hely.core.commands.implement.player.ProfileCommand;
 import dev.hely.core.commands.implement.punishment.*;
 import dev.hely.core.commands.implement.punishment.undo.UnBanCommand;
 import dev.hely.core.commands.implement.punishment.undo.UnBlacklistCommand;
@@ -7,6 +8,9 @@ import dev.hely.core.commands.implement.punishment.undo.UnMuteCommand;
 import dev.hely.core.commands.implement.staff.AdminChatCommand;
 import dev.hely.core.commands.implement.staff.StaffChatCommand;
 import dev.hely.core.modules.ModuleLoader;
+import dev.hely.core.profile.profilesystem.commands.FriendsCommand;
+import dev.hely.core.profile.profilesystem.commands.NotificationCommand;
+import dev.hely.core.profile.profilesystem.commands.NotificationsCommand;
 import dev.hely.core.ranks.rank.commands.RankCommand;
 import dev.hely.core.tag.command.TagCommand;
 import dev.hely.core.utils.command.utils.ClassWrapper;
@@ -56,10 +60,17 @@ public class CommandManager implements ModuleLoader {
         registerCommand(new UnBlacklistCommand());
         registerCommand(new UnBanCommand());
         registerCommand(new UnMuteCommand());
+        registerCommand(new HistoryCommand());
 
+        registerCommand(new ProfileCommand());
 
         registerCommand(new AdminChatCommand());
         registerCommand(new StaffChatCommand());
+
+        registerCommand(new FriendsCommand());
+        registerCommand(new NotificationCommand());
+        registerCommand(new NotificationsCommand());
+
     }
 
 

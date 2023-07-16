@@ -17,6 +17,14 @@ package dev.hely.core.profile.profilesystem.menu;
 
 import dev.hely.core.Oxygen;
 import dev.hely.core.profile.Profile;
+import dev.hely.core.profile.profilesystem.menu.type.FriendRequestMenu;
+import dev.hely.core.profile.profilesystem.menu.type.FriendsMenu;
+import dev.hely.core.profile.profilesystem.menu.type.NotificationsMenu;
+import dev.hely.core.profile.profilesystem.menu.type.SocialMediaMenu;
+import dev.hely.core.punishment.Punishment;
+import dev.hely.core.punishment.PunishmentType;
+import dev.hely.core.ranks.grants.Grant;
+import dev.hely.core.ranks.rank.Rank;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
@@ -28,8 +36,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class MainProfileMenu extends Menu {
@@ -139,6 +150,7 @@ public class MainProfileMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
+            new SocialMediaMenu(player_profile).openMenu(player);
         }
     }
 
@@ -172,16 +184,18 @@ public class MainProfileMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            //List<Grant> activeGrants = new ArrayList<>(Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getGrants());
+            //final Rank activeGrant = player_profile.getActiveHighestRank();
+            //List<Grant> grant = player_profile.getGrants().stream().sorted(Comparator.comparingLong(Grant::getAddedTime).reversed()).filter(name -> name.getRankName().equals(activeGrant.getName())).collect(Collectors.toList());
 
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
             builder.setDisplayName(Oxygen.getInstance().getProfileMenuConfig().getConfiguration().getString("profile-button.title"));
-            for (String line : Oxygen.getInstance().getProfileMenuConfig().getConfiguration().getStringList("profile-button.lore")) {
-                /*builder.addLore(line
-                        .replace("%rank%", activeGrants))
-                );*/
-            }
+            /*for (String line : Oxygen.getInstance().getProfileMenuConfig().getConfiguration().getStringList("profile-button.lore")) {
+                builder.addLore(line
+                        .replace("%rank%", activeGrant.getName())
+                        .replace("%rank_time%", activeGrant.get)
+                );
+            }*/
             if (Material.getMaterial(Oxygen.getInstance().getProfileMenuConfig().getConfiguration().getString("profile-button.material")) == Material.SKULL_ITEM) {
                 builder.setOwner(player.getName());
             }
@@ -232,6 +246,11 @@ public class MainProfileMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
+            if (clickType.isLeftClick()) {
+                new FriendsMenu(player_profile).openMenu(player);
+            } else {
+                new FriendRequestMenu(player_profile).openMenu(player);
+            }
         }
     }
 
@@ -278,6 +297,7 @@ public class MainProfileMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
+            new NotificationsMenu(player_profile).openMenu(player);
         }
     }
 

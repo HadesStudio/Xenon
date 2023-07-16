@@ -73,6 +73,7 @@ public class MuteCommand extends BaseCommand {
         punishment.setSilent(reason.contains("-s"));
         punishment.save();
 
+        Oxygen.getInstance().getProfileManager().sendMutePunishmentNotification(profile.getUniqueId(), punishment);
         Oxygen.getInstance().getRedisModule().sendPacket(new PunishmentExecutePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));
     }
 }

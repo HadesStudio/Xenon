@@ -68,6 +68,7 @@ public class WarnCommand extends BaseCommand {
         punishment.setSilent(reason.contains("-s"));
         punishment.save();
 
+        Oxygen.getInstance().getProfileManager().sendWarningPunishmentNotification(profile.getUniqueId(), punishment);
         Oxygen.getInstance().getRedisModule().sendPacket(new PunishmentExecutePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));
     }
 }

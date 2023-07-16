@@ -1,0 +1,49 @@
+package dev.hely.core.profile.profilesystem.commands.impl;
+
+//============================================================
+// This file was created by DevDipin!
+// Hely Development Developer, and Management Team Member.
+//
+// If any questions, please contact on discord.
+//
+// File Information:
+//   Path: dev.hely.core.profile.profilesystem.commands.impl
+//   Date: Saturday, July 15, 2023 - 6:22 PM
+//
+// Contact Information:
+//   Discord: Andrew!!#4468
+//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
+//============================================================
+
+import dev.hely.core.Oxygen;
+import dev.hely.core.configuration.Locale;
+import dev.hely.core.profile.Profile;
+import dev.hely.core.utils.command.sub.SubCommand;
+import dev.hely.lib.CC;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.UUID;
+
+public class FriendAddCommand extends SubCommand {
+    public FriendAddCommand() {
+        super("add", true);
+    }
+
+    @Override
+    public void execute(CommandSender sender, String[] args) {
+        if (args.length == 2) {
+            Player sender_player = (Player) sender;
+            Profile profile = Oxygen.getInstance().getProfileManager().getProfile(args[1]);
+            if (profile == null) {
+                sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
+                return;
+            }
+
+            Oxygen.getInstance().getProfileManager().sendFriendRequest(sender_player, profile.getUniqueId());
+        } else {
+            sender.sendMessage(CC.translate("&cCorrect Usage: /friends add <player>"));
+        }
+    }
+}

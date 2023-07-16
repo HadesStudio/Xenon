@@ -61,8 +61,10 @@ public class BanCommand extends BaseCommand {
 
         punishment.setClear(reason.contains("-c"));
         punishment.setSilent(reason.contains("-s"));
+        punishment.setBan_ID(String.valueOf(Math.floor(Math.random() *(1000 - 10000 + 1) + 1000)));
         punishment.save();
 
+        Oxygen.getInstance().getProfileManager().sendBanPunishmentNotification(profile.getUniqueId(), punishment);
         Oxygen.getInstance().getRedisModule().sendPacket(new PunishmentExecutePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));
     }
 }

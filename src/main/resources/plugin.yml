@@ -2,3 +2,4 @@ name: Oxygen
 main: dev.hely.core.Oxygen
 version: 1.0-SNAPSHOT
 author: [Hely Development]
+depend: [ProtocolLib]

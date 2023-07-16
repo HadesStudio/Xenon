@@ -3,6 +3,7 @@ package dev.hely.core;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.hely.core.client.ClientModule;
 import dev.hely.core.configuration.Locale;
 import dev.hely.core.modules.listener.ListenerModule;
 import dev.hely.core.profile.packet.ProfilePacketListener;
@@ -57,6 +58,7 @@ public class Oxygen extends JavaPlugin {
     private Config rankSettingsConfig;
     private Config tagConfig;
     private Config profileMenuConfig;
+    private Config historyMenuConfig;
 
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
@@ -71,6 +73,7 @@ public class Oxygen extends JavaPlugin {
     private ServerManager serverManager;
     private CommandManager commandManager;
     private ListenerModule listenerModule;
+    private ClientModule clientManager;
 
     private boolean debug_mode;
 
@@ -118,12 +121,14 @@ public class Oxygen extends JavaPlugin {
         this.rankSettingsConfig = new Config(this, "ranks" + File.separator + "rank-settings");
         this.tagConfig = new Config(this, "tags");
         this.profileMenuConfig = new Config(this, "menus" + File.separator + "profile-menu");
+        this.historyMenuConfig = new Config(this, "menus" + File.separator + "history-menu");
 
         Locale.load();
     }
     public void initModules(){
         tasks = new Tasks(this);
 
+        clientManager = new ClientModule();
         commandManager = new CommandManager();
         listenerModule = new ListenerModule();
 
@@ -141,6 +146,7 @@ public class Oxygen extends JavaPlugin {
 
         modules = new HashMap<>();
 
+        this.loadModule(clientManager);
         this.loadModule(commandManager);
         this.loadModule(listenerModule);
 

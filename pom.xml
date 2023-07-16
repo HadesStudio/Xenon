@@ -71,6 +71,13 @@
             <version>2.9.2</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>3.6.5-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/ProtocolLib.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -8,6 +8,7 @@ import dev.hely.core.profile.profilesystem.impl.serverstats.StatisticsServer;
 import dev.hely.core.profile.packet.implement.FriendRequestAcceptPacket;
 import dev.hely.core.profile.packet.implement.FriendRequestSendPacket;
 import dev.hely.core.profile.packet.implement.NotificationSendPacket;
+import dev.hely.core.punishment.Punishment;
 import dev.hely.core.utils.UUIDUtil;
 import dev.hely.lib.CC;
 import lombok.Getter;
@@ -57,11 +58,11 @@ public class ProfileManager {
         return this.profileMap.get(uuid);
     }
 
-    public static boolean sendNotification(UUID uuid, String... message) {
+    public boolean sendNotification(UUID uuid, String... message) {
         return sendNotification(uuid, Arrays.asList(message));
     }
 
-    public static boolean sendNotificationAll(List<String> message) {
+    public boolean sendNotificationAll(List<String> message) {
         for (Document document : Oxygen.getInstance().getMongoModule().getProfilesCollection().find()) {
             final UUID uuid = UUID.fromString(document.getString("uniqueId"));
             Profile playerProfile = Oxygen.getInstance().getProfileManager().getProfile(uuid);
@@ -82,7 +83,7 @@ public class ProfileManager {
         return true;
     }
 
-    public static boolean clearNotificationsAll(String... message) {
+    public boolean clearNotificationsAll(String... message) {
         for (Document document : Oxygen.getInstance().getMongoModule().getProfilesCollection().find()) {
             final UUID uuid = UUID.fromString(document.getString("uniqueId"));
             Profile playerProfile = Oxygen.getInstance().getProfileManager().getProfile(uuid);
@@ -97,7 +98,7 @@ public class ProfileManager {
         return true;
     }
 
-    public static boolean sendNotification(UUID uuid, List<String> message) {
+    public boolean sendNotification(UUID uuid, List<String> message) {
         Profile playerProfile = Oxygen.getInstance().getProfileManager().getProfile(uuid);
 
         if (playerProfile == null) {
@@ -115,11 +116,11 @@ public class ProfileManager {
         return true;
     }
 
-    public static boolean sendFriendRequest(Player sender, UUID target) {
-        if (sender.getUniqueId().toString().equalsIgnoreCase(target.toString())) {
+    public boolean sendFriendRequest(Player sender, UUID target) {
+        /*if (sender.getUniqueId().toString().equalsIgnoreCase(target.toString())) {
             sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("friends.friend-add.friend-self")));
             return false;
-        }
+        }*/
 
         Profile senderProfile = Oxygen.getInstance().getProfileManager().getProfile(sender.getUniqueId());
         Profile targetProfile = Oxygen.getInstance().getProfileManager().getProfile(target);
@@ -156,7 +157,7 @@ public class ProfileManager {
         return true;
     }
 
-    public static boolean acceptFriendRequest(Profile senderProfile, Player sender, UUID target) {
+    public boolean acceptFriendRequest(Profile senderProfile, Player sender, UUID target) {
         if (sender.getUniqueId().toString().equalsIgnoreCase(target.toString())) {
             sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("friends.friend-accept.accept-self")));
             return false;
@@ -194,7 +195,7 @@ public class ProfileManager {
         return true;
     }
 
-    public static boolean addStatistic(UUID target, StatisticsServer statisticServer, StatisticType statisticType, int amount) {
+    public boolean addStatistic(UUID target, StatisticsServer statisticServer, StatisticType statisticType, int amount) {
         Profile playerProfile = Oxygen.getInstance().getProfileManager().getProfile(target);
 
         if (playerProfile == null) {
@@ -210,6 +211,57 @@ public class ProfileManager {
 
         statistics.addPlayerStatistic(statisticType, amount);
         playerProfile.calculatePlayerStatistics();
+        playerProfile.save();
+        return true;
+    }
+
+    public boolean sendBanPunishmentNotification(UUID uuid, Punishment punishment) {
+        Profile playerProfile = Oxygen.getInstance().getProfileManager().getProfile(uuid);
+
+        List<String> list = Oxygen.getInstance().getConfiguration().getConfiguration().getStringList("punishments.send-notifications.ban-notification");
+
+        if (playerProfile.getNotifications().size() > 50) {
+            playerProfile.getNotifications().remove(playerProfile.getNotifications().size()-1);
+        }
+
+        Oxygen.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(Bukkit.getPlayer(uuid).getName()));
+
+
+        playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), list));
+        playerProfile.save();
+        return true;
+    }
+
+    public boolean sendMutePunishmentNotification(UUID uuid, Punishment punishment) {
+        Profile playerProfile = Oxygen.getInstance().getProfileManager().getProfile(uuid);
+
+        List<String> list = Oxygen.getInstance().getConfiguration().getConfiguration().getStringList("punishments.send-notifications.mute-notification");
+
+        if (playerProfile.getNotifications().size() > 50) {
+            playerProfile.getNotifications().remove(playerProfile.getNotifications().size()-1);
+        }
+
+        Oxygen.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(Bukkit.getPlayer(uuid).getName()));
+
+
+        playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), list));
+        playerProfile.save();
+        return true;
+    }
+
+    public boolean sendWarningPunishmentNotification(UUID uuid, Punishment punishment) {
+        Profile playerProfile = Oxygen.getInstance().getProfileManager().getProfile(uuid);
+
+        List<String> list = Oxygen.getInstance().getConfiguration().getConfiguration().getStringList("punishments.send-notifications.warning-notification");
+
+        if (playerProfile.getNotifications().size() > 50) {
+            playerProfile.getNotifications().remove(playerProfile.getNotifications().size()-1);
+        }
+
+        Oxygen.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(Bukkit.getPlayer(uuid).getName()));
+
+
+        playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), list));
         playerProfile.save();
         return true;
     }

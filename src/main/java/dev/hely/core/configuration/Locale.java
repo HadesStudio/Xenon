@@ -75,10 +75,13 @@ public class Locale {
     public static String PUNISHMENT_UNMUTE_USAGE;
     public static String PUNISHMENT_UNMUTE_NOT_MUTED;
 
+    public static String HISTORY_USAGE;
 
     public static void load(){
         Config language = Oxygen.getInstance().getLanguageConfig();
         Config config = Oxygen.getInstance().getConfiguration();
+
+        HISTORY_USAGE = language.getConfiguration().getString("history.usage");
 
         COMMANDS_NO_PERMISSION = language.getConfiguration().getString("commands.no-permission");
         COMMANDS_ONLY_PLAYER = language.getConfiguration().getString("commands.only-player");

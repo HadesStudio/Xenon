@@ -11,7 +11,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StaffProfile {
-
     private boolean staffChat, adminChat, staffMode, vanish, socialSpy, staffAlerts;
-
 }

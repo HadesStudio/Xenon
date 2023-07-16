@@ -1,4 +1,4 @@
-title: "Your Profile" # %player%
+title: "%player% - Profile" # %player%
 
 statistics-button:
   slot: 0
@@ -49,7 +49,8 @@ friends-button:
     - " &fFriends: &c%friends_size%"
     - " &fFriend Requests: &c%friend_requests_size%"
     - ""
-    - "&7Click here to view all of your friends."
+    - "&dLeft-Click &7to view all your friends."
+    - "&dRight-Click &7to view all friend requests."
 
 notifications-button:
   slot: 4
@@ -62,3 +63,101 @@ notifications-button:
     - " &fUnread Notifications: &c%unread_size%"
     - ""
     - "&7Click here to view all notifications."
+
+social-media-menu:
+  title: "&d&lSocial Media"
+  size: 27
+
+  discord:
+    slot: 0
+    name: "&d&lDiscord"
+    material: "SKULL_ITEM"
+    data:
+      data: 0
+      skull-owner: "MHF_Discord" # Leave blank to just use data.
+    lore:
+      - "&d&lDiscord Tag: &c%discord%"
+      - ""
+      - "&dLeft-Click &chere to change your discord."
+      - "&dRight-Click &chere to remove your discord."
+  twitter:
+    slot: 1
+    name: "&d&lTwitter"
+    material: "SKULL_ITEM"
+    data:
+      data: 0
+      skull-owner: "MHF_Twitter" # Leave blank to just use data.
+    lore:
+      - "&d&lTwitter Link: &c%link%"
+      - ""
+      - "&dLeft-Click &chere to change your twitter link."
+      - "&dRight-Click &chere to remove your twitter link."
+  youtube:
+    slot: 2
+    name: "&d&lYouTube"
+    material: "SKULL_ITEM"
+    data:
+      data: 0
+      skull-owner: "MHF_YouTube" # Leave blank to just use data.
+    lore:
+      - "&d&lYouTube Link: &c%link%"
+      - ""
+      - "&dLeft-Click &chere to change your Youtube link."
+      - "&dRight-Click &chere to remove your Youtube link."
+  twitch:
+    slot: 3
+    name: "&d&lTwitch"
+    material: "SKULL_ITEM"
+    data:
+      data: 0
+      skull-owner: "MHF_Twitch" # Leave blank to just use data.
+    lore:
+      - "&d&lTwitch Link: &c%link%"
+      - ""
+      - "&dLeft-Click &chere to change your Twitch link."
+      - "&dRight-Click &chere to remove your Twitch link."
+  instagram:
+    slot: 4
+    name: "&d&lInstagram"
+    material: "SKULL_ITEM"
+    data:
+      data: 0
+      skull-owner: "MHF_Instagram" # Leave blank to just use data.
+    lore:
+      - "&d&lTwitch Link: &c%link%"
+      - ""
+      - "&dLeft-Click &chere to change your Instagram link."
+      - "&dRight-Click &chere to remove your Instagram link."
+
+friends:
+  friends-menu:
+    title: "&d&lFriends"
+    button:
+      name: "&d%player_name%"
+      lore: # %player%
+        - "&dLeft-Click &7to remove this player from"
+        - "&7your &dFriends List&7."
+        - "&dRight-Click &7to view the players profile."
+  friends-request-menu:
+    title: "&d&lFriend Requests"
+    button:
+      name: "&d%player_name%"
+      lore: # %player%
+        - "&dLeft-Click &7to accept this friend request."
+        - "&dRight-Click &7to view the players profile."
+
+notifications:
+  notification-menu:
+    title: "&d&lNotifications"
+    read-all:
+      material: "NETHER_STAR"
+      data: 0
+      name: "&d&lRead All"
+      lore: # %notification_size%
+        - "&7Click here to mark all notifications"
+        - "&7as &cread&7."
+    notification:
+      material: "PAPER"
+      data: 0
+      name: "&dNotification #%number% - %date%"
+      read-line-lore: "&dLeft-Click &7to mark this notification as read."
