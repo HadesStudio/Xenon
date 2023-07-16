@@ -3,6 +3,7 @@ package dev.hely.core;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.hely.core.chat.ChatModule;
 import dev.hely.core.client.ClientModule;
 import dev.hely.core.configuration.Locale;
 import dev.hely.core.modules.listener.ListenerModule;
@@ -74,6 +75,7 @@ public class Oxygen extends JavaPlugin {
     private CommandManager commandManager;
     private ListenerModule listenerModule;
     private ClientModule clientManager;
+    private ChatModule chatManager;
 
     private boolean debug_mode;
 
@@ -137,6 +139,8 @@ public class Oxygen extends JavaPlugin {
         rankManager = new RankManager();
         tagManager = new TagManager();
         serverManager = new ServerManager();
+        chatManager = new ChatModule();
+
     }
 
     public void setupModules(){
@@ -146,6 +150,7 @@ public class Oxygen extends JavaPlugin {
 
         modules = new HashMap<>();
 
+        this.loadModule(chatManager);
         this.loadModule(clientManager);
         this.loadModule(commandManager);
         this.loadModule(listenerModule);

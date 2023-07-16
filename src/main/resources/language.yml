@@ -6,6 +6,14 @@ commands:
   never-played: "&cThe player by the name of '&c&l%player%&c' has never connected to the server."
   offline-player: "&cThe player by the name of '&c&l%player%&c' is currently not connected to the server!"
 
+chat:
+  muted: "&cYou cannot speak in chat right now because it is currently muted!"
+  only-high-rank: "&cSorry, you must purchase &6Hely Rank &cto be able to speak in chat right now!"
+  slow-chat:
+    - "&cPublic chat is currently on slow mode! You can only chat every &c&l%time% seconds&c."
+    - "&cPlease wait another &c&l%wait_time% &cbefore chatting again."
+  filtered-message-alert: "&c[Chat Filter] &7%format%"
+  blocked: "&cYour message contained blocked content. It has been blocked from sending in chat."
 punishments:
   history-menu:
     pardon:
