@@ -31,35 +31,33 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
+@Getter @Setter
 public class ChatModule implements ModuleLoader {
-    @Getter private Oxygen instance;
+
     private boolean enabled;
 
     public static final int MAX_WARNINGS = Oxygen.getInstance().getConfiguration().getConfiguration().getInt("chat-system.warning-amount");
     public static final long AUTO_MUTE_DURATION = 60 * 1000L;
 
-    @Getter @Setter private int slowTime = 10;
-    @Getter @Setter private boolean muted = false;
-    @Getter @Setter private boolean allow_high_rank_talk = false;
+    private int slowTime = 10;
+    private boolean muted = false;
+    private boolean allow_high_rank_talk = false;
 
-    @Getter @Setter private Map<UUID, Long> slowCache = new HashMap<>();
-    @Getter @Setter private Map<UUID, Long> mutedCache = new HashMap<>();
-    @Getter @Setter private Map<UUID, AtomicInteger> warningsCache = new HashMap<>();
-    @Getter @Setter private Map<UUID, List<ChatMessage>> messageCache = new HashMap<>();
+    private Map<UUID, Long> slowCache = new HashMap<>();
+    private Map<UUID, Long> mutedCache = new HashMap<>();
+    private Map<UUID, AtomicInteger> warningsCache = new HashMap<>();
+    private Map<UUID, List<ChatMessage>> messageCache = new HashMap<>();
 
-    @Getter private List<String> lowFilter;
-    @Getter private List<String> linkWhitelist;
+    private List<String> lowFilter;
+    private List<String> linkWhitelist;
 
     private Pattern linkFilter;
     private Pattern ipFilter;
 
-    @Getter
     private Map<Pattern, String> inappropriate = new HashMap<>();
 
     @Override
     public void enable() {
-        this.instance = instance;
-
         this.inappropriate.put(Pattern.compile("n+[i1l|]+gg+[e3]+r+", Pattern.CASE_INSENSITIVE), "7d");
         this.inappropriate.put(Pattern.compile("k+i+l+l+ *y*o*u+r+ *s+e+l+f+", Pattern.CASE_INSENSITIVE), "7d");
         this.inappropriate.put(Pattern.compile("f+a+g+[o0]+t+", Pattern.CASE_INSENSITIVE), "7d");
@@ -72,7 +70,7 @@ public class ChatModule implements ModuleLoader {
         this.lowFilter = Oxygen.getInstance().getConfiguration().getConfiguration().getStringList("chat-system.word-filters");
         this.linkWhitelist = Oxygen.getInstance().getConfiguration().getConfiguration().getStringList("chat-system.link-whitelists");
 
-        instance.getServer().getOnlinePlayers().forEach(loopPlayer -> {
+        Oxygen.getInstance().getServer().getOnlinePlayers().forEach(loopPlayer -> {
             this.messageCache.put(loopPlayer.getUniqueId(), new ArrayList<>());
             this.warningsCache.put(loopPlayer.getUniqueId(), new AtomicInteger(MAX_WARNINGS));
         });

@@ -227,7 +227,7 @@ public class HistoryMenu extends Menu {
             builder.setData(getData());
             builder.setDisplayName(Oxygen.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.mutes.name").replace("%mute_size%", String.valueOf(mutes.size())));
             for (String line : Oxygen.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("selector.mutes.lore")) {
-                builder.addLore(line);
+                builder.addLore(line.replace("%status%", profile.getActiveMute() != null ? "&a&nYes" : "&c&nNo"));
             }
             return builder.build();
         }

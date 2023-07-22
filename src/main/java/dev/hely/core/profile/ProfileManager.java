@@ -224,8 +224,7 @@ public class ProfileManager {
             playerProfile.getNotifications().remove(playerProfile.getNotifications().size()-1);
         }
 
-        Oxygen.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(Bukkit.getPlayer(uuid).getName()));
-
+        Oxygen.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(playerProfile.getName()));
 
         playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), list));
         playerProfile.save();
@@ -241,7 +240,7 @@ public class ProfileManager {
             playerProfile.getNotifications().remove(playerProfile.getNotifications().size()-1);
         }
 
-        Oxygen.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(Bukkit.getPlayer(uuid).getName()));
+        Oxygen.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(playerProfile.getName()));
 
 
         playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), list));
@@ -258,7 +257,7 @@ public class ProfileManager {
             playerProfile.getNotifications().remove(playerProfile.getNotifications().size()-1);
         }
 
-        Oxygen.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(Bukkit.getPlayer(uuid).getName()));
+        Oxygen.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(playerProfile.getName()));
 
 
         playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), list));

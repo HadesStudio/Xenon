@@ -221,6 +221,7 @@ public class BansMenu extends PaginatedMenu {
 
 
             public Prompt acceptInput(ConversationContext cc, String newName) {
+                callback.callback(newName);
                 return Prompt.END_OF_CONVERSATION;
             }
 
