@@ -34,20 +34,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 public class ChatListener implements Listener {
+    
+    private ChatModule chatModule;
+    
     @EventHandler(priority = EventPriority.MONITOR)
     private void onPlayerJoin(PlayerJoinEvent event) {
 
-        if (Oxygen.getInstance().getChatManager().getMutedCache().containsKey(event.getPlayer().getUniqueId())) {
+        if (chatModule.getMutedCache().containsKey(event.getPlayer().getUniqueId())) {
             return;
         }
 
-        Oxygen.getInstance().getChatManager().getMessageCache().put(event.getPlayer().getUniqueId(), new ArrayList<>());
-        Oxygen.getInstance().getChatManager().getWarningsCache().put(event.getPlayer().getUniqueId(), new AtomicInteger(ChatModule.MAX_WARNINGS));
+        chatModule.getMessageCache().put(event.getPlayer().getUniqueId(), new ArrayList<>());
+        chatModule.getWarningsCache().put(event.getPlayer().getUniqueId(), new AtomicInteger(ChatModule.MAX_WARNINGS));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onAsyncChat(AsyncPlayerChatEvent event) {
-        final Player player = event.getPlayer();
+        Player player = event.getPlayer();
         Profile profile = Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
         if (player.hasPermission(Oxygen.getInstance().getConfiguration().getConfiguration().getString("chat-system.staff-bypass-permission"))) {
@@ -58,50 +61,49 @@ public class ChatListener implements Listener {
             return;
         }
 
-        if (Oxygen.getInstance().getChatManager().isMuted() && !Oxygen.getInstance().getChatManager().isAllow_high_rank_talk()) {
+        if (chatModule.isMuted() && !chatModule.isAllow_high_rank_talk()) {
             player.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("chat.muted")));
             event.setCancelled(true);
             return;
         }
 
-        if (!player.hasPermission(Oxygen.getInstance().getConfiguration().getConfiguration().getString("chat-system.mute-bypass-permission")) && Oxygen.getInstance().getChatManager().isAllow_high_rank_talk()) {
+        if (!player.hasPermission(Oxygen.getInstance().getConfiguration().getConfiguration().getString("chat-system.mute-bypass-permission")) && chatModule.isAllow_high_rank_talk()) {
             player.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("chat.only-high-rank")));
             event.setCancelled(true);
             return;
         }
 
-        if (Oxygen.getInstance().getChatManager().getSlowTime() > 0) {
-            if (Oxygen.getInstance().getChatManager().getSlowChatRemaining(player.getUniqueId()) > 0) {
+        if (chatModule.getSlowTime() > 0) {
+            if (chatModule.getSlowChatRemaining(player.getUniqueId()) > 0) {
                 for (String message : Oxygen.getInstance().getLanguageConfig().getConfiguration().getStringList("chat.slow-chat")) {
-                    player.sendMessage(CC.translate(message).replace("%time%", String.valueOf(Oxygen.getInstance().getChatManager().getSlowTime())).replace("%wait_time%", TimeFormatUtils.formatTime((int) Oxygen.getInstance().getChatManager().getSlowChatRemaining(player.getUniqueId()) / 1000)));
+                    player.sendMessage(CC.translate(message).replace("%time%", String.valueOf(chatModule.getSlowTime())).replace("%wait_time%", TimeFormatUtils.formatTime((int) chatModule.getSlowChatRemaining(player.getUniqueId()) / 1000)));
                 }
                 return;
             }
 
-            Oxygen.getInstance().getChatManager().getSlowCache().put(player.getUniqueId(), System.currentTimeMillis());
+            chatModule.getSlowCache().put(player.getUniqueId(), System.currentTimeMillis());
         }
 
         String msg = event.getMessage().toLowerCase();
 
-        if (Oxygen.getInstance().getChatManager().isFiltered(msg)) {
+        if (chatModule.isFiltered(msg)) {
             for (Player players : Oxygen.getInstance().getServer().getOnlinePlayers()) {
                 if (players.hasPermission(Oxygen.getInstance().getConfiguration().getConfiguration().getString("chat-system.staff-bypass-permission"))) {
-                    players.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("chat.filtered-message-alert").replace("%format%", Oxygen.getInstance().getChatManager().formatChatDisplay(player, msg))));
+                    players.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("chat.filtered-message-alert").replace("%format%", chatModule.formatChatDisplay(player, msg))));
                 }
             }
 
-            player.sendMessage(Oxygen.getInstance().getChatManager().formatChatDisplay(player, msg));
+            player.sendMessage(chatModule.formatChatDisplay(player, msg));
             event.setCancelled(true);
             return;
         }
 
-        for (Pattern pattern : Oxygen.getInstance().getChatManager().getInappropriate().keySet()) {
-
+        for (Pattern pattern : chatModule.getInappropriate().keySet()) {
             if (!pattern.matcher(event.getMessage().toLowerCase()).find()) {
                 continue;
             }
 
-            final String value = Oxygen.getInstance().getChatManager().getInappropriate().get(pattern);
+            String value = chatModule.getInappropriate().get(pattern);
 
             if (value != null) {
             }
@@ -111,6 +113,6 @@ public class ChatListener implements Listener {
             break;
         }
 
-        Oxygen.getInstance().getChatManager().getMessageCache().get(player.getUniqueId()).add(new ChatMessage(System.currentTimeMillis(), event.getMessage()));
+        chatModule.getMessageCache().get(player.getUniqueId()).add(new ChatMessage(System.currentTimeMillis(), event.getMessage()));
     }
 }

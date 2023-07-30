@@ -56,9 +56,9 @@ public class Rank {
 
 
         document.put("permissionsData", Oxygen.PLAIN_GSON.toJson(permissionsData, GSONUtil.PERMISSION_DATA));
-        document.put("bungeePermissions", Oxygen.PLAIN_GSON.toJson(bungeePermissions, GSONUtil.listStringType));
-        document.put("inheritances", Oxygen.PLAIN_GSON.toJson(inheritances, GSONUtil.listStringType));
-        document.put("servers", Oxygen.PLAIN_GSON.toJson(servers, GSONUtil.listStringType));
+        document.put("bungeePermissions", Oxygen.PLAIN_GSON.toJson(bungeePermissions, GSONUtil.LIST_STRING_TYPE));
+        document.put("inheritances", Oxygen.PLAIN_GSON.toJson(inheritances, GSONUtil.LIST_STRING_TYPE));
+        document.put("servers", Oxygen.PLAIN_GSON.toJson(servers, GSONUtil.LIST_STRING_TYPE));
 
         Oxygen.getInstance().getRankManager().saveRanksToConfig();
         plugin.getMongoModule().getRanksCollection().replaceOne(Filters.eq("name", name), document, new ReplaceOptions().upsert(true));
@@ -78,9 +78,9 @@ public class Rank {
 
             Type permissionType = new TypeToken<List<PermissionData>>() {}.getType();
             setPermissionsData(Oxygen.PLAIN_GSON.fromJson(document.getString("permissionsData"), permissionType));
-            setBungeePermissions(Oxygen.PLAIN_GSON.fromJson(document.getString("bungeePermissions"), GSONUtil.listStringType));
-            setInheritances(Oxygen.PLAIN_GSON.fromJson(document.getString("inheritances"), GSONUtil.listStringType));
-            setServers(Oxygen.PLAIN_GSON.fromJson(document.getString("servers"), GSONUtil.listStringType));
+            setBungeePermissions(Oxygen.PLAIN_GSON.fromJson(document.getString("bungeePermissions"), GSONUtil.LIST_STRING_TYPE));
+            setInheritances(Oxygen.PLAIN_GSON.fromJson(document.getString("inheritances"), GSONUtil.LIST_STRING_TYPE));
+            setServers(Oxygen.PLAIN_GSON.fromJson(document.getString("servers"), GSONUtil.LIST_STRING_TYPE));
         }
     }
 

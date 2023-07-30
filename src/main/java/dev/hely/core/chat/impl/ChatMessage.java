@@ -19,7 +19,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public class ChatMessage {
-    @Getter private long sentDate;
-    @Getter private String message;
+
+    private long sentDate;
+    private String message;
+
 }

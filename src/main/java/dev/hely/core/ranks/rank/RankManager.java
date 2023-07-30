@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
  * Protect Name Oxygen
  */
 public class RankManager implements ModuleLoader {
+
     private boolean enabled;
 
     @Getter private List<Rank> ranks = new ArrayList<>();
@@ -166,9 +167,9 @@ public class RankManager implements ModuleLoader {
             file.set(rankData.getName() + ".global-rank", rankData.isGlobalRank());
             file.set(rankData.getName() + ".weight", rankData.getWeight());
             file.set(rankData.getName() + ".permissions-data", Oxygen.PLAIN_GSON.toJson(rankData.getPermissionsData(), GSONUtil.PERMISSION_DATA));
-            file.set(rankData.getName() + ".bungee-permissions", Oxygen.PLAIN_GSON.toJson(rankData.getBungeePermissions(), GSONUtil.listStringType));
-            file.set(rankData.getName() + ".inheritances", Oxygen.PLAIN_GSON.toJson(rankData.getInheritances(), GSONUtil.listStringType));
-            file.set(rankData.getName() + ".servers", Oxygen.PLAIN_GSON.toJson(rankData.getServers(), GSONUtil.listStringType));
+            file.set(rankData.getName() + ".bungee-permissions", Oxygen.PLAIN_GSON.toJson(rankData.getBungeePermissions(), GSONUtil.LIST_STRING_TYPE));
+            file.set(rankData.getName() + ".inheritances", Oxygen.PLAIN_GSON.toJson(rankData.getInheritances(), GSONUtil.LIST_STRING_TYPE));
+            file.set(rankData.getName() + ".servers", Oxygen.PLAIN_GSON.toJson(rankData.getServers(), GSONUtil.LIST_STRING_TYPE));
 
         });
         Oxygen.getInstance().getRanksConfig().save();

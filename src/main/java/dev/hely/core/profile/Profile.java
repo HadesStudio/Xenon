@@ -107,7 +107,7 @@ public class Profile {
         document.put("uniqueId", uniqueId.toString());
         document.put("name", name);
         document.put("currentAddress", currentAddress);
-        document.put("addresses", Oxygen.PLAIN_GSON.toJson(document.getString("addresses"), GSONUtil.listStringType));
+        document.put("addresses", Oxygen.PLAIN_GSON.toJson(addresses, GSONUtil.LIST_STRING_TYPE));
         document.put("firstSeen", firstSeen);
         document.put("lastSeen", lastSeen);
         document.put("lastServer", lastServer);
@@ -151,7 +151,7 @@ public class Profile {
             }
 
             currentAddress = document.getString("currentAddress");
-            addresses = Oxygen.PLAIN_GSON.fromJson(document.getString("addresses"), GSONUtil.listStringType);
+            addresses = Oxygen.PLAIN_GSON.fromJson(document.getString("addresses"), GSONUtil.LIST_STRING_TYPE);
             firstSeen = document.getLong("firstSeen");
             lastSeen = document.getLong("lastSeen");
             lastServer = document.getString("lastServer");

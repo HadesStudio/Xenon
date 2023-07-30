@@ -13,6 +13,6 @@ import java.util.List;
  */
 public class GSONUtil {
 
-    public static final Type listStringType = new TypeToken<List<String>>() {}.getType();
+    public static final Type LIST_STRING_TYPE = new TypeToken<List<String>>() {}.getType();
     public static final Type PERMISSION_DATA = new TypeToken<List<PermissionData>>() {}.getType();
 }

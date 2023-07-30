@@ -60,9 +60,9 @@ public class ProfileListener implements Listener {
             profile.setCurrentAddress(event.getAddress().getHostAddress());
         }
 
-        /*if (!profile.getAddresses().contains(event.getAddress().getHostAddress())) {
+        if (!profile.getAddresses().contains(event.getAddress().getHostAddress())) {
             profile.getAddresses().add(event.getAddress().getHostAddress());
-        }*/
+        }
     }
 
     @EventHandler
@@ -136,7 +136,7 @@ public class ProfileListener implements Listener {
 
     private boolean onPunishmentKick(AsyncPlayerPreLoginEvent event, Profile profile, UUID uuid) {
         if (profile.getActiveBlacklist() != null) {
-            if (Locale.PUNISHMENTS_JOIN_ALLOW_BANNED) return false;
+            if (Locale.PUNISHMENTS_JOIN_ALLOW_BLACKLISTED) return false;
             Punishment punishment = profile.getActiveBlacklist();
 
             String finalMessage = Locale.PUNISHMENT_KICK.get("blacklist");
@@ -154,7 +154,7 @@ public class ProfileListener implements Listener {
         }
 
         if (profile.getActiveBan() != null) {
-            if (Locale.PUNISHMENTS_JOIN_ALLOW_BLACKLISTED) return false;
+            if (Locale.PUNISHMENTS_JOIN_ALLOW_BANNED) return false;
             Punishment punishment = profile.getActiveBan();
 
             String finalMessage = Locale.PUNISHMENT_KICK.get("ban");
