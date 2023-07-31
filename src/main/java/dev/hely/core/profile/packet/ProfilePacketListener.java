@@ -72,6 +72,43 @@ public class ProfilePacketListener implements PacketListener {
     }
 
     @IncomingPacketHandler
+    public void onStaffMessagePacket(StaffMessagePacket packet){
+        String name = packet.getPlayerName();
+        String server = packet.getServerName();
+        String message = packet.getMessage();
+
+        Messages.sendMessage(Locale.HELPOP_STAFF_ALERT
+                .replace("%player%", name)
+                .replace("%server%", server)
+                .replace("%message%", message), "oxygen.staff");
+    }
+
+    @IncomingPacketHandler
+    public void onStaffRequestClaimPacket(StaffRequestClaimPacket packet){
+        String name = packet.getPlayerName();
+        String creator = packet.getCreatorName();
+
+        Messages.sendMessage(Locale.REQUEST_CLAIMED_BROADCAST
+                .replace("%player%", name)
+                .replace("%creator_name%", creator),
+                "oxygen.staff");
+    }
+
+    @IncomingPacketHandler
+    public void onStaffRequestReportPacket(StaffRequestReportPacket packet){
+        String name = packet.getPlayerName();
+        String server = packet.getServerName();
+        String message = packet.getMessage();
+        String reportedPlayer = packet.getReportedPlayer();
+
+        Messages.sendMessage(Locale.REPORT_STAFF_ALERT
+                .replace("%player%", name)
+                .replace("%server%", server)
+                .replace("%message%", message)
+                .replace("%reported_player%", reportedPlayer), "oxygen.staff");
+    }
+
+    @IncomingPacketHandler
     public void onNotification(FriendSessionPacket packet) {
         packet.notifyPlayers();
     }

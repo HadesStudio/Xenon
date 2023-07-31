@@ -337,3 +337,26 @@ staff-chat:
   disabled: "&eStaff chat has been &cdisabled&e."
   format: "&9[Staff] &7(%server_name%) &r%player%&7: &b%message%"
 
+requests:
+  invalid-message: "&cYou must provide a valid message."
+  closed: "&cYou have successfully closed %player%'s staff request."
+  closed-player: "&aYour &6Staff Request &ahas just been closed by &c%staff_member%&a."
+  type-note: "&aPlease type the note you would like to add to this request."
+  note-added: "&aYou have successfully added a new &6Staff Note &ato this player request."
+
+  claim:
+    claimed: "&9[Requests] &7You have successfully claimed &a%player%'s &7staff request."
+    broadcast: "&9[Requests] &a%player% &7has claimed &a%creator_name% &6Staff Request&7."
+    unclaimed: "&9[Requests] &cYou have successfully unclaimed &a%player%'s &cstaff request."
+    already-claimed: "&9[Requests] &cYou cannot claim this &6Staff Request &cbecause it already has been claimed."
+
+
+  helpop:
+    usage: "&cCorrect Usage: /helpop <message>"
+    broadcast: "&9[Request] &7(%server%) &a&n%player%&a has requested staff assistance: &7%message%"
+    created: "&aYou have successfully sent a &6Staff Request&a."
+  report:
+    usage: "&cCorrect Usage: /report <player> <message>"
+    not-online: "&cThat player is not on the server.."
+    broadcast: "&9[Request] &7(%server%) &a&n%player%&a has just reported &6%reported_player%&a: &7%message%"
+    created: "&aYou have successfully sent a &6Staff Report Request&a."

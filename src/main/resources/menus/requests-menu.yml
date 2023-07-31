@@ -1,0 +1,94 @@
+main-menu:
+  title: "Staff Requests"
+  size: 27
+
+  buttons:
+    requests:
+      slot: 12
+      material: "NETHER_STAR"
+      data: 0
+      display-name: "&6Active Requests"
+      lore:
+        - "&7Click here to view all active staff"
+        - "&7requests."
+        - ""
+        - "&7Active Requests: &a%request_size%"
+    closed:
+      slot: 14
+      material: "REDSTONE_BLOCK"
+      data: 0
+      display-name: "&cClosed Requests"
+      lore:
+        - "&7Click here to view all closed staff"
+        - "&7requests."
+
+active-requests:
+  title: "Active Staff Requests"
+
+  buttons:
+    requests:
+      material: "PAPER"
+      data: 0
+      display-name: "&6%request_player% Request &7(#%request_identifier%)"
+      lores:
+        report:
+          default-lore:
+            - "&7%message%"
+            - "&7"
+            - "&7Type: &6Player Report"
+            - "&7Reported Player: &6%reported_player%"
+            - "&7Claimed: &cNo"
+            - "&7Notes: &6%notes_size%"
+            - "&7"
+            - "&6Left-Click &ato claim request."
+            - "&6Middle-Click &ato close request."
+            - "&6Right-Click &ato view notes."
+          claimed-lore:
+            - "&7%message%"
+            - "&7"
+            - "&7Type: &6Player Report"
+            - "&7Reported Player: &6%reported_player%"
+            - "&7Claimed: &aYes"
+            - " &7- By: &a%player_claimed%"
+            - "&7Notes: &6%notes_size%"
+            - "&7"
+            - "&6Left-Click &ato claim request."
+            - "&6Middle-Click &ato close request."
+            - "&6Right-Click &ato view notes."
+        requests:
+          default-lore:
+            - "&7%message%"
+            - ""
+            - "&7Type: &6Staff Request"
+            - "&7Claimed: &cNo"
+            - "&7Notes: &6%notes_size%"
+            - ""
+            - "&6Left-Click &ato claim request."
+            - "&6Middle-Click &ato close request."
+            - "&6Right-Click &ato view notes."
+          claimed-lore:
+            - "&7%message%"
+            - ""
+            - "&7Type: &6Staff Request"
+            - "&7Claimed: &aYes"
+            - " &7- By: &a%player_claimed%"
+            - "&7Notes: &6%notes_size%"
+            - ""
+            - "&6Left-Click &ato claim request."
+            - "&6Middle-Click &ato close request."
+            - "&6Right-Click &ato view notes."
+    notes:
+      material: "PAPER"
+      data: 0
+      display-name: "&6Request Note"
+      lore:
+        - "&7%message%"
+        - ""
+        - "&6Left-Click &7to remove this note."
+    new-note:
+      material: "NAME_TAG"
+      data: 0
+      display-name: "&6&lNew Note"
+      lore:
+        - "&7Click here to create a new note"
+        - "&7on this player request."

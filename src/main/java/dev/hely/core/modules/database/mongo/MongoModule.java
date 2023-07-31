@@ -24,6 +24,7 @@ public class MongoModule implements ModuleLoader {
     public MongoCollection<Document> ranksCollection;
     public MongoCollection<Document> punishmentsCollection;
     public MongoCollection<Document> tagsCollection;
+    public MongoCollection<Document> requestsCollection;
 
     @Override
     public void enable() {
@@ -47,6 +48,7 @@ public class MongoModule implements ModuleLoader {
         ranksCollection = mongoDatabase.getCollection("ranks");
         punishmentsCollection = mongoDatabase.getCollection("punishments");
         tagsCollection = mongoDatabase.getCollection("tags");
+        requestsCollection = mongoDatabase.getCollection("requests");
 
         enabled = true;
     }

@@ -12,6 +12,9 @@ import dev.hely.core.profile.profilesystem.commands.FriendsCommand;
 import dev.hely.core.profile.profilesystem.commands.NotificationCommand;
 import dev.hely.core.profile.profilesystem.commands.NotificationsCommand;
 import dev.hely.core.ranks.rank.commands.RankCommand;
+import dev.hely.core.staff.requests.commands.HelpopCommand;
+import dev.hely.core.staff.requests.commands.ReportCommand;
+import dev.hely.core.staff.requests.commands.staff.RequestsCommand;
 import dev.hely.core.tag.command.TagCommand;
 import dev.hely.core.utils.command.utils.ClassWrapper;
 import org.bukkit.Bukkit;
@@ -61,9 +64,10 @@ public class CommandManager implements ModuleLoader {
         registerCommand(new UnBanCommand());
         registerCommand(new UnMuteCommand());
         registerCommand(new HistoryCommand());
-
+        registerCommand(new HelpopCommand());
         registerCommand(new ProfileCommand());
-
+        registerCommand(new RequestsCommand());
+        registerCommand(new ReportCommand());
         registerCommand(new AdminChatCommand());
         registerCommand(new StaffChatCommand());
 

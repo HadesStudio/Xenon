@@ -6,6 +6,7 @@ import dev.hely.core.profile.ProfileListener;
 import dev.hely.core.profile.note.NoteListener;
 import dev.hely.core.profile.permission.bukkit.BukkitPermissionListener;
 import dev.hely.core.punishment.PunishmentListener;
+import dev.hely.lib.menu.MenuListener;
 import org.bukkit.event.Listener;
 
 import java.util.stream.Stream;
@@ -28,6 +29,7 @@ public class ListenerModule implements ModuleLoader {
                 new BukkitPermissionListener(),
                 new ProfileListener(plugin),
                 new PunishmentListener(),
+                new MenuListener(plugin),
                 new NoteListener());
 
         this.enabled = true;

@@ -77,9 +77,50 @@ public class Locale {
 
     public static String HISTORY_USAGE;
 
+    public static String REQUEST_INVALID_MESSAGE;
+    public static String HELPOP_USAGE;
+    public static String HELPOP_STAFF_ALERT;
+    public static String HELPOP_CREATED;
+    public static String REQUEST_CLOSED;
+    public static String REQUEST_PLAYER_ALERT_CLOSED;
+
+    public static String REQUEST_CLAIMED;
+    public static String REQUEST_CLAIMED_BROADCAST;
+    public static String REQUEST_UNCLAIMED;
+    public static String REQUEST_ALREADY_CLAIMED;
+
+    public static String REPORT_USAGE;
+    public static String REPORT_STAFF_ALERT;
+    public static String REPORT_CREATED;
+    public static String REPORT_NOT_ONLINE;
+    public static String REQUEST_NOTE_PROMT;
+    public static String REQUEST_NOTE_ADDED;
+
     public static void load(){
         Config language = Oxygen.getInstance().getLanguageConfig();
         Config config = Oxygen.getInstance().getConfiguration();
+
+        REQUEST_UNCLAIMED = language.getConfiguration().getString("requests.claim.unclaimed");
+        REQUEST_ALREADY_CLAIMED = language.getConfiguration().getString("requests.claim.already-claimed");
+
+        REQUEST_NOTE_PROMT = language.getConfiguration().getString("requests.type-note");
+        REQUEST_NOTE_ADDED = language.getConfiguration().getString("requests.note-added");
+
+
+        REPORT_USAGE = language.getConfiguration().getString("requests.report.usage");
+        REPORT_STAFF_ALERT = language.getConfiguration().getString("requests.report.broadcast");
+        REPORT_CREATED = language.getConfiguration().getString("requests.report.created");
+        REPORT_NOT_ONLINE = language.getConfiguration().getString("requests.report.not-online");
+
+        REQUEST_INVALID_MESSAGE = language.getConfiguration().getString("requests.invalid-message");
+        HELPOP_USAGE = language.getConfiguration().getString("requests.helpop.usage");
+        HELPOP_STAFF_ALERT = language.getConfiguration().getString("requests.helpop.broadcast");
+        HELPOP_CREATED = language.getConfiguration().getString("requests.helpop.created");
+        REQUEST_CLOSED = language.getConfiguration().getString("requests.closed");
+        REQUEST_PLAYER_ALERT_CLOSED = language.getConfiguration().getString("requests.closed-player");
+        REQUEST_CLAIMED = language.getConfiguration().getString("requests.claim.claimed");
+        REQUEST_CLAIMED_BROADCAST = language.getConfiguration().getString("requests.claim.broadcast");
+
 
         HISTORY_USAGE = language.getConfiguration().getString("history.usage");
 

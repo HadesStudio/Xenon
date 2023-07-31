@@ -15,6 +15,7 @@ import dev.hely.core.modules.database.mongo.MongoModule;
 import dev.hely.core.modules.ModuleLoader;
 import dev.hely.core.profile.ProfileManager;
 import dev.hely.core.server.ServerManager;
+import dev.hely.core.staff.requests.RequestHandler;
 import dev.hely.core.tag.TagManager;
 import dev.hely.core.tag.packet.TagPacketListener;
 import dev.hely.core.utils.command.CommandManager;
@@ -60,6 +61,7 @@ public class Oxygen extends JavaPlugin {
     private Config tagConfig;
     private Config profileMenuConfig;
     private Config historyMenuConfig;
+    private Config requestsMenuConfig;
 
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
@@ -76,6 +78,8 @@ public class Oxygen extends JavaPlugin {
     private ListenerModule listenerModule;
     private ClientModule clientManager;
     private ChatModule chatManager;
+    private RequestHandler requestHandler;
+    private MenuManager menuManager;
 
     private boolean debug_mode;
 
@@ -89,11 +93,16 @@ public class Oxygen extends JavaPlugin {
         initModules();
         setupModules();
         setupPackets();
+        setupEnabled();
     }
 
     @Override
     public void onDisable() {
         modules.forEach((s, moduleLoader) -> unloadModule(moduleLoader));
+    }
+
+    public void setupEnabled() {
+        requestHandler.onEnable();
     }
 
     public void startupMessages() {
@@ -124,6 +133,7 @@ public class Oxygen extends JavaPlugin {
         this.tagConfig = new Config(this, "tags");
         this.profileMenuConfig = new Config(this, "menus" + File.separator + "profile-menu");
         this.historyMenuConfig = new Config(this, "menus" + File.separator + "history-menu");
+        this.requestsMenuConfig = new Config(this, "menus" + File.separator + "requests-menu");
 
         Locale.load();
     }
@@ -140,7 +150,7 @@ public class Oxygen extends JavaPlugin {
         tagManager = new TagManager();
         serverManager = new ServerManager();
         chatManager = new ChatModule();
-
+        requestHandler = new RequestHandler();
     }
 
     public void setupModules(){
