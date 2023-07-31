@@ -14,6 +14,7 @@ import dev.hely.core.modules.database.redis.RedisModule;
 import dev.hely.core.modules.database.mongo.MongoModule;
 import dev.hely.core.modules.ModuleLoader;
 import dev.hely.core.profile.ProfileManager;
+import dev.hely.core.server.NameMCReminderTask;
 import dev.hely.core.server.ServerManager;
 import dev.hely.core.staff.requests.RequestHandler;
 import dev.hely.core.tag.TagManager;
@@ -94,6 +95,8 @@ public class Oxygen extends JavaPlugin {
         setupModules();
         setupPackets();
         setupEnabled();
+
+        new NameMCReminderTask().runTaskTimerAsynchronously(this, 20L * 60 * Oxygen.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"), 20L * 60 * Oxygen.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"));
     }
 
     @Override

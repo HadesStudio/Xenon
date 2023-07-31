@@ -25,6 +25,24 @@ advanced-client-version-data:
   forge: "&6[F]"
   vanilla: "&a[V]"
 
+name-mc:
+  enabled: true # Do you want to enable the NameMC System?
+  reminder: true # Do you want to send reminders when someone hasn't voted for your server?
+  reminder-timer: 5 # This is how many minutes it is before another reminder is sent.
+  link: "https://api.namemc.com/server/helydev.com/likes?profile=" # Replace "helydev.com" with your server name.
+  commands: # These are the commands executed when someone votes.
+    - "rank give %player% Free"
+  messages:
+    reminder: # %player%
+      - "&7You have not voted for our server yet!"
+      - "&7You can type &a/namemc &7for your free rewards!"
+    liked:
+      - "&7Thank you for liking our server on &aNameMC&7!"
+      - "&7You have been given your rewards."
+    broadcast:
+      - "&a%player% &7has just voted for our server on &6NameMC&7!"
+    not-liked: "&cYou have not liked our server on &6NameMC &cyet, you must do that before claiming your rewards."
+
 chat-system:
   enabled: true # Do you want to use the built in chat system?
   warning-system: true # Do you want to use the blocked chat message warning system?

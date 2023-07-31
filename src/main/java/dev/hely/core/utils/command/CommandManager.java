@@ -1,5 +1,6 @@
 package dev.hely.core.utils.command;
 
+import dev.hely.core.commands.implement.player.NameMCCommand;
 import dev.hely.core.commands.implement.player.ProfileCommand;
 import dev.hely.core.commands.implement.punishment.*;
 import dev.hely.core.commands.implement.punishment.undo.UnBanCommand;
@@ -70,6 +71,7 @@ public class CommandManager implements ModuleLoader {
         registerCommand(new ReportCommand());
         registerCommand(new AdminChatCommand());
         registerCommand(new StaffChatCommand());
+        registerCommand(new NameMCCommand());
 
         registerCommand(new FriendsCommand());
         registerCommand(new NotificationCommand());
