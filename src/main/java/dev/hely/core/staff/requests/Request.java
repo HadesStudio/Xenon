@@ -16,29 +16,20 @@ package dev.hely.core.staff.requests;
 //============================================================
 
 import com.google.gson.reflect.TypeToken;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.Oxygen;
-import dev.hely.core.profile.note.Note;
-import dev.hely.core.profile.permission.ProfilePermission;
 import dev.hely.core.profile.profilesystem.impl.Comment;
-import dev.hely.core.profile.profilesystem.impl.Message;
-import dev.hely.core.profile.profilesystem.impl.Preferences;
-import dev.hely.core.profile.profilesystem.impl.serverstats.Statistics;
-import dev.hely.core.profile.profilesystem.impl.serverstats.StatisticsServer;
-import dev.hely.core.profile.profilesystem.impl.social.SocialMediaType;
-import dev.hely.core.profile.staff.StaffProfile;
-import dev.hely.core.punishment.Punishment;
-import dev.hely.core.ranks.grants.Grant;
-import dev.hely.core.ranks.gson.GSONUtil;
 import dev.hely.core.staff.requests.types.RequestType;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -65,9 +56,10 @@ public class Request {
     private Oxygen plugin = Oxygen.getInstance();
 
 
-    public Request(Integer identifier, String creator) {
+    public Request(Integer identifier, String creator, String creation) {
         this.identifier = identifier;
         this.creatorPlayerName = creator;
+        this.dateCreated = creation;
 
         load();
     }
@@ -80,8 +72,11 @@ public class Request {
         Document document = new Document();
         document.put("identifier", identifier);
         document.put("closed", closed);
+
         document.put("dateCreated", dateCreated);
         document.put("dateClosed", dateClosed);
+
+
         document.put("creatorPlayerName", creatorPlayerName);
         document.put("requestType", String.valueOf(requestType));
         document.put("claimed", claimed);
@@ -94,7 +89,7 @@ public class Request {
         document.put("staffNotes", Oxygen.PLAIN_GSON.toJson(this.staffNotes, staffNotes));
 
         plugin.getMongoModule().getRequestsCollection().replaceOne(Filters.eq("identifier", identifier), document, new ReplaceOptions().upsert(true));
-        if (leave) plugin.getProfileManager().getProfileMap().remove(identifier);
+        if (leave) plugin.getRequestHandler().getRequestsMap().remove(identifier);
     }
 
     public void load() {
@@ -108,6 +103,8 @@ public class Request {
             reportedPlayer = document.getString("reportedPlayer");
             closed = document.getBoolean("closed");
             dateCreated = document.getString("dateCreated");
+            dateClosed = document.getString("dateClosed");
+
             creatorPlayerName = document.getString("creatorPlayerName");
             message = document.getString("message");
             closedStaffName = document.getString("closedStaffName");

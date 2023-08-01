@@ -56,7 +56,7 @@ public abstract class BaseCommand extends BukkitCommand {
     }
 
     protected boolean checkOfflinePlayer(CommandSender sender, OfflinePlayer offlinePlayer, String name) {
-        if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+        if (!offlinePlayer.hasPlayedBefore()) {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", name));
             return false;
         }

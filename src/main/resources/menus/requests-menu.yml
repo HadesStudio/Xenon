@@ -21,6 +21,61 @@ main-menu:
       lore:
         - "&7Click here to view all closed staff"
         - "&7requests."
+        - ""
+        - "&7Closed Requests: &c%request_size%"
+
+closed-requests:
+  title: "Closed Staff Requests"
+
+  buttons:
+    requests:
+      material: "PAPER"
+      data: 0
+      display-name: "&6%request_player% Request &7(#%request_identifier%)"
+      lores:
+        report:
+          default-lore:
+            - "&7%message%"
+            - "&7"
+            - "&7Type: &6Player Report"
+            - "&7Reported Player: &6%reported_player%"
+            - "&7Claimed: &cNo"
+            - "&7Notes: &6%notes_size%"
+            - "&7Date Closed: &c%date_closed%"
+            - "&7"
+            - "&6Left-Click &ato reopen this request."
+          claimed-lore:
+            - "&7%message%"
+            - "&7"
+            - "&7Type: &6Player Report"
+            - "&7Reported Player: &6%reported_player%"
+            - "&7Claimed: &aYes"
+            - " &7- By: &a%player_claimed%"
+            - "&7Notes: &6%notes_size%"
+            - "&7Date Closed: &c%date_closed%"
+            - "&7"
+            - "&6Left-Click &ato reopen this request."
+        requests:
+          default-lore:
+            - "&7%message%"
+            - ""
+            - "&7Type: &6Staff Request"
+            - "&7Claimed: &cNo"
+            - "&7Notes: &6%notes_size%"
+            - "&7Date Closed: &c%date_closed%"
+            - ""
+            - "&6Left-Click &ato reopen this request."
+          claimed-lore:
+            - "&7%message%"
+            - ""
+            - "&7Type: &6Staff Request"
+            - "&7Claimed: &aYes"
+            - " &7- By: &a%player_claimed%"
+            - "&7Notes: &6%notes_size%"
+            - "&7Date Closed: &c%date_closed%"
+            - ""
+            - "&6Left-Click &ato reopen this request."
+
 
 active-requests:
   title: "Active Staff Requests"
@@ -39,6 +94,7 @@ active-requests:
             - "&7Reported Player: &6%reported_player%"
             - "&7Claimed: &cNo"
             - "&7Notes: &6%notes_size%"
+            - "&7Date Created: &c%date_created%"
             - "&7"
             - "&6Left-Click &ato claim request."
             - "&6Middle-Click &ato close request."
@@ -51,6 +107,7 @@ active-requests:
             - "&7Claimed: &aYes"
             - " &7- By: &a%player_claimed%"
             - "&7Notes: &6%notes_size%"
+            - "&7Date Created: &c%date_created%"
             - "&7"
             - "&6Left-Click &ato claim request."
             - "&6Middle-Click &ato close request."
@@ -62,6 +119,7 @@ active-requests:
             - "&7Type: &6Staff Request"
             - "&7Claimed: &cNo"
             - "&7Notes: &6%notes_size%"
+            - "&7Date Created: &c%date_created%"
             - ""
             - "&6Left-Click &ato claim request."
             - "&6Middle-Click &ato close request."
@@ -73,6 +131,7 @@ active-requests:
             - "&7Claimed: &aYes"
             - " &7- By: &a%player_claimed%"
             - "&7Notes: &6%notes_size%"
+            - "&7Date Created: &c%date_created%"
             - ""
             - "&6Left-Click &ato claim request."
             - "&6Middle-Click &ato close request."

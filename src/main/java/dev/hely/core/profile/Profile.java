@@ -42,28 +42,21 @@ public class Profile {
 
     private final UUID uniqueId;
     private String name;
-
     private boolean loaded = false;
-
     private String currentAddress = "";
     private List<String> addresses = new ArrayList<>();
     private Long firstSeen;
     private Long lastSeen;
     private String currentServer = "Unknown";
     private String lastServer = "";
-
     private int totalKills;
     private int totalDeaths;
-
     private List<Punishment> punishments = new ArrayList<>();
     private List<Grant> grants = new ArrayList<>();
     private List<ProfilePermission> profilePermissions = new ArrayList<>();
     private List<Note> notes = new ArrayList<>();
-
     private List<String> playerPermissions = new ArrayList<>(); // RANK PERMISSIONS
     private List<String> bungeePermissions = new ArrayList<>(); // RANK BUNGEE PERMISSIONS
-
-
     //For notifications / mail system / profile system:
     private List<Notification> notifications = new ArrayList<>();
     private List<NotificationType> notification_settings = new ArrayList<>();
@@ -74,13 +67,12 @@ public class Profile {
     private Preferences preferences;
     private List<Comment> comments = new ArrayList<>();
     private List<Message> messages = new ArrayList<>();
-
-
     private String tag = "";
-
     private StaffProfile staffProfile = new StaffProfile();
-
     private Oxygen plugin = Oxygen.getInstance();
+
+    private List<UUID> siblings;
+
 
     public Profile(UUID uniqueId, String name) {
         this.uniqueId = uniqueId;

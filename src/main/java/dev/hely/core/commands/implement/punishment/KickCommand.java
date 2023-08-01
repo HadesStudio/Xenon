@@ -1,8 +1,11 @@
 package dev.hely.core.commands.implement.punishment;
 
+import com.google.common.collect.ImmutableMap;
 import dev.hely.core.Oxygen;
 import dev.hely.core.configuration.Locale;
 import dev.hely.core.profile.Profile;
+import dev.hely.core.profile.log.LoggerTracker;
+import dev.hely.core.profile.log.types.LogActionTypes;
 import dev.hely.core.punishment.Punishment;
 import dev.hely.core.punishment.PunishmentType;
 import dev.hely.core.punishment.packet.implement.PunishmentExecutePacket;
@@ -58,6 +61,30 @@ public class KickCommand extends BaseCommand {
 
         punishment.setSilent(reason.contains("-s"));
         punishment.save();
+
+        if (sender instanceof Player) {
+            Player sender_player = (Player) sender;
+            LoggerTracker.logPlayerAction(sender_player.getUniqueId(), LogActionTypes.KICKED_PLAYER, ImmutableMap.of(
+                    "staffMember", sender_player.getName(),
+                    "kickedPlayer", player.getName(),
+                    "reason", punishment.getAddedReason(),
+                    "silent", punishment.isSilent()
+            ));
+
+            LoggerTracker.logPlayerAction(player.getUniqueId(), LogActionTypes.PUNISHMENT_RECEIVED, ImmutableMap.of(
+                    "kickedPlayer", player.getName(),
+                    "staffMember", sender_player.getName(),
+                    "reason", punishment.getAddedReason(),
+                    "silent", punishment.isSilent()
+            ));
+        } else {
+            LoggerTracker.logPlayerAction(player.getUniqueId(), LogActionTypes.PUNISHMENT_RECEIVED, ImmutableMap.of(
+                    "kickedPlayer", player.getName(),
+                    "staffMember", "console",
+                    "reason", punishment.getAddedReason(),
+                    "silent", punishment.isSilent()
+            ));
+        }
 
         Oxygen.getInstance().getRedisModule().sendPacket(new PunishmentExecutePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));
     }

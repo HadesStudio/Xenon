@@ -91,7 +91,7 @@ public class RequestsMainMenu extends Menu {
 
             for (String line : Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getStringList("main-menu.buttons.requests.lore")) {
                 builder.addLore(line
-                        .replace("%request_size%", String.valueOf(Oxygen.getInstance().getRequestHandler().getRequestsMap().size())
+                        .replace("%request_size%", String.valueOf(Oxygen.getInstance().getRequestHandler().generateOpenRequestInteger())
                 ));
             }
             return builder.build();
@@ -132,7 +132,7 @@ public class RequestsMainMenu extends Menu {
 
             for (String line : Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getStringList("main-menu.buttons.closed.lore")) {
                 builder.addLore(line
-                        .replace("%request_size%", String.valueOf(Oxygen.getInstance().getRequestHandler().getRequestsMap().size())
+                        .replace("%request_size%", String.valueOf(Oxygen.getInstance().getRequestHandler().generateClosedRequestInteger())
                         ));
             }
             return builder.build();

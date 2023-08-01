@@ -9,6 +9,8 @@ import dev.hely.core.commands.implement.punishment.undo.UnMuteCommand;
 import dev.hely.core.commands.implement.staff.AdminChatCommand;
 import dev.hely.core.commands.implement.staff.StaffChatCommand;
 import dev.hely.core.modules.ModuleLoader;
+import dev.hely.core.profile.commands.EditProfileCommand;
+import dev.hely.core.profile.log.commands.LogsCommand;
 import dev.hely.core.profile.profilesystem.commands.FriendsCommand;
 import dev.hely.core.profile.profilesystem.commands.NotificationCommand;
 import dev.hely.core.profile.profilesystem.commands.NotificationsCommand;
@@ -66,6 +68,8 @@ public class CommandManager implements ModuleLoader {
         registerCommand(new UnMuteCommand());
         registerCommand(new HistoryCommand());
         registerCommand(new HelpopCommand());
+        registerCommand(new LogsCommand());
+        registerCommand(new EditProfileCommand());
         registerCommand(new ProfileCommand());
         registerCommand(new RequestsCommand());
         registerCommand(new ReportCommand());

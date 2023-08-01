@@ -95,6 +95,17 @@ public class ProfilePacketListener implements PacketListener {
     }
 
     @IncomingPacketHandler
+    public void onStaffRequestClosePacket(StaffRequestClosePacket packet){
+        String name = packet.getPlayerName();
+        String creator = packet.getCreatorName();
+
+        Messages.sendMessage(Locale.REQUEST_CLOSED_BROADCAST
+                        .replace("%staff_member%", name)
+                        .replace("%player%", creator),
+                "oxygen.staff");
+    }
+
+    @IncomingPacketHandler
     public void onStaffRequestReportPacket(StaffRequestReportPacket packet){
         String name = packet.getPlayerName();
         String server = packet.getServerName();

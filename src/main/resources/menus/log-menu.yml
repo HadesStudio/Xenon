@@ -1,0 +1,75 @@
+settings:
+  # NOTE: They will still be logged in the database if set to false.
+  save-to-file: true # Do you want to save files to a folder in your plugin folder?
+
+messages:
+  usage: "&cCorrect Usage: /logs <player>"
+
+log-types:
+  # WARNING: Do NOT put color codes.
+  # If you put color codes, it will break your database..
+  used-command: "Executed Command"
+  op-player-command: "Gave Player OP"
+  banned-player: "Banned a player"
+  unbanned-player: "Unbanned a player"
+  blacklisted-player: "Blacklisted a player"
+  unblacklisted-player: "Unblacklisted a player"
+  muted-player: "Muted a player"
+  unmuted-player: "Unmuted a player"
+  warned-player: "Warned a player"
+  kicked-player: "Kicked a player"
+  punishment-given: "Received a punishment"
+  punishment-remove: "Punishment was removed"
+
+log-viewer:
+  title: "Player Logs"
+
+categories:
+  title: "Log Category Selection"
+  size: 27
+  all-logs:
+    slot: 0
+    display-name: "&6All Logs"
+    material: "NETHER_STAR"
+    data: 0
+    lore:
+      - "&7Click here to view all logs."
+      - ""
+      - "&6Logs: &a%log_size% Logs"
+  rank-logs:
+    slot: 1
+    display-name: "&6Rank Logs"
+    material: "ENCHANTED_BOOK"
+    data: 0
+    lore:
+      - "&7Click here to view all rank logs."
+      - ""
+      - "&6Logs: &a%log_size% Logs"
+  command-logs:
+    slot: 2
+    display-name: "&6Command Logs"
+    material: "BOOK"
+    data: 0
+    lore:
+      - "&7Click here to view all command logs."
+      - ""
+      - "&6Logs: &a%log_size% Logs"
+  connection-logs:
+    slot: 3
+    display-name: "&6Connection Logs"
+    material: "REDSTONE"
+    data: 0
+    lore:
+      - "&7Click here to view all connection logs."
+      - ""
+      - "&6Logs: &a%log_size% Logs"
+  punishment-logs:
+    slot: 4
+    display-name: "&6Punishment Logs"
+    material: "REDSTONE_BLOCK"
+    data: 0
+    lore:
+      - "&7Click here to view all punishment logs."
+      - ""
+      - "&6Logs: &a%log_size% Logs"
+

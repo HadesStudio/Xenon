@@ -95,11 +95,15 @@ public class Locale {
     public static String REPORT_NOT_ONLINE;
     public static String REQUEST_NOTE_PROMT;
     public static String REQUEST_NOTE_ADDED;
+    public static String REQUEST_CLOSED_BROADCAST;
+    public static String EDITPROFILE_USAGE;
 
     public static void load(){
         Config language = Oxygen.getInstance().getLanguageConfig();
         Config config = Oxygen.getInstance().getConfiguration();
 
+        EDITPROFILE_USAGE = language.getConfiguration().getString("edit-profile.usage");
+        REQUEST_CLOSED_BROADCAST = language.getConfiguration().getString("requests.closed-broadcast");
         REQUEST_UNCLAIMED = language.getConfiguration().getString("requests.claim.unclaimed");
         REQUEST_ALREADY_CLAIMED = language.getConfiguration().getString("requests.claim.already-claimed");
 

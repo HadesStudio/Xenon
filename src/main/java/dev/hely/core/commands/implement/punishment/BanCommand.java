@@ -1,8 +1,11 @@
 package dev.hely.core.commands.implement.punishment;
 
+import com.google.common.collect.ImmutableMap;
 import dev.hely.core.Oxygen;
 import dev.hely.core.configuration.Locale;
 import dev.hely.core.profile.Profile;
+import dev.hely.core.profile.log.LoggerTracker;
+import dev.hely.core.profile.log.types.LogActionTypes;
 import dev.hely.core.punishment.Punishment;
 import dev.hely.core.punishment.PunishmentType;
 import dev.hely.core.punishment.packet.implement.PunishmentExecutePacket;
@@ -10,7 +13,9 @@ import dev.hely.core.utils.ChatUtil;
 import dev.hely.core.utils.TimeUtil;
 import dev.hely.core.utils.command.BaseCommand;
 import dev.hely.lib.CC;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -64,6 +69,32 @@ public class BanCommand extends BaseCommand {
         punishment.setBan_ID(String.valueOf(Math.floor(Math.random() * (1000 - 10000 + 1) + 1000)));
         punishment.save();
 
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            LoggerTracker.logPlayerAction(player.getUniqueId(), LogActionTypes.BANNED_PLAYER, ImmutableMap.of(
+                    "staffMember", player.getName(),
+                    "bannedPlayer", profile.getName(),
+                    "duration", "permanent",
+                    "reason", punishment.getAddedReason(),
+                    "silent", punishment.isSilent()
+            ));
+
+            LoggerTracker.logPlayerAction(profile.getUniqueId(), LogActionTypes.PUNISHMENT_RECEIVED, ImmutableMap.of(
+                    "bannedPlayer", profile.getName(),
+                    "staffMember", player.getName(),
+                    "duration", "permanent",
+                    "reason", punishment.getAddedReason(),
+                    "silent", punishment.isSilent()
+            ));
+        } else {
+            LoggerTracker.logPlayerAction(profile.getUniqueId(), LogActionTypes.PUNISHMENT_RECEIVED, ImmutableMap.of(
+                    "bannedPlayer", profile.getName(),
+                    "staffMember", "console",
+                    "duration", "permanent",
+                    "reason", punishment.getAddedReason(),
+                    "silent", punishment.isSilent()
+            ));
+        }
         Oxygen.getInstance().getProfileManager().sendBanPunishmentNotification(profile.getUniqueId(), punishment);
         Oxygen.getInstance().getRedisModule().sendPacket(new PunishmentExecutePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));
     }

@@ -44,7 +44,7 @@ public class ClosedRequestsMenu extends PaginatedMenu {
 
     @Override
     public String getName() {
-        return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.title");
+        return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("closed-requests.title");
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ClosedRequestsMenu extends PaginatedMenu {
 
     @Override
     public String getTitle(Player player) {
-        return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.title");
+        return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("closed-requests.title");
     }
 
     @Override
@@ -105,15 +105,15 @@ public class ClosedRequestsMenu extends PaginatedMenu {
         Request request;
 
         public Material getMaterial() {
-            if (Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.requests.material") != null) {
-                if (Material.getMaterial(Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.requests.material")) != null) {
-                    return Material.valueOf(Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.requests.material"));
+            if (Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("closed-requests.buttons.requests.material") != null) {
+                if (Material.getMaterial(Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("closed-requests.buttons.requests.material")) != null) {
+                    return Material.valueOf(Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("closed-requests.buttons.requests.material"));
                 } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'active-requests-button' is null, using a default material."));
+                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'closed-requests-button' is null, using a default material."));
                     return Material.PAPER;
                 }
             } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'active-requests-button' is broken, using a default material."));
+                Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'closed-requests-button' is broken, using a default material."));
                 return Material.PAPER;
             }
         }
@@ -121,21 +121,21 @@ public class ClosedRequestsMenu extends PaginatedMenu {
         public List<String> getLore() {
             if (request.getReportedPlayer() == null) {
                 if (request.isClaimed()) {
-                    return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getStringList("active-requests.buttons.requests.lores.requests.claimed-lore");
+                    return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getStringList("closed-requests.buttons.requests.lores.requests.claimed-lore");
                 } else {
-                    return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getStringList("active-requests.buttons.requests.lores.requests.default-lore");
+                    return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getStringList("closed-requests.buttons.requests.lores.requests.default-lore");
                 }
             } else {
                 if (request.isClaimed()) {
-                    return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getStringList("active-requests.buttons.requests.lores.report.claimed-lore");
+                    return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getStringList("closed-requests.buttons.requests.lores.report.claimed-lore");
                 } else {
-                    return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getStringList("active-requests.buttons.requests.lores.report.default-lore");
+                    return Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getStringList("closed-requests.buttons.requests.lores.report.default-lore");
                 }
             }
         }
 
         public short getData() {
-            return (short) Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getInt("active-requests.buttons.requests.data");
+            return (short) Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getInt("closed-requests.buttons.requests.data");
         }
 
 
@@ -143,7 +143,7 @@ public class ClosedRequestsMenu extends PaginatedMenu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.requests.display-name")
+            builder.setDisplayName(Oxygen.getInstance().getRequestsMenuConfig().getConfiguration().getString("closed-requests.buttons.requests.display-name")
                     .replace("%request_player%", request.getCreatorPlayerName())
                     .replace("%request_identifier%", String.valueOf(request.getIdentifier()))
             );
@@ -153,6 +153,8 @@ public class ClosedRequestsMenu extends PaginatedMenu {
                         .replace("%message%", request.getMessage())
                         .replace("%player_claimed%", request.getClaimedStaffName())
                         .replace("%notes_size%", String.valueOf(request.getStaffNotes().size()))
+                        .replace("%date_closed%", request.getDateClosed())
+                        .replace("%reported_player%", request.getReportedPlayer())
                 );
             }
             return builder.build();
@@ -161,24 +163,7 @@ public class ClosedRequestsMenu extends PaginatedMenu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType.isLeftClick()) {
-                request.setClaimed(true);
-                request.setClaimedStaffName(player.getName());
-
-                player.sendMessage(CC.translate(Locale.REQUEST_CLAIMED).replace("%player%", request.getCreatorPlayerName()));
-                Oxygen.getInstance().getRedisModule().sendPacket(new StaffRequestClaimPacket(player.getDisplayName(), request.getCreatorPlayerName()));
-                player.updateInventory();
-            } else if (clickType.isCreativeAction()) {
-                request.setClosed(true);
-                request.setClosedStaffName(player.getName());
-                player.sendMessage(CC.translate(Locale.REQUEST_CLOSED).replace("%player%", request.getCreatorPlayerName()));
-                request.save();
-
-                if (Bukkit.getPlayer(request.getCreatorPlayerName()).isOnline()) {
-                    Bukkit.getPlayer(request.getCreatorPlayerName()).sendMessage(CC.translate(Locale.REQUEST_PLAYER_ALERT_CLOSED).replace("%staff_member%", player.getName()));
-                }
-                player.updateInventory();
-            } else {
-                new RequestNotesMenu(request).openMenu(player);
+                request.setClosed(false);
             }
         }
     }

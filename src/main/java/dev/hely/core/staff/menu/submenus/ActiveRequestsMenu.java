@@ -154,6 +154,7 @@ public class ActiveRequestsMenu extends PaginatedMenu {
                         .replace("%player_claimed%", request.getClaimedStaffName())
                         .replace("%notes_size%", String.valueOf(request.getStaffNotes().size()))
                         .replace("%reported_player%", request.getReportedPlayer())
+                        .replace("%date_created%", request.getDateCreated())
                 );
             }
             return builder.build();
@@ -181,14 +182,7 @@ public class ActiveRequestsMenu extends PaginatedMenu {
                     player.updateInventory();
                 }
             } else if (clickType.isCreativeAction()) {
-                request.setClosed(true);
-                request.setClosedStaffName(player.getName());
-                player.sendMessage(CC.translate(Locale.REQUEST_CLOSED).replace("%player%", request.getCreatorPlayerName()));
-                request.save();
-
-                if (Bukkit.getPlayer(request.getCreatorPlayerName()).isOnline()) {
-                    Bukkit.getPlayer(request.getCreatorPlayerName()).sendMessage(CC.translate(Locale.REQUEST_PLAYER_ALERT_CLOSED).replace("%staff_member%", player.getName()));
-                }
+                Oxygen.getInstance().getRequestHandler().closeRequest(player.getName(), request);
                 player.updateInventory();
             } else {
                 new RequestNotesMenu(request).openMenu(player);

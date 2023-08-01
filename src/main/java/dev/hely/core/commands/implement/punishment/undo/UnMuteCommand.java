@@ -1,14 +1,18 @@
 package dev.hely.core.commands.implement.punishment.undo;
 
+import com.google.common.collect.ImmutableMap;
 import dev.hely.core.Oxygen;
 import dev.hely.core.configuration.Locale;
 import dev.hely.core.profile.Profile;
+import dev.hely.core.profile.log.LoggerTracker;
+import dev.hely.core.profile.log.types.LogActionTypes;
 import dev.hely.core.punishment.Punishment;
 import dev.hely.core.punishment.packet.implement.PunishmentRemovePacket;
 import dev.hely.core.utils.ChatUtil;
 import dev.hely.core.utils.command.BaseCommand;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
@@ -54,6 +58,30 @@ public class UnMuteCommand extends BaseCommand {
 
         punishment.setSilent(reason.contains("-s"));
         punishment.save();
+
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            LoggerTracker.logPlayerAction(player.getUniqueId(), LogActionTypes.UNMUTED_PLAYER, ImmutableMap.of(
+                    "staffMember", player.getName(),
+                    "unmutedPlayer", profile.getName(),
+                    "reason", punishment.getAddedReason(),
+                    "silent", punishment.isSilent()
+            ));
+
+            LoggerTracker.logPlayerAction(profile.getUniqueId(), LogActionTypes.PUNISHMENT_REMOVED, ImmutableMap.of(
+                    "unmutedPlayer", profile.getName(),
+                    "staffMember", player.getName(),
+                    "reason", punishment.getAddedReason(),
+                    "silent", punishment.isSilent()
+            ));
+        } else {
+            LoggerTracker.logPlayerAction(profile.getUniqueId(), LogActionTypes.PUNISHMENT_REMOVED, ImmutableMap.of(
+                    "unmutedPlayer", profile.getName(),
+                    "staffMember", "console",
+                    "reason", punishment.getAddedReason(),
+                    "silent", punishment.isSilent()
+            ));
+        }
 
         Oxygen.getInstance().getRedisModule().sendPacket(new PunishmentRemovePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));
     }

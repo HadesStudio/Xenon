@@ -220,6 +220,9 @@ un-blacklist:
   usage: "&cUsage: /unblacklist <player> <reason> (&b-s&c)"
   not-blacklisted: "&cThat player is not blacklisted."
 
+edit-profile:
+  usage: "&cUsage: /editprofile <player>"
+
 ban:
   usage: "&cUsage: /ban <player> <reason> (&b-s&c) (&b-c&c)"
   already-banned: "&cThat player already has an active ban."
@@ -343,6 +346,7 @@ requests:
   closed-player: "&aYour &6Staff Request &ahas just been closed by &c%staff_member%&a."
   type-note: "&aPlease type the note you would like to add to this request."
   note-added: "&aYou have successfully added a new &6Staff Note &ato this player request."
+  closed-broadcast: "&9[Requests] &6%staff_member% &7has just closed &a%player%'s &7staff request."
 
   claim:
     claimed: "&9[Requests] &7You have successfully claimed &a%player%'s &7staff request."
