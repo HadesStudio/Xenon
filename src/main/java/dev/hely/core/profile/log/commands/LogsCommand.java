@@ -53,9 +53,10 @@ public class LogsCommand extends BaseCommand {
         }
 
         OfflinePlayer player = Bukkit.getPlayer(args[0]);
+        if(!this.checkOfflinePlayer(sender, player, args[0])) return;
 
-        final Map<LogActionTypes, Map<String, Object>> info = new HashMap<>();
-        final MongoCollection<Document> collection = Oxygen.getInstance().getMongoModule().getPlayerLogsCollection();
+        Map<LogActionTypes, Map<String, Object>> info = new HashMap<>();
+        MongoCollection<Document> collection = Oxygen.getInstance().getMongoModule().getPlayerLogsCollection();
         for (Document document : collection.find(new Document("playerUUID", player.getUniqueId().toString()))) {
             info.put(LogActionTypes.valueOf(document.getString("logType")), (Map<String, Object>) document.get("params"));
             System.out.print("------------------------------------------------");

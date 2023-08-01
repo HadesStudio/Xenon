@@ -37,9 +37,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ClosedRequestsMenu extends PaginatedMenu {
+
     {
-        setClickUpdate(true); // LEANDRO FIX PUTA GRACIAS
-        setAutoUpdate(true);
+        setClickUpdate(true);
     }
 
     @Override
@@ -165,6 +165,11 @@ public class ClosedRequestsMenu extends PaginatedMenu {
             if (clickType.isLeftClick()) {
                 request.setClosed(false);
             }
+        }
+
+        @Override
+        public boolean toUpdate(Player player, int slot, ClickType clickType) {
+            return clickType.isLeftClick();
         }
     }
 }

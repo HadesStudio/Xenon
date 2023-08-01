@@ -92,7 +92,7 @@ public class LogSelectionMenu extends Menu {
 
                 @Override
                 public void onClick(Player player, int slot, ClickType clickType) {
-                    final Map<LogActionTypes, Map<String, Object>> params = new HashMap<>();
+                    Map<LogActionTypes, Map<String, Object>> params = new HashMap<>();
 
                     logs.entrySet().stream().filter(it -> value == LogCategories.ALL || it.getKey().getCategory() == value).forEach(it -> params.put(it.getKey(), it.getValue()));
                     new LogDisplayMenu(player, value, params).openMenu(player);

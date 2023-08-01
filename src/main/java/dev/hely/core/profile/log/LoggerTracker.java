@@ -17,6 +17,8 @@ package dev.hely.core.profile.log;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
@@ -63,7 +65,7 @@ public final class LoggerTracker {
 
     private static void logToFile(UUID playerUUID, LogActionTypes type, Map<String, Object> params) {
         File logFolder = new File(directory, playerUUID.toString());
-        File logFile = new File(logFolder, "general" + ".log");
+        File logFile = new File(logFolder, "general.log");
         System.out.print(directory);
         System.out.print(logFile);
         try {
@@ -104,10 +106,18 @@ public final class LoggerTracker {
         System.out.print("Time - " + new Date());
         document.put("logType", type.getDisplay_name());
         System.out.print("Log Type - " + type.getDisplay_name());
-        BasicDBObject paramsJson = new BasicDBObject();
-        params.forEach((key, value) -> paramsJson.put(key, value.toString())); // we need do this because if not, it break database i think? :( puta
-        document.put("params", paramsJson);
-        System.out.print("Params - " + paramsJson);
+        JsonArray jsonArray = new JsonArray();
+
+        params.forEach((key, value) -> {
+            JsonObject info = new JsonObject();
+
+            info.addProperty("key", key);
+            info.addProperty("value", value.toString());
+
+            jsonArray.add(info);
+        });
+
+        document.put("params", Oxygen.PLAIN_GSON.toJson(jsonArray));
 
         Oxygen.getInstance().getMongoModule().getPlayerLogsCollection().replaceOne(Filters.eq("playerUUID", playerUUID), document, new ReplaceOptions().upsert(true));
     }

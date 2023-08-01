@@ -37,9 +37,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ActiveRequestsMenu extends PaginatedMenu {
+
     {
-        setClickUpdate(true); // LEANDRO FIX PUTA GRACIAS
-        setAutoUpdate(true);
+        setClickUpdate(true);
     }
 
     @Override
@@ -171,7 +171,6 @@ public class ActiveRequestsMenu extends PaginatedMenu {
                         request.save();
                     } else {
                         player.sendMessage(CC.translate(Locale.REQUEST_ALREADY_CLAIMED));
-                        return;
                     }
                 } else {
                     request.setClaimed(true);
@@ -179,14 +178,17 @@ public class ActiveRequestsMenu extends PaginatedMenu {
 
                     player.sendMessage(CC.translate(Locale.REQUEST_CLAIMED).replace("%player%", request.getCreatorPlayerName()));
                     Oxygen.getInstance().getRedisModule().sendPacket(new StaffRequestClaimPacket(player.getDisplayName(), request.getCreatorPlayerName()));
-                    player.updateInventory();
                 }
             } else if (clickType.isCreativeAction()) {
                 Oxygen.getInstance().getRequestHandler().closeRequest(player.getName(), request);
-                player.updateInventory();
             } else {
                 new RequestNotesMenu(request).openMenu(player);
             }
+        }
+
+        @Override
+        public boolean toUpdate(Player player, int slot, ClickType clickType) {
+            return clickType.isCreativeAction() || clickType.isLeftClick();
         }
     }
 }

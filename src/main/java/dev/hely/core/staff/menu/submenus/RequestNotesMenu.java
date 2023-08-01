@@ -39,10 +39,6 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class RequestNotesMenu extends PaginatedMenu {
-    {
-        setClickUpdate(true); // LEANDRO FIX PUTA GRACIAS
-        setAutoUpdate(true);
-    }
 
     Request request;
 
