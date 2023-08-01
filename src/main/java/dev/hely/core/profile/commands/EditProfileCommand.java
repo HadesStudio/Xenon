@@ -37,12 +37,11 @@ public class EditProfileCommand extends BaseCommand {
             return;
         }
 
-        Profile profile = Oxygen.getInstance().getProfileManager().getProfile(args[0]);
-        if (profile == null) {
+        if (Oxygen.getInstance().getProfileManager().getProfile(args[0]) == null) {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
             return;
         }
 
-        new EditProfileMenu(profile).openMenu((Player) sender);
+        new EditProfileMenu(Oxygen.getInstance().getProfileManager().getProfile(args[0])).openMenu((Player) sender);
     }
 }

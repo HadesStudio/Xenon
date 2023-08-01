@@ -1,6 +1,8 @@
 package dev.hely.core.utils;
 
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created By LeandroSSJ
@@ -8,6 +10,29 @@ import java.util.concurrent.TimeUnit;
  * Protect Name Oxygen
  */
 public class TimeUtil {
+
+    public static int parseTime(String time) {
+
+        if (time.equals("0") || time.equals("")) {
+            return (0);
+        }
+
+        String[] lifeMatch = new String[]{"w", "d", "h", "m", "s"};
+        int[] lifeInterval = new int[]{604800, 86400, 3600, 60, 1};
+        int seconds = 0;
+
+        for (int i = 0; i < lifeMatch.length; i++) {
+
+            final Matcher matcher = Pattern.compile("([0-9]*)" + lifeMatch[i]).matcher(time);
+
+            while (matcher.find()) {
+                seconds += Integer.parseInt(matcher.group(1)) * lifeInterval[i];
+            }
+
+        }
+
+        return (seconds);
+    }
 
     public static long parse(String input) {
         if (input == null || input.isEmpty()) {
@@ -35,7 +60,7 @@ public class TimeUtil {
         return result;
     }
 
-    private static long convert(int value, char unit) {
+    public static long convert(int value, char unit) {
         switch (unit) {
             case 'y':
                 return value * TimeUnit.DAYS.toMillis(365L);

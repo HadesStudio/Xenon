@@ -28,17 +28,16 @@ public class RankDeleteCommand extends SubCommand {
             return;
         }
 
-        Rank rank = Oxygen.getInstance().getRankManager().getRank(args[1]);
-        if (rank == null) {
+        if (Oxygen.getInstance().getRankManager().getRank(args[1]) == null) {
             sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
             return;
         }
 
-        Oxygen.getInstance().getRankManager().deleteRank(rank);
+        Oxygen.getInstance().getRankManager().deleteRank(Oxygen.getInstance().getRankManager().getRank(args[1]));
         sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.delete.deleted")
-                .replace("%rank_name%", rank.getName())));
+                .replace("%rank_name%", args[1])));
 
-        Oxygen.getInstance().getRedisModule().sendPacket(new RankDeletePacket(rank.getName()));
+        Oxygen.getInstance().getRedisModule().sendPacket(new RankDeletePacket(args[1]));
 
         // RELOAD ALL PROFILE ATTACHMENTS
     }

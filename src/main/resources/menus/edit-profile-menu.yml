@@ -1,0 +1,179 @@
+selection-menu:
+  title: "%player% - Profile Details" # %player%
+  size: 27 # The size of the menu. (It must be integers of 9)
+
+  messages:
+    no-permissions: "&cYou do not have permissions to use this feature in the profile menu."
+  buttons:
+    details-button:
+      slot: 4
+      material: "SKULL_ITEM"
+      data: 0
+      use-profile-skull: true # Set this to TRUE if you are using the player skull and want the players head to appear.
+      display-name: "&6%player_name% - Profile"
+      lore:
+        # Available placeholders: %player_name%, %last_seen_date%, %first_join_date%, %note_size%, %current_server%, %siblings_size%
+        - "&7This menu contains all information"
+        - "&7about a users profile save."
+        - ""
+        - "&aFirst Join: &6%first_join_date% ago"
+        - "&aLast Seen: &6%last_seen_date% ago"
+        - "&aProfile Notes: &6%note_size% Notes"
+        - "&aCurrent Server: &6%current_server%"
+        - "&aSiblings: &6%siblings_size% Siblings"
+    notes-button:
+      # If you want players to be able to access this menu,
+      # they must have the permission: "oxygen.staff.notes"
+      slot: 13
+      material: "NAME_TAG"
+      data: 0
+      display-name: "&6Player Notes"
+      lore:
+        - "&7Click here to view this players"
+        - "&7profile notes."
+        - ""
+        - "&aNote: &6%note_size% Notes"
+    siblings-button:
+      slot: 12
+      material: "ENCHANTED_BOOK"
+      data: 0
+      display-name: "&6Siblings"
+      lore:
+        - "&7Click here to view this players"
+        - "&7siblings, so you can confirm"
+        - "&7they are not using alt accounts!"
+        - ""
+        - "&aSiblings: &6%siblings_size% Notes"
+    permissions-button:
+      slot: 14
+      material: "REDSTONE"
+      data: 0
+      display-name: "&6Player Permissions"
+      lore:
+        - "&7Click here to view this players"
+        - "&7profile permissions they have."
+        - ""
+        - "&aProfile Permissions: &6%profile_perm_size% Permissions"
+        - "&aPlayer Permissions: &6%player_perm_size% Permissions"
+        - "&aBungee Permissions: &6%bungee_perm_size% Permissions"
+    ranks-button:
+      slot: 11
+      material: "NETHER_STAR"
+      data: 0
+      display-name: "&6Player Grants"
+      lore:
+        - "&7Click here to view this players"
+        - "&7expired, and active grants."
+        - ""
+        - "&aGrants: &6%grants_size% Grants"
+
+notes-menu:
+  title: "%player% - Profile Notes"
+
+  messages:
+    cannot-delete: "&cYou do not have permissions to delete player notes."
+    removed-note: "&aYou have successfully removed a &6Player Note &afrom &6%player%&a."
+    create-note: "&aYou have successfully added a &6Player Note &ato &6%player%'s &aprofile."
+    cannot-create: "&cYou do not have permissions to add player notes."
+    create-promt: "&aPlease type the message for the &6Player Note &ainto the chat."
+  buttons:
+    note-button:
+      # If you want players to be able to delete player notes,
+      # they must have the permission: "oxygen.staff.notes.delete"
+      material: "PAPER"
+      data: 0
+      display-name: "&6Player Note"
+      lore:
+        - "&7%message%"
+        - ""
+        - "&aStaff Member: &6%staff_member%"
+        - "&aCreation Date: &6%creation_date% ago"
+        - "&aServer: &6%creation_server%"
+        - ""
+        - "&6Left-Click &ato remove this note."
+    create-button:
+      # If you want players to be able to create player notes,
+      # they must have the permission: "oxygen.staff.notes.create"
+      material: "NAME_TAG"
+      data: 0
+      display-name: "&6Create New Note"
+      lore:
+        - "&7Click here to create a new note on"
+        - "&7this player's profile."
+
+siblings-menu:
+  title: "%player% - Siblings"
+
+  messages:
+    cannot-delete: "&cYou do not have permissions to delete profile siblings."
+    removed-sibling: "&aYou have successfully removed &6%sibling% &aas a sibling from &6%player%&a."
+    create-sibling: "&aYou have successfully added &6%sibling% &aas a sibling to &6%player%'s &aprofile."
+    cannot-create: "&cYou do not have permissions to add profile siblings."
+    create-promt: "&aPlease type the name of the &6Profile Sibling &ain chat."
+    already-added: "&cThis player already has a sibling with the name specified."
+  buttons:
+    sibling-button:
+      # If you want players to be able to delete player notes,
+      # they must have the permission: "oxygen.staff.sibling.delete"
+      display-name: "&6%player_name%"
+      lore:
+        - "&aSibling: &6%sibling_name%"
+        - ""
+        - "&aStaff Member: &6%staff_member%"
+        - "&aCreation Date: &6%creation_date% ago"
+        - "&aServer: &6%creation_server%"
+        - ""
+        - "&6Left-Click &ato remove this sibling profile."
+    create-button:
+      # If you want players to be able to create player notes,
+      # they must have the permission: "oxygen.staff.sibling.add"
+      material: "NAME_TAG"
+      data: 0
+      display-name: "&6Add New Sibling"
+      lore:
+        - "&7Click here to add a new profile"
+        - "&7sibling to this player."
+
+grants-menu:
+  title: "%player% - Rank Grants"
+
+  messages:
+    cannot-delete: "&cYou do not have permissions to delete player grants."
+    removed-grant: "&aYou have successfully removed the grant from &6%player%&a."
+    add-grant: "&aYou have successfully added a new grant to &6%player%'s &aprofile."
+    cannot-add: "&cYou do not have permissions to add player grants."
+    promt-1: "&aPlease type the name of the &6Rank &ayou wish to give to this player. &b(1/3)"
+    promt-2: "&aPlease type the reason for you giving the player this &6Rank&a. &b(2/3)"
+    promt-3: "&aPlease type the duration for this &6Grant&a. You can use 'permanent' for it to never expire. &b(3/3)"
+    invalid-rank: "&cYou have provided a invalid rank name. Please try again."
+  buttons:
+    grants-button:
+      # If you want players to be able to delete player grants,
+      # they must have the permission: "oxygen.staff.grants.remove"
+      material: "PAPER"
+      data: 0
+      display-name: "&6Rank Grant (&b%rank_display%&6)"
+      lore:
+        - "&6&lRank Information:"
+        - "&aName: &6%rank_name%"
+        - "&aDuration: &6%rank_duration%"
+        - "&aExpires: &6%rank_expire%"
+        - ""
+        - "&6&lStaff Information:"
+        - "&aStaff Member: &6%staff_member%"
+        - "&aReason: &6%reason%"
+        - "&aAdded Date: &6%added_date% ago"
+        - "&aRemoved Date: &6%removed_date% ago"
+        - "&aServer: &6%creation_server%"
+        - ""
+        - "&6Left-Click &ato remove this grant."
+    create-button:
+      # If you want players to be able to create player notes,
+      # they must have the permission: "oxygen.staff.grants.create"
+      material: "NAME_TAG"
+      data: 0
+      display-name: "&6Add New Rank Grant"
+      lore:
+        - "&7Click here to give this player a"
+        - "&7new grant on their profile."
+

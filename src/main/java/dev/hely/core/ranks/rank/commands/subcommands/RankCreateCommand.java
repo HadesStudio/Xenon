@@ -36,16 +36,15 @@ public class RankCreateCommand extends SubCommand {
             return;
         }
 
-        Rank rank = Oxygen.getInstance().getRankManager().getRank(args[1]);
-        if (rank != null) {
+        if (Oxygen.getInstance().getRankManager().getRank(args[1]) != null) {
             sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.already-exist")));
             return;
         }
 
-        Oxygen.getInstance().getRankManager().createRank(rank.getName());
-        sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.created").replace("%rank_name%", rank.getName())));
+        Oxygen.getInstance().getRankManager().createRank(args[1]);
+        sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.created").replace("%rank_name%", args[1])));
 
-        Oxygen.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(rank.getName()));
+        Oxygen.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(args[1]));
     }
 }
 

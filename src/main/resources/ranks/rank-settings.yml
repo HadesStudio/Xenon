@@ -15,6 +15,9 @@ commands:
   delete:
     usage: "&cCorrect Usage: /rank delete <name>"
     deleted: "&aYou have successfully deleted a rank named '&d%rank_name%&a'."
+  inherit:
+    usage: "&cCorrect Usage: /rank inherit <rank> <inheritance>"
+    already-inherit: "&cThis rank already inherits that rank."
   dont-exists: "&cA rank with that name doesn't exists."
 
 menu:

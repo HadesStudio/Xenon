@@ -11,6 +11,7 @@ import dev.hely.core.profile.profilesystem.impl.*;
 import dev.hely.core.profile.profilesystem.impl.serverstats.Statistics;
 import dev.hely.core.profile.profilesystem.impl.serverstats.StatisticsServer;
 import dev.hely.core.profile.profilesystem.impl.social.SocialMediaType;
+import dev.hely.core.profile.siblings.Sibling;
 import dev.hely.core.profile.staff.StaffProfile;
 import dev.hely.core.punishment.PunishmentType;
 import dev.hely.core.ranks.grants.Grant;
@@ -71,7 +72,7 @@ public class Profile {
     private StaffProfile staffProfile = new StaffProfile();
     private Oxygen plugin = Oxygen.getInstance();
 
-    private List<UUID> siblings;
+    private List<Sibling> siblings = new ArrayList<>();
 
 
     public Profile(UUID uniqueId, String name) {
@@ -128,7 +129,8 @@ public class Profile {
         document.put("statistics", Oxygen.PLAIN_GSON.toJson(this.statistics, statisticsType));
         Type socialMediaType = new TypeToken<Map<SocialMediaType, String>>() {}.getType();
         document.put("socialmedia", Oxygen.PLAIN_GSON.toJson(this.socialMedia, socialMediaType));
-
+        Type siblingsType = new TypeToken<List<Sibling>>() {}.getType();
+        document.put("siblings", Oxygen.PLAIN_GSON.toJson(this.siblings, siblingsType));
 
         plugin.getMongoModule().getProfilesCollection().replaceOne(Filters.eq("uniqueId", uniqueId.toString()), document, new ReplaceOptions().upsert(true));
         if (leave) plugin.getProfileManager().getProfileMap().remove(uniqueId);
@@ -165,6 +167,10 @@ public class Profile {
                 Type notesType = new TypeToken<List<Note>>() {}.getType();
                 notes = Oxygen.PLAIN_GSON.fromJson(document.getString("notes"), notesType);
             }
+            if (document.containsKey("siblings")) {
+                Type siblingsType = new TypeToken<List<Sibling>>() {}.getType();
+                siblings = Oxygen.PLAIN_GSON.fromJson(document.getString("siblings"), siblingsType);
+            }
 
             Type commentsType = new TypeToken<List<Comment>>() {}.getType();
             comments = Oxygen.PLAIN_GSON.fromJson(document.getString("comments"), commentsType);
@@ -178,6 +184,7 @@ public class Profile {
             statistics = Oxygen.PLAIN_GSON.fromJson(document.getString("statistics"), statisticsType);
             Type socialMediaType = new TypeToken<Map<SocialMediaType, String>>() {}.getType();
             socialMedia = Oxygen.PLAIN_GSON.fromJson(document.getString("socialmedia"), socialMediaType);
+
 
             try (MongoCursor<Document> mongoCursor = plugin.getMongoModule().getPunishmentsCollection().find(Filters.eq("targetUUID", uniqueId.toString())).iterator()) {
                 mongoCursor.forEachRemaining(punishmentDocument -> {
