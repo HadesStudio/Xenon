@@ -15,6 +15,10 @@ chat:
   filtered-message-alert: "&c[Chat Filter] &7%format%"
   blocked: "&cYour message contained blocked content. It has been blocked from sending in chat."
 
+seen-command:
+  usage: "&cCorrect Usage: /seen <player>"
+  message: "&6%player% &awas last seen &6%time% ago &aon &6%server%&a."
+
 vpn:
   usage: "&cCorrect Usage: /vpn <check|whitelist|unwhitelist> <player>"
   check:
