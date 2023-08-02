@@ -14,6 +14,39 @@ chat:
     - "&cPlease wait another &c&l%wait_time% &cbefore chatting again."
   filtered-message-alert: "&c[Chat Filter] &7%format%"
   blocked: "&cYour message contained blocked content. It has been blocked from sending in chat."
+
+vpn:
+  usage: "&cCorrect Usage: /vpn <check|whitelist|unwhitelist> <player>"
+  check:
+    not-whitelist:
+      - "&7&l&m-------------------------------"
+      - "&6&n%player_name%:"
+      - ""
+      - "&6VPN Whitelist: &cNo"
+      - ""
+      - "&6Country: &a%country%"
+      - "&6ASN: &a%asn%"
+      - "&6Org: &a%org%"
+      - "&6Time Took: &a%time_took%ms"
+      - "&7&l&m-------------------------------"
+    whitelist:
+      - "&7&l&m-------------------------------"
+      - "&6&n%player_name%:"
+      - ""
+      - "&6VPN Whitelist: &aYes"
+      - ""
+      - "&6Country: &a%country%"
+      - "&6ASN: &a%asn%"
+      - "&6Org: &a%org%"
+      - "&6Time Took: &a%time_took%ms"
+      - "&7&l&m-------------------------------"
+  whitelist:
+    already-whitelist: "&cThis player already has a &6VPN Whitelist&c."
+    whitelisted: "&aYou have successfully given this player a &6VPN Whitelist&a."
+  unwhitelist:
+    not-whitelist: "&cThis player does not have a &6VPN Whitelist&c."
+    unwhitelisted: "&cYou have successfully removed this players &6VPN Whitelist&a."
+
 punishments:
   history-menu:
     pardon:

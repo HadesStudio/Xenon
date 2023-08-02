@@ -72,6 +72,7 @@ public class Profile {
     private String tag = "";
     private StaffProfile staffProfile = new StaffProfile();
     private Oxygen plugin = Oxygen.getInstance();
+    private String ipAddress;
 
     private List<Sibling> siblings = new ArrayList<>();
 
@@ -80,6 +81,7 @@ public class Profile {
         this.uniqueId = uniqueId;
         this.name = name;
 
+        this.ipAddress = null;
         this.totalKills = 0;
         this.totalDeaths = 0;
 
@@ -109,7 +111,9 @@ public class Profile {
         document.put("tag", tag);
         document.put("totalkills", totalKills);
         document.put("totaldeaths", totalDeaths);
-
+        if (ipAddress != null) {
+            document.put("ipAddress", ipStringToInteger(ipAddress));
+        }
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
         document.put("staffProfile", Oxygen.PLAIN_GSON.toJson(this.staffProfile, staffProfileType));
 
@@ -153,7 +157,9 @@ public class Profile {
             lastServer = document.getString("lastServer");
             tag = document.getString("tag");
             vpnWhitelist = document.getBoolean("vpnWhitelist");
-
+            if (ipAddress == null && document.containsKey("ipAddress") && document.getInteger("ipAddress") != null) {
+                ipAddress = (ipIntegerToString(document.getInteger("ipAddress")));
+            }
             if (document.containsKey("staffProfile")) {
                 Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
                 staffProfile = Oxygen.PLAIN_GSON.fromJson(document.getString("staffProfile"), staffProfileType);
@@ -362,5 +368,30 @@ public class Profile {
         }
 
         return null;
+    }
+
+    public int ipStringToInteger(String ip) {
+
+        int value = 0;
+
+        final String[] parts = ip.split("\\.");
+
+        for (String part : parts) {
+            value = (value << 8) + Integer.parseInt(part);
+        }
+
+        return value;
+    }
+
+    public String ipIntegerToString(int ip) {
+
+        final String[] parts = new String[4];
+
+        for (int i = 0; i < 4; i++) {
+            parts[3 - i] = Integer.toString(ip & 0xff);
+            ip >>= 8;
+        }
+
+        return parts[0] + '.' + parts[1] + '.' + parts[2] + '.' + parts[3];
     }
 }

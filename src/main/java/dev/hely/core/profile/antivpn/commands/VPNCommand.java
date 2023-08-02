@@ -16,13 +16,14 @@ package dev.hely.core.profile.antivpn.commands;
 //============================================================
 
 import dev.hely.core.Oxygen;
-import dev.hely.core.utils.NameMCUtils;
+import dev.hely.core.configuration.Locale;
+import dev.hely.core.profile.Profile;
+import dev.hely.core.utils.VPNUtil;
 import dev.hely.core.utils.command.BaseCommand;
 import dev.hely.lib.CC;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.Collections;
 
 public class VPNCommand extends BaseCommand {
@@ -33,20 +34,83 @@ public class VPNCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
-
-        if (NameMCUtils.isVerified(player.getUniqueId())) {
-            NameMCUtils.runCommands(player);
-            for (Player players : Bukkit.getOnlinePlayers()) {
-                for (String message : Oxygen.getInstance().getConfiguration().getConfiguration().getStringList("name-mc.messages.broadcast")) {
-                    players.sendMessage(CC.translate(message).replace("%player%", player.getName()));
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("check")) {
+                if (Oxygen.getInstance().getProfileManager().getProfile(args[1]) == null) {
+                    sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
+                    return;
                 }
-            }
-            for (String message : Oxygen.getInstance().getConfiguration().getConfiguration().getStringList("name-mc.messages.linked")) {
-                player.sendMessage(CC.translate(message).replace("%player%", player.getName()));
+                Profile profile = Oxygen.getInstance().getProfileManager().getProfile(args[1]);
+
+                if (profile.isVpnWhitelist()) {
+                    try {
+                        long time = System.nanoTime();
+                        VPNUtil.Result ip = VPNUtil.getResult(profile.getIpAddress());
+                        double elapsed = (System.nanoTime() - time) / 1000000D;
+
+                        for (String message : Oxygen.getInstance().getLanguageConfig().getConfiguration().getStringList("vpn.check.whitelist")) {
+                            sender.sendMessage(CC.translate(message)
+                                    .replace("%player_name%", profile.getName())
+                                    .replace("%country%", ip.getCountry())
+                                    .replace("%asn%", ip.getAsn())
+                                    .replace("%org%", ip.getOrg())
+                                    .replace("%time_took%", String.valueOf(elapsed))
+                            );
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        long time = System.nanoTime();
+                        VPNUtil.Result ip = VPNUtil.getResult(profile.getIpAddress());
+                        double elapsed = (System.nanoTime() - time) / 1000000D;
+
+                        for (String message : Oxygen.getInstance().getLanguageConfig().getConfiguration().getStringList("vpn.check.not-whitelist")) {
+                            sender.sendMessage(CC.translate(message)
+                                    .replace("%player_name%", profile.getName())
+                                    .replace("%country%", ip.getCountry())
+                                    .replace("%asn%", ip.getAsn())
+                                    .replace("%org%", ip.getOrg())
+                                    .replace("%time_took%", String.valueOf(elapsed))
+                            );
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (args[0].equalsIgnoreCase("whitelist")) {
+                if (Oxygen.getInstance().getProfileManager().getProfile(args[1]) == null) {
+                    sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
+                    return;
+                }
+                Profile profile = Oxygen.getInstance().getProfileManager().getProfile(args[1]);
+                if (profile.isVpnWhitelist()) {
+                    sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("vpn.whitelist.already-whitelist")));
+                } else {
+                    profile.setVpnWhitelist(true);
+                    profile.save();
+                    sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("vpn.whitelist.whitelisted")));
+                }
+            } else if (args[0].equalsIgnoreCase("unwhitelist")) {
+                if (Oxygen.getInstance().getProfileManager().getProfile(args[1]) == null) {
+                    sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
+                    return;
+                }
+                Profile profile = Oxygen.getInstance().getProfileManager().getProfile(args[1]);
+
+                if (profile.isVpnWhitelist()) {
+                    profile.setVpnWhitelist(false);
+                    profile.save();
+                    sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("vpn.unwhitelist.unwhitelisted")));
+                } else {
+                    sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("vpn.unwhitelist.not-whitelist")));
+                }
+            } else {
+                sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("vpn.usage")));
             }
         } else {
-            player.sendMessage(CC.translate(Oxygen.getInstance().getConfiguration().getConfiguration().getString("name-mc.messages.not-linked")));
+            sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("vpn.usage")));
         }
     }
 }

@@ -8,18 +8,21 @@ import dev.hely.core.profile.packet.implement.StaffLeavePacket;
 import dev.hely.core.profile.packet.implement.StaffSwitchPacket;
 import dev.hely.core.punishment.Punishment;
 import dev.hely.core.punishment.PunishmentType;
+import dev.hely.core.utils.VPNUtil;
 import dev.hely.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -62,6 +65,27 @@ public class ProfileListener implements Listener {
 
         if (!profile.getAddresses().contains(event.getAddress().getHostAddress())) {
             profile.getAddresses().add(event.getAddress().getHostAddress());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPreLogin(AsyncPlayerPreLoginEvent event) {
+        Profile profile = plugin.getProfileManager().getProfile(event.getUniqueId());
+
+        if (profile != null) {
+            final String previousIp = profile.getIpAddress();
+            final String currentIp = event.getAddress().getHostAddress();
+            profile.setIpAddress(event.getAddress().getHostAddress());
+            System.out.print(profile.getIpAddress());
+            profile.save();
+
+            if (!previousIp.equalsIgnoreCase(currentIp)) {
+                try {
+                    final VPNUtil.Result afterResult = VPNUtil.getResult(currentIp);
+                    final VPNUtil.Result beforeResult = VPNUtil.getResult(profile.getIpAddress());
+                } catch (IOException ignored) {
+                }
+            }
         }
     }
 
