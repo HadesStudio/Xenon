@@ -6,6 +6,9 @@ commands:
     - ""
     - "&d* &f/rank create <name> &7- Create a rank with specified name."
     - "&d* &f/rank delete <name> &7- Delete a rank."
+    - "&d* &f/rank inherit <add|list|remove> <rank> <inheritance> &7- Modify inheritances for a rank."
+    - "&d* &f/rank rename <rank> <new_name> &7- Rename a existing rank to a new name."
+    - "&d* &f/rank bungeeperms <add|list|remove> <rank> <permission> &7- Modify a ranks bungee permissions."
     - "&d* &f/rank list &7- View a list of all created ranks."
     - "&7&l&m-----------------------------------"
   create:
@@ -15,9 +18,55 @@ commands:
   delete:
     usage: "&cCorrect Usage: /rank delete <name>"
     deleted: "&aYou have successfully deleted a rank named '&d%rank_name%&a'."
+  rename:
+    usage: "&cCorrect Usage: /rank rename <rank> <new_name>"
+    renamed: "&aYou have successfully changed the name of &6%rank% Rank &ato &6%new_name%&a."
   inherit:
-    usage: "&cCorrect Usage: /rank inherit <rank> <inheritance>"
+    usage: "&cCorrect Usage: /rank inherit <add|list|remove> <rank> <inheritance>"
     already-inherit: "&cThis rank already inherits that rank."
+    no-inherits: "&cThis rank does not have any inheritances."
+    added-inherit: "&aYou have successfully added the inheritance of &6%inhterit_rank_name% &ato &6%rank_name%&a."
+    list-format: "&6* &a%rank% Rank"
+    removed-inherit: "&cYou have removed the rank inheritance for this rank."
+    not-have: "&cThis rank does not have that inheritancce?"
+  setprefix:
+    usage: "&cCorrect Usage: /rank setprefix <rank> <display>"
+    set: "&aYou have updated this ranks prefix to: &6%prefix%"
+  setsuffix:
+    usage: "&cCorrect Usage: /rank setsuffix <rank> <display>"
+    set: "&aYou have updated this ranks suffix to: &6%suffix%"
+  setweight:
+    usage: "&cCorrect usage: /rank setweight <rank> <weight>"
+    set: "&aYou have updated this ranks weight to: &6%weight%"
+  info:
+    message:
+      - "&7&l&m---------------------------------"
+      - "&6&n%rank% Rank:"
+      - "&7This rank has the following configurations."
+      - ""
+      - "&aPrefix: &6%prefix%"
+      - "&aSuffix: &6%suffix%"
+      - "&aWeight: &6%weight%"
+      - "&aBungee Permissions: &6%bungee_perms% Permissions"
+      - "&aServer Permissions: &6%server_perms% Permissions"
+      - "&aInheritances: &6%inherits% Inheritances"
+      - "&7&l&m---------------------------------"
+  bungee-permissions:
+    usage: "&cCorrect Usage: /rank bungeepermissions <add|list|remove> <rank> <permission>"
+    already-has: "&cThis rank already has this &6Bungee Permission&c."
+    added: "&cYou have successfully added permission: &6%permission%"
+    no-permissions: "&cThis rank has no bungee permissions setup."
+    list-format: "&6* &a%permission% &f- Bungee"
+    removed: "&cYou have successfully removed this &6Bungee Permission&c."
+    not-have: "&cThis rank does not have that permission?"
+  permissions:
+    usage: "&cCorrect Usage: /rank permissions <add|list|remove> <rank> <permission>"
+    already-has: "&cThis rank already has this &6Permission&c."
+    added: "&cYou have successfully added permission: &6%permission%"
+    no-permissions: "&cThis rank has no permissions setup."
+    list-format: "&6* &a%permission% &f- Local"
+    removed: "&cYou have successfully removed this &6Permission&c."
+    not-have: "&cThis rank does not have that permission?"
   dont-exists: "&cA rank with that name doesn't exists."
 
 menu:

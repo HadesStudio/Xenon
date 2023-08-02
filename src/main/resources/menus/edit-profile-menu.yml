@@ -143,9 +143,11 @@ grants-menu:
     add-grant: "&aYou have successfully added a new grant to &6%player%'s &aprofile."
     cannot-add: "&cYou do not have permissions to add player grants."
     promt-1: "&aPlease type the name of the &6Rank &ayou wish to give to this player. &b(1/3)"
-    promt-2: "&aPlease type the reason for you giving the player this &6Rank&a. &b(2/3)"
-    promt-3: "&aPlease type the duration for this &6Grant&a. You can use 'permanent' for it to never expire. &b(3/3)"
+    promt-3: "&aPlease type the reason for you giving the player this &6Rank&a. &b(3/3)"
+    promt-2: "&aPlease type the duration for this &6Grant&a. You can use 'permanent' for it to never expire. &b(2/3)"
     invalid-rank: "&cYou have provided a invalid rank name. Please try again."
+    canceled-promt: "&cYou have cancelled the promt. Please try again."
+    already-has: "&cThis player already his this rank, please try again."
   buttons:
     grants-button:
       # If you want players to be able to delete player grants,
@@ -157,13 +159,11 @@ grants-menu:
         - "&6&lRank Information:"
         - "&aName: &6%rank_name%"
         - "&aDuration: &6%rank_duration%"
-        - "&aExpires: &6%rank_expire%"
         - ""
         - "&6&lStaff Information:"
         - "&aStaff Member: &6%staff_member%"
         - "&aReason: &6%reason%"
         - "&aAdded Date: &6%added_date% ago"
-        - "&aRemoved Date: &6%removed_date% ago"
         - "&aServer: &6%creation_server%"
         - ""
         - "&6Left-Click &ato remove this grant."

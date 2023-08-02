@@ -16,8 +16,7 @@ package dev.hely.core.ranks.rank.commands;
 //============================================================
 
 import dev.hely.core.Oxygen;
-import dev.hely.core.ranks.rank.commands.subcommands.RankCreateCommand;
-import dev.hely.core.ranks.rank.commands.subcommands.RankListCommand;
+import dev.hely.core.ranks.rank.commands.subcommands.*;
 import dev.hely.core.utils.command.sub.SubCommand;
 import dev.hely.core.utils.command.sub.SubCommandHandler;
 import dev.hely.lib.CC;
@@ -31,6 +30,15 @@ public class RankCommand extends SubCommandHandler {
 
         this.addSubCommand(new RankListCommand());
         this.addSubCommand(new RankCreateCommand());
+        this.addSubCommand(new RankDeleteCommand());
+        this.addSubCommand(new RankInheritancesCommand());
+        this.addSubCommand(new RankRenameCommand());
+        this.addSubCommand(new RankBungeePermissionsCommand());
+        this.addSubCommand(new RankPermissionsCommand());
+        this.addSubCommand(new RankSetPrefixCommand());
+        this.addSubCommand(new RankSetSuffixCommand());
+        this.addSubCommand(new RankInfoCommand());
+        this.addSubCommand(new RankWeightCommand());
     }
 
     @Override

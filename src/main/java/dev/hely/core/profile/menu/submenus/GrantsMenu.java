@@ -18,7 +18,6 @@ package dev.hely.core.profile.menu.submenus;
 import dev.hely.core.Oxygen;
 import dev.hely.core.profile.Profile;
 import dev.hely.core.profile.menu.EditProfileMenu;
-import dev.hely.core.profile.note.Note;
 import dev.hely.core.ranks.grants.Grant;
 import dev.hely.core.utils.DateUtils;
 import dev.hely.core.utils.DurationWrapper;
@@ -29,19 +28,24 @@ import dev.hely.lib.menu.button.implement.BackButton;
 import dev.hely.lib.menu.button.implement.PageButton;
 import dev.hely.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class GrantsMenu extends PaginatedMenu {
+    {
+        setAutoUpdate(true);
+    }
     final Profile profile;
 
     @Override
@@ -58,6 +62,9 @@ public class GrantsMenu extends PaginatedMenu {
     public Map<Integer, Button> getPaginatedContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
+        for (Grant grants : profile.getActiveGrants()) {
+            buttons.put(buttons.size(), new Grants_Button(profile, grants));
+        }
         for (Grant grants : profile.getGrants()) {
             buttons.put(buttons.size(), new Grants_Button(profile, grants));
         }
@@ -124,16 +131,14 @@ public class GrantsMenu extends PaginatedMenu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.buttons.grants-button.display-name").replace("%rank_display%", grant.getRank().getName()));
+            builder.setDisplayName(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.buttons.grants-button.display-name").replace("%rank_display%", grant.getRankName()));
             for (String line : Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getStringList("grants-menu.buttons.grants-button.lore")) {
                 builder.addLore(line
                         .replace("%rank_name%", grant.getRankName())
-                        .replace("%rank_duration%", DateUtils.formatDateDiff(grant.getDuration()))
-                        .replace("%rank_expire%", grant.getRemaining())
+                        .replace("%rank_duration%", grant.getRemaining())
                         .replace("%reason%", grant.getReason())
                         .replace("%staff_member%", grant.getAdder())
                         .replace("%added_date%", DateUtils.formatDateDiff(grant.getAddedTime()))
-                        .replace("%removed_date%", DateUtils.formatDateDiff(grant.getRemovedTime()))
                         .replace("%creation_server%", grant.getServer())
                 );
             }
@@ -160,7 +165,7 @@ public class GrantsMenu extends PaginatedMenu {
     }
 
     @AllArgsConstructor
-    public static class Grant_Add_Button extends Button {
+    public class Grant_Add_Button extends Button {
         final Profile profile;
 
         public Material getMaterial() {
@@ -198,76 +203,9 @@ public class GrantsMenu extends PaginatedMenu {
             if (clickType.isLeftClick()) {
                 if (player.hasPermission("oxygen.staff.grants.add")) {
                     player.closeInventory();
-                    player.sendMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.promt-1")));
-                    ConversationFactory factory = new ConversationFactory(Oxygen.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
-                        public String getPromptText(ConversationContext context) {
-                            return "";
-                        }
+                    final ConversationFactory factory = new ConversationFactory(Oxygen.getInstance()).withFirstPrompt(new rankNamePromt(profile)).withLocalEcho(false);
 
-                        @Override
-                        public Prompt acceptInput(ConversationContext cc, String rankName) {
-                            if (Oxygen.getInstance().getRankManager().getRank(rankName) == null) {
-                                cc.getForWhom().sendRawMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.invalid-rank")));
-                                return Prompt.END_OF_CONVERSATION;
-                            }
-
-                            cc.getForWhom().sendRawMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.promt-2")));
-                            ConversationFactory factory = new ConversationFactory(Oxygen.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
-                                public String getPromptText(ConversationContext context) {
-                                    return "";
-                                }
-
-                                @Override
-                                public Prompt acceptInput(ConversationContext cc, String reason) {
-                                    player.sendMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.promt-3")));
-                                    ConversationFactory factory = new ConversationFactory(Oxygen.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
-                                        public String getPromptText(ConversationContext context) {
-                                            return "";
-                                        }
-
-                                        @Override
-                                        public Prompt acceptInput(ConversationContext cc, String duration) {
-                                            if (duration.equalsIgnoreCase("permanent")) {
-                                                Grant grant = new Grant();
-                                                grant.setActive(true);
-                                                grant.setAdder(player.getName());
-                                                grant.setPermanent(true);
-                                                grant.setRankName(rankName);
-                                                grant.setServer(Oxygen.getInstance().getServer().getServerName());
-                                                grant.setReason(reason);
-
-                                                new GrantsMenu(profile).openMenu(player);
-                                            } else {
-                                                final DurationWrapper durationWrapper = DurationWrapper.findDurationWrapper(duration);
-                                                Grant grant = new Grant();
-                                                grant.setActive(true);
-                                                grant.setAdder(player.getName());
-                                                grant.setPermanent(false);
-                                                grant.setDuration(durationWrapper.getDuration());
-                                                grant.setRankName(rankName);
-                                                grant.setServer(Oxygen.getInstance().getServer().getServerName());
-                                                grant.setReason(reason);
-
-                                                new GrantsMenu(profile).openMenu(player);
-                                            }
-                                            return Prompt.END_OF_CONVERSATION;
-                                        }
-                                    }).withLocalEcho(false).withEscapeSequence("/null").withTimeout(20).thatExcludesNonPlayersWithMessage("Go away evil console!");
-
-                                    Conversation con = factory.buildConversation(player);
-                                    player.beginConversation(con);
-                                    return Prompt.END_OF_CONVERSATION;
-                                }
-                            }).withLocalEcho(false).withEscapeSequence("/null").withTimeout(20).thatExcludesNonPlayersWithMessage("Go away evil console!");
-
-                            Conversation con = factory.buildConversation(player);
-                            player.beginConversation(con);
-                            return Prompt.END_OF_CONVERSATION;
-                        }
-                    }).withLocalEcho(false).withEscapeSequence("/null").withTimeout(20).thatExcludesNonPlayersWithMessage("Go away evil console!");
-
-                    Conversation con = factory.buildConversation(player);
-                    player.beginConversation(con);
+                    player.beginConversation(factory.buildConversation(player));
                 } else {
                     player.sendMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.cannot-add")));
                 }
@@ -280,4 +218,145 @@ public class GrantsMenu extends PaginatedMenu {
         }
     }
 
+    @AllArgsConstructor
+    public class rankNamePromt extends StringPrompt {
+        @Getter private Profile profile;
+
+        @Override
+        public String getPromptText(ConversationContext conversationContext) {
+            return CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.promt-1"));
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext conversationContext, String input) {
+            final Player sender = (Player) conversationContext.getForWhom();
+
+            if (Oxygen.getInstance().getRankManager().getRank(input) == null) {
+                sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
+                conversationContext.getForWhom().sendRawMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.invalid-rank")));
+                new GrantsMenu(profile).openMenu(sender);
+                return Prompt.END_OF_CONVERSATION;
+            }
+            for (Grant grants : profile.getActiveGrants()) {
+                if (grants.getRankName().equalsIgnoreCase(input)) {
+                    sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
+                    conversationContext.getForWhom().sendRawMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.already-has")));
+                    new GrantsMenu(profile).openMenu(sender);
+                    return Prompt.END_OF_CONVERSATION;
+                }
+            }
+
+            if (input.equalsIgnoreCase("cancel")) {
+                sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
+                conversationContext.getForWhom().sendRawMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.canceled-promt")));
+                new GrantsMenu(profile).openMenu(sender);
+                return END_OF_CONVERSATION;
+            }
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    sender.playSound(sender.getLocation(), Sound.ORB_PICKUP, 5, 5);
+                    promptTime(sender, profile, input);
+                }
+            }.runTask(Oxygen.getInstance());
+
+            return Prompt.END_OF_CONVERSATION;
+        }
+    }
+
+    @AllArgsConstructor
+    public class durationPromt extends StringPrompt {
+        @Getter private Profile profile;
+        @Getter private String rank;
+
+        @Override
+        public String getPromptText(ConversationContext conversationContext) {
+            return CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.promt-2"));
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext conversationContext, String input) {
+            final Player sender = (Player) conversationContext.getForWhom();
+
+            if (input.equalsIgnoreCase("cancel")) {
+                sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
+                conversationContext.getForWhom().sendRawMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.canceled-promt")));
+                new GrantsMenu(profile).openMenu(sender);
+                return END_OF_CONVERSATION;
+            }
+
+            DurationWrapper durationWrapper = DurationWrapper.findDurationWrapper(input);
+
+            if (durationWrapper.isPermanent() && !input.toLowerCase().startsWith("permanent")) {
+                sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
+                conversationContext.getForWhom().sendRawMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.canceled-promt")));
+                new GrantsMenu(profile).openMenu(sender);
+                return END_OF_CONVERSATION;
+            }
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    promtReason(sender, profile, rank, durationWrapper);
+                    sender.playSound(sender.getLocation(), Sound.ORB_PICKUP, 5, 5);
+                }
+            }.runTask(Oxygen.getInstance());
+
+            return Prompt.END_OF_CONVERSATION;
+        }
+    }
+
+    public void promptTime(Player player, Profile profile, String rank) {
+        final ConversationFactory factory = new ConversationFactory(Oxygen.getInstance()).withFirstPrompt(new durationPromt(profile, rank)).withLocalEcho(false);
+
+        player.beginConversation(factory.buildConversation(player));
+    }
+
+    public void promtReason(Player player, Profile profile, String rank, DurationWrapper durationWrapper) {
+        final ConversationFactory factory = new ConversationFactory(Oxygen.getInstance()).withFirstPrompt(new reasonPromt(profile, rank, durationWrapper)).withLocalEcho(false);
+
+        player.beginConversation(factory.buildConversation(player));
+    }
+
+    @AllArgsConstructor
+    public class reasonPromt extends StringPrompt {
+        @Getter private Profile target;
+        @Getter private String rank;
+        @Getter private DurationWrapper durationWrapper;
+
+        @Override
+        public String getPromptText(ConversationContext conversationContext) {
+            return CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.promt-3"));
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext conversationContext, String input) {
+            final Player sender = (Player) conversationContext.getForWhom();
+
+            if (input.equalsIgnoreCase("cancel")) {
+                sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
+                conversationContext.getForWhom().sendRawMessage(CC.translate(Oxygen.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.canceled-promt")));
+                new GrantsMenu(profile).openMenu(sender);
+                return END_OF_CONVERSATION;
+            }
+
+            Grant grant = new Grant();
+            grant.setActive(true);
+            grant.setAdder(sender.getName());
+            grant.setDuration(durationWrapper.getDuration());
+            grant.setRankName(rank);
+            grant.setAddedTime(System.currentTimeMillis());
+            grant.setServer(Oxygen.getInstance().getServer().getServerName());
+            grant.setReason(input);
+
+            profile.getGrants().add(grant);
+            profile.save();
+
+            new GrantsMenu(profile).openMenu(sender);
+            sender.playSound(sender.getLocation(), Sound.ORB_PICKUP, 5, 5);
+
+            return Prompt.END_OF_CONVERSATION;
+        }
+    }
 }

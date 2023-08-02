@@ -23,7 +23,6 @@ import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
-import java.util.List;
 
 public class RankInheritancesCommand extends SubCommand {
     public RankInheritancesCommand() {
@@ -32,37 +31,75 @@ public class RankInheritancesCommand extends SubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length < 3) {
+        if (args.length < 4) {
             sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.inherit.usage")));
             return;
         }
 
-        if (Oxygen.getInstance().getRankManager().getRank(args[1]) == null) {
-            sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
-            return;
-        }
-        for (String inheritances : Oxygen.getInstance().getRankManager().getRank(args[1]).getInheritances()) {
-            if (inheritances.equalsIgnoreCase(args[2])) {
-                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.inherit.already-inherit")));
-
+        if (args[1].equalsIgnoreCase("add")) {
+            if (Oxygen.getInstance().getRankManager().getRank(args[2]) == null) {
+                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
+                return;
             }
-        }
-        if (Oxygen.getInstance().getRankManager().getRank(args[1]).getInheritances() == null) {
-            sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
-            return;
-        }
+            for (String inheritances : Oxygen.getInstance().getRankManager().getRank(args[2]).getInheritances()) {
+                if (inheritances.equalsIgnoreCase(args[3])) {
+                    sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.inherit.already-inherit")));
+                    return;
+                }
+            }
 
-        if (Oxygen.getInstance().getRankManager().getRank(args[2]) == null) {
-            sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
-            return;
+            if (Oxygen.getInstance().getRankManager().getRank(args[3]) == null) {
+                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
+                return;
+            }
+
+            sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.inherit.added-inherit").replace("%rank_name%", args[2]).replace("%inherit_rank_name%", args[3])));
+            Rank rank = Oxygen.getInstance().getRankManager().getRank(args[2]);
+            Rank inheritRank = Oxygen.getInstance().getRankManager().getRank(args[3]);
+
+            rank.getInheritances().add(inheritRank.getName());
+            Oxygen.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(args[2]));
+        } else if (args[1].equalsIgnoreCase("list")) {
+            if (Oxygen.getInstance().getRankManager().getRank(args[2]) == null) {
+                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
+                return;
+            }
+            if (Oxygen.getInstance().getRankManager().getRank(args[2]).getInheritances().size() == 0) {
+                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.inherit.no-inherits")));
+                return;
+            }
+
+            for (String inheritances : Oxygen.getInstance().getRankManager().getRank(args[2]).getInheritances()) {
+                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.inherit.list-format").replace("%rank%", inheritances)));
+            }
+        } else if (args[1].equalsIgnoreCase("remove")) {
+            if (Oxygen.getInstance().getRankManager().getRank(args[2]) == null) {
+                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
+                return;
+            }
+            if (Oxygen.getInstance().getRankManager().getRank(args[3]) == null) {
+                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
+                return;
+            }
+            if (Oxygen.getInstance().getRankManager().getRank(args[2]).getInheritances().size() == 0) {
+                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
+                return;
+            }
+
+            if (!Oxygen.getInstance().getRankManager().getRank(args[2]).getInheritances().contains(args[3])) {
+                sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.inherit.not-have")));
+                return;
+            }
+
+            Rank rank = Oxygen.getInstance().getRankManager().getRank(args[2]);
+            Rank inheritRank = Oxygen.getInstance().getRankManager().getRank(args[3]);
+
+            rank.getInheritances().remove(inheritRank.getName());
+            Oxygen.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(args[2]));
+            sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.inherit.removed-inherit")));
+        } else {
+            sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.bungee-permissions.usage")));
         }
-
-        sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.created").replace("%rank_name%", args[1])));
-        Rank rank = Oxygen.getInstance().getRankManager().getRank(args[1]);
-        Rank inheritRank = Oxygen.getInstance().getRankManager().getRank(args[2]);
-
-        rank.getInheritances().add(inheritRank.getName());
-        Oxygen.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(args[1]));
     }
 }
 

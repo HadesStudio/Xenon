@@ -68,6 +68,7 @@ public class Profile {
     private Preferences preferences;
     private List<Comment> comments = new ArrayList<>();
     private List<Message> messages = new ArrayList<>();
+    private boolean vpnWhitelist = false;
     private String tag = "";
     private StaffProfile staffProfile = new StaffProfile();
     private Oxygen plugin = Oxygen.getInstance();
@@ -104,6 +105,7 @@ public class Profile {
         document.put("firstSeen", firstSeen);
         document.put("lastSeen", lastSeen);
         document.put("lastServer", lastServer);
+        document.put("vpnWhitelist", vpnWhitelist);
         document.put("tag", tag);
         document.put("totalkills", totalKills);
         document.put("totaldeaths", totalDeaths);
@@ -150,6 +152,7 @@ public class Profile {
             lastSeen = document.getLong("lastSeen");
             lastServer = document.getString("lastServer");
             tag = document.getString("tag");
+            vpnWhitelist = document.getBoolean("vpnWhitelist");
 
             if (document.containsKey("staffProfile")) {
                 Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
