@@ -1,8 +1,8 @@
 Oxygen:
   name: "Oxygen"
-  prefix: "&d&l#Oxygen"
+  prefix: "&8[&d&nOxygen&8]"
   weight: 10
 Void:
   name: "Void"
-  prefix: "&3&l#Void"
+  prefix: "&8[&6#Void&8]"
   weight: 5

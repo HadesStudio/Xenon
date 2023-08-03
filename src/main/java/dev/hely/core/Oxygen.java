@@ -239,6 +239,12 @@ public class Oxygen extends JavaPlugin {
         this.getConfiguration().save();
     }
 
+    public void debug_message(String message) {
+        if (this.debug_mode) {
+            Bukkit.getConsoleSender().sendMessage(CC.translate(String.format("&c[Oxygen Debug] &4%s", CC.translate(message))));
+        }
+    }
+
     public void debug_message(String message, ModuleLoader module) {
         if (this.debug_mode) {
             if (module != null) {

@@ -48,7 +48,7 @@ public class Grant {
 
     public Rank getRank() {
         Rank rankData = Oxygen.getInstance().getRankManager().getRank(rankName);
-        if (rankData != null && rankData.isServer()) return rankData;
+        if (rankData != null) return rankData;
         return null;
     }
 }

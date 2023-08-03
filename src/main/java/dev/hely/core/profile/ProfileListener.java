@@ -1,6 +1,7 @@
 package dev.hely.core.profile;
 
 import dev.hely.core.Oxygen;
+import dev.hely.core.OxygenAPI;
 import dev.hely.core.configuration.Locale;
 import dev.hely.core.profile.packet.implement.FriendSessionPacket;
 import dev.hely.core.profile.packet.implement.StaffJoinPacket;
@@ -8,6 +9,8 @@ import dev.hely.core.profile.packet.implement.StaffLeavePacket;
 import dev.hely.core.profile.packet.implement.StaffSwitchPacket;
 import dev.hely.core.punishment.Punishment;
 import dev.hely.core.punishment.PunishmentType;
+import dev.hely.core.ranks.grants.Grant;
+import dev.hely.core.ranks.rank.Rank;
 import dev.hely.core.utils.VPNUtil;
 import dev.hely.lib.CC;
 import lombok.AllArgsConstructor;
@@ -103,6 +106,61 @@ public class ProfileListener implements Listener {
                     }
                 }, 5);
             }
+
+            Oxygen.getInstance().debug_message("---------------------------------");
+            Oxygen.getInstance().debug_message("Debug Messages:");
+            if (Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank() != null) {
+                String activeHighestRank = Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank().getName();
+                Oxygen.getInstance().debug_message("Active Highest Rank: " + activeHighestRank);
+                if (Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank().getPrefix() != null) {
+                    Oxygen.getInstance().debug_message(" - Prefix: " + Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank().getPrefix());
+                } else {
+                    Oxygen.getInstance().debug_message(" - Prefix: Null (URGENT ERROR)");
+                }
+                if (Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank().getSuffix() != null) {
+                    Oxygen.getInstance().debug_message(" - Suffix: " + Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank().getSuffix());
+                } else {
+                    Oxygen.getInstance().debug_message(" - Suffix: Null (URGENT ERROR)");
+                }
+
+            } else {
+                Oxygen.getInstance().debug_message("Active Highest Rank: Null (URGENT ERROR)");
+            }
+            if (Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant() != null) {
+                Grant activeHighestRank = Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant();
+                Oxygen.getInstance().debug_message("Active Highest Grant: " + activeHighestRank.getRank().getName());
+                if (Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant().getRank().getPrefix() != null) {
+                    Oxygen.getInstance().debug_message(" - Prefix: " + Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant().getRank().getPrefix());
+                } else {
+                    Oxygen.getInstance().debug_message(" - Prefix: Null (URGENT ERROR)");
+                }
+                if (Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant().getRank().getSuffix() != null) {
+                    Oxygen.getInstance().debug_message(" - Suffix: " + Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant().getRank().getSuffix());
+                } else {
+                    Oxygen.getInstance().debug_message(" - Suffix: Null (URGENT ERROR)");
+                }
+
+            } else {
+                Oxygen.getInstance().debug_message("Active Highest Grant: Null (URGENT ERROR)");
+            }
+            Oxygen.getInstance().debug_message("");
+            Oxygen.getInstance().debug_message("All Grants: ");
+            if (Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getGrants() != null) {
+                for (Grant rank : Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getGrants()) {
+                    if (rank.getRank() != null) {
+                        Oxygen.getInstance().debug_message(" - " + rank.getRank().getName() + " Rank Grant");
+                    } else {
+                        Oxygen.getInstance().debug_message(" - Null (URGENT ERROR)");
+                        Oxygen.getInstance().debug_message(" - This user has " + Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId()).getGrants().size() + " grants.");
+                    }
+                }
+            } else {
+                Oxygen.getInstance().debug_message(" - Null (URGENT ERROR)");
+            }
+            Oxygen.getInstance().debug_message("");
+            Oxygen.getInstance().debug_message("What the fuck?");
+            Oxygen.getInstance().debug_message("Love DevDipin");
+            Oxygen.getInstance().debug_message("---------------------------------");
 
             plugin.getRedisModule().sendPacket(new FriendSessionPacket(player.getName(), serverName, false));
             profile.setCurrentServer(serverName);

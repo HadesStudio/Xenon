@@ -17,9 +17,12 @@ package dev.hely.core.client.listeners;
 
 import dev.hely.core.Oxygen;
 import dev.hely.core.client.impl.Client;
+import dev.hely.core.ranks.grants.Grant;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRegisterChannelEvent;
 
@@ -43,6 +46,4 @@ public class ClientListener implements Listener {
     private void onPlayerQuit(PlayerQuitEvent event) {
         Oxygen.getInstance().getClientManager().getClients().remove(event.getPlayer().getUniqueId());
     }
-
-
 }
