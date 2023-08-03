@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 /**
  * Created By LeandroSSJ
  * Created on 14/07/2023
- * Protect Name Oxygen
+ * Protect Name OxygenGlobal
  */
 public class TimeUtil {
 

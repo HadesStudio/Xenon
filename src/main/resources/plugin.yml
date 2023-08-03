@@ -1,5 +1,5 @@
-name: Oxygen
-main: dev.hely.core.Oxygen
+name: OxygenGlobal
+main: dev.hely.core.bukkit.OxygenGlobal
 version: 1.0-SNAPSHOT
 author: [Hely Development]
 depend: [ProtocolLib]

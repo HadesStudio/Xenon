@@ -1,8 +1,7 @@
 package dev.hely.core.utils.command.sub;
 
-import dev.hely.core.Oxygen;
-import dev.hely.core.configuration.Locale;
-import dev.hely.core.utils.command.CommandManager;
+import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -32,7 +31,7 @@ public class SubCommandHandler extends BukkitCommand {
         this.subCommands = new ArrayList<>();
         this.usageMessage = usageMessage;
 
-        Oxygen.getInstance().getCommandManager().registerCommand(this);
+        OxygenBukkit.getInstance().getCommandManager().registerCommand(this);
     }
 
     public void disable() {

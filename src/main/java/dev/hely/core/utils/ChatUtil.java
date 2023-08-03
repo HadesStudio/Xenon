@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created By LeandroSSJ
  * Created on 06/07/2023
- * Protect Name Oxygen
+ * Protect Name OxygenGlobal
  */
 public class ChatUtil {
 

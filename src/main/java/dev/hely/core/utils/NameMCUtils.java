@@ -15,7 +15,7 @@ package dev.hely.core.utils;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import dev.hely.core.Oxygen;
+import dev.hely.core.bukkit.OxygenBukkit;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -27,11 +27,11 @@ import java.util.UUID;
 public class NameMCUtils {
     @SneakyThrows
     public static boolean isVerified(UUID uuid) {
-        return new Scanner(new URL(Oxygen.getInstance().getConfiguration().getConfiguration().getString("name-mc.link") + uuid.toString()).openStream()).nextBoolean();
+        return new Scanner(new URL(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("name-mc.link") + uuid.toString()).openStream()).nextBoolean();
     }
 
     public static void runCommands(Player player) {
-        for (String commands : Oxygen.getInstance().getConfiguration().getConfiguration().getStringList("name-mc.commands")) {
+        for (String commands : OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("name-mc.commands")) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commands.replace("%player%", player.getName()));
         }
     }

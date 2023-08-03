@@ -22,7 +22,7 @@ import org.bukkit.Material;
 public class MaterialCheckUtil {
     public static Material checkMaterial(String material, String describer, Material default_material) {
         if (Material.getMaterial(material) == null) {
-            Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material for '" + describer + "' is invalid. We have setup a default value for the time being."));
+            Bukkit.getConsoleSender().sendMessage(CC.translate("&4[OxygenGlobal] &cThe material for '" + describer + "' is invalid. We have setup a default value for the time being."));
             return default_material;
         } else {
             return Material.getMaterial(material);

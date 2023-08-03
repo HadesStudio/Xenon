@@ -19,7 +19,7 @@ import com.google.gson.GsonBuilder;
 /**
  * Created By LeandroSSJ
  * Created on 07/07/2023
- * Protect Name Oxygen
+ * Protect Name OxygenGlobal
  */
 public class UUIDUtil {
     private static  Gson GSON = new GsonBuilder().create();

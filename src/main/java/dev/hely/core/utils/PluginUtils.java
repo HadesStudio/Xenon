@@ -2,7 +2,7 @@ package dev.hely.core.utils;
 
 
 import com.google.gson.*;
-import dev.hely.core.Oxygen;
+import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.lib.CC;
 import org.bukkit.*;
 import org.bukkit.enchantments.*;
@@ -117,9 +117,9 @@ public class PluginUtils {
         Bukkit.getConsoleSender().sendMessage(CC.translate(message));
     }
 
-    public static boolean isJson(Oxygen plugin, String source, Type type) {
+    public static boolean isJson(OxygenBukkit plugin, String source, Type type) {
         try {
-            Oxygen.PLAIN_GSON.fromJson(source, type);
+            OxygenBukkit.PLAIN_GSON.fromJson(source, type);
             return true;
         } catch (JsonSyntaxException ex) {
             return false;

@@ -9,7 +9,7 @@
 
     <properties>
         <author>Hely Development</author>
-        <mainClass>dev.hely.core.Oxygen</mainClass>
+        <mainClass>dev.hely.core.bukkit.OxygenBukkit</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

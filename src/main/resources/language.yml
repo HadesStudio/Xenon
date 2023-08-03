@@ -225,15 +225,15 @@ punishments:
           
   kick:
     blacklist:
-      - "&cYour account has been blacklisted from the Oxygen Network."
+      - "&cYour account has been blacklisted from the OxygenGlobal Network."
       - "&cReason: %reason%"
       - "&cThis type of punishment cannot be appealed."
     ban:
-      - "&cYour account has been suspended from the Oxygen Network."
+      - "&cYour account has been suspended from the OxygenGlobal Network."
       - "&cReason: %reason%"
       - "&cAppeal at %teamspeak%"
     temp-ban:
-      - "&cYour account has been suspended from the Oxygen Network."
+      - "&cYour account has been suspended from the OxygenGlobal Network."
       - "&cReason: %reason%"
       - "&cExpires in %duration%"
     kick:
