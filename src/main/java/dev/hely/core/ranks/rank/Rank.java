@@ -77,8 +77,7 @@ public class Rank {
             setDisplay_color(ChatColor.valueOf(document.getString("display_color")));
             setGlobalRank(document.getBoolean("globalRank"));
 
-            Type permissionType = new TypeToken<List<PermissionData>>() {}.getType();
-            setPermissionsData(Oxygen.PLAIN_GSON.fromJson(document.getString("permissionsData"), permissionType));
+            setPermissionsData(Oxygen.PLAIN_GSON.fromJson(document.getString("permissionsData"), GSONUtil.PERMISSION_DATA));
             setBungeePermissions(Oxygen.PLAIN_GSON.fromJson(document.getString("bungeePermissions"), GSONUtil.LIST_STRING_TYPE));
             setInheritances(Oxygen.PLAIN_GSON.fromJson(document.getString("inheritances"), GSONUtil.LIST_STRING_TYPE));
             setServers(Oxygen.PLAIN_GSON.fromJson(document.getString("servers"), GSONUtil.LIST_STRING_TYPE));

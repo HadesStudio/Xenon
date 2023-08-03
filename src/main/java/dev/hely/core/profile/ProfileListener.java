@@ -68,27 +68,6 @@ public class ProfileListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPreLogin(AsyncPlayerPreLoginEvent event) {
-        Profile profile = plugin.getProfileManager().getProfile(event.getUniqueId());
-
-        if (profile != null) {
-            final String previousIp = profile.getIpAddress();
-            final String currentIp = event.getAddress().getHostAddress();
-            profile.setIpAddress(event.getAddress().getHostAddress());
-            System.out.print(profile.getIpAddress());
-            profile.save();
-
-            if (!previousIp.equalsIgnoreCase(currentIp)) {
-                try {
-                    final VPNUtil.Result afterResult = VPNUtil.getResult(currentIp);
-                    final VPNUtil.Result beforeResult = VPNUtil.getResult(profile.getIpAddress());
-                } catch (IOException ignored) {
-                }
-            }
-        }
-    }
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage(null);

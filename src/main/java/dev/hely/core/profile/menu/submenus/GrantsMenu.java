@@ -203,7 +203,7 @@ public class GrantsMenu extends PaginatedMenu {
             if (clickType.isLeftClick()) {
                 if (player.hasPermission("oxygen.staff.grants.add")) {
                     player.closeInventory();
-                    final ConversationFactory factory = new ConversationFactory(Oxygen.getInstance()).withFirstPrompt(new rankNamePromt(profile)).withLocalEcho(false);
+                    ConversationFactory factory = new ConversationFactory(Oxygen.getInstance()).withFirstPrompt(new rankNamePromt(profile)).withLocalEcho(false);
 
                     player.beginConversation(factory.buildConversation(player));
                 } else {
@@ -277,7 +277,7 @@ public class GrantsMenu extends PaginatedMenu {
 
         @Override
         public Prompt acceptInput(ConversationContext conversationContext, String input) {
-            final Player sender = (Player) conversationContext.getForWhom();
+            Player sender = (Player) conversationContext.getForWhom();
 
             if (input.equalsIgnoreCase("cancel")) {
                 sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);

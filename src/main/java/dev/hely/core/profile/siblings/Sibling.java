@@ -23,6 +23,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Sibling {
+
     private UUID uniqueId;
     private String mainProfileName;
     private UUID mainProfileUUID;

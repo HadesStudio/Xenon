@@ -32,7 +32,7 @@ public class DurationWrapper {
     public static DurationWrapper findDurationWrapper(String source) {
         try {
 
-            final int toReturn = TimeUtil.parseTime(source);
+            int toReturn = TimeUtil.parseTime(source);
 
             if ((toReturn * 1000L) <= 0) {
                 return new DurationWrapper(source, (long) Integer.MAX_VALUE);

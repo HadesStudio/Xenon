@@ -163,6 +163,7 @@ public class RankManager implements ModuleLoader {
             file.set(rankData.getName() + ".rank-color", ColorUtil.convertChatColor(rankData.getDisplay_color()));
             file.set(rankData.getName() + ".rank-type", rankData.getType().toString());
             file.set(rankData.getName() + ".prefix", rankData.getPrefix());
+            file.set(rankData.getName() + ".suffix", rankData.getSuffix());
             file.set(rankData.getName() + ".default-rank", rankData.isDefaultRank());
             file.set(rankData.getName() + ".global-rank", rankData.isGlobalRank());
             file.set(rankData.getName() + ".weight", rankData.getWeight());

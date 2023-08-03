@@ -1,4 +1,4 @@
-package dev.hely.core.profile.antivpn.commands;
+package dev.hely.core.profile.antivpn;
 
 //============================================================
 // This file was created by DevDipin!
@@ -45,7 +45,7 @@ public class VPNCommand extends BaseCommand {
                 if (profile.isVpnWhitelist()) {
                     try {
                         long time = System.nanoTime();
-                        VPNUtil.Result ip = VPNUtil.getResult(profile.getIpAddress());
+                        VPNUtil.Result ip = VPNUtil.getResult(profile.getCurrentAddress());
                         double elapsed = (System.nanoTime() - time) / 1000000D;
 
                         for (String message : Oxygen.getInstance().getLanguageConfig().getConfiguration().getStringList("vpn.check.whitelist")) {
@@ -63,7 +63,7 @@ public class VPNCommand extends BaseCommand {
                 } else {
                     try {
                         long time = System.nanoTime();
-                        VPNUtil.Result ip = VPNUtil.getResult(profile.getIpAddress());
+                        VPNUtil.Result ip = VPNUtil.getResult(profile.getCurrentAddress());
                         double elapsed = (System.nanoTime() - time) / 1000000D;
 
                         for (String message : Oxygen.getInstance().getLanguageConfig().getConfiguration().getStringList("vpn.check.not-whitelist")) {

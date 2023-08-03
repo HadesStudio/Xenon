@@ -64,7 +64,7 @@ public class ProfileManager {
 
     public boolean sendNotificationAll(List<String> message) {
         for (Document document : Oxygen.getInstance().getMongoModule().getProfilesCollection().find()) {
-            final UUID uuid = UUID.fromString(document.getString("uniqueId"));
+            UUID uuid = UUID.fromString(document.getString("uniqueId"));
             Profile playerProfile = Oxygen.getInstance().getProfileManager().getProfile(uuid);
 
             if (playerProfile == null) {
@@ -85,7 +85,7 @@ public class ProfileManager {
 
     public boolean clearNotificationsAll(String... message) {
         for (Document document : Oxygen.getInstance().getMongoModule().getProfilesCollection().find()) {
-            final UUID uuid = UUID.fromString(document.getString("uniqueId"));
+            UUID uuid = UUID.fromString(document.getString("uniqueId"));
             Profile playerProfile = Oxygen.getInstance().getProfileManager().getProfile(uuid);
 
             if (playerProfile == null) {

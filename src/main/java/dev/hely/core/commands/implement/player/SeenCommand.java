@@ -41,11 +41,11 @@ public class SeenCommand extends BaseCommand {
             return;
         }
 
-        if (Oxygen.getInstance().getProfileManager().getProfile(args[0]) == null) {
+        Profile profile = Oxygen.getInstance().getProfileManager().getProfile(args[0]);
+        if (profile == null) {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
             return;
         }
-        Profile profile = Oxygen.getInstance().getProfileManager().getProfile(args[0]);
 
         sender.sendMessage(CC.translate(Oxygen.getInstance().getLanguageConfig().getConfiguration().getString("seen-command.message")
                 .replace("%player%", profile.getName())
