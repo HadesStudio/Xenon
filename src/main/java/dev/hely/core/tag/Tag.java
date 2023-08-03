@@ -7,6 +7,8 @@ import dev.hely.lib.CC;
 import lombok.*;
 import org.bson.Document;
 
+import java.util.UUID;
+
 /**
  * Created By LeandroSSJ
  * Created on 03/07/2023

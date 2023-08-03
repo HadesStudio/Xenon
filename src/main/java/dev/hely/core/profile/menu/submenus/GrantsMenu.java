@@ -347,8 +347,8 @@ public class GrantsMenu extends PaginatedMenu {
             grant.setDuration(durationWrapper.getDuration());
             grant.setRankName(rank);
             grant.setAddedTime(System.currentTimeMillis());
-            grant.setServer(Oxygen.getInstance().getServer().getServerName());
             grant.setReason(input);
+
 
             profile.getGrants().add(grant);
             profile.save();

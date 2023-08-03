@@ -65,6 +65,7 @@ public class Oxygen extends JavaPlugin {
     private Config requestsMenuConfig;
     private Config logsMenuConfig;
     private Config editProfileMenuConfig;
+    private Config tagsMenuConfig;
 
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
@@ -141,6 +142,7 @@ public class Oxygen extends JavaPlugin {
         this.requestsMenuConfig = new Config(this, "menus" + File.separator + "requests-menu");
         this.logsMenuConfig = new Config(this, "menus" + File.separator + "log-menu");
         this.editProfileMenuConfig = new Config(this, "menus" + File.separator + "edit-profile-menu");
+        this.tagsMenuConfig = new Config(this, "menus" + File.separator + "tags-menu");
 
         Locale.load();
     }

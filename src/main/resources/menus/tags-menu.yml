@@ -1,0 +1,34 @@
+menu:
+  title: "Select a tag."
+
+  messages:
+    reset-tag: "&cYou have successfully disabled your active chat tag."
+    activated-tag: "&aYou have successfully activated this &6Chat Tag&a."
+    need-reset: "&cYou must disable your current &6Chat Tag &cto be able to enable a new one."
+  buttons:
+    tag-button:
+      material: "NAME_TAG"
+      data: 0
+      display-name: "&6%tag_name% - %tag_prefix%"
+      lores:
+        has-permission:
+          - "&7"
+          - "&7Click here to activate this chat"
+          - "&7tag."
+          - "&7"
+          - "&6Prefix: &a%tag_prefix%"
+        no-permission:
+          - "&7"
+          - "&cYou do not have permission to"
+          - "&cactivate this chat tag."
+          - "&7"
+          - "&cPurchase it from &c&nstore.helydev.com"
+    reset-button:
+      material: "BED"
+      data: 0
+      display-name: "&cReset Tag"
+      lore:
+        - "&7Click here to reset your current"
+        - "&7tag."
+        - "&7"
+        - "&cCurrent Tag: &6%tag_name%"

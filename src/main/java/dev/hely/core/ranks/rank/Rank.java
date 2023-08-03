@@ -32,7 +32,8 @@ public class Rank {
 
     private final String name;
     private RankType type = RankType.NORMAL;
-    private String prefix, suffix;
+    private String prefix = "";
+    private String suffix = "";
     private boolean defaultRank;
     private boolean globalRank;
     private int weight = 1;

@@ -20,6 +20,9 @@ public class PunishmentListener implements Listener {
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         Profile profile = Oxygen.getInstance().getProfileManager().getProfile(player.getUniqueId());
+        if (profile.getHighestGrant() != null) {
+            System.out.print(profile.getHighestGrant().getRank().getPrefix());
+        }
 
         if (profile != null) {
             Punishment punishment = profile.getActiveMute();

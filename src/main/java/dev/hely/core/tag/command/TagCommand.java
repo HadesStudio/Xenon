@@ -1,11 +1,11 @@
 package dev.hely.core.tag.command;
 
-import dev.hely.core.configuration.Locale;
 import dev.hely.core.tag.command.subcommand.*;
+import dev.hely.core.tag.menu.TagMenu;
 import dev.hely.core.utils.command.sub.SubCommand;
 import dev.hely.core.utils.command.sub.SubCommandHandler;
-import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Collections;
 
@@ -33,10 +33,10 @@ public class TagCommand extends SubCommandHandler {
             if (subCommand != null) {
                 subCommand.execute(sender, args);
             } else {
-                Locale.TAG_USAGE.forEach(string -> sender.sendMessage(CC.translate(string)));
+                new TagMenu().openMenu((Player) sender);
             }
         } else {
-            Locale.TAG_USAGE.forEach(string -> sender.sendMessage(CC.translate(string)));
+            new TagMenu().openMenu((Player) sender);
         }
         return false;
     }

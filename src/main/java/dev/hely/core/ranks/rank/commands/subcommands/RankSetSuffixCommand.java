@@ -44,7 +44,7 @@ public class RankSetSuffixCommand extends SubCommand {
 
         String new_suffix = args[2].replace("_", " ");
         Rank rank = Oxygen.getInstance().getRankManager().getRank(args[1]);
-        rank.setPrefix(new_suffix);
+        rank.setSuffix(new_suffix);
         rank.save();
 
         sender.sendMessage(CC.translate(Oxygen.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.setsuffix.set")
