@@ -25,12 +25,6 @@ public class OxygenAPI {
     private final OxygenBukkit plugin = OxygenBukkit.getInstance();
 
     public Profile getProfile(UUID uuid) {
-        if (plugin.getProfileManager().getProfile(uuid) == null) {
-            OxygenBukkit.getInstance().debug_message("---------------------------------");
-            OxygenBukkit.getInstance().debug_message("Debug Messages:");
-            OxygenBukkit.getInstance().debug_message("The person's profile is null, causing an error.");
-            OxygenBukkit.getInstance().debug_message("---------------------------------");
-        }
         return plugin.getProfileManager().getProfile(uuid);
     }
 
@@ -79,7 +73,6 @@ public class OxygenAPI {
             }
             OxygenBukkit.getInstance().debug_message("");
             OxygenBukkit.getInstance().debug_message("What the fuck?");
-            OxygenBukkit.getInstance().debug_message("Love DevDipin");
             OxygenBukkit.getInstance().debug_message("---------------------------------");
             return new Rank("Default");
         }

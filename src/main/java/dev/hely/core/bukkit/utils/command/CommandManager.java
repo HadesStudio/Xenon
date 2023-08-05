@@ -10,9 +10,9 @@ import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBlacklistComman
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnMuteCommand;
 import dev.hely.core.bukkit.commands.implement.staff.AdminChatCommand;
 import dev.hely.core.bukkit.commands.implement.staff.StaffChatCommand;
-import dev.hely.core.bukkit.core.commands.OxygenCommand;
+import dev.hely.core.bukkit.commands.OxygenCommand;
 import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.bukkit.profile.antivpn.VPNCommand;
+import dev.hely.core.bukkit.commands.implement.staff.VPNCommand;
 import dev.hely.core.bukkit.profile.commands.EditProfileCommand;
 import dev.hely.core.bukkit.profile.log.commands.LogsCommand;
 import dev.hely.core.bukkit.profile.profilesystem.commands.NotificationCommand;

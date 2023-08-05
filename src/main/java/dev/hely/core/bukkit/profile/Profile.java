@@ -279,9 +279,7 @@ public class Profile {
 
         player.recalculatePermissions();
 
-        // BUNGEE PERMS
-        OxygenBukkit.getInstance().getRedisModule().sendPacket(new PlayerPermissionPacket(
-                player.getUniqueId(), bungeePermissions));
+        plugin.getRedisModule().sendPacket(new PlayerPermissionPacket(player.getUniqueId(), bungeePermissions));
     }
 
     public Rank getActiveHighestRank() {

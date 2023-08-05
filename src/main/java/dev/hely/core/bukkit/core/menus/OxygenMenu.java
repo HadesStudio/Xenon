@@ -41,6 +41,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class OxygenMenu extends Menu {
+
     {
         setPlaceholder(true);
         setClickUpdate(true);
@@ -175,11 +176,6 @@ public class OxygenMenu extends Menu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             new CommandsMenu().openMenu(player);
-        }
-
-        @Override
-        public boolean toUpdate(Player player, int slot, ClickType clickType) {
-            return clickType.isCreativeAction() || clickType.isRightClick() || clickType.isLeftClick();
         }
     }
 }

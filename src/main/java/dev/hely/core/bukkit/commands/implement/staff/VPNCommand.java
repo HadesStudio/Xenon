@@ -1,4 +1,4 @@
-package dev.hely.core.bukkit.profile.antivpn;
+package dev.hely.core.bukkit.commands.implement.staff;
 
 //============================================================
 // This file was created by DevDipin!
