@@ -1,0 +1,4 @@
+name: Oxygen
+main: dev.hely.core.bungee.OxygenBungee
+version: 1.0-SNAPSHOT
+author: [Hely Development]

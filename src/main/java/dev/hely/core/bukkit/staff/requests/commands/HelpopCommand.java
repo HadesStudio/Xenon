@@ -17,7 +17,7 @@ package dev.hely.core.bukkit.staff.requests.commands;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
-import dev.hely.core.global.profile.packet.implement.StaffMessagePacket;
+import dev.hely.core.bukkit.profile.packet.implement.StaffMessagePacket;
 import dev.hely.core.bukkit.utils.ChatUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;

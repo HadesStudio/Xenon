@@ -2,10 +2,10 @@ package dev.hely.core.bukkit.modules.listener;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.global.profile.ProfileListener;
-import dev.hely.core.global.profile.note.NoteListener;
-import dev.hely.core.global.profile.permission.bukkit.BukkitPermissionListener;
-import dev.hely.core.global.punishment.PunishmentListener;
+import dev.hely.core.bukkit.profile.ProfileListener;
+import dev.hely.core.bukkit.profile.note.NoteListener;
+import dev.hely.core.bukkit.profile.permission.bukkit.BukkitPermissionListener;
+import dev.hely.core.bukkit.punishment.PunishmentListener;
 import dev.hely.lib.menu.MenuListener;
 import org.bukkit.event.Listener;
 

@@ -19,7 +19,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.global.profile.profilesystem.impl.Comment;
+import dev.hely.core.bukkit.profile.profilesystem.impl.Comment;
 import dev.hely.core.bukkit.staff.requests.types.RequestType;
 import lombok.Getter;
 import lombok.Setter;

@@ -18,7 +18,7 @@ package dev.hely.core.bukkit.chat;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.chat.impl.ChatMessage;
 import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.global.profile.Profile;
+import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.lib.CC;
 import lombok.Getter;
 import lombok.Setter;

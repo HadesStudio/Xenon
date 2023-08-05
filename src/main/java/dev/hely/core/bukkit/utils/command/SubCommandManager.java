@@ -16,9 +16,9 @@ package dev.hely.core.bukkit.utils.command;
 //============================================================
 
 import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.global.profile.profilesystem.commands.FriendsCommand;
-import dev.hely.core.global.ranks.rank.commands.RankCommand;
-import dev.hely.core.global.tag.command.TagCommand;
+import dev.hely.core.bukkit.profile.profilesystem.commands.FriendsCommand;
+import dev.hely.core.bukkit.ranks.rank.commands.RankCommand;
+import dev.hely.core.bukkit.tag.command.TagCommand;
 
 public class SubCommandManager implements ModuleLoader {
     private RankCommand rankCommand;

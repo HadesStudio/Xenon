@@ -17,7 +17,7 @@ package dev.hely.core.bukkit.staff.menu.submenus;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
-import dev.hely.core.global.profile.packet.implement.StaffRequestClaimPacket;
+import dev.hely.core.bukkit.profile.packet.implement.StaffRequestClaimPacket;
 import dev.hely.core.bukkit.staff.requests.Request;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
