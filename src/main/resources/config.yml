@@ -25,6 +25,10 @@ advanced-client-version-data:
   forge: "&6[F]"
   vanilla: "&a[V]"
 
+command-system:
+  disabled-commands:
+    - "test"
+
 name-mc:
   enabled: true # Do you want to enable the NameMC System?
   reminder: true # Do you want to send reminders when someone hasn't voted for your server?

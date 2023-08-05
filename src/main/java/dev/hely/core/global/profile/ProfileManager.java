@@ -9,7 +9,7 @@ import dev.hely.core.global.profile.profilesystem.impl.serverstats.StatisticType
 import dev.hely.core.global.profile.profilesystem.impl.serverstats.Statistics;
 import dev.hely.core.global.profile.profilesystem.impl.serverstats.StatisticsServer;
 import dev.hely.core.global.punishment.Punishment;
-import dev.hely.core.utils.UUIDUtil;
+import dev.hely.core.bukkit.utils.UUIDUtil;
 import dev.hely.lib.CC;
 import lombok.Getter;
 import org.bson.Document;

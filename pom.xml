@@ -50,6 +50,13 @@
             <version>2.3-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.github.bungee</groupId>
+            <artifactId>paperspigot</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/Bungee.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>org.mongodb</groupId>

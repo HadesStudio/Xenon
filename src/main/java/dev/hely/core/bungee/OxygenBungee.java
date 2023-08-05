@@ -15,5 +15,7 @@ package dev.hely.core.bungee;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-public class OxygenBungee {
+import net.md_5.bungee.api.plugin.Plugin;
+
+public class OxygenBungee extends Plugin {
 }

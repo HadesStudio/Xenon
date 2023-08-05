@@ -18,8 +18,8 @@ package dev.hely.core.bukkit.chat.listeners;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.chat.ChatModule;
 import dev.hely.core.bukkit.chat.impl.ChatMessage;
+import dev.hely.core.bukkit.utils.TimeFormatUtils;
 import dev.hely.core.global.profile.Profile;
-import dev.hely.core.utils.TimeFormatUtils;
 import dev.hely.lib.CC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +33,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 public class ChatListener implements Listener {
-    
     private ChatModule chatModule;
     
     @EventHandler(priority = EventPriority.MONITOR)

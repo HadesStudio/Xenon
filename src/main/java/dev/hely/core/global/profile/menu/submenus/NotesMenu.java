@@ -19,7 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.global.profile.Profile;
 import dev.hely.core.global.profile.note.Note;
 import dev.hely.core.global.profile.menu.EditProfileMenu;
-import dev.hely.core.utils.DateUtils;
+import dev.hely.core.bukkit.utils.DateUtils;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;

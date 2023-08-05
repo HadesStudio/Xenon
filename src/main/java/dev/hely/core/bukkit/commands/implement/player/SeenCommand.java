@@ -18,8 +18,8 @@ package dev.hely.core.bukkit.commands.implement.player;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.global.profile.Profile;
-import dev.hely.core.utils.DateUtils;
-import dev.hely.core.utils.command.BaseCommand;
+import dev.hely.core.bukkit.utils.DateUtils;
+import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 

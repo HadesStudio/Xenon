@@ -16,7 +16,7 @@ package dev.hely.core.bukkit.server;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.utils.NameMCUtils;
+import dev.hely.core.bukkit.utils.NameMCUtils;
 import dev.hely.lib.CC;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

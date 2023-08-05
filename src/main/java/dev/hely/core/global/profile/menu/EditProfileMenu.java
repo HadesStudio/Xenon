@@ -20,7 +20,7 @@ import dev.hely.core.global.profile.Profile;
 import dev.hely.core.global.profile.menu.submenus.NotesMenu;
 import dev.hely.core.global.profile.menu.submenus.GrantsMenu;
 import dev.hely.core.global.profile.menu.submenus.SiblingsMenu;
-import dev.hely.core.utils.DateUtils;
+import dev.hely.core.bukkit.utils.DateUtils;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;

@@ -3,8 +3,8 @@ package dev.hely.core.global.profile.note.command;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.global.profile.Profile;
 import dev.hely.core.global.profile.note.Note;
-import dev.hely.core.utils.ChatUtil;
-import dev.hely.core.utils.command.BaseCommand;
+import dev.hely.core.bukkit.utils.ChatUtil;
+import dev.hely.core.bukkit.utils.command.BaseCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

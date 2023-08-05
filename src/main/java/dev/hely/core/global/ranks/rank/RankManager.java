@@ -5,15 +5,18 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.global.ranks.gson.GSONUtil;
 import dev.hely.core.global.ranks.rank.permission.PermissionData;
-import dev.hely.core.utils.ColorUtil;
-import dev.hely.core.utils.PluginUtils;
+import dev.hely.core.bukkit.utils.ColorUtil;
+import dev.hely.core.bukkit.utils.PluginUtils;
 import dev.hely.lib.CC;
 import lombok.Getter;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -173,6 +176,18 @@ public class RankManager implements ModuleLoader {
             file.set(rankData.getName() + ".servers", OxygenBukkit.PLAIN_GSON.toJson(rankData.getServers(), GSONUtil.LIST_STRING_TYPE));
 
         });
-        OxygenBukkit.getInstance().getRanksConfig().save();
+        try {
+            OxygenBukkit.getInstance().getRanksConfig().save();
+        } catch (IOException | InvalidConfigurationException e) {
+            ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
+
+            bukkitCommandSender.sendMessage(CC.translate("&c-------------------------------------"));
+            bukkitCommandSender.sendMessage(CC.translate("&6Oxygen Core - Rank Configuration Error"));
+            bukkitCommandSender.sendMessage(CC.translate("&c"));
+            bukkitCommandSender.sendMessage(CC.translate("&cThis is more than likely caused by a broken configuration file!"));
+            bukkitCommandSender.sendMessage(CC.translate("&cError:"));
+            e.printStackTrace();
+            bukkitCommandSender.sendMessage(CC.translate("&c-------------------------------------"));
+        }
     }
 }

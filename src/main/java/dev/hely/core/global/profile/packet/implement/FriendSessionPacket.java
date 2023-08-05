@@ -1,5 +1,6 @@
 package dev.hely.core.global.profile.packet.implement;
 
+import dev.hely.core.OxygenGlobal;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.database.redis.packet.Packet;
 import dev.hely.core.global.profile.Profile;
@@ -20,7 +21,7 @@ public class FriendSessionPacket implements Packet {
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(playerName);
         if (profile == null) return;
 
-        for (Player onlinePlayers : OxygenBukkit.getInstance().getServer().getOnlinePlayers()) {
+        for (Player onlinePlayers : OxygenGlobal.getInstance().getServer().getOnlinePlayers()) {
             if (!profile.getFriends().contains(onlinePlayers.getUniqueId())) continue;
 
             if (disconnect) {

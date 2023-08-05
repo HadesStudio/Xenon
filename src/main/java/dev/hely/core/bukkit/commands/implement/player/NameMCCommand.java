@@ -16,8 +16,8 @@ package dev.hely.core.bukkit.commands.implement.player;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.utils.NameMCUtils;
-import dev.hely.core.utils.command.BaseCommand;
+import dev.hely.core.bukkit.utils.NameMCUtils;
+import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

@@ -16,7 +16,7 @@ package dev.hely.core.global.profile.profilesystem.commands;
 //============================================================
 
 import dev.hely.core.bukkit.configuration.Locale;
-import dev.hely.core.utils.command.BaseCommand;
+import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 

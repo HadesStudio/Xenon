@@ -1,9 +1,9 @@
 package dev.hely.core.bukkit.configuration;
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.global.punishment.broadcast.PunishmentBroadcast;
-import dev.hely.core.utils.ChatUtil;
-import dev.hely.lib.configuration.Config;
+import dev.hely.core.bukkit.utils.ChatUtil;
 
 import java.util.HashMap;
 import java.util.List;

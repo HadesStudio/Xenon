@@ -19,7 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.global.profile.Profile;
 import dev.hely.core.global.punishment.Punishment;
 import dev.hely.core.global.punishment.PunishmentType;
-import dev.hely.core.utils.TimeFormatUtils;
+import dev.hely.core.bukkit.utils.TimeFormatUtils;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;

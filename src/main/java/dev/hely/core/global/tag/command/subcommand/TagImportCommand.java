@@ -4,10 +4,15 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.global.tag.Tag;
 import dev.hely.core.global.tag.packet.implement.TagImportPacket;
-import dev.hely.core.utils.command.sub.SubCommand;
+import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.lib.CC;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.IOException;
 
 /**
  * Created By LeandroSSJ
@@ -34,8 +39,21 @@ public class TagImportCommand extends SubCommand {
             OxygenBukkit.getInstance().getTagManager().getTags().add(tag);
         });
 
-        OxygenBukkit.getInstance().getTagConfig().save();
-        OxygenBukkit.getInstance().getTagConfig().reload();
+
+        try {
+            OxygenBukkit.getInstance().getTagConfig().save();
+            OxygenBukkit.getInstance().getTagConfig().reload();
+        } catch (IOException | InvalidConfigurationException e) {
+            ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
+
+            bukkitCommandSender.sendMessage(CC.translate("&c-------------------------------------"));
+            bukkitCommandSender.sendMessage(CC.translate("&6Oxygen Core - Tags Configuration Error"));
+            bukkitCommandSender.sendMessage(CC.translate("&c"));
+            bukkitCommandSender.sendMessage(CC.translate("&cThis is more than likely caused by a broken configuration file!"));
+            bukkitCommandSender.sendMessage(CC.translate("&cError:"));
+            e.printStackTrace();
+            bukkitCommandSender.sendMessage(CC.translate("&c-------------------------------------"));
+        }
 
         sender.sendMessage(CC.translate(Locale.TAG_IMPORT_IMPORTED));
         OxygenBukkit.getInstance().getTasks().runLater(() -> OxygenBukkit.getInstance().getRedisModule().sendPacket(new TagImportPacket()), 10L);

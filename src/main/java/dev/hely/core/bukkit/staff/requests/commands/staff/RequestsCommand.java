@@ -16,7 +16,7 @@ package dev.hely.core.bukkit.staff.requests.commands.staff;
 //============================================================
 
 import dev.hely.core.bukkit.staff.menu.RequestsMainMenu;
-import dev.hely.core.utils.command.BaseCommand;
+import dev.hely.core.bukkit.utils.command.BaseCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

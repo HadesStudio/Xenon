@@ -5,7 +5,7 @@ import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.global.ranks.gson.GSONUtil;
 import dev.hely.core.global.ranks.rank.permission.PermissionData;
-import dev.hely.core.utils.ColorUtil;
+import dev.hely.core.bukkit.utils.ColorUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
