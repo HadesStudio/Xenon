@@ -57,7 +57,7 @@ public class NotesMenu extends PaginatedMenu {
         Map<Integer, Button> buttons = new HashMap<>();
 
         for (Note notes : profile.getNotes()) {
-            buttons.put(buttons.size(), new Note_Button(profile, notes));
+            buttons.put(buttons.size()-1, new Note_Button(profile, notes));
         }
 
         return buttons;

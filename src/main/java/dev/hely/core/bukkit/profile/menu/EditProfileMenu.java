@@ -107,7 +107,7 @@ public class EditProfileMenu extends Menu {
                             .replace("%player_name%", profile.getName())
                             .replace("%note_size%", String.valueOf(profile.getNotes().size()))
                             .replace("%first_join_date%", DateUtils.formatDateDiff(profile.getFirstSeen()))
-                            .replace("%last_seen_date%", DateUtils.formatDateDiff(profile.getFirstSeen()))
+                            .replace("%last_seen_date%", DateUtils.formatDateDiff(profile.getLastSeen()))
                             .replace("%current_server%", profile.getCurrentServer())
                             .replace("%siblings_size%", String.valueOf(profile.getSiblings().size()))
                     );
@@ -122,7 +122,7 @@ public class EditProfileMenu extends Menu {
                             .replace("%player_name%", profile.getName())
                             .replace("%note_size%", String.valueOf(profile.getNotes().size()))
                             .replace("%first_join_date%", DateUtils.formatDateDiff(profile.getFirstSeen()))
-                            .replace("%last_seen_date%", DateUtils.formatDateDiff(profile.getFirstSeen()))
+                            .replace("%last_seen_date%", DateUtils.formatDateDiff(profile.getLastSeen()))
                             .replace("%current_server%", profile.getCurrentServer())
                             .replace("%siblings_size%", String.valueOf(profile.getSiblings().size()))
                     );

@@ -25,12 +25,6 @@ public class SubCommandManager implements ModuleLoader {
     private TagCommand tagCommand;
     private FriendsCommand friendsCommand;
 
-    public SubCommandManager() {
-        this.rankCommand = new RankCommand();
-        this.tagCommand = new TagCommand();
-        this.friendsCommand = new FriendsCommand();
-    }
-
     @Override
     public void enable() {
         this.rankCommand = new RankCommand();

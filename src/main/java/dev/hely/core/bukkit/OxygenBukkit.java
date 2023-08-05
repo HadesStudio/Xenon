@@ -186,8 +186,8 @@ public class OxygenBukkit extends JavaPlugin {
 
         clientManager = new ClientModule();
         commandManager = new CommandManager();
-        listenerModule = new ListenerModule();
         subCommandManager = new SubCommandManager();
+        listenerModule = new ListenerModule();
         redisModule = new RedisModule();
         mongoModule = new MongoModule();
         rankManager = new RankManager();
