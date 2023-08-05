@@ -1,8 +1,6 @@
 package dev.hely.core.global.tag.command;
 
-import dev.hely.core.bukkit.tag.command.subcommand.*;
 import dev.hely.core.global.tag.command.subcommand.*;
-import dev.hely.core.tag.command.subcommand.*;
 import dev.hely.core.global.tag.menu.TagMenu;
 import dev.hely.core.utils.command.sub.SubCommand;
 import dev.hely.core.utils.command.sub.SubCommandHandler;

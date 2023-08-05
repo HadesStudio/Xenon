@@ -39,24 +39,24 @@ public final class LoggerTracker {
 
     public static void logPlayerAction(UUID playerUUID, LogActionTypes type, Map<String, Object> params) {
         Bukkit.getScheduler().runTaskAsynchronously(OxygenBukkit.getInstance(), () -> {
-            System.out.print("----------------------------------");
-            System.out.print("Attemtping to log action to file:");
-            System.out.print("");
-            System.out.print("Player UUID - " + playerUUID);
-            System.out.print("Type - " + type);
-            System.out.print("Parameters - " + params);
-            System.out.print("");
+            OxygenBukkit.getInstance().debug_message("----------------------------------");
+            OxygenBukkit.getInstance().debug_message("Attemtping to log action to file:");
+            OxygenBukkit.getInstance().debug_message("");
+            OxygenBukkit.getInstance().debug_message("Player UUID - " + playerUUID);
+            OxygenBukkit.getInstance().debug_message("Type - " + type);
+            OxygenBukkit.getInstance().debug_message("Parameters - " + params);
+            OxygenBukkit.getInstance().debug_message("");
             logToFile(playerUUID, type, params);
-            System.out.print("Done?");
-            System.out.print("----------------------------------");
+            OxygenBukkit.getInstance().debug_message("Done?");
+            OxygenBukkit.getInstance().debug_message("----------------------------------");
 
             if (type.isLogging()) {
-                System.out.print("----------------------------------");
-                System.out.print("Attemtping to log action to Mongo database:");
-                System.out.print("");
+                OxygenBukkit.getInstance().debug_message("----------------------------------");
+                OxygenBukkit.getInstance().debug_message("Attemtping to log action to Mongo database:");
+                OxygenBukkit.getInstance().debug_message("");
                 logToDatabase(playerUUID, type, params);
-                System.out.print("Done?");
-                System.out.print("----------------------------------");
+                OxygenBukkit.getInstance().debug_message("Done?");
+                OxygenBukkit.getInstance().debug_message("----------------------------------");
             }
         });
     }
@@ -64,15 +64,13 @@ public final class LoggerTracker {
     private static void logToFile(UUID playerUUID, LogActionTypes type, Map<String, Object> params) {
         File logFolder = new File(directory, playerUUID.toString());
         File logFile = new File(logFolder, "general.log");
-        System.out.print(directory);
-        System.out.print(logFile);
         try {
             StringBuilder logLine = new StringBuilder();
 
             logLine.append('[');
             logLine.append(DateTimeFormatter.ISO_INSTANT.format(Instant.now())); // ISO 8601
             logLine.append(", ");
-            logLine.append(type.getDisplay_name());
+            logLine.append(type);
             logLine.append("] ");
 
             params.forEach((key, value) -> {
@@ -101,9 +99,9 @@ public final class LoggerTracker {
         Document document = new Document();
 
         document.put("time", new Date());
-        System.out.print("Time - " + new Date());
-        document.put("logType", type.getDisplay_name());
-        System.out.print("Log Type - " + type.getDisplay_name());
+        OxygenBukkit.getInstance().debug_message("Time - " + new Date());
+        document.put("logType", type.toString());
+        OxygenBukkit.getInstance().debug_message("Log Type - " + type);
         JsonArray jsonArray = new JsonArray();
 
         params.forEach((key, value) -> {

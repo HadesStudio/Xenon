@@ -26,6 +26,7 @@ public class MongoModule implements ModuleLoader {
     public MongoCollection<Document> tagsCollection;
     public MongoCollection<Document> requestsCollection;
     public MongoCollection<Document> playerLogsCollection;
+    public MongoCollection<Document> notificationsCollection;
 
     @Override
     public void enable() {
@@ -51,6 +52,7 @@ public class MongoModule implements ModuleLoader {
         tagsCollection = mongoDatabase.getCollection("tags");
         requestsCollection = mongoDatabase.getCollection("requests");
         playerLogsCollection = mongoDatabase.getCollection("playerLogs");
+        notificationsCollection = mongoDatabase.getCollection("notifications");
 
         enabled = true;
     }

@@ -1,7 +1,12 @@
 title: "%player% - Profile" # %player%
+placeholders:
+  style: "SPECIFIC" # Options: FILLED, SPECIFIC
+  glowing: false
+  specific-slots: [1, 2, 3, 7, 8, 9, 37, 45, 46, 47, 53, 54] # This will only work if you have the 'style' set to 'FILLED'.
+size: 54 # This is how big the inventory is. This must be in increments of 9.
 
 statistics-button:
-  slot: 0
+  slot: 30
   title: "&4&lYour Statistics"
   material: "PAPER"
   data: 0
@@ -14,7 +19,7 @@ statistics-button:
     - "&7Click here to view extended information."
 
 social-button:
-  slot: 1
+  slot: 20
   title: "&4&lSocial Media"
   material: "PAINTING"
   data: 0
@@ -26,7 +31,7 @@ social-button:
     - "&7Click here to view extended information."
 
 profile-button:
-  slot: 2
+  slot: 13
   title: "&4&lYour Profile"
   material: "SKULL_ITEM" # If you want the players head to appear, use "SKULL_ITEM".
   data: 0
@@ -39,7 +44,7 @@ profile-button:
     - "&7Click here to view extended information."
 
 friends-button:
-  slot: 3
+  slot: 24
   title: "&4&lFriends"
   material: "EYE_OF_ENDER"
   data: 0
@@ -53,7 +58,7 @@ friends-button:
     - "&dRight-Click &7to view all friend requests."
 
 notifications-button:
-  slot: 4
+  slot: 32
   title: "&4&lNotifications"
   material: "WATCH"
   data: 0

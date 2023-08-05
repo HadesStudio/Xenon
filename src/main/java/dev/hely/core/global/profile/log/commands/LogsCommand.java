@@ -28,6 +28,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,16 +54,17 @@ public class LogsCommand extends BaseCommand {
         if(!this.checkOfflinePlayer(sender, player, args[0])) return;
 
         Map<LogActionTypes, Map<String, Object>> info = new HashMap<>();
-        MongoCollection<Document> collection = OxygenBukkit.getInstance().getMongoModule().getPlayerLogsCollection();
-        for (Document document : collection.find(new Document("playerUUID", player.getUniqueId().toString()))) {
-            info.put(LogActionTypes.valueOf(document.getString("logType")), (Map<String, Object>) document.get("params"));
+        OxygenBukkit.getInstance().getMongoModule().getPlayerLogsCollection().find().into(new ArrayList<>()).forEach(document -> {
             System.out.print("------------------------------------------------");
+            System.out.print("Log Command Debug:");
+            System.out.print("");
             System.out.print("Log Type - " + LogActionTypes.valueOf(document.getString("logType")));
             System.out.print(document.get("Parameters - " + document.get("params")));
             System.out.print("Player Name - " + player.getName());
             System.out.print("UUID - " + player.getUniqueId());
             System.out.print("------------------------------------------------");
-        }
+            info.put(LogActionTypes.valueOf(document.getString("logType")), (Map<String, Object>) document.get("params"));
+        });
 
 
 

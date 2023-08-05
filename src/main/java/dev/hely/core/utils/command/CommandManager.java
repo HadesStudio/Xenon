@@ -4,7 +4,6 @@ import dev.hely.core.bukkit.commands.implement.player.NameMCCommand;
 import dev.hely.core.bukkit.commands.implement.player.ProfileCommand;
 import dev.hely.core.bukkit.commands.implement.player.SeenCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.*;
-import dev.hely.core.commands.implement.punishment.*;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBanCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBlacklistCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnMuteCommand;

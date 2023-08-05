@@ -49,8 +49,24 @@ public class MainProfileMenu extends Menu {
     }
 
     @Override
+    public int getSize() {
+        return OxygenBukkit.getInstance().getProfileMenuConfig().getConfiguration().getInt("size");
+    }
+
+    @Override
     public Map<Integer, Button> getMenuContent(Player player) {
         final Map<Integer, Button> toReturn = new HashMap<>();
+
+        if (OxygenBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("placeholders.style").equalsIgnoreCase("FILLED")) {
+            for (int i = 0; i < getSize(); ++i) {
+                toReturn.put(i, Button.getPlaceholder());
+            }
+        } else if (OxygenBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("placeholders.style").equalsIgnoreCase("SPECIFIC")) {
+            for (String slot : OxygenBukkit.getInstance().getProfileMenuConfig().getConfiguration().getStringList("placeholders.specific-slots")) {
+                toReturn.put(Integer.parseInt(slot) - 1, Button.getPlaceholder());
+            }
+        }
+
 
         toReturn.put(OxygenBukkit.getInstance().getProfileMenuConfig().getConfiguration().getInt("statistics-button.slot"), new Statistics_Button(profile));
         toReturn.put(OxygenBukkit.getInstance().getProfileMenuConfig().getConfiguration().getInt("social-button.slot"), new Social_Button(profile));

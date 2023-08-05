@@ -111,7 +111,7 @@ public class ProfileManager {
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(Bukkit.getPlayer(uuid).getName()));
 
-        playerProfile.getNotifications().add(new Notification(uuid, java.lang.System.currentTimeMillis(), message));
+        playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), message));
         playerProfile.save();
         return true;
     }

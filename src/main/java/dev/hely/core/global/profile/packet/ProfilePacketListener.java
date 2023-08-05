@@ -3,9 +3,7 @@ package dev.hely.core.global.profile.packet;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
-import dev.hely.core.bukkit.profile.packet.implement.*;
 import dev.hely.core.global.profile.packet.implement.*;
-import dev.hely.core.profile.packet.implement.*;
 import dev.hely.lib.Messages;
 import lombok.AllArgsConstructor;
 

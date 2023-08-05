@@ -16,10 +16,7 @@ package dev.hely.core.global.ranks.rank.commands;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.ranks.rank.commands.subcommands.*;
 import dev.hely.core.global.ranks.rank.commands.subcommands.*;
-import dev.hely.core.ranks.rank.commands.subcommands.*;
-import dev.hely.core.shared.ranks.rank.commands.subcommands.*;
 import dev.hely.core.utils.command.sub.SubCommand;
 import dev.hely.core.utils.command.sub.SubCommandHandler;
 import dev.hely.lib.CC;
