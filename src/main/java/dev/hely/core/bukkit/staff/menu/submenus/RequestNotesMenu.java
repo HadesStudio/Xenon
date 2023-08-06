@@ -81,6 +81,11 @@ public class RequestNotesMenu extends PaginatedMenu {
         menuContent.put(7, Button.getPlaceholder());
         menuContent.put(8, Button.getPlaceholder());
 
+        menuContent.put(9, Button.getPlaceholder());
+        menuContent.put(17, Button.getPlaceholder());
+        menuContent.put(18, Button.getPlaceholder());
+        menuContent.put(26, Button.getPlaceholder());
+
         menuContent.put(27, Button.getPlaceholder());
         menuContent.put(28, new PageButton(-1, this));
         menuContent.put(29, Button.getPlaceholder());

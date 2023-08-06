@@ -64,6 +64,14 @@ public class FriendRequestMenu extends PaginatedMenu {
         buttons.put(7, Button.getPlaceholder());
         buttons.put(8, Button.getPlaceholder());
         buttons.put(4, Button.getPlaceholder());
+
+        buttons.put(9, Button.getPlaceholder());
+        buttons.put(17, Button.getPlaceholder());
+        buttons.put(18, Button.getPlaceholder());
+        buttons.put(26, Button.getPlaceholder());
+        buttons.put(27, Button.getPlaceholder());
+        buttons.put(35, Button.getPlaceholder());
+
         buttons.put(36, Button.getPlaceholder());
         buttons.put(37, new PageButton(-1, this));
         buttons.put(38, Button.getPlaceholder());
