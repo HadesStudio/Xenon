@@ -2,7 +2,12 @@ package dev.hely.core.bukkit.server;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
+import dev.hely.core.bukkit.server.packet.implement.ServerUpdatePacket;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created By LeandroSSJ
@@ -15,6 +20,9 @@ public class ServerManager implements ModuleLoader {
     private boolean enabled;
 
     private String serverName;
+    private String serverVersion;
+
+    private List<Server> servers = new ArrayList<>();
 
     private OxygenBukkit plugin;
 
@@ -23,13 +31,16 @@ public class ServerManager implements ModuleLoader {
         this.plugin = OxygenBukkit.getInstance();
 
         this.serverName = plugin.getConfiguration().getConfiguration().getString("server.name");
+        this.serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
+        new ServerUpdateThread(plugin).start();
         this.enabled = true;
     }
 
     @Override
     public void disable() {
         this.enabled = false;
+
     }
 
     @Override
@@ -44,5 +55,28 @@ public class ServerManager implements ModuleLoader {
     @Override
     public String getName() {
         return "Server";
+    }
+
+    public Server getOrCreateServer(String name) {
+        Server server = this.getServer(name);
+
+        if (server != null) {
+            return server;
+        }
+
+        this.servers.add(server);
+        return server;
+    }
+
+    public Server getServer(String name) {
+        return this.servers.stream().filter(server -> server.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public int getGlobalMaxPlayers() {
+        return this.servers.stream().mapToInt(Server::getMaxPlayers).sum();
+    }
+
+    public int getGlobalPlayers() {
+        return this.servers.stream().mapToInt(Server::getOnlinePlayers).sum();
     }
 }

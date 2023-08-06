@@ -7,6 +7,8 @@ import dev.hely.core.bukkit.chat.ChatModule;
 import dev.hely.core.bukkit.client.ClientModule;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.modules.listener.ListenerModule;
+import dev.hely.core.bukkit.server.packet.ServerPacketListener;
+import dev.hely.core.bukkit.server.packet.implement.ServerAlertUpdatePacket;
 import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.bukkit.utils.command.SubCommandManager;
 import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
@@ -16,7 +18,7 @@ import dev.hely.core.bukkit.modules.database.redis.RedisModule;
 import dev.hely.core.bukkit.modules.database.mongo.MongoModule;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.ProfileManager;
-import dev.hely.core.bukkit.server.NameMCReminderTask;
+import dev.hely.core.bukkit.tasks.NameMCReminderTask;
 import dev.hely.core.bukkit.server.ServerManager;
 import dev.hely.core.bukkit.staff.requests.RequestHandler;
 import dev.hely.core.bukkit.tag.TagManager;
@@ -107,9 +109,13 @@ public class OxygenBukkit extends JavaPlugin {
         setupEnabled();
 
         new NameMCReminderTask().runTaskTimerAsynchronously(OxygenBukkit.getInstance(), 20L * 60 * OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"), 20L * 60 * OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"));
+
+        redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), true));
     }
 
     public void onDisable() {
+        redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), false));
+
         modules.forEach((s, moduleLoader) -> unloadModule(moduleLoader));
     }
 
@@ -221,6 +227,7 @@ public class OxygenBukkit extends JavaPlugin {
         redisModule.registerListener(new ProfilePacketListener());
         redisModule.registerListener(new PunishmentPacketListener(this));
         redisModule.registerListener(new TagPacketListener(tagManager));
+        redisModule.registerListener(new ServerPacketListener(serverManager));
 
         redisModule.subscribeJedis();
     }

@@ -1,4 +1,4 @@
-package dev.hely.core.bukkit.server;
+package dev.hely.core.bukkit.tasks;
 
 //============================================================
 // This file was created by DevDipin!
