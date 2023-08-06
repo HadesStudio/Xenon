@@ -19,7 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
-import dev.hely.core.bukkit.utils.TimeFormatUtils;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
@@ -96,7 +96,7 @@ public class WarningsMenu extends PaginatedMenu {
                         .replace("%warned_by%", punishment.getAddedBy())
                         .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                         .replace("%reason%", punishment.getAddedReason())
-                        .replace("%added_date%", TimeFormatUtils.formatIntoCalendarString(new Date(punishment.getAddedAt())))
+                        .replace("%added_date%", TimeUtil.formatIntoCalendarString(new Date(punishment.getAddedAt())))
                 );
             }
             return builder.build();

@@ -19,8 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.core.menus.submenus.CommandsMenu;
 import dev.hely.core.bukkit.core.menus.submenus.ConfigReloadMenu;
 import dev.hely.core.bukkit.utils.Config;
-import dev.hely.core.bukkit.utils.DateUtils;
-import dev.hely.core.bukkit.utils.Tasks;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
@@ -89,7 +88,7 @@ public class OxygenMenu extends Menu {
                     "&7Hello &6" + player.getName() + "&7,",
                     "&7Below you can find all plugin information.",
                     "&7",
-                    "&6Uptime: &7" + DateUtils.formatDateDiff(OxygenBukkit.getInstance().getUptime()),
+                    "&6Uptime: &7" + TimeUtil.formatDateDiff(OxygenBukkit.getInstance().getUptime()),
                     "&6Debug Mode: &7" + OxygenBukkit.getInstance().displayDebugStatus()
             ));
             return builder.build();
@@ -128,7 +127,7 @@ public class OxygenMenu extends Menu {
             if (clickType.isLeftClick()) {
                 new ConfigReloadMenu(player).openMenu(player);
             } else if (clickType.isRightClick()) {
-                Tasks.runAsync(OxygenBukkit.getInstance(), () -> {
+                OxygenBukkit.getInstance().getTasks().runAsync(() -> {
                     for (Config config : OxygenBukkit.getInstance().getConfigList()) {
                         try {
                             config.save();

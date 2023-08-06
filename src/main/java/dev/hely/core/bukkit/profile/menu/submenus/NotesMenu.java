@@ -19,7 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.note.Note;
 import dev.hely.core.bukkit.profile.menu.EditProfileMenu;
-import dev.hely.core.bukkit.utils.DateUtils;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
@@ -126,7 +126,7 @@ public class NotesMenu extends PaginatedMenu {
                 builder.addLore(line
                         .replace("%message%", note.getAddedReason())
                         .replace("%staff_member%", note.getAddedBy())
-                        .replace("%creation_date%", DateUtils.formatDateDiff(note.getAddedAt()))
+                        .replace("%creation_date%", TimeUtil.formatDateDiff(note.getAddedAt()))
                         .replace("%creation_server%", note.getAddedServer())
                 );
             }

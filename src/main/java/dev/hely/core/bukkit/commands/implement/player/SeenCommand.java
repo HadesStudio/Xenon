@@ -18,7 +18,7 @@ package dev.hely.core.bukkit.commands.implement.player;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.utils.DateUtils;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
@@ -46,7 +46,7 @@ public class SeenCommand extends BaseCommand {
 
         sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("seen-command.message")
                 .replace("%player%", profile.getName())
-                .replace("%time%", DateUtils.formatDateDiff(profile.getLastSeen()))
+                .replace("%time%", TimeUtil.formatDateDiff(profile.getLastSeen()))
                 .replace("%server%", profile.getLastServer()))
         );
     }

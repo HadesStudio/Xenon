@@ -20,7 +20,7 @@ import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.menu.EditProfileMenu;
 import dev.hely.core.bukkit.profile.siblings.Sibling;
-import dev.hely.core.bukkit.utils.DateUtils;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
@@ -109,7 +109,7 @@ public class SiblingsMenu extends PaginatedMenu {
                 builder.addLore(line
                         .replace("%staff_member%", sibling.getAddedBy())
                         .replace("%sibling_name%", sibling.getSiblingName())
-                        .replace("%creation_date%", DateUtils.formatDateDiff(sibling.getAddedAt()))
+                        .replace("%creation_date%", TimeUtil.formatDateDiff(sibling.getAddedAt()))
                         .replace("%creation_server%", sibling.getAddedServer())
                 );
             }

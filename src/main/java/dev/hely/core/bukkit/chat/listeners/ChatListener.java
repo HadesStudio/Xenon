@@ -18,7 +18,7 @@ package dev.hely.core.bukkit.chat.listeners;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.chat.ChatModule;
 import dev.hely.core.bukkit.chat.impl.ChatMessage;
-import dev.hely.core.bukkit.utils.TimeFormatUtils;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.lib.CC;
 import org.bukkit.entity.Player;
@@ -74,7 +74,7 @@ public class ChatListener implements Listener {
         if (chatModule.getSlowTime() > 0) {
             if (chatModule.getSlowChatRemaining(player.getUniqueId()) > 0) {
                 for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("chat.slow-chat")) {
-                    player.sendMessage(CC.translate(message).replace("%time%", String.valueOf(chatModule.getSlowTime())).replace("%wait_time%", TimeFormatUtils.formatTime((int) chatModule.getSlowChatRemaining(player.getUniqueId()) / 1000)));
+                    player.sendMessage(CC.translate(message).replace("%time%", String.valueOf(chatModule.getSlowTime())).replace("%wait_time%", TimeUtil.formatTime((int) chatModule.getSlowChatRemaining(player.getUniqueId()) / 1000)));
                 }
                 return;
             }

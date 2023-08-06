@@ -20,7 +20,7 @@ import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.menu.submenus.NotesMenu;
 import dev.hely.core.bukkit.profile.menu.submenus.GrantsMenu;
 import dev.hely.core.bukkit.profile.menu.submenus.SiblingsMenu;
-import dev.hely.core.bukkit.utils.DateUtils;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
@@ -106,8 +106,8 @@ public class EditProfileMenu extends Menu {
                     builder.addLore(line
                             .replace("%player_name%", profile.getName())
                             .replace("%note_size%", String.valueOf(profile.getNotes().size()))
-                            .replace("%first_join_date%", DateUtils.formatDateDiff(profile.getFirstSeen()))
-                            .replace("%last_seen_date%", DateUtils.formatDateDiff(profile.getLastSeen()))
+                            .replace("%first_join_date%", TimeUtil.formatDateDiff(profile.getFirstSeen()))
+                            .replace("%last_seen_date%", TimeUtil.formatDateDiff(profile.getLastSeen()))
                             .replace("%current_server%", profile.getCurrentServer())
                             .replace("%siblings_size%", String.valueOf(profile.getSiblings().size()))
                     );
@@ -121,8 +121,8 @@ public class EditProfileMenu extends Menu {
                     builder.addLore(line
                             .replace("%player_name%", profile.getName())
                             .replace("%note_size%", String.valueOf(profile.getNotes().size()))
-                            .replace("%first_join_date%", DateUtils.formatDateDiff(profile.getFirstSeen()))
-                            .replace("%last_seen_date%", DateUtils.formatDateDiff(profile.getLastSeen()))
+                            .replace("%first_join_date%", TimeUtil.formatDateDiff(profile.getFirstSeen()))
+                            .replace("%last_seen_date%", TimeUtil.formatDateDiff(profile.getLastSeen()))
                             .replace("%current_server%", profile.getCurrentServer())
                             .replace("%siblings_size%", String.valueOf(profile.getSiblings().size()))
                     );

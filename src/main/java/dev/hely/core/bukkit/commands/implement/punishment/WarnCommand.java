@@ -47,7 +47,7 @@ public class WarnCommand extends BaseCommand {
 
         if (args.length > 1) {
             if (!args[1].equalsIgnoreCase("perm") && !args[1].equalsIgnoreCase("permanent")) {
-                duration = TimeUtil.parse(args[1]);
+                duration = TimeUtil.parseTime(args[1]);
             }
         }
 

@@ -18,7 +18,7 @@ package dev.hely.core.bukkit.profile.profilesystem.menu.type;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.profilesystem.impl.Notification;
-import dev.hely.core.bukkit.utils.TimeFormatUtils;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
@@ -123,7 +123,7 @@ public class NotificationsMenu extends PaginatedMenu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(OxygenBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.notification.name").replace("%number%", String.valueOf(amount)).replace("%date%", TimeFormatUtils.formatIntoCalendarString(new Date(notification.getSentdate()))));
+            builder.setDisplayName(OxygenBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.notification.name").replace("%number%", String.valueOf(amount)).replace("%date%", TimeUtil.formatIntoCalendarString(new Date(notification.getSentdate()))));
             for (String line : notification.getNotification()) {
                 builder.addLore(line);
             }

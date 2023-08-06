@@ -48,7 +48,7 @@ public class TempBanCommand extends BaseCommand {
             return;
         }
 
-        long duration = TimeUtil.parse(args[1]);
+        long duration = TimeUtil.parseTime(args[1]);
         if(duration == -1) {
             sender.sendMessage(CC.translate("&cFailed to parse the given duration string."));
             sender.sendMessage(CC.translate("&cExample Syntax: 1m2w3d4h (1 month, 2 weeks, 3 days, and 4 hours)"));

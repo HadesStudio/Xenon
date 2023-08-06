@@ -19,7 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.menu.EditProfileMenu;
 import dev.hely.core.bukkit.ranks.grants.Grant;
-import dev.hely.core.bukkit.utils.DateUtils;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.DurationWrapper;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
@@ -145,7 +145,7 @@ public class GrantsMenu extends PaginatedMenu {
                         .replace("%rank_duration%", grant.getRemaining())
                         .replace("%reason%", grant.getReason())
                         .replace("%staff_member%", grant.getAdder())
-                        .replace("%added_date%", DateUtils.formatDateDiff(grant.getAddedTime()))
+                        .replace("%added_date%", TimeUtil.formatDateDiff(grant.getAddedTime()))
                         .replace("%creation_server%", grant.getServer())
                 );
             }

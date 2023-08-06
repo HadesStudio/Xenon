@@ -6,7 +6,6 @@ import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.ranks.gson.GSONUtil;
 import dev.hely.core.bukkit.ranks.rank.permission.PermissionData;
 import dev.hely.core.bukkit.utils.ColorUtil;
-import dev.hely.core.bukkit.utils.PluginUtils;
 import dev.hely.lib.CC;
 import lombok.Getter;
 import org.bson.Document;
@@ -128,7 +127,7 @@ public class RankManager implements ModuleLoader {
                 config.getStringList(key + ".permissions-data").forEach(permission -> {
                     rank.getPermissionsData().add(new PermissionData(permission, true, new ArrayList<>()));
                 });
-            } else if (PluginUtils.isJson(this.plugin, config.getString(key + ".permissions-data"), GSONUtil.PERMISSION_DATA)) {
+            } else if (GSONUtil.isJson(config.getString(key + ".permissions-data"), GSONUtil.PERMISSION_DATA)) {
                 rank.setPermissionsData(OxygenBukkit.PLAIN_GSON.fromJson(config.getString(key + ".permissions-data"), GSONUtil.PERMISSION_DATA));
             } else {
                 config.getStringList(key + ".permissions-data").forEach(permission -> {

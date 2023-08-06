@@ -16,11 +16,11 @@ package dev.hely.core.bukkit.punishment.menu.types;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.utils.TimeFormatUtils;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.punishment.packet.implement.PunishmentRemovePacket;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
 import dev.hely.lib.callback.Callback;
 import dev.hely.lib.maker.ItemMaker;
@@ -118,9 +118,9 @@ public class BlacklistsMenu extends PaginatedMenu {
                             .replace("%banner%", punishment.getAddedBy())
                             .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                             .replace("%reason%", punishment.getAddedReason())
-                            .replace("%added_date%", TimeFormatUtils.formatIntoCalendarString(new Date(punishment.getAddedAt())))
+                            .replace("%added_date%", TimeUtil.formatIntoCalendarString(new Date(punishment.getAddedAt())))
                             .replace("%pardoner%", punishment.getRemovedBy())
-                            .replace("%pardoned_at%", TimeFormatUtils.formatIntoCalendarString(new Date(punishment.getRemovedAt())))
+                            .replace("%pardoned_at%", TimeUtil.formatIntoCalendarString(new Date(punishment.getRemovedAt())))
                             .replace("%pardoned_reason%", punishment.getRemovedReason())
                     );
                 }
@@ -134,7 +134,7 @@ public class BlacklistsMenu extends PaginatedMenu {
                             .replace("%banner%", punishment.getAddedBy())
                             .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                             .replace("%reason%", punishment.getAddedReason())
-                            .replace("%added_date%", TimeFormatUtils.formatIntoCalendarString(new Date(punishment.getAddedAt())))
+                            .replace("%added_date%", TimeUtil.formatIntoCalendarString(new Date(punishment.getAddedAt())))
                     );
                 }
                 return builder.build();
