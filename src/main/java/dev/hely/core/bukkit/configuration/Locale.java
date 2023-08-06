@@ -142,7 +142,7 @@ public class Locale {
         PUNISHMENT_BAN_ALREADY_BANNED = language.getConfiguration().getString("ban.already-banned");
 
         PUNISHMENT_TEMPBAN_USAGE = language.getConfiguration().getString("temp-ban.usage");
-        PUNISHMENT_TEMPBAN_ALREADY_BANNED = language.getConfiguration().getString("temp-ban.already-banned");
+        PUNISHMENT_TEMPBAN_ALREADY_BANNED = language.getConfiguration().getString("ban.already-banned");
 
         PUNISHMENT_MUTE_USAGE = language.getConfiguration().getString("mute.usage");
         PUNISHMENT_MUTE_ALREADY_MUTED = language.getConfiguration().getString("mute.already-muted");
