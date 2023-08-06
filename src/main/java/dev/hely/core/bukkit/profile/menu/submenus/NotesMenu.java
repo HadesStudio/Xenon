@@ -57,7 +57,7 @@ public class NotesMenu extends PaginatedMenu {
         Map<Integer, Button> buttons = new HashMap<>();
 
         for (Note notes : profile.getNotes()) {
-            buttons.put(buttons.size()-1, new Note_Button(profile, notes));
+            buttons.put(buttons.size(), new Note_Button(profile, notes));
         }
 
         return buttons;
@@ -78,7 +78,6 @@ public class NotesMenu extends PaginatedMenu {
         menuContent.put(8, Button.getPlaceholder());
         menuContent.put(9, Button.getPlaceholder());
         menuContent.put(17, Button.getPlaceholder());
-
         menuContent.put(18, new PageButton(-1, this));
         menuContent.put(19, Button.getPlaceholder());
         menuContent.put(20, Button.getPlaceholder());
@@ -230,5 +229,4 @@ public class NotesMenu extends PaginatedMenu {
             return clickType.isCreativeAction() || clickType.isRightClick();
         }
     }
-
 }

@@ -45,71 +45,16 @@ public class OxygenAPI {
     }
 
     public Rank getRank(UUID uuid) {
-        if (this.getProfile(uuid) == null || this.getProfile(uuid).getActiveHighestRank() == null) {
-            OxygenBukkit.getInstance().debug_message("---------------------------------");
-            OxygenBukkit.getInstance().debug_message("Debug Messages:");
-            OxygenBukkit.getInstance().debug_message("Info: Attempting to getRank of " + getProfile(uuid).getName());
-            OxygenBukkit.getInstance().debug_message("");
-            if (this.getProfile(uuid).getActiveHighestRank() != null) {
-                Rank activeHighestRank = this.getProfile(uuid).getActiveHighestRank();
-                OxygenBukkit.getInstance().debug_message("Active Highest Rank: " + activeHighestRank);
-            } else {
-                OxygenBukkit.getInstance().debug_message("Active Highest Rank: Null (URGENT ERROR)");
-            }
-            if (this.getProfile(uuid).getHighestGrant() != null) {
-                Grant activeHighestRank = this.getProfile(uuid).getHighestGrant();
-                OxygenBukkit.getInstance().debug_message("Active Highest Grant: " + activeHighestRank);
-            } else {
-                OxygenBukkit.getInstance().debug_message("Active Highest Grant: Null (URGENT ERROR)");
-            }
-            OxygenBukkit.getInstance().debug_message("");
-            OxygenBukkit.getInstance().debug_message("All Grants: ");
-            if (this.getProfile(uuid).getGrants() != null) {
-                for (Grant rank : this.getProfile(uuid).getGrants()) {
-                    OxygenBukkit.getInstance().debug_message(" - " + rank.getRank().getName() + " Rank Grant");
-                }
-            } else {
-                OxygenBukkit.getInstance().debug_message(" - Null (URGENT ERROR)");
-            }
-            OxygenBukkit.getInstance().debug_message("");
-            OxygenBukkit.getInstance().debug_message("What the fuck?");
-            OxygenBukkit.getInstance().debug_message("---------------------------------");
-            return new Rank("Default");
-        }
-        OxygenBukkit.getInstance().debug_message("---------------------------------");
-        OxygenBukkit.getInstance().debug_message("Debug Messages:");
-        OxygenBukkit.getInstance().debug_message("Info: Attempting to getRank of " + getProfile(uuid).getName());
-        OxygenBukkit.getInstance().debug_message("");
-        if (this.getProfile(uuid).getActiveHighestRank() != null) {
-            Rank activeHighestRank = this.getProfile(uuid).getActiveHighestRank();
-            OxygenBukkit.getInstance().debug_message("Active Highest Rank: " + activeHighestRank);
-        } else {
-            OxygenBukkit.getInstance().debug_message("Active Highest Rank: Null (URGENT ERROR)");
-        }
-        if (this.getProfile(uuid).getHighestGrant() != null) {
-            Grant activeHighestRank = this.getProfile(uuid).getHighestGrant();
-            OxygenBukkit.getInstance().debug_message("Active Highest Grant: " + activeHighestRank);
-        } else {
-            OxygenBukkit.getInstance().debug_message("Active Highest Grant: Null (URGENT ERROR)");
-        }
-        OxygenBukkit.getInstance().debug_message("");
-        OxygenBukkit.getInstance().debug_message("All Grants: ");
-        if (this.getProfile(uuid).getGrants() != null) {
-            for (Grant rank : this.getProfile(uuid).getGrants()) {
-                OxygenBukkit.getInstance().debug_message(" - " + rank.getRank().getName() + " Rank Grant");
-            }
-        } else {
-            OxygenBukkit.getInstance().debug_message(" - Null (URGENT ERROR)");
-        }
-        OxygenBukkit.getInstance().debug_message("");
-        OxygenBukkit.getInstance().debug_message("What the fuck?");
-        OxygenBukkit.getInstance().debug_message("Love DevDipin");
-        OxygenBukkit.getInstance().debug_message("---------------------------------");
+        if (this.getProfile(uuid) == null) return new Rank("Default");
         return this.getProfile(uuid).getActiveHighestRank();
     }
 
     public List<Grant> getActiveGrants(UUID uuid) {
         return this.getProfile(uuid).getActiveGrants();
+    }
+
+    public List<Grant> getAllGrants(UUID uuid) {
+        return this.getProfile(uuid).getGrants();
     }
 
     public boolean isMuted(UUID uuid) {

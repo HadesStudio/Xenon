@@ -24,7 +24,7 @@ public class Punishment {
 
     private PunishmentType type;
     private UUID uniqueId, targetUUID;
-    private String addedBy, removedBy, addedReason, removedReason, addedServer, ban_ID;
+    private String addedBy, removedBy, addedReason, removedReason, addedServer;
     private long addedAt, removedAt, duration = -1;
     private boolean silent = true, clear = false, removed = false;
 
@@ -43,7 +43,6 @@ public class Punishment {
         document.put("silent", silent);
         document.put("clear", clear);
         document.put("removed", removed);
-        document.put("banID", ban_ID);
 
         if (removedBy != null) {
             document.put("removedBy", removedBy);
@@ -76,7 +75,6 @@ public class Punishment {
             setSilent(document.getBoolean("silent"));
             setClear(document.getBoolean("clear"));
             setRemoved(document.getBoolean("removed"));
-            setBan_ID(document.getString("banID"));
 
             if (document.containsKey("removedBy")) {
                 setRemovedBy(document.getString("removedBy"));

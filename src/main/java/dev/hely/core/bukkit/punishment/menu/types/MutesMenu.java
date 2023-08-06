@@ -135,7 +135,7 @@ public class MutesMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            if (punishment.isPermanent()) { // PERM MUTE OMG!!
+            if (punishment.isPermanent() && !punishment.isRemoved()) { // PERM MUTE OMG!!
                 ItemMaker builder = ItemMaker.of(getPermanentMaterial());
                 builder.setData(getPermanentData());
                 builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.permanent.name"));
@@ -149,7 +149,25 @@ public class MutesMenu extends PaginatedMenu {
                     );
                 }
                 return builder.build();
-            } else if (punishment.isRemoved()) { // THE MUTE WAS PARDONED GG
+            }
+
+            if (punishment.isActive()) {
+                ItemMaker builder = ItemMaker.of(getTimeMaterial());
+                builder.setData(getData());
+                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.time-mute.name"));
+                for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("mutes.button.time-mute.lore")) {
+                    builder.addLore(line
+                            .replace("%muter%", punishment.getAddedBy())
+                            .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
+                            .replace("%reason%", punishment.getAddedReason())
+                            .replace("%server%", punishment.getAddedServer())
+                            .replace("%added_date%", TimeFormatUtils.formatIntoCalendarString(new Date(punishment.getAddedAt())))
+                            .replace("%expires%", punishment.getRemaining())
+                    );
+                }
+
+                return builder.build();
+            } else { // THE MUTE WAS PARDONED GG
                 ItemMaker builder = ItemMaker.of(getPardonedMaterial());
                 builder.setData(getPardonedData());
                 builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.pardoned.name"));
@@ -163,21 +181,6 @@ public class MutesMenu extends PaginatedMenu {
                             .replace("%pardoner%", punishment.getRemovedBy())
                             .replace("%pardoned_at%", TimeFormatUtils.formatIntoCalendarString(new Date(punishment.getRemovedAt())))
                             .replace("%pardoned_reason%", punishment.getRemovedReason())
-                    );
-                }
-                return builder.build();
-            } else { // OTHER??
-                ItemMaker builder = ItemMaker.of(getTimeMaterial());
-                builder.setData(getData());
-                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.time-mute.name"));
-                for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("mutes.button.time-mute.lore")) {
-                    builder.addLore(line
-                            .replace("%muter%", punishment.getAddedBy())
-                            .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
-                            .replace("%reason%", punishment.getAddedReason())
-                            .replace("%server%", punishment.getAddedServer())
-                            .replace("%added_date%", TimeFormatUtils.formatIntoCalendarString(new Date(punishment.getAddedAt())))
-                            .replace("%expires%", punishment.getRemaining())
                     );
                 }
                 return builder.build();

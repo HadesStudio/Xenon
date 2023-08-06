@@ -161,17 +161,21 @@ public class TagMenu extends PaginatedMenu {
         public void onClick(Player player, int slot, ClickType clickType) {
             Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getName());
 
-            if (profile.getTag() == null) {
+            if (profile.getTag() == null || profile.getTag().isEmpty()) {
                 profile.setTag(tag.getName());
                 profile.save();
                 player.sendMessage(CC.translate(OxygenBukkit.getInstance().getTagsMenuConfig().getConfiguration().getString("menu.messages.activated-tag")));
-            } else if (profile.getTag().equals(tag.getName())) {
+                return;
+            }
+
+            if (profile.getTag().equals(tag.getName())) {
                 profile.setTag(null);
                 profile.save();
                 player.sendMessage(CC.translate(OxygenBukkit.getInstance().getTagsMenuConfig().getConfiguration().getString("menu.messages.reset-tag")));
-            } else {
-                player.sendMessage(CC.translate(OxygenBukkit.getInstance().getTagsMenuConfig().getConfiguration().getString("menu.messages.need-reset")));
+                return;
             }
+
+            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getTagsMenuConfig().getConfiguration().getString("menu.messages.need-reset")));
         }
 
         @Override

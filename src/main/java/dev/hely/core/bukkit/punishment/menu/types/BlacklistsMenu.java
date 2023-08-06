@@ -112,7 +112,7 @@ public class BlacklistsMenu extends PaginatedMenu {
             if (punishment.isRemoved()) { // THE BLACKLIST WAS PARDONED GG
                 ItemMaker builder = ItemMaker.of(getPardonedMaterial());
                 builder.setData(getPardonedData());
-                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("bans.button.pardoned.name").replace("%ban_id%", String.valueOf(punishment.getBan_ID())));
+                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("bans.button.pardoned.name"));
                 for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("bans.button.pardoned.lore")) {
                     builder.addLore(line
                             .replace("%banner%", punishment.getAddedBy())
@@ -128,7 +128,7 @@ public class BlacklistsMenu extends PaginatedMenu {
             } else {
                 ItemMaker builder = ItemMaker.of(getBlacklistedMaterial());
                 builder.setData(getData());
-                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.blacklisted.name").replace("%ban_id%", String.valueOf(punishment.getBan_ID())));
+                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.blacklisted.name"));
                 for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("blacklists.button.blacklisted.lore")) {
                     builder.addLore(line
                             .replace("%banner%", punishment.getAddedBy())

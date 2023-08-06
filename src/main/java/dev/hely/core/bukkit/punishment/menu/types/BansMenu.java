@@ -135,10 +135,10 @@ public class BansMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            if (punishment.isPermanent()) { // PERM BAN OMG!!
+            if (punishment.isPermanent() && !punishment.isRemoved()) { // PERM BAN OMG!!
                 ItemMaker builder = ItemMaker.of(getPermanentMaterial());
                 builder.setData(getPermanentData());
-                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("bans.button.permanent.name").replace("%ban_id%", String.valueOf(punishment.getBan_ID())));
+                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("bans.button.permanent.name"));
                 for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("bans.button.permanent.lore")) {
                     builder.addLore(line
                             .replace("%banner%", punishment.getAddedBy())
@@ -149,10 +149,27 @@ public class BansMenu extends PaginatedMenu {
                     );
                 }
                 return builder.build();
-            } else if (punishment.isRemoved()) { // THE BAN WAS PARDONED GG
+            }
+
+            if (punishment.isActive()) { // TIME BAN
+                ItemMaker builder = ItemMaker.of(getTimeMaterial());
+                builder.setData(getData());
+                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("bans.button.time-ban.name"));
+                for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("bans.button.time-ban.lore")) {
+                    builder.addLore(line
+                            .replace("%banner%", punishment.getAddedBy())
+                            .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
+                            .replace("%reason%", punishment.getAddedReason())
+                            .replace("%added_date%", TimeFormatUtils.formatIntoCalendarString(new Date(punishment.getAddedAt())))
+                            .replace("%server%", punishment.getAddedServer())
+                            .replace("%expires%", punishment.getRemaining())
+                    );
+                }
+                return builder.build();
+            } else { // THE BAN WAS PARDONED GG
                 ItemMaker builder = ItemMaker.of(getPardonedMaterial());
                 builder.setData(getPardonedData());
-                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("bans.button.pardoned.name").replace("%ban_id%", String.valueOf(punishment.getBan_ID())));
+                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("bans.button.pardoned.name"));
                 for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("bans.button.pardoned.lore")) {
                     builder.addLore(line
                             .replace("%banner%", punishment.getAddedBy())
@@ -163,21 +180,6 @@ public class BansMenu extends PaginatedMenu {
                             .replace("%pardoner%", punishment.getRemovedBy())
                             .replace("%pardoned_at%", TimeFormatUtils.formatIntoCalendarString(new Date(punishment.getRemovedAt())))
                             .replace("%pardoned_reason%", punishment.getRemovedReason())
-                    );
-                }
-                return builder.build();
-            } else { // OTHER??
-                ItemMaker builder = ItemMaker.of(getTimeMaterial());
-                builder.setData(getData());
-                builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("bans.button.time-ban.name").replace("%ban_id%", String.valueOf(punishment.getBan_ID())));
-                for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("bans.button.time-ban.lore")) {
-                    builder.addLore(line
-                            .replace("%banner%", punishment.getAddedBy())
-                            .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
-                            .replace("%reason%", punishment.getAddedReason())
-                            .replace("%added_date%", TimeFormatUtils.formatIntoCalendarString(new Date(punishment.getAddedAt())))
-                            .replace("%server%", punishment.getAddedServer())
-                            .replace("%expires%", punishment.getRemaining())
                     );
                 }
                 return builder.build();

@@ -79,7 +79,6 @@ public class SiblingsMenu extends PaginatedMenu {
         menuContent.put(8, Button.getPlaceholder());
         menuContent.put(9, Button.getPlaceholder());
         menuContent.put(17, Button.getPlaceholder());
-
         menuContent.put(18, new PageButton(-1, this));
         menuContent.put(19, Button.getPlaceholder());
         menuContent.put(20, Button.getPlaceholder());

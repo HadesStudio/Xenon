@@ -282,6 +282,7 @@ public class Profile {
         plugin.getRedisModule().sendPacket(new PlayerPermissionPacket(player.getUniqueId(), bungeePermissions));
     }
 
+    @NonNull
     public Rank getActiveHighestRank() {
         Rank defaultRank = plugin.getRankManager().getDefaultRank();
 
@@ -290,8 +291,8 @@ public class Profile {
             defaultRank.setDefaultRank(true);
         }
 
-        return this.getActiveGrants().stream().filter(grant ->
-                 grant.getRank() != null && grant.getRank().getType() != RankType.HIDDEN)
+        return this.getActiveGrants().stream().filter(
+                grant -> grant.getRank() != null && grant.getRank().getType() != RankType.HIDDEN)
                 .map(Grant::getRank)
                 .max(Comparator.comparingInt(Rank::getWeight))
                 .orElse(defaultRank);
@@ -307,7 +308,6 @@ public class Profile {
     public List<Grant> getActiveGrants() {
         return new ArrayList<>(this.grants).stream().filter(grant -> grant.isActive() && plugin.getRankManager().getRank(grant.getRankName()) != null).collect(Collectors.toList());
     }
-
 
     public Punishment getActivePunishmentByType(PunishmentType type) {
         for (Punishment punishment : punishments) {

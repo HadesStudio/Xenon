@@ -38,15 +38,19 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
 @AllArgsConstructor
 public class GrantsMenu extends PaginatedMenu {
+
     {
         setAutoUpdate(true);
     }
+
     final Profile profile;
+    public final Comparator<Grant> GRANT_COMPARATOR = Comparator.comparingLong(Grant::getAddedTime).reversed();
 
     @Override
     public String getName() {
@@ -62,12 +66,16 @@ public class GrantsMenu extends PaginatedMenu {
     public Map<Integer, Button> getPaginatedContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        for (Grant grants : profile.getActiveGrants()) {
-            buttons.put(buttons.size(), new Grants_Button(profile, grants));
-        }
-        for (Grant grants : profile.getGrants()) {
-            buttons.put(buttons.size(), new Grants_Button(profile, grants));
-        }
+        this.profile.getGrants().stream().sorted(GRANT_COMPARATOR).forEach(grant -> {
+            buttons.put(buttons.size(), new Grants_Button(profile, grant));
+        }); // CHECK ALL GRANTS
+
+
+        /* CHECK ONLY GRANTS ACTIVES
+        this.profile.getGrants().stream().sorted(GRANT_COMPARATOR).filter(grant -> !grant.isActive()).forEach(grant -> {
+            buttons.put(buttons.size(), new Grants_Button(profile, grant));
+        });
+         */
 
         return buttons;
     }
@@ -87,7 +95,6 @@ public class GrantsMenu extends PaginatedMenu {
         menuContent.put(8, Button.getPlaceholder());
         menuContent.put(9, Button.getPlaceholder());
         menuContent.put(17, Button.getPlaceholder());
-
         menuContent.put(18, new PageButton(-1, this));
         menuContent.put(19, Button.getPlaceholder());
         menuContent.put(20, Button.getPlaceholder());
@@ -149,7 +156,12 @@ public class GrantsMenu extends PaginatedMenu {
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType.isLeftClick()) {
                 if (player.hasPermission("oxygen.staff.grants.remove")) {
-                    profile.getGrants().remove(grant);
+                    //profile.getGrants().remove(grant);
+
+                    grant.setActive(false);
+                    grant.setRemovedTime(System.currentTimeMillis());
+                    grant.setRemover(player.getName());
+
                     profile.save();
                     player.sendMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.removed-grant").replace("%player%", profile.getName())));
                 } else {
