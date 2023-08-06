@@ -17,6 +17,7 @@ package dev.hely.core.bukkit.profile.commands;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
+import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.menu.EditProfileMenu;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;
@@ -26,7 +27,7 @@ import org.bukkit.entity.Player;
 public class EditProfileCommand extends BaseCommand {
 
     public EditProfileCommand(){
-        super("editprofile","oxygen.editprofile", true);
+        super("editprofile", "oxygen.editprofile", true);
     }
 
     @Override
@@ -36,11 +37,12 @@ public class EditProfileCommand extends BaseCommand {
             return;
         }
 
-        if (OxygenBukkit.getInstance().getProfileManager().getProfile(args[0]) == null) {
+        Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[0]);
+        if (profile == null) {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
             return;
         }
 
-        new EditProfileMenu(OxygenBukkit.getInstance().getProfileManager().getProfile(args[0])).openMenu((Player) sender);
+        new EditProfileMenu(profile).openMenu((Player) sender);
     }
 }

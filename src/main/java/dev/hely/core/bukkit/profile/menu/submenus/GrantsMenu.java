@@ -50,6 +50,8 @@ public class GrantsMenu extends PaginatedMenu {
     }
 
     final Profile profile;
+    final boolean grantsMenu;
+
     public final Comparator<Grant> GRANT_COMPARATOR = Comparator.comparingLong(Grant::getAddedTime).reversed();
 
     @Override
@@ -84,7 +86,12 @@ public class GrantsMenu extends PaginatedMenu {
     public Map<Integer, Button> getGlobalContent(Player player) {
         Map<Integer, Button> menuContent = new HashMap<>();
 
-        menuContent.put(0, new BackButton(new EditProfileMenu(profile)));
+        if (grantsMenu) {
+            menuContent.put(0, new BackButton(new EditProfileMenu(profile)));
+        } else {
+            menuContent.put(0, Button.getPlaceholder());
+        }
+
         menuContent.put(1, Button.getPlaceholder());
         menuContent.put(2, Button.getPlaceholder());
         menuContent.put(3, Button.getPlaceholder());
@@ -241,19 +248,20 @@ public class GrantsMenu extends PaginatedMenu {
 
         @Override
         public Prompt acceptInput(ConversationContext conversationContext, String input) {
-            final Player sender = (Player) conversationContext.getForWhom();
+            Player sender = (Player) conversationContext.getForWhom();
 
             if (OxygenBukkit.getInstance().getRankManager().getRank(input) == null) {
                 sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
                 conversationContext.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.invalid-rank")));
-                new GrantsMenu(profile).openMenu(sender);
+                new GrantsMenu(profile, grantsMenu).openMenu(sender);
                 return Prompt.END_OF_CONVERSATION;
             }
+
             for (Grant grants : profile.getActiveGrants()) {
                 if (grants.getRankName().equalsIgnoreCase(input)) {
                     sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
                     conversationContext.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.already-has")));
-                    new GrantsMenu(profile).openMenu(sender);
+                    new GrantsMenu(profile, grantsMenu).openMenu(sender);
                     return Prompt.END_OF_CONVERSATION;
                 }
             }
@@ -261,7 +269,7 @@ public class GrantsMenu extends PaginatedMenu {
             if (input.equalsIgnoreCase("cancel")) {
                 sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
                 conversationContext.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.canceled-promt")));
-                new GrantsMenu(profile).openMenu(sender);
+                new GrantsMenu(profile, grantsMenu).openMenu(sender);
                 return END_OF_CONVERSATION;
             }
 
@@ -294,7 +302,7 @@ public class GrantsMenu extends PaginatedMenu {
             if (input.equalsIgnoreCase("cancel")) {
                 sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
                 conversationContext.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.canceled-promt")));
-                new GrantsMenu(profile).openMenu(sender);
+                new GrantsMenu(profile, grantsMenu).openMenu(sender);
                 return END_OF_CONVERSATION;
             }
 
@@ -303,7 +311,7 @@ public class GrantsMenu extends PaginatedMenu {
             if (durationWrapper.isPermanent() && !input.toLowerCase().startsWith("permanent")) {
                 sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
                 conversationContext.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.canceled-promt")));
-                new GrantsMenu(profile).openMenu(sender);
+                new GrantsMenu(profile, grantsMenu).openMenu(sender);
                 return END_OF_CONVERSATION;
             }
 
@@ -344,12 +352,12 @@ public class GrantsMenu extends PaginatedMenu {
 
         @Override
         public Prompt acceptInput(ConversationContext conversationContext, String input) {
-            final Player sender = (Player) conversationContext.getForWhom();
+            Player sender = (Player) conversationContext.getForWhom();
 
             if (input.equalsIgnoreCase("cancel")) {
                 sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
                 conversationContext.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.canceled-promt")));
-                new GrantsMenu(profile).openMenu(sender);
+                new GrantsMenu(profile, grantsMenu).openMenu(sender);
                 return END_OF_CONVERSATION;
             }
 
@@ -365,7 +373,7 @@ public class GrantsMenu extends PaginatedMenu {
             profile.getGrants().add(grant);
             profile.save();
 
-            new GrantsMenu(profile).openMenu(sender);
+            new GrantsMenu(profile, grantsMenu).openMenu(sender);
             sender.playSound(sender.getLocation(), Sound.ORB_PICKUP, 5, 5);
 
             return Prompt.END_OF_CONVERSATION;

@@ -330,7 +330,7 @@ public class EditProfileMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            new GrantsMenu(profile).openMenu(player);
+            new GrantsMenu(profile, true).openMenu(player);
         }
 
         @Override

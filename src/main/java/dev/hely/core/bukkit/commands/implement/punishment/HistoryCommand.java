@@ -24,10 +24,12 @@ import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+
 public class HistoryCommand extends BaseCommand {
 
     public HistoryCommand(){
-        super("history","oxygen.punishment.history", true);
+        super("history", Collections.singletonList("check"), "oxygen.punishment.history", true);
     }
 
     @Override
