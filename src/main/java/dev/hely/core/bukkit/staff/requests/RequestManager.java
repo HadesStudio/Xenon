@@ -17,6 +17,7 @@ package dev.hely.core.bukkit.staff.requests;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
+import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.packet.implement.StaffRequestClaimPacket;
 import dev.hely.lib.CC;
 import lombok.Getter;
@@ -25,29 +26,53 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class RequestHandler {
+public class RequestManager implements ModuleLoader {
+    private OxygenBukkit plugin;
+    private boolean enabled;
 
     @Getter
     private final Map<Integer, Request> requestsMap = new HashMap<>();
 
-    public void onEnable() {
+    @Override
+    public void enable() {
         requestsMap.clear();
-        System.out.print("Attemtping to setup request list.");
+        OxygenBukkit.getInstance().debug_message("Attemtping to setup request list.");
 
         OxygenBukkit.getInstance().getMongoModule().getRequestsCollection().find().into(new ArrayList<>()).forEach(document -> {
             Request request = new Request(document.getInteger("identifier"), "Unknown", document.getString("dateCreated"));
             request.setCreatorPlayerName(request.getCreatorPlayerName());
-            System.out.print("------------------------------------------");
-            System.out.print("Request Creator: " + request.getCreatorPlayerName());
+            OxygenBukkit.getInstance().debug_message("------------------------------------------");
+            OxygenBukkit.getInstance().debug_message("Request Creator: " + request.getCreatorPlayerName());
             request.load();
 
             requestsMap.put(request.getIdentifier(), new Request(request.getIdentifier(), request.getCreatorPlayerName(), request.getDateCreated()));
-            System.out.print("Successfully setup new player request.");
-            System.out.print(" - Creator: " + request.getCreatorPlayerName());
-            System.out.print(" - Identifier: #" + request.getIdentifier());
-            System.out.print(" - Date: " + request.getDateCreated());
-            System.out.print("------------------------------------------");
+            OxygenBukkit.getInstance().debug_message("Successfully setup new player request.");
+            OxygenBukkit.getInstance().debug_message(" - Creator: " + request.getCreatorPlayerName());
+            OxygenBukkit.getInstance().debug_message(" - Identifier: #" + request.getIdentifier());
+            OxygenBukkit.getInstance().debug_message(" - Date: " + request.getDateCreated());
+            OxygenBukkit.getInstance().debug_message("------------------------------------------");
         });
+    }
+
+
+    @Override
+    public void disable() {
+        this.enabled = false;
+
+    }
+
+    @Override
+    public void reload() {
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public String getName() {
+        return "Request";
     }
 
     public List<Request> getRequests() {
@@ -87,18 +112,18 @@ public class RequestHandler {
 
         this.requestsMap.put(identifier, new Request(identifier, creator, date_format_manual));
 
-        System.out.print("------------------------------------------");
-        System.out.print("Identifier: " + identifier);
-        System.out.print("Creator: " + creator);
-        System.out.print("Date: " + date_format_manual);
-        System.out.print("------------------------------------------");
-        System.out.print("Request List:");
+        OxygenBukkit.getInstance().debug_message("------------------------------------------");
+        OxygenBukkit.getInstance().debug_message("Identifier: " + identifier);
+        OxygenBukkit.getInstance().debug_message("Creator: " + creator);
+        OxygenBukkit.getInstance().debug_message("Date: " + date_format_manual);
+        OxygenBukkit.getInstance().debug_message("------------------------------------------");
+        OxygenBukkit.getInstance().debug_message("Request List:");
         for (Request requests : getRequests()) {
-            System.out.print("#" + requests.getIdentifier());
-            System.out.print(" - Creator: " + requests.getCreatorPlayerName());
-            System.out.print(" - Date: " + requests.getDateCreated());
+            OxygenBukkit.getInstance().debug_message("#" + requests.getIdentifier());
+            OxygenBukkit.getInstance().debug_message(" - Creator: " + requests.getCreatorPlayerName());
+            OxygenBukkit.getInstance().debug_message(" - Date: " + requests.getDateCreated());
         }
-        System.out.print("------------------------------------------");
+        OxygenBukkit.getInstance().debug_message("------------------------------------------");
     }
 
     public void createNewRequestReport(String creator, String message, String reportedPlayer) {
@@ -118,19 +143,19 @@ public class RequestHandler {
 
         this.requestsMap.put(identifier, new Request(identifier, creator, date_format_manual));
 
-        System.out.print("------------------------------------------");
-        System.out.print("Identifier: " + identifier);
-        System.out.print("Creator: " + creator);
-        System.out.print("Date: " + date_format_manual);
+        OxygenBukkit.getInstance().debug_message("------------------------------------------");
+        OxygenBukkit.getInstance().debug_message("Identifier: " + identifier);
+        OxygenBukkit.getInstance().debug_message("Creator: " + creator);
+        OxygenBukkit.getInstance().debug_message("Date: " + date_format_manual);
 
-        System.out.print("------------------------------------------");
-        System.out.print("Request List:");
+        OxygenBukkit.getInstance().debug_message("------------------------------------------");
+        OxygenBukkit.getInstance().debug_message("Request List:");
         for (Request requests : getRequests()) {
-            System.out.print("#" + requests.getIdentifier());
-            System.out.print(" - Creator: " + requests.getCreatorPlayerName());
-            System.out.print(" - Date: " + requests.getDateCreated());
+            OxygenBukkit.getInstance().debug_message("#" + requests.getIdentifier());
+            OxygenBukkit.getInstance().debug_message(" - Creator: " + requests.getCreatorPlayerName());
+            OxygenBukkit.getInstance().debug_message(" - Date: " + requests.getDateCreated());
         }
-        System.out.print("------------------------------------------");
+        OxygenBukkit.getInstance().debug_message("------------------------------------------");
     }
 
     public int generateOpenRequestInteger() {

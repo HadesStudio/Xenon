@@ -1,0 +1,37 @@
+menu:
+  title: "Server Manager"
+
+  buttons:
+    server-button:
+      material:
+        online:
+          material: "DYE"
+          data: 10
+        offline:
+          material: "REDSTONE"
+          data: 0
+      display-name:
+        online: "&a%server_name% [Online]"
+        offline: "&c%server_name% [Offline]"
+      lores:
+        online:
+          - "&7&l&m-----------------------------------"
+          - "&7Server Name: &6%server_name%"
+          - "&7Version: &6%server_version%"
+          - "&7"
+          - "&7Online Players: &6%server_players% Players"
+          - "&7Started Date: &6%server_started%"
+          - "&7Last Update: &6%server_last_update%"
+          - "&7"
+          - "&6Left-Click &7to close this server."
+          - "&7&l&m-----------------------------------"
+        offline:
+          - "&7&l&m-----------------------------------"
+          - "&7Server Name: &6%server_name%"
+          - "&7Version: &6%server_version%"
+          - "&7"
+          - "&7Closed Date: &6%server_closed_date%"
+          - "&7Last Online: &6%server_last_online%"
+          - "&7"
+          - "&6Left-Click &7to start this server."
+          - "&7&l&m-----------------------------------"

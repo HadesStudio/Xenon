@@ -20,7 +20,7 @@ import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.ProfileManager;
 import dev.hely.core.bukkit.tasks.NameMCReminderTask;
 import dev.hely.core.bukkit.server.ServerManager;
-import dev.hely.core.bukkit.staff.requests.RequestHandler;
+import dev.hely.core.bukkit.staff.requests.RequestManager;
 import dev.hely.core.bukkit.tag.TagManager;
 import dev.hely.core.bukkit.tag.packet.TagPacketListener;
 import dev.hely.core.bukkit.utils.command.CommandManager;
@@ -74,6 +74,7 @@ public class OxygenBukkit extends JavaPlugin {
     private Config logsMenuConfig;
     private Config editProfileMenuConfig;
     private Config tagsMenuConfig;
+    private Config serversMenuConfig;
 
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
@@ -91,7 +92,7 @@ public class OxygenBukkit extends JavaPlugin {
     private ListenerModule listenerModule;
     private ClientModule clientManager;
     private ChatModule chatManager;
-    private RequestHandler requestHandler;
+    private RequestManager requestHandler;
 
     private boolean debug_mode;
 
@@ -106,7 +107,6 @@ public class OxygenBukkit extends JavaPlugin {
         initModules();
         setupModules();
         setupPackets();
-        setupEnabled();
 
         new NameMCReminderTask().runTaskTimerAsynchronously(OxygenBukkit.getInstance(), 20L * 60 * OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"), 20L * 60 * OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"));
 
@@ -117,10 +117,6 @@ public class OxygenBukkit extends JavaPlugin {
         redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), false));
 
         modules.forEach((s, moduleLoader) -> unloadModule(moduleLoader));
-    }
-
-    public void setupEnabled() {
-        requestHandler.onEnable();
     }
 
     public long getUptime() {
@@ -174,6 +170,8 @@ public class OxygenBukkit extends JavaPlugin {
             this.configList.add(editProfileMenuConfig);
             this.tagsMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "tags-menu");
             this.configList.add(tagsMenuConfig);
+            this.serversMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "servers-menu");
+            this.configList.add(serversMenuConfig);
 
             Locale.load();
         } catch (IOException | InvalidConfigurationException e) {
@@ -200,7 +198,7 @@ public class OxygenBukkit extends JavaPlugin {
         tagManager = new TagManager();
         serverManager = new ServerManager();
         chatManager = new ChatModule();
-        requestHandler = new RequestHandler();
+        requestHandler = new RequestManager();
     }
 
     public void setupModules(){
@@ -215,7 +213,7 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(commandManager);
         this.loadModule(subCommandManager);
         this.loadModule(listenerModule);
-
+        this.loadModule(requestHandler);
         this.loadModule(mongoModule);
         this.loadModule(redisModule);
         this.loadModule(rankManager);

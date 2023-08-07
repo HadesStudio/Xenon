@@ -18,6 +18,7 @@ import dev.hely.core.bukkit.profile.log.commands.LogsCommand;
 import dev.hely.core.bukkit.profile.profilesystem.commands.NotificationCommand;
 import dev.hely.core.bukkit.profile.profilesystem.commands.NotificationsCommand;
 import dev.hely.core.bukkit.ranks.grants.command.GrantsCommand;
+import dev.hely.core.bukkit.server.command.ServersCommand;
 import dev.hely.core.bukkit.staff.requests.commands.HelpopCommand;
 import dev.hely.core.bukkit.staff.requests.commands.ReportCommand;
 import dev.hely.core.bukkit.staff.requests.commands.staff.RequestsCommand;
@@ -97,6 +98,7 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new SeenCommand());
         loadedCommands.add(new NotificationCommand());
         loadedCommands.add(new NotificationsCommand());
+        loadedCommands.add(new ServersCommand());
 
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));
