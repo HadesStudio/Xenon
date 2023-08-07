@@ -9,6 +9,7 @@ import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.modules.listener.ListenerModule;
 import dev.hely.core.bukkit.server.packet.ServerPacketListener;
 import dev.hely.core.bukkit.server.packet.implement.ServerAlertUpdatePacket;
+import dev.hely.core.bukkit.server.tasks.ServerTimeoutTask;
 import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.bukkit.utils.command.SubCommandManager;
 import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
@@ -107,8 +108,7 @@ public class OxygenBukkit extends JavaPlugin {
         initModules();
         setupModules();
         setupPackets();
-
-        new NameMCReminderTask().runTaskTimerAsynchronously(OxygenBukkit.getInstance(), 20L * 60 * OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"), 20L * 60 * OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"));
+        registerTasks();
 
         redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), true));
     }
@@ -185,6 +185,12 @@ public class OxygenBukkit extends JavaPlugin {
             bukkitCommandSender.sendMessage(CC.translate("&c-------------------------------------"));
         }
     }
+
+    public void registerTasks() {
+        new NameMCReminderTask().runTaskTimerAsynchronously(OxygenBukkit.getInstance(), 20L * 60 * OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"), 20L * 60 * OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"));
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ServerTimeoutTask(), 20L, 20L);
+    }
+
     public void initModules(){
         tasks = new Tasks(OxygenBukkit.getInstance());
 

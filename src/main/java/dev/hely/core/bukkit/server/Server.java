@@ -21,4 +21,6 @@ public class Server {
     private int maxPlayers;
     private int onlinePlayers;
 
+    private long lastUpdate; // new ] LEANDRO SETUP
+    private long lastOnline; // new ] LEANDRO SETUP
 }

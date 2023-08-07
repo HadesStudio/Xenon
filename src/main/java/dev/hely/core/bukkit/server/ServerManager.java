@@ -81,6 +81,12 @@ public class ServerManager implements ModuleLoader {
         return this.servers.stream().mapToInt(Server::getOnlinePlayers).sum();
     }
 
+    public boolean isServerOnline(String name) {
+        Server server = this.getServer(name);
+
+        return server != null;
+    }
+
     public String getServerStatus(String name) {
         Server server = this.getServer(name);
 

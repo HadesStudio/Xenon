@@ -1,19 +1,38 @@
 menu:
   title: "Server Manager"
 
+  messages:
+    whitelist:
+      disabled: "&cYou have successfully disabled the whitelist on &6%server_name% Server&c! All players can now connect."
   buttons:
     server-button:
       material:
         online:
-          material: "DYE"
+          material: "INK_SAC"
           data: 10
+        whitelisted:
+          material: "BOOK"
+          data: 0
         offline:
           material: "REDSTONE"
           data: 0
       display-name:
         online: "&a%server_name% [Online]"
         offline: "&c%server_name% [Offline]"
+        whitelisted: "&d%server_name% [Whitelisted]"
       lores:
+        whitelisted:
+          - "&7&l&m-----------------------------------"
+          - "&7Server Name: &6%server_name%"
+          - "&7Version: &6%server_version%"
+          - "&7"
+          - "&7Online Players: &6%server_players% Players"
+          - "&7Started Date: &6%server_started%"
+          - "&7Last Update: &6%server_last_update%"
+          - "&7"
+          - "&6Left-Click &7to close this server."
+          - "&6Right-Click &7to remove the whitelist."
+          - "&7&l&m-----------------------------------"
         online:
           - "&7&l&m-----------------------------------"
           - "&7Server Name: &6%server_name%"
@@ -24,6 +43,7 @@ menu:
           - "&7Last Update: &6%server_last_update%"
           - "&7"
           - "&6Left-Click &7to close this server."
+          - "&6Right-Click &7to enable the whitelist."
           - "&7&l&m-----------------------------------"
         offline:
           - "&7&l&m-----------------------------------"
