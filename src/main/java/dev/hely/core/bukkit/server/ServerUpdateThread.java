@@ -25,8 +25,8 @@ public class ServerUpdateThread extends Thread {
                 plugin.getRedisModule().sendPacket(new ServerUpdatePacket(
                         plugin.getServerManager().getServerName(),
                         plugin.getServerManager().getServerVersion(),
-                        plugin.getUptime(),
-                        20,
+                        plugin.getLAST_START_TIME(),
+                        20.0D,
                         Bukkit.hasWhitelist(),
                         Bukkit.getMaxPlayers(),
                         Bukkit.getOnlinePlayers().size()

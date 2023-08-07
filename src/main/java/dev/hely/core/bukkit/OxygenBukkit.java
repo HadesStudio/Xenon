@@ -57,7 +57,7 @@ import java.util.Map;
 @Getter
 public class OxygenBukkit extends JavaPlugin {
     @Getter private static OxygenBukkit instance;
-    private static long LAST_START_TIME;
+    private long LAST_START_TIME;
     private List<Config> configList;
 
     private Tasks tasks;

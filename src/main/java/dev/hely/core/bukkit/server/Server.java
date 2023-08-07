@@ -13,7 +13,6 @@ import lombok.*;
 public class Server {
 
     private final String name;
-    private boolean status;
 
     private String version;
     private long startedAt;

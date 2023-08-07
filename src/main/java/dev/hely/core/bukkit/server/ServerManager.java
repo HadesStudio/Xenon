@@ -80,4 +80,12 @@ public class ServerManager implements ModuleLoader {
     public int getGlobalPlayers() {
         return this.servers.stream().mapToInt(Server::getOnlinePlayers).sum();
     }
+
+    public String getServerStatus(String name) {
+        Server server = this.getServer(name);
+
+        if (server == null) return "&cOffline";
+        if (server.isWhitelisted()) return "&7Whitelisted";
+        return "&aOnline";
+    }
 }
