@@ -1,6 +1,7 @@
 package dev.hely.core.bukkit.utils.command;
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.coins.commands.ShopCommand;
 import dev.hely.core.bukkit.commands.implement.player.NameMCCommand;
 import dev.hely.core.bukkit.commands.implement.player.ProfileCommand;
 import dev.hely.core.bukkit.commands.implement.player.SeenCommand;
@@ -99,6 +100,7 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new NotificationCommand());
         loadedCommands.add(new NotificationsCommand());
         loadedCommands.add(new ServersCommand());
+        loadedCommands.add(new ShopCommand());
 
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));

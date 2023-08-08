@@ -1,0 +1,142 @@
+messages:
+  commands:
+    sale-command:
+      usage:
+        - "&7&l&m----------------------------------"
+        - "&6&lStore Commands"
+        - "&7Below, is all commands for the store sale system."
+        - "&7"
+        - "&f* &6/sale start <type> <time> <amount> &7- This command will start a new sale."
+        - "&f* &6/sale end <type> &7- This command will end a sale."
+        - "&7&l&m----------------------------------"
+      invalid-type: "&cYou have specificed a invalid &6Sale Type&c! (Available Options: RANK, PERCENT, ITEM)"
+      started: "&aYou have successfully started a &6%type% Sale &afor &6%time%&a."
+      broadcast:
+        - "&7&l&m----------------------------------"
+        - "&6&lHely Development Store &7➥ &6%type% Sale &7has just"
+        - "&7started for &6%time%&7!"
+        - "&7&l&m----------------------------------"
+  purchase:
+    broadcast: # %price%, %item%, %player%
+      - "&7&l&m------------------------------------"
+      - "&6&lHely Development Store &7➥ &6%player% &7has just purchased"
+      - "&6%item% &7from the shop!"
+      - "&7&l&m------------------------------------"
+  sales:
+    item-sale: # Item Sale (AKA. BUY 1 GET ONE)
+      - "&7&l&m--------------------------------------------"
+      - "&6&lHely Development Store &7➥ &6%player_name% &fhas just"
+      - "&freceived &a%amount%x %item% &fthanks to our &6Item Sale&f!"
+      - "&7&l&m--------------------------------------------"
+    rank-sale: # Rank Sale (AKA. BUY 1 RANK GET 1 RANK FOR FRIEND)
+      broadcast:
+        - "&7&l&m--------------------------------------------"
+        - "&6&lHely Development Store &7➥ &6%player_name% &fhas just"
+        - "&fpurchased &a%item%&f!"
+        - "&7"
+        - "&fBecause of our &6Rank Sale&f, they have received"
+        - "&6%item%&f!"
+        - "&7&l&m--------------------------------------------"
+      type-name:
+        - "&6&lHely Development Store &7➥ &fBecause of the &6Rank Sale&f, you have received &62x Ranks&f! Please type the name in chat who you want to give the rank to."
+    percent-sale: # Normal Sale (Percentage (%) off)
+      - "&7&l&m--------------------------------------------"
+      - "&6&lHely Development Store &7➥ &6%player_name% &fhas just"
+      - "&fpurchased &a%item% &fand saved &6%amount%% &fbecause of our &6Store Sale&f!"
+      - "&7&l&m--------------------------------------------"
+
+placeholders:
+  default-price-format: "&b%price% Coins"
+  rank-sale-format: "&b%price% Coins &7(Rank Sale)"
+  percent-sale-format: "&b%price% Coins &c(%amount%% OFF)"
+
+
+menu:
+  title: "&8Coin Shop"
+  rows: 5
+  fill:
+    enabled: true # Do you want to use the inventory filler?
+    data: 7 # This is the item data of your glass pane.
+    style: CORNERS # Available Options: FILLED, CORNERS
+    slots: [ 1, 2, 8, 9, 10, 18, 28, 36, 37, 38, 44, 45 ] # These are the slots where your panes appear. This only works if the above option is set to CORNERS.
+    glow: true # Do you want to add glow to your Glass Panes?
+
+  buttons:
+    ranks:
+      item:
+        material: BOOK
+        data: 0
+        amount: 1
+        name: "&6&lServer Ranks"
+        lore: { }
+      slot: 13 # The slot the item is placed in.
+      price: 300 # The price in coins.
+      action: OPEN_CATEGORY # Available Options: BUY, OPEN_CATEGORY, RANK_UPGRADE, BUY_RANK, NONE
+      settings:
+        sorted:
+          type: "NONE" # Available Options: ITEM, RANK, RANK_UPGRADE, PERMISSION, OTHER, NONE
+        rank-upgrade: # This is only if the action is set to 'RANK_UPGRADE'
+          before-rank: "Default" # The old rank name that the user must have to purchase the new rank.
+          new-rank: "Hely" # The new rank name they will be getting.
+        buy-rank: # This is only if the action is set to 'BUY_RANK'
+          rank-name: "Hely" # This is the name of the rank they are purchasing.
+        category: # This is only if the action is set to 'OPEN_CATEGORY'
+          name: "ranks"
+      commands: # These commands are executed when item is bought
+        - "broadcast %player% is a cool guy wow, they purchased hely rank"
+
+
+categories:
+  ranks:
+    title: "&6Ranks"
+    rows: 3
+    fill:
+      enabled: true # Do you want to use the inventory filler?
+      data: 7 # This is the item data of your glass pane.
+      style: CORNERS # Available Options: FILLED, CORNERS
+      slots: [ 1, 2, 8, 9, 10, 18, 19, 20, 26, 27 ] # These are the slots where your panes appear. This only works if the above option is set to CORNERS.
+      glow: true # Do you want to add glow to your Glass Panes?
+    back:
+      enabled: false
+      item:
+        material: REDSTONE
+        data: 0
+        name: '&c&lBack'
+        lore:
+          - "&cClick here to return"
+          - "&cto the previous menu."
+      slot: 41
+    buttons:
+      HelyRank:
+        item:
+          material: NETHER_STAR
+          data: 0
+          amount: 16
+          name: "&6Hely Rank"
+          lore:
+            - "&7&m--------------------------------"
+            - "&6Hely Rank"
+            - "&7This is the highest tier rank!"
+            - ""
+            - "&6* &bAccess to /craft"
+            - "&6* &bAccess to /panic"
+            - ""
+            - "&6Price: &b%price% Coins"
+            - ""
+            - "&6Left-Click &bto purchase this item."
+            - "&7&m--------------------------------"
+        slot: 13 # The slot the item is placed in.
+        price: 300 # The price in coins.
+        action: BUY # Available Options: BUY, OPEN_CATEGORY, RANK_UPGRADE, BUY_RANK, NONE
+        settings:
+          sorted:
+            type: "ITEM" # Available Options: ITEM, RANK, RANK_UPGRADE, PERMISSION, OTHER
+          rank-upgrade: # This is only if the action is set to 'RANK_UPGRADE'
+            before-rank: "Default" # The old rank name that the user must have to purchase the new rank.
+            new-rank: "Hely" # The new rank name they will be getting.
+          buy-rank: # This is only if the action is set to 'BUY_RANK'
+            rank-name: "Hely" # This is the name of the rank they are purchasing.
+          category: # This is only if the action is set to 'OPEN_CATEGORY'
+            name: ranks
+        commands: # These commands are executed when item is bought
+          - "broadcast %player% is a cool guy wow, they purchased hely rank"

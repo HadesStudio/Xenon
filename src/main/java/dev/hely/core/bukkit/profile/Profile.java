@@ -75,6 +75,7 @@ public class Profile {
     private String tag = "";
     private StaffProfile staffProfile = new StaffProfile();
     private OxygenBukkit plugin = OxygenBukkit.getInstance();
+    private int currency = 0;
 
     private List<Sibling> siblings = new ArrayList<>();
 
@@ -85,6 +86,7 @@ public class Profile {
 
         this.totalKills = 0;
         this.totalDeaths = 0;
+        this.currency = 0;
 
         for (StatisticsServer value : StatisticsServer.values()) {
             statistics.put(value, new Statistics(value));
@@ -112,6 +114,7 @@ public class Profile {
         document.put("tag", tag);
         document.put("totalkills", totalKills);
         document.put("totaldeaths", totalDeaths);
+        document.put("currency", currency);
 
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
         document.put("staffProfile", OxygenBukkit.PLAIN_GSON.toJson(this.staffProfile, staffProfileType));
@@ -156,6 +159,7 @@ public class Profile {
             lastServer = document.getString("lastServer");
             tag = document.getString("tag");
             vpnWhitelist = document.getBoolean("vpnWhitelist");
+            currency = document.getInteger("currency");
 
             if (document.containsKey("staffProfile")) {
                 Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();

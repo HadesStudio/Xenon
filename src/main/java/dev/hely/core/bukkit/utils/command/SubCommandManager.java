@@ -15,6 +15,7 @@ package dev.hely.core.bukkit.utils.command;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
+import dev.hely.core.bukkit.coins.sales.commands.StoreSaleCommand;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.profilesystem.commands.FriendsCommand;
 import dev.hely.core.bukkit.ranks.rank.commands.RankCommand;
@@ -24,12 +25,15 @@ public class SubCommandManager implements ModuleLoader {
     private RankCommand rankCommand;
     private TagCommand tagCommand;
     private FriendsCommand friendsCommand;
+    private StoreSaleCommand storeSaleCommand;
 
     @Override
     public void enable() {
         this.rankCommand = new RankCommand();
         this.tagCommand = new TagCommand();
         this.friendsCommand = new FriendsCommand();
+        this.storeSaleCommand = new StoreSaleCommand();
+
     }
 
     @Override
@@ -37,6 +41,7 @@ public class SubCommandManager implements ModuleLoader {
         this.rankCommand.disable();
         this.tagCommand.disable();
         this.friendsCommand.disable();
+        this.storeSaleCommand.disable();
     }
 
     @Override
