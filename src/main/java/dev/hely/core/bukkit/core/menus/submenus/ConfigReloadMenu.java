@@ -17,6 +17,7 @@ package dev.hely.core.bukkit.core.menus.submenus;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.core.menus.OxygenMenu;
+import dev.hely.core.bukkit.core.menus.buttons.InfoButton;
 import dev.hely.core.bukkit.utils.Config;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
@@ -63,9 +64,9 @@ public class ConfigReloadMenu extends PaginatedMenu {
     public Map<Integer, Button> getGlobalContent(Player player) {
         Map<Integer, Button> menuContent = new HashMap<>();
 
-        menuContent.put(0, new Placeholder_Button());
+        menuContent.put(0, new Back_Button());
         menuContent.put(1, new Placeholder_Button());
-        menuContent.put(4, new Back_Button());
+        menuContent.put(4, new InfoButton());
         menuContent.put(7, new Placeholder_Button());
         menuContent.put(8, new Placeholder_Button());
         menuContent.put(9, new Placeholder_Button());
