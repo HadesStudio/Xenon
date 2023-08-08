@@ -1,6 +1,7 @@
 package dev.hely.core.bukkit.profile.commands;
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.profile.commands.subcommands.ProfileAddCurrencyCommand;
 import dev.hely.core.bukkit.profile.commands.subcommands.ProfileInfoCommand;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.core.bukkit.utils.command.sub.SubCommandHandler;
@@ -20,6 +21,7 @@ public class ProfileCommand extends SubCommandHandler {
         super("profile", Collections.singletonList("user"));
 
         this.addSubCommand(new ProfileInfoCommand());
+        this.addSubCommand(new ProfileAddCurrencyCommand());
     }
 
     @Override
@@ -30,9 +32,11 @@ public class ProfileCommand extends SubCommandHandler {
                 subCommand.execute(sender, args);
             } else {
                 // ADDED USAGE
+                return false;
             }
         } else {
             // ADDED USAGE
+            return false;
         }
         return false;
     }

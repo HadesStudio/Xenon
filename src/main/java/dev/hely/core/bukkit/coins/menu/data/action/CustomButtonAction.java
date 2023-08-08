@@ -10,5 +10,5 @@ public enum CustomButtonAction {
     OPEN_CATEGORY,
     RANK_UPGRADE,
     BUY_RANK,
-    NONE;
+    NONE
 }

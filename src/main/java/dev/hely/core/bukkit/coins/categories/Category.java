@@ -17,9 +17,9 @@ package dev.hely.core.bukkit.coins.categories;
 
 import com.google.common.collect.Lists;
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.coins.item.ShopItem;
 import dev.hely.core.bukkit.coins.logging.CurrencyLogging;
 import dev.hely.core.bukkit.coins.logging.types.CurrencyActions;
+import dev.hely.core.bukkit.coins.menu.data.button.CustomButton;
 import dev.hely.core.bukkit.coins.sales.Sale;
 import dev.hely.core.bukkit.coins.sales.types.SaleTypes;
 import dev.hely.core.bukkit.profile.Profile;
@@ -38,7 +38,6 @@ import java.util.List;
 public abstract class Category {
     private boolean enabled = true;
     private int discount = 0;
-    private List<ShopItem> items = Lists.newArrayList();
     private Menu menu;
 
     public Category() {
@@ -62,7 +61,7 @@ public abstract class Category {
         return null;
     }
 
-    public void buyItem(ShopItem item, Player player) {
+    public void buyItem(CustomButton item, Player player) {
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
         int currency = profile.getCurrency();
         int amount = item.getAmount();
@@ -75,7 +74,7 @@ public abstract class Category {
                 totalPrice,
                 System.currentTimeMillis(),
                 CurrencyActions.PURCHASED,
-                item.getName());
+                item.getItemType().name());
 
         profile.setCurrency(currency - totalPrice);
         profile.save();
@@ -96,11 +95,13 @@ public abstract class Category {
                 continue;
             }
 
-            if (activeSale.getApplyTypes() == item.getType()) {
+            if (activeSale.getApplyTypes() == item.getItemType()) {
                 activeSale.broadcast(player, item.getName(), amount);
                 if (activeSale.getSaleType() == SaleTypes.ITEMS) { // BUY ONE GET XXX SALE
                     for (int i = 0; i < activeSale.getAmount(); i++) {
-                        item.getOnBuy().accept(player);
+                        for (String command : item.getCommands()) {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
+                        }
                     }
                     hasAppliedSale = true;
                 }else if (activeSale.getSaleType() == SaleTypes.RANK) {
@@ -113,7 +114,9 @@ public abstract class Category {
         }
 
         if (!hasAppliedSale) {
-            item.getOnBuy().accept(player);
+            for (String command : item.getCommands()) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
+            }
         }
 
         OxygenBukkit.getInstance().getStoreManager().storeCurrencyLog(log);

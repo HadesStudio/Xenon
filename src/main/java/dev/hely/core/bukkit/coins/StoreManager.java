@@ -95,7 +95,7 @@ public class StoreManager implements ModuleLoader {
             }
 
             int data = file.getInt("menu.buttons." + key + ".item.data");
-            int amount = file.getInt("menu.buttons." + key + ".item.amount");
+            int amounts = file.getInt("menu.buttons." + key + ".item.amount");
             int slot = file.getInt("menu.buttons." + key + ".slot");
             String name = file.getString("menu.buttons." + key + ".item.name");
             List<String> lore = file.getStringList("menu.buttons." + key + ".item.lore");
@@ -105,17 +105,18 @@ public class StoreManager implements ModuleLoader {
             } catch (Exception e2) {
                 OxygenBukkit.getInstance().debug_message("&4[Oxygen] &cThe action for '&b" + key + "&c' is invalid.");
             }
+            ItemTypes itemTypes = ItemTypes.NONE;
+            try {
+                itemTypes = ItemTypes.valueOf(file.getString("menu.buttons." + key + ".settings.sorted.type"));
+            } catch (Exception e2) {
+                OxygenBukkit.getInstance().debug_message("&4[Oxygen] &cThe item-type for '&b" + key + "&c' is invalid.");
+            }
 
+            int amount = file.getInt("menu.buttons." + key + ".amount");
             int price = file.getInt("menu.buttons." + key + ".price");
             List<String> commands = file.getStringList("menu.buttons." + key + ".commands");
-
             String subMenu = file.getString("menu.buttons." + key + ".settings.category.name");
-            ItemStack itemStack = ItemMaker.of(material)
-                    .setData((short) data)
-                    .setAmount(amount)
-                    .setDisplayName(name)
-                    .setLore(lore)
-                    .build();
+            ItemStack itemStack = ItemMaker.of(material).setData((short) data).setAmount(amounts).setDisplayName(name).setLore(lore).build();
 
             CustomButton button = new CustomButton();
             button.setButton(itemStack);
@@ -125,13 +126,15 @@ public class StoreManager implements ModuleLoader {
             button.setPrice(price);
             button.setCommands(commands);
             button.setLore(lore);
+            button.setItemType(itemTypes);
+            button.setAmount(amount);
+            button.setName(name);
 
             this.customButtonStorage.add(button);
         }
         OxygenBukkit.getInstance().debug_message("&cSuccessfully loaded &b" + this.customButtonStorage.size() + " Custom Buttons&c!");
 
     }
-
     public void loadCategories() {
         this.customCategoriesStorage.clear();
 
@@ -146,6 +149,7 @@ public class StoreManager implements ModuleLoader {
             String fill_style = section.getString(key + ".fill.style");
             List<String> fill_corners = section.getStringList(key + ".fill.slots");
             boolean fill_glow = section.getBoolean(key + ".fill.glow");
+            int discount = section.getInt(key + ".discount");
 
             boolean back_toggle = section.getBoolean(key + ".back.enabled");
             String back_material = section.getString(key + ".back.item.material");
@@ -154,7 +158,7 @@ public class StoreManager implements ModuleLoader {
             List<String> back_lore = section.getStringList(key + ".back.item.lore");
             int back_slot = section.getInt(key + ".back.slot");
 
-            this.customCategoriesStorage.add(new CustomCategory(title, key, customButtons, rows, fill_toggle, fill_data, fill_style, fill_corners, fill_glow, back_toggle, back_material, back_data, back_name, back_lore, back_slot));
+            this.customCategoriesStorage.add(new CustomCategory(title, key, customButtons, rows, fill_toggle, fill_data, fill_style, fill_corners, fill_glow, discount, back_toggle, back_material, back_data, back_name, back_lore, back_slot));
         });
 
         OxygenBukkit.getInstance().debug_message("&4[Oxygen] &cSuccessfully loaded &b" + this.customCategoriesStorage.size() + " Custom Categories&c!");
@@ -172,14 +176,16 @@ public class StoreManager implements ModuleLoader {
                     OxygenBukkit.getInstance().debug_message("&4[Oxygen] &cThe material of '&b" + category.getName() + "-" + key + "&c' is invalid.");
                 }
                 int data = section.getInt(key + ".item.data");
-                int amount = section.getInt(key + ".item.amount");
+                int amounts = section.getInt(key + ".item.amount");
                 String name = section.getString(key + ".item.name");
-
                 List<String> lore = section.getStringList(key + ".item.lore");
                 int slot = section.getInt(key + ".slot");
-                String sorted_name = section.getString(key + ".settings.sorted.type");
-
-
+                ItemTypes itemTypes = ItemTypes.NONE;
+                try {
+                    itemTypes = ItemTypes.valueOf(section.getString(key + ".settings.sorted.type"));
+                } catch (Exception e2) {
+                    OxygenBukkit.getInstance().debug_message("&4[Oxygen] &cThe item-type for '&b" + key + "&c' is invalid.");
+                }
                 CustomButtonAction customButtonAction = CustomButtonAction.NONE;
                 try {
                     customButtonAction = CustomButtonAction.valueOf(section.getString(key + ".action"));
@@ -190,10 +196,11 @@ public class StoreManager implements ModuleLoader {
                 int price = section.getInt(key + ".price");
                 String subMenu = section.getString(key + ".settings.category.name");
                 List<String> commands = section.getStringList(key + ".commands");
+                int amount = section.getInt(key + ".amount");
 
                 ItemStack itemStack = ItemMaker.of(material)
                         .setData((short) data)
-                        .setAmount(amount)
+                        .setAmount(amounts)
                         .setDisplayName(name)
                         .setLore(lore)
                         .build();
@@ -206,11 +213,15 @@ public class StoreManager implements ModuleLoader {
                 button.setSubMenu(subMenu);
                 button.setCommands(commands);
                 button.setLore(lore);
+                button.setItemType(itemTypes);
+                button.setAmount(amount);
+                button.setName(name);
 
                 category.getCustomButtons().add(button);
             });
         }
     }
+
     public CustomCategory getCategoryByName(String name) {
         for (CustomCategory customCategory : customCategoriesStorage) {
             if (customCategory.getName().equalsIgnoreCase(name)) {
@@ -226,5 +237,24 @@ public class StoreManager implements ModuleLoader {
 
     public void storeCurrencyLog(CurrencyLogging currencyLogging) {
         OxygenBukkit.getInstance().getMongoModule().getStoreCollection().insertOne(currencyLogging.toDocument());
+    }
+
+    public String getPricePlaceholderFormat(CustomCategory customCategory, CustomButton customButton) {
+        int discount = this.getGlobalDiscount() > 0 ? this.getGlobalDiscount() : customCategory.getDiscount();
+
+        if (discount > 0) {
+            return (OxygenBukkit.getInstance().getCoinShopConfig().getConfiguration().getString("placeholders.percent-sale-format").replace("%old_price%", String.valueOf(customButton.getPrice())).replace("%new_price%", String.valueOf((customButton.getPrice() * (100 - discount) / 100))).replace("%discount%", String.valueOf(discount)));
+        } else if (this.getActiveSaleFor(customButton.getItemType()).isPresent()) {
+            Sale sale = this.getActiveSaleFor(customButton.getItemType()).get();
+
+            if (sale.getSaleType() == SaleTypes.ITEMS) {
+                return (OxygenBukkit.getInstance().getCoinShopConfig().getConfiguration().getString("placeholders.item-sale-format").replace("%price%", String.valueOf(customButton.getPrice())).replace("%amount%", String.valueOf(sale.getAmount())));
+            } else if (sale.getSaleType() == SaleTypes.RANK) {
+                return (OxygenBukkit.getInstance().getCoinShopConfig().getConfiguration().getString("placeholders.rank-sale-format").replace("%price%", String.valueOf(customButton.getPrice())));
+            }
+        } else {
+            return (OxygenBukkit.getInstance().getCoinShopConfig().getConfiguration().getString("placeholders.default-price-format").replace("%price%", String.valueOf(customButton.getPrice())));
+        }
+        return "Unknown";
     }
 }

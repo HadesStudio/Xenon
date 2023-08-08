@@ -26,6 +26,7 @@ public class CustomCategory {
     public String fill_style;
     public List<String> fill_corners;
     public boolean fill_glow;
+    public int discount; // The discount for this category
 
 
     public boolean back_enabled;

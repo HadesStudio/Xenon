@@ -27,7 +27,7 @@ import java.util.Collections;
 public class ProfileCommand extends BaseCommand {
 
     public ProfileCommand(){
-        super("profile", Collections.singletonList("p"), true);
+        super("myprofile", Collections.singletonList("p"), true);
     }
 
     @Override

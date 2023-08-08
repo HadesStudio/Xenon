@@ -54,6 +54,8 @@ public class ProfileInfoCommand extends SubCommand {
         sender.sendMessage(CC.translate("&eFirst Seen&7: &f" + TimeUtil.formatIntoCalendarString(new Date(profile.getFirstSeen()))));
         sender.sendMessage(CC.translate("&eLast Seen&7: &f" + TimeUtil.formatIntoCalendarString(new Date(profile.getLastSeen()))));
         sender.sendMessage(CC.translate("&eLast Server&7: &f" + profile.getLastServer()));
+        sender.sendMessage(CC.translate("&eCurrency&7: &f" + profile.getCurrency()));
+
     }
 }
 

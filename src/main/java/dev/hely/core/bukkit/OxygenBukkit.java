@@ -115,11 +115,11 @@ public class OxygenBukkit extends JavaPlugin {
         setupPackets();
         registerTasks();
 
-        redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), true));
+        //redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), true));
     }
 
     public void onDisable() {
-        redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), false));
+        //redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), false));
 
         modules.forEach((s, moduleLoader) -> unloadModule(moduleLoader));
     }
@@ -206,7 +206,7 @@ public class OxygenBukkit extends JavaPlugin {
         subCommandManager = new SubCommandManager();
         listenerModule = new ListenerModule();
         redisModule = new RedisModule();
-        serverManager = new ServerManager();
+        //serverManager = new ServerManager();
         rankManager = new RankManager();
         tagManager = new TagManager();
         chatManager = new ChatModule();
@@ -231,7 +231,7 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(redisModule);
         this.loadModule(rankManager);
         this.loadModule(tagManager);
-        this.loadModule(serverManager);
+        //this.loadModule(serverManager);
         this.loadModule(storeManager);
     }
 
@@ -239,7 +239,7 @@ public class OxygenBukkit extends JavaPlugin {
         redisModule.registerListener(new ProfilePacketListener());
         redisModule.registerListener(new PunishmentPacketListener(this));
         redisModule.registerListener(new TagPacketListener(tagManager));
-        redisModule.registerListener(new ServerPacketListener(serverManager));
+        //redisModule.registerListener(new ServerPacketListener(serverManager));
 
         redisModule.subscribeJedis();
     }

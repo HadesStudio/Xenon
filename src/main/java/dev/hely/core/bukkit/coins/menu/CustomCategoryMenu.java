@@ -1,5 +1,6 @@
 package dev.hely.core.bukkit.coins.menu;
 
+import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.coins.menu.data.button.CustomButton;
 import dev.hely.core.bukkit.coins.menu.data.category.CustomCategory;
 import dev.hely.lib.maker.ItemMaker;
@@ -65,7 +66,7 @@ public class CustomCategoryMenu extends Menu {
         }
 
         for (CustomButton customButton : customCategory.getCustomButtons()) {
-            buttons.put(customButton.getSlot() - 1, new ItemButton(customButton));
+            buttons.put(customButton.getSlot() - 1, new ItemButton(customButton, customCategory));
         }
 
         return buttons;
@@ -119,15 +120,15 @@ public class CustomCategoryMenu extends Menu {
 
     @AllArgsConstructor
     private static class ItemButton extends Button {
-
         private CustomButton customButton;
+        private CustomCategory customCategory;
 
         @Override
         public ItemStack getItemStack(Player player) {
             List<String> lore = new ArrayList<>();
             for (String value : customButton.getLore()) {
                 lore.add(value
-                        .replace("%price%", "" + customButton.getPrice())
+                        .replace("%price_line%", OxygenBukkit.getInstance().getStoreManager().getPricePlaceholderFormat(customCategory, customButton))
                         .replace("%d_arrow%", "\u00BB"));
             }
 

@@ -46,10 +46,10 @@ messages:
       - "&7&l&m--------------------------------------------"
 
 placeholders:
-  default-price-format: "&b%price% Coins"
-  rank-sale-format: "&b%price% Coins &7(Rank Sale)"
-  percent-sale-format: "&b%price% Coins &c(%amount%% OFF)"
-
+  default-price-format: "&6Price: &e%price% Coins"
+  rank-sale-format: "&6Price: &e%price% Coins &7(Rank Sale)"
+  percent-sale-format: "&6Price: &c&m%old_price%&7 &e%new_price% Coins &7(%discount%% OFF)"
+  item-sale-format: "&6Price: &e%price% Coins &7(Buy 1 Get %amount%)"
 
 menu:
   title: "&8Coin Shop"
@@ -70,6 +70,7 @@ menu:
         name: "&6&lServer Ranks"
         lore: { }
       slot: 13 # The slot the item is placed in.
+      amount: 1 # This is how many they are purchasing.
       price: 300 # The price in coins.
       action: OPEN_CATEGORY # Available Options: BUY, OPEN_CATEGORY, RANK_UPGRADE, BUY_RANK, NONE
       settings:
@@ -90,6 +91,7 @@ categories:
   ranks:
     title: "&6Ranks"
     rows: 3
+    discount: 10 # The amount that this category is given a discount, set to 0 for none.
     fill:
       enabled: true # Do you want to use the inventory filler?
       data: 7 # This is the item data of your glass pane.
@@ -121,12 +123,13 @@ categories:
             - "&6* &bAccess to /craft"
             - "&6* &bAccess to /panic"
             - ""
-            - "&6Price: &b%price% Coins"
+            - "%price_line%"
             - ""
             - "&6Left-Click &bto purchase this item."
             - "&7&m--------------------------------"
         slot: 13 # The slot the item is placed in.
         price: 300 # The price in coins.
+        amount: 1 # This is how many they are purchasing.
         action: BUY # Available Options: BUY, OPEN_CATEGORY, RANK_UPGRADE, BUY_RANK, NONE
         settings:
           sorted:

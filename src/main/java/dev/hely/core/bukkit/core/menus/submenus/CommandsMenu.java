@@ -37,7 +37,7 @@ public class CommandsMenu extends PaginatedMenu {
     {
         setClickUpdate(true);
     }
-    private List<BaseCommand> baseCommands;
+    private List<BaseCommand> baseCommands = new ArrayList<>();
 
     @Override
     public String getName() {
@@ -78,7 +78,11 @@ public class CommandsMenu extends PaginatedMenu {
             itemMaker.addLore("&6Currently&7: " + (plugin.getCommandManager().isDisabled(baseCommand) ? "&cDisabled" : "&aActive"));
             itemMaker.addLore(" ");
             itemMaker.addLore("&6Name&7: &f" + baseCommand.getName());
-            itemMaker.addLore("&6Permission&7: &f" + baseCommand.getPermission());
+            if (baseCommand.getPermission() == null) {
+                itemMaker.addLore("&6Permissions&7: &fNone");
+            } else {
+                itemMaker.addLore("&6Permission&7: &f" + baseCommand.getPermission());
+            }
 
             List<String> aliases = new ArrayList<>(baseCommand.getAliases());
 

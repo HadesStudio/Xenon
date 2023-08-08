@@ -1,6 +1,7 @@
 package dev.hely.core.bukkit.coins.menu.data.button;
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.coins.item.type.ItemTypes;
 import dev.hely.core.bukkit.coins.menu.data.action.CustomButtonAction;
 import dev.hely.core.bukkit.coins.menu.data.category.CustomCategory;
 import dev.hely.core.bukkit.coins.menu.CustomCategoryMenu;
@@ -27,8 +28,11 @@ public class CustomButton {
     private CustomButtonAction actions;
     private String subMenu;
     private int price;
+    private int amount;
     private List<String> commands;
     private List<String> lore;
+    private ItemTypes itemType;
+    private String name;
 
     public void execute(Player player) {
         switch (this.actions) {
