@@ -17,11 +17,14 @@ package dev.hely.core.bukkit.utils.command;
 
 import dev.hely.core.bukkit.coins.sales.commands.StoreSaleCommand;
 import dev.hely.core.bukkit.modules.ModuleLoader;
+import dev.hely.core.bukkit.profile.commands.ProfileCommand;
 import dev.hely.core.bukkit.profile.profilesystem.commands.FriendsCommand;
 import dev.hely.core.bukkit.ranks.rank.commands.RankCommand;
 import dev.hely.core.bukkit.tag.command.TagCommand;
 
 public class SubCommandManager implements ModuleLoader {
+
+    private ProfileCommand profileCommand;
     private RankCommand rankCommand;
     private TagCommand tagCommand;
     private FriendsCommand friendsCommand;
@@ -29,6 +32,7 @@ public class SubCommandManager implements ModuleLoader {
 
     @Override
     public void enable() {
+        this.profileCommand = new ProfileCommand();
         this.rankCommand = new RankCommand();
         this.tagCommand = new TagCommand();
         this.friendsCommand = new FriendsCommand();
@@ -38,6 +42,7 @@ public class SubCommandManager implements ModuleLoader {
 
     @Override
     public void disable() {
+        this.profileCommand.disable();
         this.rankCommand.disable();
         this.tagCommand.disable();
         this.friendsCommand.disable();
