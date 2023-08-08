@@ -3,6 +3,7 @@ package dev.hely.core.bukkit.server;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.server.packet.implement.ServerUpdatePacket;
+import dev.hely.core.bukkit.server.tasks.ServerTimeoutTask;
 import dev.hely.core.bukkit.staff.requests.Request;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -35,6 +36,7 @@ public class ServerManager implements ModuleLoader {
         this.serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
         new ServerUpdateThread(plugin).start();
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, new ServerTimeoutTask(), 20L, 20L);
         this.enabled = true;
     }
 

@@ -20,8 +20,6 @@ public class ServerUpdateThread extends Thread {
     public void run() {
         while (true) {
             try {
-                if (plugin == null) return;
-
                 plugin.getRedisModule().sendPacket(new ServerUpdatePacket(
                         plugin.getServerManager().getServerName(),
                         plugin.getServerManager().getServerVersion(),

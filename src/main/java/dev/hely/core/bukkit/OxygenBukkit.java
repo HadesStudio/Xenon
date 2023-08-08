@@ -115,7 +115,7 @@ public class OxygenBukkit extends JavaPlugin {
         setupPackets();
         registerTasks();
 
-        //redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), true));
+        redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), true));
     }
 
     public void onDisable() {
@@ -195,7 +195,6 @@ public class OxygenBukkit extends JavaPlugin {
 
     public void registerTasks() {
         new NameMCReminderTask().runTaskTimerAsynchronously(OxygenBukkit.getInstance(), 20L * 60 * OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"), 20L * 60 * OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"));
-        //Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ServerTimeoutTask(), 20L, 20L);
     }
 
     public void initModules(){
@@ -207,9 +206,9 @@ public class OxygenBukkit extends JavaPlugin {
         subCommandManager = new SubCommandManager();
         listenerModule = new ListenerModule();
         redisModule = new RedisModule();
+        serverManager = new ServerManager();
         rankManager = new RankManager();
         tagManager = new TagManager();
-        //serverManager = new ServerManager(); leandro fix
         chatManager = new ChatModule();
         requestHandler = new RequestManager();
         storeManager = new StoreManager();
@@ -232,7 +231,7 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(redisModule);
         this.loadModule(rankManager);
         this.loadModule(tagManager);
-        //this.loadModule(serverManager); leandro fix
+        this.loadModule(serverManager);
         this.loadModule(storeManager);
     }
 
