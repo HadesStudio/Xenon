@@ -43,6 +43,8 @@ public class ServerPacketListener implements PacketListener {
         server.setWhitelisted(packet.isWhitelisted());
         server.setOnlinePlayers(packet.getOnlinePlayers());
         server.setMaxPlayers(packet.getMaxPlayers());
+        server.setLastUpdate(packet.getLastUpdate());
+        server.setLastOnline(packet.getLastOnline());
     }
 
     @IncomingPacketHandler

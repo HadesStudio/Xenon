@@ -27,7 +27,9 @@ public class ServerUpdateThread extends Thread {
                         20.0D,
                         Bukkit.hasWhitelist(),
                         Bukkit.getMaxPlayers(),
-                        Bukkit.getOnlinePlayers().size()
+                        Bukkit.getOnlinePlayers().size(),
+                        System.currentTimeMillis(),
+                        0
                 ));
 
             } catch (Exception e) {

@@ -32,15 +32,11 @@ public class ServerTimeoutTask implements Runnable {
 
     @Override
     public void run() {
-        List<Server> servers = OxygenBukkit.getInstance().getServerManager().getServers();
-
-        for (Server server : servers) {
-            Server serverData = OxygenBukkit.getInstance().getServerManager().getServer(server.getName());
-
-            if (serverData != null) {
-                if (System.currentTimeMillis() - serverData.getLastUpdate() >= ServerTimeoutTask.TIME_OUT_DELAY) {
+        for (Server server : OxygenBukkit.getInstance().getServerManager().getServers()) {
+            if (server != null) {
+                if (System.currentTimeMillis() - server.getLastUpdate() >= ServerTimeoutTask.TIME_OUT_DELAY) {
                     OxygenBukkit.getInstance().debug_message("&4[Oxygen] &cThe server " + server.getName() + " has just stopped because it has crashed, or timed out!");
-                    servers.remove(serverData);
+                    OxygenBukkit.getInstance().getServerManager().getServers().remove(server);
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (player.isOp()) {

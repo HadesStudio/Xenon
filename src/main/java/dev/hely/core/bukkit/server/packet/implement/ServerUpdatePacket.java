@@ -20,5 +20,7 @@ public class ServerUpdatePacket implements Packet {
     private final boolean whitelisted;
     private final int maxPlayers;
     private final int onlinePlayers;
+    private final long lastUpdate;
+    private final long lastOnline;
 
 }
