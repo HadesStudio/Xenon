@@ -209,7 +209,9 @@ public class ServerMenu extends PaginatedMenu {
                                 server.getTps(),
                                 false,
                                 server.getMaxPlayers(),
-                                server.getOnlinePlayers()
+                                server.getOnlinePlayers(),
+                                server.getLastUpdate(),
+                                server.getLastOnline()
                         ));
                         player.sendMessage(CC.translate(OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("main.messages.whitelist.disabled").replace("%server_name%", server.getName())));
                     }
