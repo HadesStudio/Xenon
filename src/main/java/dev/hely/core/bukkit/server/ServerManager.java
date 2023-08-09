@@ -35,7 +35,7 @@ public class ServerManager implements ModuleLoader {
         this.serverName = plugin.getConfiguration().getConfiguration().getString("server.name");
         this.serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
-        new ServerUpdateThread(plugin).start();
+        //new ServerUpdateThread(plugin).start();
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, new ServerTimeoutTask(), 20L, 20L);
         this.enabled = true;
     }

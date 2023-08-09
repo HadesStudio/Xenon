@@ -17,11 +17,15 @@ package dev.hely.core.bukkit.ranks.rank.commands.subcommands;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.ranks.rank.Rank;
+import dev.hely.core.bukkit.ranks.rank.menu.RankPermissionsMenu;
 import dev.hely.core.bukkit.ranks.rank.packet.implement.RankUpdatePacket;
+import dev.hely.core.bukkit.ranks.rank.permission.PermissionData;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class RankPermissionsCommand extends SubCommand {
@@ -31,60 +35,74 @@ public class RankPermissionsCommand extends SubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length < 4) {
+        if (args.length < 3) {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.usage")));
             return;
         }
 
         if (args[1].equalsIgnoreCase("add")) {
-            if (OxygenBukkit.getInstance().getRankManager().getRank(args[2]) == null) {
+            Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[2]);
+
+            if (rank == null) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
                 return;
             }
-            for (String permissions : OxygenBukkit.getInstance().getRankManager().getRank(args[2]).getActivePermissions()) {
-                if (permissions.equalsIgnoreCase(args[3])) {
-                    sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.already-has")));
-                    return;
-                }
+
+            String permission = args[3];
+            if (rank.hasPermission(permission)) {
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.already-has")));
+                return;
             }
 
-            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.added").replace("%permission%", args[3])));
-            Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[2]);
-            rank.getActivePermissions().add(args[3]);
+            rank.getPermissionsData().add(new PermissionData(permission, true, new ArrayList<>()));
             rank.save();
+
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.added").replace("%permission%", args[3])));
 
             OxygenBukkit.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(args[2]));
         } else if (args[1].equalsIgnoreCase("list")) {
-            if (OxygenBukkit.getInstance().getRankManager().getRank(args[2]) == null) {
+            Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[2]);
+            if (rank == null) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
                 return;
             }
-            if (OxygenBukkit.getInstance().getRankManager().getRank(args[2]).getActivePermissions().size() == 0) {
+            if (rank.getPermissionsData().size() == 0) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.no-permissions")));
                 return;
             }
 
-            for (String permissions : OxygenBukkit.getInstance().getRankManager().getRank(args[2]).getActivePermissions()) {
-                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.list-format").replace("%permission%", permissions)));
+            if (sender instanceof Player) {
+                new RankPermissionsMenu(rank).openMenu((Player) sender);
+            }else {
+                for (PermissionData permissions : rank.getPermissionsData()) {
+                    sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.list-format").replace("%permission%", permissions.getPermission())));
+                }
             }
+
         } else if (args[1].equalsIgnoreCase("remove")) {
-            if (OxygenBukkit.getInstance().getRankManager().getRank(args[2]) == null) {
+            Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[2]);
+
+            if (rank == null) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
                 return;
             }
-            if (OxygenBukkit.getInstance().getRankManager().getRank(args[2]).getActivePermissions().size() == 0) {
+
+            if (rank.getActivePermissions().size() == 0) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.no-permissions")));
                 return;
             }
-            Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[2]);
-            if (!rank.getActivePermissions().contains(args[3])) {
+
+            if (!rank.hasPermission(args[3])) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.not-have")));
                 return;
             }
 
-            rank.getActivePermissions().remove(args[3]);
-            OxygenBukkit.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(args[2]));
+            rank.getPermissionsData().removeIf(permissionData -> permissionData.getPermission().equalsIgnoreCase(args[3]));
+            rank.save();
+
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.removed")));
+
+            OxygenBukkit.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(args[2]));
         } else {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.bungee-permissions.usage")));
         }

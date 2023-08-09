@@ -37,13 +37,13 @@ public class RankRenameCommand extends SubCommand {
             return;
         }
 
-        if (OxygenBukkit.getInstance().getRankManager().getRank(args[1]) == null) {
+        Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[1]);
+        if (rank == null) {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
             return;
         }
 
-        String old_name = OxygenBukkit.getInstance().getRankManager().getRank(args[1]).getName();
-        Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[1]);
+        String old_name = rank.getName();
         //rank.setName(args[2]); LEANDRO FIX
         rank.save();
 

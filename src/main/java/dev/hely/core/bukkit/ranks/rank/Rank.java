@@ -90,6 +90,14 @@ public class Rank {
         return this.globalRank || getServer(plugin.getServerManager().getServerName());
     }
 
+    public boolean hasPermission(String permission) {
+        return this.permissionsData.stream().filter(PermissionData::isActive).filter(permissionData -> permissionData.getPermission().equalsIgnoreCase(permission)).findFirst().orElse(null) != null;
+    }
+
+    public boolean hasPermission(String permission, String server) {
+        return this.permissionsData.stream().filter(PermissionData::isActive).filter(permissionServer -> permissionServer.getServer(server)).filter(permissionData -> permissionData.getPermission().equalsIgnoreCase(permission)).findFirst().orElse(null) != null;
+    }
+
     public List<String> getActivePermissions() {
         return this.permissionsData.stream().filter(PermissionData::isActive).map(PermissionData::getPermission).collect(Collectors.toList());
     }

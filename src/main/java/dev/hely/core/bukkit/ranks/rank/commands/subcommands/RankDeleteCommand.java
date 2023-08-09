@@ -1,6 +1,7 @@
 package dev.hely.core.bukkit.ranks.rank.commands.subcommands;
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.ranks.rank.packet.implement.RankDeletePacket;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.lib.CC;
@@ -26,12 +27,13 @@ public class RankDeleteCommand extends SubCommand {
             return;
         }
 
-        if (OxygenBukkit.getInstance().getRankManager().getRank(args[1]) == null) {
+        Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[1]);
+        if (rank == null) {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
             return;
         }
 
-        OxygenBukkit.getInstance().getRankManager().deleteRank(OxygenBukkit.getInstance().getRankManager().getRank(args[1]));
+        OxygenBukkit.getInstance().getRankManager().deleteRank(rank);
         sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.delete.deleted")
                 .replace("%rank_name%", args[1])));
 

@@ -38,12 +38,16 @@ commands:
   setweight:
     usage: "&cCorrect usage: /rank setweight <rank> <weight>"
     set: "&aYou have updated this ranks weight to: &6%weight%"
+  settype:
+    usage: "&cCorrect usage: /rank settype <rank> <type>"
+    set: "&aYou have updated this ranks type to: &6%type%"
   info:
     message:
       - "&7&l&m---------------------------------"
       - "&6&n%rank% Rank:"
       - "&7This rank has the following configurations."
       - ""
+      - "&aType: &6%type%"
       - "&aPrefix: &6%prefix%"
       - "&aSuffix: &6%suffix%"
       - "&aWeight: &6%weight%"

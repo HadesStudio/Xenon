@@ -36,24 +36,23 @@ public class RankInfoCommand extends SubCommand {
             return;
         }
 
-        if (OxygenBukkit.getInstance().getRankManager().getRank(args[1]) == null) {
+        Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[1]);
+        if (rank == null) {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
             return;
         }
-        Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[1]);
 
         for (String string : OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getStringList("commands.info.message")) {
             sender.sendMessage(CC.translate(string)
                     .replace("%rank%", rank.getName())
+                    .replace("%type%", rank.getType().name())
                     .replace("%prefix%", getRankPrefix(rank))
                     .replace("%suffix%", getRankSuffix(rank))
                     .replace("%weight%", String.valueOf(rank.getWeight()))
                     .replace("%bungee_perms%", String.valueOf(rank.getBungeePermissions().size()))
                     .replace("%server_perms%", String.valueOf(rank.getActivePermissions().size()))
                     .replace("%inherits%", String.valueOf(rank.getInheritances().size()))
-
             );
-
         }
     }
 

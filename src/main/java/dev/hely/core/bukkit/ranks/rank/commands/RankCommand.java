@@ -38,7 +38,8 @@ public class RankCommand extends SubCommandHandler {
         this.addSubCommand(new RankSetPrefixCommand());
         this.addSubCommand(new RankSetSuffixCommand());
         this.addSubCommand(new RankInfoCommand());
-        this.addSubCommand(new RankWeightCommand());
+        this.addSubCommand(new RankSetWeightCommand());
+        this.addSubCommand(new RankSetTypeCommand());
     }
 
     @Override

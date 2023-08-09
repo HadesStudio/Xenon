@@ -192,7 +192,7 @@ public class ChatModule implements ModuleLoader {
     }
 
     public String formatChatDisplay(Player player,String message) {
-        final Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
+        Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
         String chatFormat = CC.translate(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("chat-system.chat-format")
                 .replace("%tags%", profile.getTag())

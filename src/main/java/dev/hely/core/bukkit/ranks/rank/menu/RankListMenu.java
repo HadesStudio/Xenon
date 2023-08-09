@@ -34,6 +34,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class RankListMenu extends PaginatedMenu {
+
     @Override
     public String getName() {
         return "Menu";
@@ -102,6 +103,9 @@ public class RankListMenu extends PaginatedMenu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
+            if (clickType == ClickType.LEFT) {
+                new RankPermissionsMenu(rank).openMenu(player);
+            }
         }
     }
 }

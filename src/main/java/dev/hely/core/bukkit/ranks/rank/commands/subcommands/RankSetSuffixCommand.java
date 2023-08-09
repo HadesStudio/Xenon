@@ -37,13 +37,13 @@ public class RankSetSuffixCommand extends SubCommand {
             return;
         }
 
-        if (OxygenBukkit.getInstance().getRankManager().getRank(args[1]) == null) {
+        Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[1]);
+        if (rank == null) {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
             return;
         }
 
         String new_suffix = args[2].replace("_", " ");
-        Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[1]);
         rank.setSuffix(new_suffix);
         rank.save();
 

@@ -24,10 +24,10 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
 
-public class RankWeightCommand extends SubCommand {
+public class RankSetWeightCommand extends SubCommand {
 
-    public RankWeightCommand() {
-        super("setweight", Collections.singletonList("weight"), "oxygen.rank.weight");
+    public RankSetWeightCommand() {
+        super("setweight", Collections.singletonList("weight"), "oxygen.rank.setweight");
     }
 
     @Override
@@ -37,24 +37,25 @@ public class RankWeightCommand extends SubCommand {
             return;
         }
 
-        if (OxygenBukkit.getInstance().getRankManager().getRank(args[1]) == null) {
+        Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[1]);
+        if (rank == null) {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.dont-exists")));
             return;
         }
+
+        int weight;
         try {
-            Integer.parseInt(args[2]);
+            weight = Integer.parseInt(args[2]);
         } catch (NumberFormatException nfe) {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.setweight.usage")));
             return;
         }
 
-        String new_weight = args[2];
-        Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[1]);
-        rank.setWeight(Integer.parseInt(new_weight));
+        rank.setWeight(weight);
         rank.save();
 
         sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.setweight.set")
-                .replace("%weight%", new_weight)
+                .replace("%weight%", String.valueOf(weight))
         ));
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(args[1]));

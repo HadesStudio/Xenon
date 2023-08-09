@@ -40,7 +40,7 @@ public class ProfileInfoCommand extends SubCommand {
 
         sender.sendMessage(CC.translate(profile.getName() + "&e's Profile Information"));
         sender.sendMessage(CC.translate("&eUUID&7: &f" + profile.getUniqueId()));
-        sender.sendMessage(CC.translate("&eCurrent Rank&7: &f" + OxygenAPI.INSTANCE.getRank(profile.getUniqueId())));
+        sender.sendMessage(CC.translate("&eCurrent Rank&7: &f" + profile.getActiveHighestRank().getName()));
         sender.sendMessage(CC.translate("&eActive Grants&7: &f" + profile.getActiveGrants().size()));
         sender.sendMessage(CC.translate("&ePermissions&7: &f"));
         if (profile.getTag() == null || profile.getTag().isEmpty()) {
