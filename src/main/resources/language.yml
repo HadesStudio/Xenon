@@ -15,6 +15,57 @@ chat:
   filtered-message-alert: "&c[Chat Filter] &7%format%"
   blocked: "&cYour message contained blocked content. It has been blocked from sending in chat."
 
+chat-command:
+  usage:
+    - "&7&l&m-----------------------------------"
+    - "&6&lChat Commands"
+    - "&7All chat moderation commands are listed below."
+    - "&7"
+    - "&6* /chat mute &7- Mute the server chat."
+    - "&6* /chat unmute &7- Unmute the server chat."
+    - "&6* /chat clear &7- Clear all messages in server chat."
+    - "&6* /chat slow <time> &7- Create a cooldown between messages."
+    - "&6* /chat toggledonortalk &7- Toggle donator messages when chat is muted."
+    - "&7&l&m-----------------------------------"
+  mute:
+    already-muted: "&cServer chat is already muted, please use '&6/chat unmute&c' to unmute it."
+    muted-chat: "&aYou have successfully muted the server's &6Chat&a."
+    broadcast:
+      - "&cChat has just been disabled by &6%player%&c."
+  unmuted:
+    not-muted: "&cServer chat is currently not muted, please use '&6/chat mute&c' to mute chat."
+    unmuted-chat: "&aYou have successfully unmuted the server's &6Chat&a."
+    broadcast:
+      - "&aChat has just been enabled by &6%player%&a."
+  donor-talk:
+    enabled: "&aYou have enabled the &6Donor Talk &afeature while chat is muted."
+    enabled-broadcast:
+      - "&6[VIP] &aPlayer's with &6Hely Rank &acan now type in chat while it's muted."
+    disabled: "&cYou have disabled the &6Donor Talk &cfeature while chat is muted."
+    disabled-broadcast:
+      - "&6[VIP] &cPlayer's with &6Hely Rank &ccan no longer type in chat while it's muted."
+  clear:
+    cleared: "&aYou have successfully cleared all messages in &6Server Chat&a."
+    broadcast:
+      - "&aChat has just been cleared by &6%player%&a."
+
+chat-spy:
+  message: "&6[Chat Spy] &a%sender% &7&o-> &a%target%&7: &c%message%" # %sender%, %target%, %message%
+
+message-command:
+  usage: "&cCorrect Usage: /message <player> <message>"
+  messages-disabled: "&cYou cannot send &6Private Messages &cwhile you have &6Private Messages &cdisabled."
+  not-receiving: "&cSorry, &6%player% &cis currently not accepting &6Private Messages&c."
+  to-format: "&7(To %target%) &6%message%"
+  from-format: "&7(From %target%) &6%message%"
+
+reply-command:
+  usage: "&cCorrect Usage: /reply <message>"
+  not-receiving: "&cSorry, &6%player% &cis currently not accepting &6Private Messages&c."
+  messages-disabled: "&cYou cannot send &6Private Messages &cwhile you have &6Private Messages &cdisabled."
+  no-last-message: "&cYou have not sent a message to anyone recently."
+  conversation: "&7You are currently in a conversation with &6%player_name%&7."
+
 seen-command:
   usage: "&cCorrect Usage: /seen <player>"
   message: "&6%player% &awas last seen &6%time% ago &aon &6%server%&a."

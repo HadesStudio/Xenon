@@ -6,9 +6,11 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.profile.conversations.MessageConversations;
 import dev.hely.core.bukkit.profile.packet.implement.StaffChatPacket;
 import dev.hely.core.bukkit.profile.permission.packet.PlayerPermissionPacket;
 import dev.hely.core.bukkit.profile.profilesystem.impl.*;
+import dev.hely.core.bukkit.profile.settings.ProfileSettings;
 import dev.hely.core.bukkit.profile.staff.StaffProfile;
 import dev.hely.core.bukkit.profile.note.Note;
 import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.Statistics;
@@ -75,7 +77,15 @@ public class Profile {
     private String tag = "";
     private StaffProfile staffProfile = new StaffProfile();
     private OxygenBukkit plugin = OxygenBukkit.getInstance();
-    private int currency = 0;
+    private int currency;
+
+    private List<String> ignoredList = new ArrayList<>();
+    private long lastReceivedMessageMillis;
+    private long lastSentMessageMillis;
+    private UUID lastRepliedTo;
+
+    private final MessageConversations conversations;
+    private ProfileSettings settings = new ProfileSettings();
 
     private List<Sibling> siblings = new ArrayList<>();
 
@@ -92,6 +102,7 @@ public class Profile {
             statistics.put(value, new Statistics(value));
         }
 
+        this.conversations = new MessageConversations(this);
         this.preferences = new Preferences();
 
         load();
@@ -115,10 +126,18 @@ public class Profile {
         document.put("totalkills", totalKills);
         document.put("totaldeaths", totalDeaths);
         document.put("currency", currency);
+        document.put("lastReceivedMessageMillis", lastReceivedMessageMillis);
+        document.put("lastSentMessageMillis", lastSentMessageMillis);
+        document.put("lastRepliedTo", lastRepliedTo.toString());
 
+        Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
+        document.put("settings", OxygenBukkit.PLAIN_GSON.toJson(this.settings, settingsType));
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
         document.put("staffProfile", OxygenBukkit.PLAIN_GSON.toJson(this.staffProfile, staffProfileType));
 
+
+        Type ignoredListType = new TypeToken<List<String>>() {}.getType();
+        document.put("ignoredList", OxygenBukkit.PLAIN_GSON.toJson(this.comments, ignoredListType));
         Type commentsType = new TypeToken<List<Comment>>() {}.getType();
         document.put("comments", OxygenBukkit.PLAIN_GSON.toJson(this.comments, commentsType));
         Type messagesType = new TypeToken<List<Message>>() {}.getType();
@@ -161,6 +180,14 @@ public class Profile {
             vpnWhitelist = document.getBoolean("vpnWhitelist");
             currency = document.getInteger("currency");
 
+            lastReceivedMessageMillis = document.getLong("lastReceivedMessageMillis");
+            lastSentMessageMillis = document.getLong("lastSentMessageMillis");
+            lastRepliedTo = UUID.fromString(document.getString("lastSentMessageMillis"));
+
+            if (document.containsKey("settings")) {
+                Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
+                settings = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("settings"), settingsType);
+            }
             if (document.containsKey("staffProfile")) {
                 Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
                 staffProfile = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("staffProfile"), staffProfileType);
@@ -182,6 +209,8 @@ public class Profile {
                 siblings = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("siblings"), siblingsType);
             }
 
+            Type ignoredListType = new TypeToken<List<String>>() {}.getType();
+            ignoredList = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("ignoredList"), ignoredListType);
             Type commentsType = new TypeToken<List<Comment>>() {}.getType();
             comments = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("comments"), commentsType);
             Type messagesType = new TypeToken<List<Message>>() {}.getType();

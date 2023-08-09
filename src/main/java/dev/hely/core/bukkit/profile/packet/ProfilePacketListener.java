@@ -1,5 +1,6 @@
 package dev.hely.core.bukkit.profile.packet;
 
+import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
@@ -33,6 +34,21 @@ public class ProfilePacketListener implements PacketListener {
         Messages.sendMessage("&9[S] &r%player_name% &bdisconnected from &7(%server%)"
                 .replace("%player_name%", name)
                 .replace("%server%", server), "oxygen.staff.alerts");
+    }
+
+    @IncomingPacketHandler
+    public void onChatSpyMessage(StaffChatSpyMessagePacket packet){
+        String sender = packet.getSenderName();
+        String target = packet.getTargetName();
+        String server = packet.getServerName();
+        String message = packet.getMessage();
+
+        Messages.sendMessage(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("chat-spy.message")
+                .replace("%sender%", sender)
+                .replace("%target%", target)
+                .replace("%server%", server)
+                .replace("%message%", message),
+                "oxygen.staff.chatspy");
     }
 
     @IncomingPacketHandler

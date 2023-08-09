@@ -2,9 +2,7 @@ package dev.hely.core.bukkit.utils.command;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.coins.commands.ShopCommand;
-import dev.hely.core.bukkit.commands.implement.player.NameMCCommand;
-import dev.hely.core.bukkit.commands.implement.player.ProfileCommand;
-import dev.hely.core.bukkit.commands.implement.player.SeenCommand;
+import dev.hely.core.bukkit.commands.implement.player.*;
 import dev.hely.core.bukkit.commands.implement.punishment.*;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBanCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBlacklistCommand;
@@ -101,6 +99,8 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new NotificationsCommand());
         loadedCommands.add(new ServersCommand());
         loadedCommands.add(new ShopCommand());
+        loadedCommands.add(new MessageCommand());
+        loadedCommands.add(new ReplyCommand());
 
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));
