@@ -17,6 +17,7 @@ package dev.hely.core.bukkit.chat;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.chat.impl.ChatMessage;
+import dev.hely.core.bukkit.chat.listeners.ChatListener;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.lib.CC;
@@ -73,6 +74,7 @@ public class ChatModule implements ModuleLoader {
             this.messageCache.put(loopPlayer.getUniqueId(), new ArrayList<>());
             this.warningsCache.put(loopPlayer.getUniqueId(), new AtomicInteger(MAX_WARNINGS));
         });
+        OxygenBukkit.getInstance().getServer().getPluginManager().registerEvents(new ChatListener(), OxygenBukkit.getInstance());
 
         this.enabled = true;
     }

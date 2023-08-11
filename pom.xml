@@ -43,7 +43,6 @@
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>dev.hely.lib</groupId>
             <artifactId>Library</artifactId>
@@ -57,7 +56,11 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/Bungee.jar</systemPath>
         </dependency>
-
+        <dependency>
+            <groupId>com.warrenstrange</groupId>
+            <artifactId>googleauth</artifactId>
+            <version>1.4.0</version>
+        </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>

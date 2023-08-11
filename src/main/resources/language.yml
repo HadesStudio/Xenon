@@ -48,6 +48,57 @@ chat-command:
     cleared: "&aYou have successfully cleared all messages in &6Server Chat&a."
     broadcast:
       - "&aChat has just been cleared by &6%player%&a."
+  slow-chat:
+    usage: "&cCorrect Usage: /chat slow <time>"
+    invalid-time: "&cYou have provided a invalid &6Slow Duration&c. Please try again."
+    disabled-slow: "&aYou have successfully removed the &6Chat Slowdown&a."
+    slowed-chat: "&aYou have successfully set the &6Chat Slowdown &ato &6%time% seconds&a."
+    broadcast:
+      - "&aChat has just been put on slowdown by &6%player%&a."
+
+auth-command:
+  usage: "&cCorrect Usage: /auth <code>"
+  invalid-code: "&cYou have provided a invalid &6Authentication Code&c."
+  message:
+    - "&7&l&m---------------------------------------"
+    - "&7To continue, please enter the &6Secret Code &7listed below"
+    - "&7into your &6Google Authenticator App&7."
+    - "&7"
+    - "&6Secret Code: &a%secret_code%"
+    - "&7"
+    - "&7When you are finished, enter the provided code into"
+    - "&7the command using &6/auth <code>&7."
+    - "&7&l&m---------------------------------------"
+  already-auth: "&aYou have already been &6Authenticated&a."
+  success: "&aYou have successfully &6Authenticated &ayour account."
+  to-many-attempts: "&cYou have been kicked for failing your &6Staff Authentication&c."
+
+removeauth-command:
+  usage: "&cCorrect Usage: /removeauth <player>"
+  already-removed: "&cThis player does not have &6Two Factor Authentication&c."
+  success: "&aYou have successfully removed &c%player%'s &a2FA requirement."
+
+two-factor:
+  join:
+    - "&7&l&m---------------------------------------"
+    - "&7To continue, please scan the &6QR Code &7which"
+    - "&7has been provided to you in your inventory."
+    - "&7"
+    - "&7When you are finished, enter the code provided from the"
+    - "&6App &7and use &6/auth <code>&7!"
+    - "&7&l&m---------------------------------------"
+  need-authenticate:
+    - "&cYou need to &6Authenticate&c! Type &6/auth &cto begin the process."
+  next-auth-needed:
+    - "&7You will need to authenticate again in &6%time%&7."
+
+togglepm-command:
+  enabled: "&aYou have successfully enabled your &6Private Messages&a."
+  disabled: "&cYou have successfully disabled your &6Private Messages&c."
+
+togglesounds-command:
+  enabled: "&aYou have successfully enabled your &6Message Sounds&a."
+  disabled: "&cYou have successfully disabled your &6Message Sounds&c."
 
 chat-spy:
   message: "&6[Chat Spy] &a%sender% &7&o-> &a%target%&7: &c%message%" # %sender%, %target%, %message%

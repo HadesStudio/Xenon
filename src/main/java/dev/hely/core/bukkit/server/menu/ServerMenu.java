@@ -152,11 +152,14 @@ public class ServerMenu extends PaginatedMenu {
         public String getDisplayName() {
             if (OxygenBukkit.getInstance().getServerManager().isServerOnline(server.getName())) {
                 if (server.isWhitelisted()) { // The server IS ONLINE and whitelisted.
+                    System.out.print("server is whitelisted");
                     return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("main.buttons.server-button.display-name.whitelisted");
                 } else { // The server IS ONLINE and NOT whitelisted.
+                    System.out.print("server is online and not whitelisted");
                     return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("main.buttons.server-button.display-name.online");
                 }
             } else { // The server is not online.
+                System.out.print("server is not online");
                 return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("main.buttons.server-button.display-name.offline");
             }
         }
@@ -178,9 +181,7 @@ public class ServerMenu extends PaginatedMenu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(getDisplayName()
-                    .replace("server_name", server.getName())
-            );
+            builder.setDisplayName(getDisplayName().replace("%server_name%", server.getName()));
 
             for (String line : getLore()) {
                 builder.addLore(line

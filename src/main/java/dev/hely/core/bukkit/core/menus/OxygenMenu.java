@@ -18,6 +18,8 @@ package dev.hely.core.bukkit.core.menus;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.core.menus.submenus.CommandsMenu;
 import dev.hely.core.bukkit.core.menus.submenus.ConfigReloadMenu;
+import dev.hely.core.bukkit.core.menus.submenus.ModulesMenu;
+import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
@@ -69,7 +71,8 @@ public class OxygenMenu extends Menu {
 
         buttons.put(4, new Info_Button(player));
         buttons.put(11, new Reload_Config_Button());
-        buttons.put(14, new Commands_Button());
+        buttons.put(13, new Modules_Button());
+        buttons.put(15, new Commands_Button());
 
         return buttons;
     }
@@ -96,6 +99,45 @@ public class OxygenMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
+        }
+
+        @Override
+        public boolean toUpdate(Player player, int slot, ClickType clickType) {
+            return clickType.isCreativeAction() || clickType.isRightClick() || clickType.isLeftClick();
+        }
+    }
+
+    @AllArgsConstructor
+    public static class Modules_Button extends Button {
+        @Override
+        public ItemStack getItemStack(Player player) {
+            ItemMaker builder = ItemMaker.of(Material.BEACON);
+            builder.setData((short) 0);
+            builder.setOwner(player.getName());
+            builder.setDisplayName("&6Reload Modules");
+            builder.setLore(Arrays.asList(
+                    "&7This feature allows you to reload",
+                    "&7a specific module in the core.",
+                    "&7",
+                    "&6Left-Click &7to reload a specific module.",
+                    "&6Right-Click &7to reload all modules."
+            ));
+            return builder.build();
+        }
+
+        @Override
+        public void onClick(Player player, int slot, ClickType clickType) {
+            if (clickType.isLeftClick()) {
+                new ModulesMenu(player).openMenu(player);
+            } else if (clickType.isRightClick()) {
+                OxygenBukkit.getInstance().getTasks().runAsync(() -> {
+                    for (ModuleLoader module : OxygenBukkit.getInstance().getModules()) {
+                        module.reload();
+                    }
+                    player.sendMessage(CC.translate(CC.translate("&6[Oxygen] &7You have successfully reload all &6Modules&7!")));
+                    Bukkit.getConsoleSender().sendMessage(CC.translate("&6[Oxygen] &c" + player.getName() + " &chas just reloaded all &6Modules&c!"));
+                });
+            }
         }
 
         @Override

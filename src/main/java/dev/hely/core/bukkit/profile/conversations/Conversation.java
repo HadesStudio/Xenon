@@ -57,10 +57,10 @@ public class Conversation {
             }
         });
         profile.setLastSentMessageMillis(System.currentTimeMillis());
-        profile.setLastRepliedTo(targetProfile.getUniqueId());
+        profile.setLastRepliedTo(targetProfile.getName());
         profile.save();
         targetProfile.setLastReceivedMessageMillis(System.currentTimeMillis());
-        targetProfile.setLastRepliedTo(profile.getUniqueId());
+        targetProfile.setLastRepliedTo(profile.getName());
         targetProfile.save();
         this.lastMessageSentAt = System.currentTimeMillis();
         this.lastMessageSentBy = sender.getUniqueId();

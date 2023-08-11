@@ -7,7 +7,6 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.conversations.MessageConversations;
-import dev.hely.core.bukkit.profile.packet.implement.StaffChatPacket;
 import dev.hely.core.bukkit.profile.permission.packet.PlayerPermissionPacket;
 import dev.hely.core.bukkit.profile.profilesystem.impl.*;
 import dev.hely.core.bukkit.profile.settings.ProfileSettings;
@@ -17,6 +16,7 @@ import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.Statistics;
 import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.StatisticsServer;
 import dev.hely.core.bukkit.profile.profilesystem.impl.social.SocialMediaType;
 import dev.hely.core.bukkit.profile.siblings.Sibling;
+import dev.hely.core.bukkit.profile.tfa.TwoFactorAuth;
 import dev.hely.core.bukkit.punishment.PunishmentType;
 import dev.hely.core.bukkit.ranks.grants.Grant;
 import dev.hely.core.bukkit.profile.permission.ProfilePermission;
@@ -24,10 +24,10 @@ import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.ranks.gson.GSONUtil;
 import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.ranks.rank.RankType;
-import dev.hely.core.bukkit.utils.ChatUtil;
 import dev.hely.lib.CC;
 import lombok.*;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -82,10 +82,16 @@ public class Profile {
     private List<String> ignoredList = new ArrayList<>();
     private long lastReceivedMessageMillis;
     private long lastSentMessageMillis;
-    private UUID lastRepliedTo;
+    private String lastRepliedTo;
 
     private final MessageConversations conversations;
     private ProfileSettings settings = new ProfileSettings();
+
+    private boolean needsVerify;
+    private String authPassword = "";
+    private long nextAuthenticationNeeded = -1, loginTime = -1;
+    private boolean settingUpAuth = false;
+    private String tfaKey = "";
 
     private List<Sibling> siblings = new ArrayList<>();
 
@@ -116,6 +122,14 @@ public class Profile {
         Document document = new Document();
         document.put("uniqueId", uniqueId.toString());
         document.put("name", name);
+
+        document.put("authPassword", authPassword);
+        document.put("needsVerify", needsVerify);
+        document.put("nextAuthenticationNeeded", nextAuthenticationNeeded);
+        document.put("loginTime", loginTime);
+        document.put("settingUpAuth", settingUpAuth);
+        document.put("tfaKey", tfaKey);
+
         document.put("currentAddress", currentAddress);
         document.put("addresses", OxygenBukkit.PLAIN_GSON.toJson(addresses, GSONUtil.LIST_STRING_TYPE));
         document.put("firstSeen", firstSeen);
@@ -128,13 +142,12 @@ public class Profile {
         document.put("currency", currency);
         document.put("lastReceivedMessageMillis", lastReceivedMessageMillis);
         document.put("lastSentMessageMillis", lastSentMessageMillis);
-        document.put("lastRepliedTo", lastRepliedTo.toString());
+        document.put("lastRepliedTo", lastRepliedTo);
 
         Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
         document.put("settings", OxygenBukkit.PLAIN_GSON.toJson(this.settings, settingsType));
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
         document.put("staffProfile", OxygenBukkit.PLAIN_GSON.toJson(this.staffProfile, staffProfileType));
-
 
         Type ignoredListType = new TypeToken<List<String>>() {}.getType();
         document.put("ignoredList", OxygenBukkit.PLAIN_GSON.toJson(this.comments, ignoredListType));
@@ -180,10 +193,17 @@ public class Profile {
             vpnWhitelist = document.getBoolean("vpnWhitelist");
             currency = document.getInteger("currency");
 
+
+            authPassword = document.getString("authPassword");
+            needsVerify = document.getBoolean("needsVerify");
+            nextAuthenticationNeeded = document.getLong("nextAuthenticationNeeded");
+            loginTime = document.getLong("loginTime");
+            settingUpAuth = document.getBoolean("settingUpAuth");
+            tfaKey = document.getString("tfaKey");
+
             lastReceivedMessageMillis = document.getLong("lastReceivedMessageMillis");
             lastSentMessageMillis = document.getLong("lastSentMessageMillis");
-            lastRepliedTo = UUID.fromString(document.getString("lastSentMessageMillis"));
-
+            lastRepliedTo = document.getString("lastRepliedTo");
             if (document.containsKey("settings")) {
                 Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
                 settings = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("settings"), settingsType);

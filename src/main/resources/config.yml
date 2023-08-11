@@ -65,6 +65,15 @@ chat-system:
     - "store.helydev.com"
   chat-format: "%tags% %rank_prefix% %player%%rank_suffix%&7: &f"
 
+two-factor:
+  enabled: true
+  qr-code-map:
+    name: "&6Scan QR Code"
+    lore:
+      - "&7&l&m----------------------------"
+      - "&7Scan the QR code supplied on this"
+      - "&7map to complete your &6Authentication&7."
+      - "&7&l&m----------------------------"
 
 punishments:
   join:

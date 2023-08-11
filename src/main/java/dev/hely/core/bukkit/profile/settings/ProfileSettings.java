@@ -17,14 +17,12 @@ package dev.hely.core.bukkit.profile.settings;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.ChatColor;
 
 @Getter
 @Setter
 public class ProfileSettings {
-    private boolean publicChatEnabled;
-    private boolean receivingNewConversations;
-    private boolean playingMessageSounds;
-    private ChatColor color;
-    private boolean tipAnnouncements;
+    private boolean publicChatEnabled = true;
+    private boolean receivingNewConversations = true;
+    private boolean playingMessageSounds = true;
+    private boolean tipAnnouncements = true;
 }

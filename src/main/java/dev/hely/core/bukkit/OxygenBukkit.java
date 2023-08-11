@@ -3,30 +3,31 @@ package dev.hely.core.bukkit;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.warrenstrange.googleauth.GoogleAuthenticator;
 import dev.hely.core.bukkit.chat.ChatModule;
 import dev.hely.core.bukkit.client.ClientModule;
 import dev.hely.core.bukkit.coins.StoreManager;
 import dev.hely.core.bukkit.coins.sales.SaleManager;
 import dev.hely.core.bukkit.configuration.Locale;
+import dev.hely.core.bukkit.modules.ModuleLoader;
+import dev.hely.core.bukkit.modules.database.mongo.MongoModule;
+import dev.hely.core.bukkit.modules.database.redis.RedisModule;
 import dev.hely.core.bukkit.modules.listener.ListenerModule;
-import dev.hely.core.bukkit.server.packet.ServerPacketListener;
-import dev.hely.core.bukkit.server.packet.implement.ServerAlertUpdatePacket;
-import dev.hely.core.bukkit.server.tasks.ServerTimeoutTask;
-import dev.hely.core.bukkit.utils.Config;
-import dev.hely.core.bukkit.utils.command.SubCommandManager;
+import dev.hely.core.bukkit.profile.ProfileManager;
 import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
+import dev.hely.core.bukkit.profile.tfa.TFAManager;
 import dev.hely.core.bukkit.punishment.packet.PunishmentPacketListener;
 import dev.hely.core.bukkit.ranks.rank.RankManager;
-import dev.hely.core.bukkit.modules.database.redis.RedisModule;
-import dev.hely.core.bukkit.modules.database.mongo.MongoModule;
-import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.bukkit.profile.ProfileManager;
-import dev.hely.core.bukkit.tasks.NameMCReminderTask;
 import dev.hely.core.bukkit.server.ServerManager;
+import dev.hely.core.bukkit.server.packet.ServerPacketListener;
+import dev.hely.core.bukkit.server.packet.implement.ServerAlertUpdatePacket;
 import dev.hely.core.bukkit.staff.requests.RequestManager;
 import dev.hely.core.bukkit.tag.TagManager;
 import dev.hely.core.bukkit.tag.packet.TagPacketListener;
+import dev.hely.core.bukkit.tasks.NameMCReminderTask;
+import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.bukkit.utils.command.CommandManager;
+import dev.hely.core.bukkit.utils.command.SubCommandManager;
 import dev.hely.lib.CC;
 import dev.hely.lib.Tasks;
 import dev.hely.lib.adapter.BlockVectorAdapter;
@@ -47,9 +48,7 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created By LeandroSSJ
@@ -79,10 +78,11 @@ public class OxygenBukkit extends JavaPlugin {
     private Config tagsMenuConfig;
     private Config serversMenuConfig;
     private Config coinShopConfig;
+    private GoogleAuthenticator googleAuthenticator;
 
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
-    private Map<String, ModuleLoader> modules;
+    private List<ModuleLoader> modules;
 
     private MongoModule mongoModule;
     private RedisModule redisModule;
@@ -99,6 +99,7 @@ public class OxygenBukkit extends JavaPlugin {
     private RequestManager requestHandler;
     private SaleManager saleManager;
     private StoreManager storeManager;
+    private TFAManager tfaManager;
 
     private boolean debug_mode;
 
@@ -121,7 +122,7 @@ public class OxygenBukkit extends JavaPlugin {
     public void onDisable() {
         redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), false));
 
-        modules.forEach((s, moduleLoader) -> unloadModule(moduleLoader));
+        modules.forEach(this::unloadModule);
     }
 
     public long getUptime() {
@@ -198,6 +199,7 @@ public class OxygenBukkit extends JavaPlugin {
     }
 
     public void initModules(){
+        googleAuthenticator = new GoogleAuthenticator();
         tasks = new Tasks(OxygenBukkit.getInstance());
         mongoModule = new MongoModule();
         saleManager = new SaleManager();
@@ -212,6 +214,7 @@ public class OxygenBukkit extends JavaPlugin {
         chatManager = new ChatModule();
         requestHandler = new RequestManager();
         storeManager = new StoreManager();
+        tfaManager = new TFAManager();
     }
 
     public void setupModules(){
@@ -219,7 +222,7 @@ public class OxygenBukkit extends JavaPlugin {
 
         profileManager = new ProfileManager();
 
-        modules = new HashMap<>();
+        modules = new ArrayList<>();
 
         this.loadModule(mongoModule);
         this.loadModule(chatManager);
@@ -233,6 +236,7 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(tagManager);
         this.loadModule(serverManager);
         this.loadModule(storeManager);
+        this.loadModule(tfaManager);
     }
 
     public void setupPackets(){
@@ -251,7 +255,7 @@ public class OxygenBukkit extends JavaPlugin {
             if (this.debug_mode) {
                 bukkitCommandSender.sendMessage(CC.translate("&dModules: &aSuccessfully loaded &a&n"  + module.getName() + " Module&a."));
             }
-            modules.put(module.getName(), module);
+            modules.add(module);
         }
     }
 

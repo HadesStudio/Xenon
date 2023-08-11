@@ -16,6 +16,8 @@ import dev.hely.core.bukkit.profile.commands.EditProfileCommand;
 import dev.hely.core.bukkit.profile.log.commands.LogsCommand;
 import dev.hely.core.bukkit.profile.profilesystem.commands.NotificationCommand;
 import dev.hely.core.bukkit.profile.profilesystem.commands.NotificationsCommand;
+import dev.hely.core.bukkit.profile.tfa.commands.AuthCommand;
+import dev.hely.core.bukkit.profile.tfa.commands.RemoveAuthCommand;
 import dev.hely.core.bukkit.ranks.grants.command.GrantsCommand;
 import dev.hely.core.bukkit.server.command.ServersCommand;
 import dev.hely.core.bukkit.staff.requests.commands.HelpopCommand;
@@ -101,6 +103,10 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new ShopCommand());
         loadedCommands.add(new MessageCommand());
         loadedCommands.add(new ReplyCommand());
+        loadedCommands.add(new ToggleMessagesCommand());
+        loadedCommands.add(new ToggleSoundsCommand());
+        loadedCommands.add(new AuthCommand());
+        loadedCommands.add(new RemoveAuthCommand());
 
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));

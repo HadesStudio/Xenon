@@ -16,10 +16,7 @@ package dev.hely.core.bukkit.chat.commands;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.chat.commands.subcommands.ChatClearCommand;
-import dev.hely.core.bukkit.chat.commands.subcommands.ChatDonorTalkCommand;
-import dev.hely.core.bukkit.chat.commands.subcommands.ChatMuteCommand;
-import dev.hely.core.bukkit.chat.commands.subcommands.ChatUnmuteCommand;
+import dev.hely.core.bukkit.chat.commands.subcommands.*;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.core.bukkit.utils.command.sub.SubCommandHandler;
 import dev.hely.lib.CC;
@@ -34,7 +31,7 @@ public class ChatCommand extends SubCommandHandler {
         this.addSubCommand(new ChatUnmuteCommand());
         this.addSubCommand(new ChatDonorTalkCommand());
         this.addSubCommand(new ChatClearCommand());
-
+        this.addSubCommand(new ChatSlowCommand());
     }
 
     @Override
