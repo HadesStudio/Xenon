@@ -77,28 +77,29 @@ public class TFAManager implements ModuleLoader {
     }
 
     public void clearItems(Player player) {
-        AuthData authData = new AuthData();
-        authData.setInvItems(player.getInventory().getContents());
-        authData.setArmor(player.getInventory().getArmorContents());
-        authData.setGameMode(player.getGameMode());
-        authData.setLocation(player.getLocation());
+        OxygenBukkit.getInstance().getTasks().runAsync(() -> {
+            AuthData authData = new AuthData();
+            authData.setInvItems(player.getInventory().getContents());
+            authData.setArmor(player.getInventory().getArmorContents());
+            authData.setGameMode(player.getGameMode());
+            authData.setLocation(player.getLocation());
 
-        authMode.put(player.getUniqueId(), authData);
+            authMode.put(player.getUniqueId(), authData);
 
-        player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(null);
 
-        player.setGameMode(GameMode.CREATIVE);
+            player.setGameMode(GameMode.CREATIVE);
 
-        player.getInventory().setItem(0, this.placeholder());
-        player.getInventory().setItem(1, this.placeholder());
-        player.getInventory().setItem(2, this.placeholder());
-        player.getInventory().setItem(3, this.placeholder());
-        player.getInventory().setItem(5, this.placeholder());
-        player.getInventory().setItem(6, this.placeholder());
-        player.getInventory().setItem(7, this.placeholder());
-        player.getInventory().setItem(8, this.placeholder());
-
+            player.getInventory().setItem(0, this.placeholder());
+            player.getInventory().setItem(1, this.placeholder());
+            player.getInventory().setItem(2, this.placeholder());
+            player.getInventory().setItem(3, this.placeholder());
+            player.getInventory().setItem(5, this.placeholder());
+            player.getInventory().setItem(6, this.placeholder());
+            player.getInventory().setItem(7, this.placeholder());
+            player.getInventory().setItem(8, this.placeholder());
+        });
     }
 
     public void giveItems(Player player) {

@@ -1,0 +1,9 @@
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#       Thank you for purchasing our new All-In-One OxygenGlobal Rank Core!       #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
+
+debug-mode: true # Do you want to use debug mode?
+hub-name: "Hub" # The name of your hub server.

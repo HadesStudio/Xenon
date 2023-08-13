@@ -1,0 +1,16 @@
+only-player: "&cSorry, only player's can execute this command."
+
+hub-command:
+  already-connected: "&6You are already connected to the hub server."
+  connecting: "&6You are now being connected to an available hub."
+
+server-manager-command:
+  usage:
+    - "&7&l&m---------------------------------"
+    - "&6&lServer Manager"
+    - "&7All commands and usages are listed below."
+    - ""
+    - "&6* &f/servermanager create <name> <address> <port> &7- Creates the specified server."
+    - "&6* &f/servermanager delete <name> &7- Deletes the specified server."
+    - "&6* &f/servermanager list &7- Lists all server instances."
+    - "&7&l&m---------------------------------"

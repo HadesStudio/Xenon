@@ -36,14 +36,14 @@ public class RemoveAuthCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
-
         if (args.length == 1) {
             Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[0]);
             if (profile == null) {
                 sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
                 return;
             }
+            profile.setNeedsVerify(false);
+            profile.setSettingUpAuth(false);
             profile.save();
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("removeauth-command.success")));
         } else {

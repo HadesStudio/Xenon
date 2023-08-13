@@ -67,6 +67,12 @@ chat-system:
 
 two-factor:
   enabled: true
+  settings:
+    permission: "oxygen.staff.auth" # The permission that the player needs to be required to use the 2FA system.
+    require-op: true # Do you want OP's to be required to use the 2FA system?
+    join-sound:
+      enabled: true # Do you want to play the join sound?
+      name: "ANVIL_LAND" # The name of the sound played when the player joins.
   qr-code-map:
     name: "&6Scan QR Code"
     lore:

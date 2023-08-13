@@ -15,15 +15,13 @@ package dev.hely.core.bukkit.profile.tfa.listeners;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.profile.tfa.TwoFactorAuth;
-import dev.hely.core.bukkit.profile.tfa.data.AuthData;
 import dev.hely.core.bukkit.profile.tfa.utils.TFAUtil;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -37,11 +35,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerCommandEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.io.IOException;
 
 @Getter
 public class TFAListener implements Listener {
@@ -92,7 +87,14 @@ public class TFAListener implements Listener {
             return;
         }
         if (profile.getCurrentAddress().equals("") || profile.getNextAuthenticationNeeded() == -1) {
-            profile.setSettingUpAuth(true);
+            if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("two-factor.settings.require-op")) {
+                if (Bukkit.getPlayer(event.getUniqueId()).isOp()) {
+                    profile.setNeedsVerify(true);
+                }
+            }
+            if (profile.getPlayerPermissions().contains(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.permission")) || profile.getBungeePermissions().contains(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.permission"))) {
+                profile.setSettingUpAuth(true);
+            }
         } else {
             if (System.currentTimeMillis() >= profile.getNextAuthenticationNeeded() || !profile.getCurrentAddress().equals(event.getAddress().getHostAddress())) {
                 profile.setNeedsVerify(true);
@@ -113,7 +115,13 @@ public class TFAListener implements Listener {
         } else if (profile.isNeedsVerify() || profile.getNextAuthenticationNeeded() == -1) {
             OxygenBukkit.getInstance().getServer().getScheduler().runTaskLater(OxygenBukkit.getInstance(), () -> {
                 OxygenBukkit.getInstance().getTfaManager().clearItems(player);
-                player.playSound(player.getLocation(), Sound.ANVIL_LAND, 5, 5);
+
+                if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("two-factor.settings.join-sound.enabled")) {
+                    Sound join_sound = Sound.valueOf(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.join-sound.name"));
+
+                    player.playSound(player.getLocation(), join_sound, 5, 5);
+                }
+
                 for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.join")) {
                     player.sendMessage(CC.translate(message));
                 }
@@ -127,10 +135,13 @@ public class TFAListener implements Listener {
         if (isNeeding2FA(e.getPlayer())) { // Stop players from moving cursor
             if (e.getNewSlot() == 0 || e.getNewSlot() == 1 || e.getNewSlot() == 2 || e.getNewSlot() == 3 || e.getNewSlot() == 5 || e.getNewSlot() == 6 || e.getNewSlot() == 7 || e.getNewSlot() == 8 && e.getPreviousSlot() == 4) {
                 e.setCancelled(true);
+                Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(e.getPlayer().getUniqueId());
+                for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.next-auth-needed")) {
+                    e.getPlayer().sendMessage(CC.translate(message).replace("%time%", TimeUtil.getMoreDetailedTime(profile.getNextAuthenticationNeeded() - System.currentTimeMillis())));
+                }
             }
         }
     }
-
     @EventHandler
     public void onQuit(final PlayerQuitEvent event) {
         final Player player = event.getPlayer();
@@ -150,13 +161,11 @@ public class TFAListener implements Listener {
                 event.getPlayer().sendMessage(CC.translate(message));
             }
             event.setCancelled(true);
-            return;
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDropItem(final PlayerDropItemEvent event) {
-        final Player player = event.getPlayer();
         if (isNeeding2FA(event.getPlayer())) {
             event.setCancelled(true);
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {

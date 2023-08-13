@@ -21,6 +21,8 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 
@@ -48,7 +50,13 @@ public class BungeeConfig {
                     ByteStreams.copy(inputStream, outputStream);
                 }
                 catch (IOException ex) {
-                    plugin.getLogger().severe("Failed to copy default parameters in file " + fileName + ".yml");
+                    plugin.getLogger().severe(BungeeCC.translate("&c-------------------------------------"));
+                    plugin.getLogger().severe((BungeeCC.translate("&6Oxygen Bungee Core - Configuration Error")));
+                    plugin.getLogger().severe((BungeeCC.translate("&cThis is more than likely caused by a broken configuration file!")));
+                    plugin.getLogger().severe(BungeeCC.translate("&cFile: " + fileName + ".yml"));
+                    plugin.getLogger().severe((BungeeCC.translate("&cError:")));
+                    ex.printStackTrace();
+                    plugin.getLogger().severe((BungeeCC.translate("&c-------------------------------------")));
                 }
             }
 
@@ -56,6 +64,13 @@ public class BungeeConfig {
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
         }
         catch (IOException ex) {
+            plugin.getLogger().severe(BungeeCC.translate("&c-------------------------------------"));
+            plugin.getLogger().severe((BungeeCC.translate("&6Oxygen Bungee Core - Configuration Error")));
+            plugin.getLogger().severe((BungeeCC.translate("&cThis is more than likely caused by a broken configuration file!")));
+            plugin.getLogger().severe(BungeeCC.translate("&cFile: " + fileName + ".yml"));
+            plugin.getLogger().severe((BungeeCC.translate("&cError:")));
+            ex.printStackTrace();
+            plugin.getLogger().severe((BungeeCC.translate("&c-------------------------------------")));
             plugin.getLogger().severe("Failed to create file " + fileName + ".yml");
         }
     }
