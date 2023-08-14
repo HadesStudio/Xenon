@@ -16,49 +16,105 @@ package dev.hely.core.bungee.server.listeners;
 //============================================================
 
 import dev.hely.core.bungee.OxygenBungee;
-import dev.hely.core.bungee.server.events.ServerCreateEvent;
-import dev.hely.core.bungee.server.events.ServerDeleteEvent;
-import dev.hely.core.bungee.utils.BungeeCC;
-import net.md_5.bungee.api.ProxyServer;
+import dev.hely.core.bungee.server.data.server.Server;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ServerPing;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ServerListener implements Listener {
     @EventHandler
-    public void onServerCreate(ServerCreateEvent serverCreateEvent) {
-        OxygenBungee.getInstance().getServerManager().loadServer(serverCreateEvent.getServerData());
+    public void onPing(ProxyPingEvent event) {
+        final ServerPing proxy = event.getResponse();
+        final ServerPing.Players players = proxy.getPlayers();
+
+        int playerCount = 0;
+
+        for (Server server : OxygenBungee.getInstance().getServerManager().getServers()) {
+            playerCount += server.getOnlinePlayers().get();
+        }
+
+        proxy.setPlayers(new ServerPing.Players(players.getMax(), playerCount, players.getSample()));
+
+        event.setResponse(proxy);
     }
 
     @EventHandler
-    public void onServerDelete(ServerDeleteEvent serverDeleteEvent) {
-        ServerInfo serverInfo = ProxyServer.getInstance().getServerInfo(serverDeleteEvent.getServerName());
-
-        if (serverInfo != null) {
-            for (ProxiedPlayer proxiedPlayer : serverInfo.getPlayers()) {
-                if (serverInfo.getName().toLowerCase().contains(OxygenBungee.getInstance().getBungeeConfig().getConfiguration().getString("hub-name")))
-                    proxiedPlayer.disconnect(BungeeCC.translate("&cThe server you where on has went offline."));
-                else
-                    proxiedPlayer.connect(OxygenBungee.getInstance().getServerManager().getRandomHub(), ServerConnectEvent.Reason.SERVER_DOWN_REDIRECT);
-            }
-            OxygenBungee.getInstance().getServerManager().removeLoadedServer(serverDeleteEvent.getServerName());
+    public void onPostLogin(ServerConnectEvent event) {
+        if (event.getPlayer().getServer() != null) {
+            return;
         }
+
+        final List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
+
+        if (availableHubs.isEmpty()) {
+            event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later! Exit code: 1"));
+            event.setCancelled(true);
+            return;
+        }
+
+        ServerInfo serverInfo = OxygenBungee.getInstance().getProxy().getServerInfo(availableHubs.get(ThreadLocalRandom.current().nextInt(availableHubs.size())).getName());
+
+        if (serverInfo == null) {
+            event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later! Exit code: 2"));
+            event.setCancelled(true);
+            return;
+        }
+
+        System.out.println("Connecting " + event.getPlayer().getName() + " to " + serverInfo.getName() + " on port " + serverInfo.getAddress().getPort() + " with version " + event.getPlayer().getPendingConnection().getVersion());
+        event.getPlayer().sendMessage(new TextComponent(ChatColor.RED + "Connecting you to " + ChatColor.WHITE + serverInfo.getName() + ChatColor.RED + "..."));
+        event.setTarget(serverInfo);
     }
 
     @EventHandler
-    public void onServerKick(ServerKickEvent serverKickEvent) {
-        serverKickEvent.getPlayer().resetTabHeader();
-        if (!serverKickEvent.getKickedFrom().getName().toLowerCase().contains("-lobby-")) {
-            serverKickEvent.setCancelled(true);
-            serverKickEvent.getPlayer().sendMessage(BungeeCC.translate("&cYou were kicked from the server: &6" + Arrays.toString(serverKickEvent.getKickReasonComponent())));
-            serverKickEvent.setCancelServer(OxygenBungee.getInstance().getServerManager().getRandomHub());
-        } else {
-            serverKickEvent.getPlayer().disconnect(serverKickEvent.getKickReasonComponent());
+    public void onKick(ServerKickEvent event) {
+        if (Arrays.stream(event.getKickReasonComponent()).map(it -> ChatColor.stripColor(it.toPlainText())).noneMatch(it -> it.equalsIgnoreCase("Server closed") || it.contains("Server closed"))) {
+            return;
         }
+
+        final List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
+
+        if (availableHubs.isEmpty()) {
+            event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later!"));
+            event.setCancelled(true);
+            return;
+        }
+
+        ServerInfo serverInfo = OxygenBungee.getInstance().getProxy().getServerInfo(availableHubs.get(ThreadLocalRandom.current().nextInt(availableHubs.size())).getName());
+
+        if (serverInfo == null) {
+            event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later!"));
+            event.setCancelled(true);
+            return;
+        }
+
+        event.getPlayer().sendMessage(new TextComponent(ChatColor.RED + "Sending you to " + ChatColor.WHITE + serverInfo.getName() + ChatColor.RED + "..."));
+        event.setCancelled(true);
+        event.setCancelServer(serverInfo);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPostLogin(PostLoginEvent event) {
+
+        if (!OxygenBungee.getInstance().getServerManager().isMaintenanceMode()) {
+            return;
+        }
+
+        if (OxygenBungee.getInstance().getServerManager().getMaintenanceList().contains(event.getPlayer().getUniqueId())) {
+            return;
+        }
+
+        event.getPlayer().disconnect(ChatColor.RED + "The server is currently in maintenance mode.");
     }
 }

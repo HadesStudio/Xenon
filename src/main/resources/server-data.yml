@@ -1,0 +1,9 @@
+server-name: "Kitmap" # This is the name of THIS server that it is running on.
+region: "UNITED_STATES" # This is the proxy region for THIS server. (UNITED_STATES, EUROPE, AUSTRALIA, RUSSIA)
+
+lobby-group: "Lobbies"
+server-groups:
+  - "HCF"
+  - "Practice"
+  - "Kitmap"
+  - "Lobbies"

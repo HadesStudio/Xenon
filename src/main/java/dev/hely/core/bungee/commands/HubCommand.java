@@ -39,7 +39,6 @@ public class HubCommand extends Command {
             return;
         }
 
-        ((ProxiedPlayer) commandSender).connect(OxygenBungee.getInstance().getServerManager().getRandomHub());
         commandSender.sendMessage(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("hub-command.connecting")));
     }
 }

@@ -21,12 +21,18 @@ import com.google.gson.GsonBuilder;
 import dev.hely.core.bungee.commands.HubCommand;
 import dev.hely.core.bungee.commands.ServerManagerCommand;
 import dev.hely.core.bungee.databases.mongo.MongoManager;
+import dev.hely.core.bungee.listener.PacketListener;
 import dev.hely.core.bungee.listener.PermissionListener;
 import dev.hely.core.bungee.maintenance.MaintenanceManager;
 import dev.hely.core.bungee.packet.PermissionPacketListener;
 import dev.hely.core.bungee.databases.redis.RedisBungeeModule;
 import dev.hely.core.bungee.server.ServerManager;
+import dev.hely.core.bungee.server.data.proxy.Proxy;
+import dev.hely.core.bungee.server.data.proxy.data.ProxyServerRegion;
+import dev.hely.core.bungee.server.data.proxy.data.ProxyServerStatus;
 import dev.hely.core.bungee.server.listeners.ServerListener;
+import dev.hely.core.bungee.server.packets.ProxyUpdatePacket;
+import dev.hely.core.bungee.server.runnable.BungeeRunnable;
 import dev.hely.core.bungee.utils.BungeeCC;
 import dev.hely.core.bungee.utils.BungeeConfig;
 import dev.hely.core.bungee.utils.module.ModuleLoader;
@@ -36,6 +42,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 public class OxygenBungee extends Plugin {
@@ -46,6 +53,7 @@ public class OxygenBungee extends Plugin {
     private BungeeConfig databaseConfig;
     private BungeeConfig bungeeConfig;
     private BungeeConfig languageConfig;
+    private BungeeConfig serverConfig;
 
     private RedisBungeeModule redisBungeeModule;
     private List<ModuleLoader> modules;
@@ -70,15 +78,14 @@ public class OxygenBungee extends Plugin {
         setupPackets();
         setupCommands();
         setupListeners();
-
-
-        serverManager.loadAllServers();
+        setupRunnables();
     }
 
     public void registerConfigs() {
         bungeeConfig = new BungeeConfig(this, "bungee-config");
         databaseConfig = new BungeeConfig(this, "bungee-databases");
         languageConfig = new BungeeConfig(this, "bungee-language");
+        serverConfig = new BungeeConfig(this, "server-data");
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully loaded all configuration files."));
     }
@@ -101,6 +108,13 @@ public class OxygenBungee extends Plugin {
 
     @Override
     public void onDisable() {
+        final Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")),this);
+
+        proxy.setStatus(ProxyServerStatus.OFFLINE);
+        proxy.getOnlinePlayers().set(0);
+
+        this.redisBungeeModule.sendPacket(new ProxyUpdatePacket(proxy.getName(), proxy.getPort(), proxy.toJsonObject()));
+
         redisBungeeModule.disable();
 
         modules.forEach(this::unloadModule);
@@ -110,7 +124,7 @@ public class OxygenBungee extends Plugin {
     public void initModules(){
         maintenanceManager = new MaintenanceManager();
         mongoManager = new MongoManager();
-        serverManager = new ServerManager(redisBungeeModule);
+        serverManager = new ServerManager();
     }
 
     public void setupModules(){
@@ -118,8 +132,15 @@ public class OxygenBungee extends Plugin {
 
         this.loadModule(maintenanceManager);
         this.loadModule(mongoManager);
+        this.loadModule(serverManager);
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered &a&n" + modules.size() + " Modules&a."));
+    }
+
+    public void setupRunnables() {
+        this.getProxy().getScheduler().schedule(this,new BungeeRunnable(),0,3L, TimeUnit.SECONDS);
+
+        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered all runnables."));
     }
 
     public void setupPackets() {
@@ -140,6 +161,7 @@ public class OxygenBungee extends Plugin {
     public void setupListeners() {
         this.getProxy().getPluginManager().registerListener(this, new ServerListener());
         this.getProxy().getPluginManager().registerListener(this, new PermissionListener());
+        this.getProxy().getPluginManager().registerListener(this, new PacketListener());
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered all listeners."));
     }

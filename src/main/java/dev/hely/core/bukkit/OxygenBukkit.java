@@ -79,6 +79,7 @@ public class OxygenBukkit extends JavaPlugin {
     private Config serversMenuConfig;
     private Config coinShopConfig;
     private GoogleAuthenticator googleAuthenticator;
+    private Config serverConfig;
 
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
@@ -164,6 +165,8 @@ public class OxygenBukkit extends JavaPlugin {
             this.configList.add(rankSettingsConfig);
             this.tagConfig = new Config(OxygenBukkit.getInstance(), "tags");
             this.configList.add(tagConfig);
+            this.serverConfig = new Config(OxygenBukkit.getInstance(), "server-data");
+            this.configList.add(serverConfig);
             this.profileMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "profile-menu");
             this.configList.add(profileMenuConfig);
             this.historyMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "history-menu");

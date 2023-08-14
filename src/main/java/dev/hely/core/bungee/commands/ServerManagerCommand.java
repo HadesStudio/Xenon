@@ -33,16 +33,5 @@ public class ServerManagerCommand extends Command {
             }
             return;
         }
-        if (strings[0].equalsIgnoreCase("list")) {
-            OxygenBungee.getInstance().getServerManager().listGameInstances(commandSender);
-        } else if (strings[0].equalsIgnoreCase("delete") && strings.length == 2) {
-            OxygenBungee.getInstance().getServerManager().deleteServer(commandSender, strings[1].toLowerCase());
-        } else if (strings[0].equalsIgnoreCase("create") && strings.length == 4) {
-            OxygenBungee.getInstance().getServerManager().createServer(commandSender, strings[1].toLowerCase(),strings[2], Integer.parseInt(strings[3]));
-        } else {
-            for (String message : OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getStringList("server-manager-command.usage")) {
-                commandSender.sendMessage(BungeeCC.translate(message));
-            }
-        }
     }
 }

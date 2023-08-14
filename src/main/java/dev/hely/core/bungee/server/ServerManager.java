@@ -15,181 +15,237 @@ package dev.hely.core.bungee.server;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import com.mongodb.client.model.Filters;
-import dev.hely.core.bukkit.tag.Tag;
+import com.google.gson.Gson;
 import dev.hely.core.bungee.OxygenBungee;
-import dev.hely.core.bungee.databases.redis.RedisBungeeModule;
-import dev.hely.core.bungee.server.data.ServerData;
-import dev.hely.core.bungee.server.events.ServerCreateEvent;
-import dev.hely.core.bungee.server.events.ServerDeleteEvent;
-import dev.hely.core.bungee.utils.BungeeCC;
+import dev.hely.core.bungee.server.data.proxy.Proxy;
+import dev.hely.core.bungee.server.data.proxy.comparator.ProxyPlayersData;
+import dev.hely.core.bungee.server.data.proxy.comparator.ProxyPortData;
+import dev.hely.core.bungee.server.data.proxy.comparator.ProxyRegionData;
+import dev.hely.core.bungee.server.data.proxy.comparator.ProxyStatusData;
+import dev.hely.core.bungee.server.data.proxy.data.ProxyServerRegion;
+import dev.hely.core.bungee.server.data.proxy.data.ProxyServerStatus;
+import dev.hely.core.bungee.server.data.server.Server;
+
+import dev.hely.core.bungee.server.data.server.comparator.ServerPlayersData;
+import dev.hely.core.bungee.server.data.server.comparator.ServerPortData;
+import dev.hely.core.bungee.server.data.server.comparator.ServerStatusData;
+import dev.hely.core.bungee.server.data.server.data.StatusData;
+import dev.hely.core.bungee.utils.module.ModuleLoader;
 import lombok.Getter;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.config.ServerInfo;
-import org.bson.Document;
+import lombok.Setter;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
-public class ServerManager {
-    @Getter private List<Server> servers = new ArrayList<>();
-    private final RedisBungeeModule redisManager;
+@Getter
+public class ServerManager implements ModuleLoader {
+    public static Gson GSON = new Gson();
+    private boolean enabled;
+    private final JedisPool pool = OxygenBungee.getInstance().getRedisBungeeModule().getJedisPool(); // the easiest way i can think of create this sytem :) puta
 
-    @Getter
-    private final HashMap<String, ServerData> serverDataHashMap = new HashMap<>();
+    private List<Proxy> proxies;
+    private List<Server> servers;
+    private List<String> serverGroups;
 
-    public ServerManager(RedisBungeeModule redisManager) {
-        this.redisManager = redisManager;
+    @Getter @Setter private boolean maintenanceMode;
+    @Getter private List<UUID> maintenanceList;
+
+    public static String PROXY_CACHE_KEY = "oxygen:proxy-cache:";
+    public static String SERVER_CACHE_KEY = "oxygen:server-cache:";
+
+    public static String PROXY_LOOKUP_KEY = "oxygen:proxy-lookup:";
+    public static String SERVER_LOOKUP_KEY = "oxygen:server-lookup:";
+
+    public static int REDIS_KEY = 15;
+
+    @Override
+    public void enable() {
+        this.proxies = new ArrayList<>();
+        this.servers = new ArrayList<>();
+        this.serverGroups = new ArrayList<>();
+
+        setupGroupList();
+        this.load();
     }
 
-    public void createServer(CommandSender commandSender, String serverName, String serverAddress, int serverPort) {
-        if (ProxyServer.getInstance().getServerInfo(serverName) != null) {
-            commandSender.sendMessage(BungeeCC.translate("&calready exists idiota"));
-            return;
-        }
+    @Override
+    public void disable() {
 
-        redisManager.writeServerCreate(serverName, serverAddress, serverPort);
-        ServerData serverData = serverDataHashMap.get(serverName);
-
-        Server server = new Server();
-        server.setServer_name(serverName);
-        server.setServer_address(serverAddress);
-        server.setServer_port(serverPort);
-        server.save();
-        ProxyServer.getInstance().getPluginManager().callEvent(new ServerCreateEvent(serverData));
-
-        commandSender.sendMessage(BungeeCC.translate("&ccreating serverrrss - " + serverName));
     }
 
-    public void deleteServer(CommandSender commandSender, String serverName) {
-        if (ProxyServer.getInstance().getServerInfo(serverName) == null) {
-            commandSender.sendMessage(BungeeCC.translate("&cThe server by this name does not exist."));
-            return;
-        }
+    @Override
+    public void reload() {
 
-        if (serverDataHashMap.containsKey(serverName)) {
-            ServerData serverData = serverDataHashMap.get(serverName);
-            redisManager.writeServerDelete(serverData);
-            OxygenBungee.getInstance().getMongoManager().getServers().findOneAndDelete(Filters.eq("serverName", serverData.getServerName()));
-            commandSender.sendMessage(BungeeCC.translate("&cdeleteing server - " + serverName));
-            ProxyServer.getInstance().getPluginManager().callEvent(new ServerDeleteEvent(serverName));
-        } else {
-            OxygenBungee.getInstance().debug_message("&cThe server named '&6" + serverName + "&c' could not be found in the HashMap?");
-        }
-
-
-        commandSender.sendMessage(BungeeCC.translate("&cRequesting the server manager to delete &6" + serverName + " Server&c."));
     }
 
-    public void listGameInstances(CommandSender commandSender) {
-        commandSender.sendMessage(BungeeCC.translate("&cOnline servers on this bungee server puta;"));
-        for (ServerInfo info : ProxyServer.getInstance().getServers().values()) {
-            commandSender.sendMessage(BungeeCC.translate(" &c- &6" + info.getName()));
-        }
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public ServerInfo getRandomHub(List<String> excludeServers) {
-        List<ServerInfo> hubServers = new ArrayList<>();
+    @Override
+    public String getName() {
+        return "Server";
+    }
 
-        for (ServerInfo serverInfo : ProxyServer.getInstance().getServers().values()) {
-            if (serverInfo.getName().toLowerCase().contains(OxygenBungee.getInstance().getBungeeConfig().getConfiguration().getString("hub-name"))) {
-                if (!excludeServers.contains(serverInfo.getName().toLowerCase()))
-                    hubServers.add(serverInfo);
+    public void load() {
+        try (Jedis jedis = this.pool.getResource()) {
+            if (jedis.get("oxygen:maintenanceMode") != null) {
+                this.maintenanceMode = Boolean.parseBoolean(jedis.get("oxygen:maintenanceMode"));
             }
-        }
-
-        ServerInfo hubServer;
-        if (hubServers.size() == 0) {
-            hubServer = ProxyServer.getInstance().getServers().values().iterator().next();
-        } else {
-            hubServer = hubServers.get(0);
-        }
-
-        for (ServerInfo serverInfo : hubServers) {
-            if (hubServer.getPlayers().size() > serverInfo.getPlayers().size()) {
-                hubServer = serverInfo;
-            }
-        }
-
-        return hubServer;
-    }
-
-    public ServerInfo getRandomHub() {
-        List<ServerInfo> hubServers = new ArrayList<>();
-
-        for (ServerInfo serverInfo : ProxyServer.getInstance().getServers().values()) {
-            if (serverInfo.getName().toLowerCase().contains(OxygenBungee.getInstance().getBungeeConfig().getConfiguration().getString("hub-name"))) {
-                hubServers.add(serverInfo);
-            }
-        }
-
-        ServerInfo hubServer;
-        if (hubServers.size() == 0) {
-            hubServer = ProxyServer.getInstance().getServers().values().iterator().next();
-        } else {
-            hubServer = hubServers.get(0);
-        }
-
-        for (ServerInfo serverInfo : hubServers) {
-            if (hubServer.getPlayers().size() > serverInfo.getPlayers().size()) {
-                hubServer = serverInfo;
-            }
-        }
-
-        return hubServer;
-    }
-
-
-    public void loadServer(ServerData serverData) {
-        serverDataHashMap.put(serverData.getServerName(), serverData);
-        if (ProxyServer.getInstance().getServerInfo(serverData.getServerName()) == null) {
-            if (getServer(serverData.getServerName()) == null) {
-                Server server = new Server();
-                server.setServer_name(serverData.getServerName());
-                server.setServer_port(serverData.getInetSocketAddress().getPort());
-                server.setServer_address(serverData.getInetSocketAddress().getAddress().getHostAddress());
-                server.save();
-                System.out.println("§cServer has been added to Mongo Database. [" + serverData.getServerName() + "]");
+            if (jedis.get("oxygen:maintenanceList") != null) {
+                this.maintenanceList = GSON.<List<String>>fromJson(jedis.get("oxygen:maintenanceList"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
             } else {
-                System.out.println("§cServer already exists in Mongo Database. [" + serverData.getServerName() + "]");
+                this.maintenanceList = new ArrayList<>();
             }
-            ServerInfo serverInfo = ProxyServer.getInstance().constructServerInfo(serverData.getServerName(), serverData.getInetSocketAddress(), "", false);
-            ProxyServer.getInstance().getServers().put(serverData.getServerName(), serverInfo);
-            System.out.println("§cServer has been added. [" + serverData.getServerName() + "]");
-            ProxyServer.getInstance().getPluginManager().callEvent(new ServerCreateEvent(serverData));
-        } else {
-            System.out.println("§cServer already exists. [" + serverData.getServerName() + "]");
-        }
 
-    }
+            for (String path : jedis.keys("oxygen:proxy-cache:*")) {
 
-    public Server getServer(String name) {
-        return this.servers.stream().filter(server -> server.getServer_name().equalsIgnoreCase(name)).findFirst().orElse(null);
-    }
+                final String[] split = path.split(":");
+                final int port = Integer.parseInt(split[2]);
 
-    public void removeLoadedServer(String serverName) {
-        ProxyServer.getInstance().getServers().remove(serverName);
-        serverDataHashMap.remove(serverName);
-    }
+                final Map<String,String> map = jedis.hgetAll(path);
 
-    public void loadAllServers() {
-        for (ServerInfo server : ProxyServer.getInstance().getServers().values()) {
-            if (OxygenBungee.getInstance().getServerManager().getServer(server.getName()) == null) {
-                Server serverMongo = new Server();
-                serverMongo.setServer_name(server.getName());
-                serverMongo.setServer_port(server.getAddress().getPort());
-                serverMongo.setServer_address(server.getAddress().getAddress().getHostAddress());
-                System.out.print("Added " + server.getName() + " to mongo database");
+                if (map == null || map.isEmpty()) {
+                    continue;
+                }
+
+                Proxy proxy = this.proxyFromName(map.get("name"));
+
+                if (proxy == null) {
+                    this.proxies.add(proxy = new Proxy(map.get("name"),port));
+                }
+
+                proxy.setStatus(ProxyServerStatus.valueOf(map.get("status")));
+                proxy.setRegion(ProxyServerRegion.valueOf(map.get("region")));
+
+                proxy.setOnlinePlayers(new AtomicInteger(Integer.parseInt(map.get("onlinePlayers"))));
+                proxy.setMaximumPlayers(new AtomicInteger(Integer.parseInt(map.get("maximumPlayers"))));
+
+                if (!this.proxies.contains(proxy)) {
+                    this.proxies.add(proxy);
+                }
+
+            }
+
+            for (String path : jedis.keys("oxygen:server-cache:*")) {
+
+                final Map<String, String> map = jedis.hgetAll(path);
+
+                final String[] split = path.split(":");
+                final int port = Integer.parseInt(split[2]);
+
+                if (map == null || map.isEmpty()) {
+                    continue;
+                }
+
+                Server server = this.serverFromName(map.get("name"));
+
+                if (server == null) {
+                    this.servers.add(server = new Server(map.get("name"),port));
+                }
+
+                server.setStatus(StatusData.valueOf(map.get("status")));
+                server.setGroup(map.get("group"));
+                server.setOnlinePlayers(new AtomicInteger(Integer.parseInt(map.get("onlinePlayers"))));
+                server.setMaximumPlayers(new AtomicInteger(Integer.parseInt(map.get("maximumPlayers"))));
+
+                server.setOppedPlayers(GSON.<List<String>>fromJson(map.get("oppedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
+                server.setWhitelistedPlayers(GSON.<List<String>>fromJson(map.get("whitelistedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
+
+                if (!this.servers.contains(server)) {
+                    this.servers.add(server);
+                }
+
             }
         }
-        for (Document serverDocument : OxygenBungee.getInstance().getMongoManager().getServers().find()) {
-            ServerData serverData1 = new ServerData(serverDocument.getString("serverName"), new InetSocketAddress(serverDocument.getString("serverAddress"), serverDocument.getInteger("serverPort")));
-            OxygenBungee.getInstance().getServerManager().loadServer(serverData1);
-            System.out.print("Loading server - " + serverData1.getServerName());
-        }
+
     }
 
+    public Server serverFromName(String name) {
+        return this.servers.stream().filter(server -> server.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public Proxy proxyFromName(String name) {
+        return this.proxies.stream().filter(proxy -> proxy.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public List<Proxy> getSortedProxies() {
+        return Collections.unmodifiableList(this.proxies.stream()
+                .sorted(new ProxyRegionData().reversed()
+                        .thenComparing(new ProxyPlayersData().reversed()
+                                .thenComparing(new ProxyPortData().reversed())
+                                .thenComparing(new ProxyStatusData().reversed())))
+                .collect(Collectors.toList())
+        );
+    }
+
+    public List<Server> getSortedServers() {
+        return Collections.unmodifiableList(this.servers.stream()
+                .sorted((new ServerPlayersData().reversed()
+                                .thenComparing(new ServerPortData()).reversed()
+                                .thenComparing(new ServerStatusData().reversed())))
+                .collect(Collectors.toList()));
+    }
+
+    public List<Server> getAvailableServers(UUID uuid) {
+        return getAvailableServers(uuid, this.serverGroups);
+    }
+
+    public List<Server> getAvailableServers(UUID uuid, String group) {
+        return this.getAvailableServers(uuid,Arrays.asList(group));
+    }
+
+    public void setupGroupList() {
+        this.serverGroups.addAll(OxygenBungee.getInstance().getServerConfig().getConfiguration().getStringList("server-groups"));
+    }
+
+
+    public List<Server> getAvailableServers(UUID uuid, List<String> groups) {
+        final List<Server> toReturn = new ArrayList<>();
+        for (Server server : this.servers) {
+            if (!groups.contains(server.getGroup())) {
+                continue;
+            }
+
+            if (server.getStatus().equals(StatusData.OFFLINE)) {
+                continue;
+            }
+
+            if (server.getOnlinePlayers().get() >= server.getMaximumPlayers().get() && !server.getOppedPlayers().contains(uuid)) {
+                continue;
+            }
+
+            if (server.getStatus().equals(StatusData.WHITELISTED) && !(server.getOppedPlayers().contains(uuid) || server.getWhitelistedPlayers().contains(uuid))) {
+                continue;
+            }
+
+            toReturn.add(server);
+        }
+
+        return toReturn;
+    }
+
+    public int getPlayersOnNetwork() {
+        return this.getPlayersOnRegion(Arrays.asList(ProxyServerRegion.values()));
+    }
+
+    public int getPlayersOnRegion(List<ProxyServerRegion> regions) {
+
+        final AtomicInteger toReturn = new AtomicInteger(0);
+
+        for (Proxy proxy : this.proxies) {
+
+            if (!regions.contains(proxy.getRegion())) {
+                continue;
+            }
+
+            toReturn.addAndGet(proxy.getOnlinePlayers().get());
+        }
+
+        return toReturn.get();
+    }
 }

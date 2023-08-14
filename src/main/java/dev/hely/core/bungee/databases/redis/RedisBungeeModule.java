@@ -2,13 +2,10 @@ package dev.hely.core.bungee.databases.redis;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.gson.JsonObject;
 import dev.hely.core.bukkit.modules.database.redis.packet.Packet;
 import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
 import dev.hely.core.bungee.OxygenBungee;
-import dev.hely.core.bungee.databases.redis.jedis.JedisPublisher;
-import dev.hely.core.bungee.server.data.ServerData;
 import lombok.Getter;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -40,7 +37,6 @@ public class RedisBungeeModule {
 
     private Multimap<Object, Method> listeners;
     private Set<String> channels;
-    private JedisPublisher<JsonObject> serverManager;
 
     public RedisBungeeModule() {
         String host = OxygenBungee.getInstance().getDatabaseConfig().getConfiguration().getString("database.redis.host");
@@ -58,7 +54,6 @@ public class RedisBungeeModule {
             }
         }
 
-        this.serverManager = new JedisPublisher<>();
         this.listeners = ArrayListMultimap.create();
         this.channels = new HashSet<>();
 
@@ -133,33 +128,6 @@ public class RedisBungeeModule {
             throwable.printStackTrace();
             return null;
         });
-    }
-
-    public void writeServerCreate(String serverName, String serverAddress, int serverPort) {
-        JsonObject data = new JsonObject();
-        data.addProperty("serverName", serverName);
-        data.addProperty("serverAddress", serverAddress);
-        data.addProperty("serverPort", serverPort);
-
-        writeMessage("CREATE_SERVER", data);
-    }
-
-    public void writeServerDelete(ServerData serverData) {
-        JsonObject data = new JsonObject();
-        data.addProperty("serverName", serverData.getServerName());
-        data.addProperty("serverAddress", serverData.getInetSocketAddress().getAddress().getHostAddress());
-        data.addProperty("serverPort", serverData.getInetSocketAddress().getPort());
-
-        writeMessage("DELETE_SERVER", data);
-    }
-
-    private void writeMessage(String channel, JsonObject messageData) {
-
-        JsonObject object = new JsonObject();
-        object.addProperty("type", channel);
-        object.add("data", messageData);
-
-        serverManager.write(object);
     }
 }
 
