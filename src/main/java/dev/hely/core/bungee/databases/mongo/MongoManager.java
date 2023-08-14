@@ -18,9 +18,8 @@ package dev.hely.core.bungee.databases.mongo;
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
+import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bungee.OxygenBungee;
-import dev.hely.core.bungee.utils.module.ModuleLoader;
 import lombok.Getter;
 import org.bson.Document;
 

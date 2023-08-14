@@ -79,7 +79,7 @@ public class ProfileListener implements Listener {
                 profile.setFirstSeen(System.currentTimeMillis());
             }
 
-            String serverName = plugin.getServerManager().getServerName();
+            String serverName = OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name");
             if (player.hasPermission("oxygen.staff.alerts")) {
                 if (profile.getCurrentServer().equalsIgnoreCase("Unknown")) {
                     plugin.getRedisModule().sendPacket(new StaffJoinPacket(player.getName(), serverName));
@@ -174,7 +174,7 @@ public class ProfileListener implements Listener {
         if (profile.isLoaded()) {
             profile.setLastSeen(System.currentTimeMillis());
 
-            String serverName = plugin.getServerManager().getServerName();
+            String serverName = OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name");
             if (player.hasPermission("oxygen.staff.alerts")) {
                 plugin.getRedisModule().sendPacket(new StaffLeavePacket(player.getName(), serverName));
             }

@@ -15,7 +15,7 @@ package dev.hely.core.bungee.maintenance;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import dev.hely.core.bungee.utils.module.ModuleLoader;
+import dev.hely.core.bukkit.modules.ModuleLoader;
 
 public class MaintenanceManager implements ModuleLoader {
     public boolean enabled;

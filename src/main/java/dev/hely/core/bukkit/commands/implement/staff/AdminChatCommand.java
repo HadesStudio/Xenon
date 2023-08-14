@@ -36,7 +36,7 @@ public class AdminChatCommand extends BaseCommand {
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new AdminChatPacket(
                 player.getDisplayName(),
-                OxygenBukkit.getInstance().getServerManager().getServerName(),
+                OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"),
                 ChatUtil.joinArray(args, " ", 1)));
     }
 }

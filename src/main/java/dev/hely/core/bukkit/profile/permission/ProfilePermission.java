@@ -24,7 +24,7 @@ public class ProfilePermission {
         if (server == null) return false;
         if (!isPermanent()) if (System.currentTimeMillis() > this.duration) return false;
 
-        return OxygenBukkit.getInstance().getServerManager().getServerName().equalsIgnoreCase(this.server);
+        return OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name").equalsIgnoreCase(this.server);
     }
 
     public boolean isExpired() {

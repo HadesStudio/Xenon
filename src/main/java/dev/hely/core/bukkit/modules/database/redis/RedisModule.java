@@ -7,6 +7,7 @@ import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.modules.database.redis.packet.Packet;
 import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
+import dev.hely.core.bukkit.server.BukkitServerManager;
 import lombok.Getter;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -16,13 +17,9 @@ import redis.clients.jedis.exceptions.JedisException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -43,6 +40,8 @@ public class RedisModule implements ModuleLoader {
 
     private Multimap<Object, Method> listeners;
     private Set<String> channels;
+    private Map<Integer, Class> idToType;
+    private Map<Class, Integer> typeToId;
 
     @Override
     public void enable() {
@@ -63,7 +62,14 @@ public class RedisModule implements ModuleLoader {
 
         this.listeners = ArrayListMultimap.create();
         this.channels = new HashSet<>();
+        ForkJoinPool.commonPool().execute(() -> {
 
+            try (Jedis jedis = this.jedisPool.getResource()) {
+                jedis.subscribe(this.getJedisPubSub(),channel);
+            }
+
+        });
+        System.out.print(jedisPool.getResource());
         enabled = true;
     }
 

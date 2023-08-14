@@ -54,7 +54,7 @@ public class BlacklistCommand extends BaseCommand {
         punishment.setType(PunishmentType.BLACKLIST);
 
         punishment.setAddedBy(sender.getName());
-        punishment.setAddedServer(OxygenBukkit.getInstance().getServerManager().getServerName());
+        punishment.setAddedServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
         punishment.setAddedAt(System.currentTimeMillis());
         punishment.setAddedReason(reason
                 .replace("-s", "")

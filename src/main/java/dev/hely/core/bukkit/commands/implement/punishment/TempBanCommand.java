@@ -65,7 +65,7 @@ public class TempBanCommand extends BaseCommand {
         punishment.setDuration(duration);
 
         punishment.setAddedBy(sender.getName());
-        punishment.setAddedServer(OxygenBukkit.getInstance().getServerManager().getServerName());
+        punishment.setAddedServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
         punishment.setAddedAt(System.currentTimeMillis());
         punishment.setAddedReason(reason
                 .replace("-s", "")

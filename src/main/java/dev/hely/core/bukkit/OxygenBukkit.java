@@ -18,9 +18,9 @@ import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
 import dev.hely.core.bukkit.profile.tfa.TFAManager;
 import dev.hely.core.bukkit.punishment.packet.PunishmentPacketListener;
 import dev.hely.core.bukkit.ranks.rank.RankManager;
-import dev.hely.core.bukkit.server.ServerManager;
-import dev.hely.core.bukkit.server.packet.ServerPacketListener;
-import dev.hely.core.bukkit.server.packet.implement.ServerAlertUpdatePacket;
+import dev.hely.core.bukkit.server.BukkitServerListener;
+import dev.hely.core.bukkit.server.BukkitServerManager;
+import dev.hely.core.bukkit.server.ServerRunnable;
 import dev.hely.core.bukkit.staff.requests.RequestManager;
 import dev.hely.core.bukkit.tag.TagManager;
 import dev.hely.core.bukkit.tag.packet.TagPacketListener;
@@ -28,6 +28,10 @@ import dev.hely.core.bukkit.tasks.NameMCReminderTask;
 import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.bukkit.utils.command.CommandManager;
 import dev.hely.core.bukkit.utils.command.SubCommandManager;
+import dev.hely.core.bungee.server.ServerManager;
+import dev.hely.core.bungee.server.data.server.Server;
+import dev.hely.core.bungee.server.data.server.data.StatusData;
+import dev.hely.core.bungee.server.packets.ServerUpdatePacket;
 import dev.hely.lib.CC;
 import dev.hely.lib.Tasks;
 import dev.hely.lib.adapter.BlockVectorAdapter;
@@ -61,6 +65,7 @@ public class OxygenBukkit extends JavaPlugin {
     @Getter private static OxygenBukkit instance;
     private long LAST_START_TIME;
     private List<Config> configList;
+    private boolean stopping;
 
     private Tasks tasks;
     private Config licenseConfig;
@@ -91,7 +96,7 @@ public class OxygenBukkit extends JavaPlugin {
     private ProfileManager profileManager;
     private RankManager rankManager;
     private TagManager tagManager;
-    private ServerManager serverManager;
+    private BukkitServerManager serverManager;
     private CommandManager commandManager;
     private SubCommandManager subCommandManager;
     private ListenerModule listenerModule;
@@ -108,6 +113,7 @@ public class OxygenBukkit extends JavaPlugin {
         instance = this;
         LAST_START_TIME = System.currentTimeMillis();
         configList = new ArrayList<>();
+        stopping = false;
 
         startupMessages();
         setupConfig();
@@ -117,11 +123,19 @@ public class OxygenBukkit extends JavaPlugin {
         setupPackets();
         registerTasks();
 
-        redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), true));
+        new ServerRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
     }
 
     public void onDisable() {
-        redisModule.sendPacket(new ServerAlertUpdatePacket(serverManager.getServerName(), false));
+        stopping = true;
+
+        final Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
+
+        server.setStatus(StatusData.OFFLINE);
+        server.getOnlinePlayers().set(0);
+        server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
+        redisModule.sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
 
         modules.forEach(this::unloadModule);
     }
@@ -202,6 +216,7 @@ public class OxygenBukkit extends JavaPlugin {
     }
 
     public void initModules(){
+        redisModule = new RedisModule();
         googleAuthenticator = new GoogleAuthenticator();
         tasks = new Tasks(OxygenBukkit.getInstance());
         mongoModule = new MongoModule();
@@ -210,8 +225,7 @@ public class OxygenBukkit extends JavaPlugin {
         commandManager = new CommandManager();
         subCommandManager = new SubCommandManager();
         listenerModule = new ListenerModule();
-        redisModule = new RedisModule();
-        serverManager = new ServerManager();
+        serverManager = new BukkitServerManager();
         rankManager = new RankManager();
         tagManager = new TagManager();
         chatManager = new ChatModule();
@@ -222,19 +236,17 @@ public class OxygenBukkit extends JavaPlugin {
 
     public void setupModules(){
         MenuManager.INSTANCE.onEnable(OxygenBukkit.getInstance());
-
         profileManager = new ProfileManager();
-
         modules = new ArrayList<>();
 
         this.loadModule(mongoModule);
+        this.loadModule(redisModule);
         this.loadModule(chatManager);
         this.loadModule(clientManager);
         this.loadModule(commandManager);
         this.loadModule(subCommandManager);
         this.loadModule(listenerModule);
         this.loadModule(requestHandler);
-        this.loadModule(redisModule);
         this.loadModule(rankManager);
         this.loadModule(tagManager);
         this.loadModule(serverManager);
@@ -246,7 +258,7 @@ public class OxygenBukkit extends JavaPlugin {
         redisModule.registerListener(new ProfilePacketListener());
         redisModule.registerListener(new PunishmentPacketListener(this));
         redisModule.registerListener(new TagPacketListener(tagManager));
-        redisModule.registerListener(new ServerPacketListener(serverManager));
+        redisModule.registerListener(new BukkitServerListener());
 
         redisModule.subscribeJedis();
     }

@@ -203,7 +203,7 @@ public class SiblingsMenu extends PaginatedMenu {
                             profileSibling.setUniqueId(UUID.randomUUID());
                             profileSibling.setAddedAt(System.currentTimeMillis());
                             profileSibling.setAddedBy(player.getName());
-                            profileSibling.setAddedServer(OxygenBukkit.getInstance().getServerManager().getServerName());
+                            profileSibling.setAddedServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
                             profile.getSiblings().add(profileSibling);
                             profile.save();
                             specifiedProfile.getSiblings().add(profileSibling);

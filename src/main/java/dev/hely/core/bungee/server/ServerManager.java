@@ -16,6 +16,7 @@ package dev.hely.core.bungee.server;
 //============================================================
 
 import com.google.gson.Gson;
+import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bungee.OxygenBungee;
 import dev.hely.core.bungee.server.data.proxy.Proxy;
 import dev.hely.core.bungee.server.data.proxy.comparator.ProxyPlayersData;
@@ -30,7 +31,6 @@ import dev.hely.core.bungee.server.data.server.comparator.ServerPlayersData;
 import dev.hely.core.bungee.server.data.server.comparator.ServerPortData;
 import dev.hely.core.bungee.server.data.server.comparator.ServerStatusData;
 import dev.hely.core.bungee.server.data.server.data.StatusData;
-import dev.hely.core.bungee.utils.module.ModuleLoader;
 import lombok.Getter;
 import lombok.Setter;
 import redis.clients.jedis.Jedis;

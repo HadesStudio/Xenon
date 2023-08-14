@@ -87,7 +87,7 @@ public class Rank {
     }
 
     public boolean isServer() {
-        return this.globalRank || getServer(plugin.getServerManager().getServerName());
+        return this.globalRank || getServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
     }
 
     public boolean hasPermission(String permission) {

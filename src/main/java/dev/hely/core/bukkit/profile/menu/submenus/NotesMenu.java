@@ -204,7 +204,7 @@ public class NotesMenu extends PaginatedMenu {
                             note.setAddedAt(System.currentTimeMillis());
                             note.setAddedBy(player.getName());
                             note.setAddedReason(s);
-                            note.setAddedServer(OxygenBukkit.getInstance().getServerManager().getServerName());
+                            note.setAddedServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
 
                             profile.getNotes().add(note);
                             profile.save();

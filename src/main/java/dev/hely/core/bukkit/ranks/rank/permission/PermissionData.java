@@ -26,7 +26,7 @@ public class PermissionData {
         if (global) return true;
 
         for (String server : this.servers) {
-            if (OxygenBukkit.getInstance().getServerManager().getServerName().equalsIgnoreCase(server)) return true;
+            if (OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name").equalsIgnoreCase(server)) return true;
         }
 
         return false;

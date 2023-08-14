@@ -12,7 +12,7 @@ database:
       url: ""
     address: "127.0.0.1"
     port: 27017
-    database_name: "OxygenBungee"
+    database_name: "OxygenGlobal"
     auth:
       enabled: false
       user: "admin"

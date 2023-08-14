@@ -79,7 +79,7 @@ public class NoteCommand extends BaseCommand {
                 note.setAddedAt(System.currentTimeMillis());
                 note.setAddedBy(sender instanceof Player ? sender.getName() : "Console");
                 note.setAddedReason(ChatUtil.joinArray(args, " ", 3));
-                note.setAddedServer(OxygenBukkit.getInstance().getServerManager().getServerName());
+                note.setAddedServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
 
                 profile.getNotes().add(note);
                 profile.save();
