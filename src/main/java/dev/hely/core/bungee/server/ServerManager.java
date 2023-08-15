@@ -104,10 +104,10 @@ public class ServerManager implements ModuleLoader {
 
             for (String path : jedis.keys("oxygen:proxy-cache:*")) {
 
-                final String[] split = path.split(":");
-                final int port = Integer.parseInt(split[2]);
+                String[] split = path.split(":");
+                int port = Integer.parseInt(split[2]);
 
-                final Map<String,String> map = jedis.hgetAll(path);
+                Map<String,String> map = jedis.hgetAll(path);
 
                 if (map == null || map.isEmpty()) {
                     continue;
@@ -133,10 +133,10 @@ public class ServerManager implements ModuleLoader {
 
             for (String path : jedis.keys("oxygen:server-cache:*")) {
 
-                final Map<String, String> map = jedis.hgetAll(path);
+                Map<String, String> map = jedis.hgetAll(path);
 
-                final String[] split = path.split(":");
-                final int port = Integer.parseInt(split[2]);
+                String[] split = path.split(":");
+                int port = Integer.parseInt(split[2]);
 
                 if (map == null || map.isEmpty()) {
                     continue;
@@ -162,7 +162,6 @@ public class ServerManager implements ModuleLoader {
 
             }
         }
-
     }
 
     public Server serverFromName(String name) {
@@ -205,7 +204,7 @@ public class ServerManager implements ModuleLoader {
 
 
     public List<Server> getAvailableServers(UUID uuid, List<String> groups) {
-        final List<Server> toReturn = new ArrayList<>();
+        List<Server> toReturn = new ArrayList<>();
         for (Server server : this.servers) {
             if (!groups.contains(server.getGroup())) {
                 continue;
@@ -234,8 +233,7 @@ public class ServerManager implements ModuleLoader {
     }
 
     public int getPlayersOnRegion(List<ProxyServerRegion> regions) {
-
-        final AtomicInteger toReturn = new AtomicInteger(0);
+        AtomicInteger toReturn = new AtomicInteger(0);
 
         for (Proxy proxy : this.proxies) {
 

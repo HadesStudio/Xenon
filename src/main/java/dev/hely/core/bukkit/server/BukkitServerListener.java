@@ -26,14 +26,15 @@ import dev.hely.core.bungee.server.packets.ServerUpdatePacket;
 import dev.hely.core.bungee.server.packets.maintenance.MaintenanceKickPacket;
 import dev.hely.core.bungee.server.packets.maintenance.MaintenanceListPacket;
 import dev.hely.core.bungee.server.packets.maintenance.MaintenanceModePacket;
+import lombok.AllArgsConstructor;
 
 import java.util.UUID;
 
+@AllArgsConstructor
 public class BukkitServerListener implements PacketListener {
 
     @IncomingPacketHandler
     public void onProxyUpdate(ProxyUpdatePacket packet) {
-
         Proxy proxy = OxygenBukkit.getInstance().getServerManager().proxyFromName(packet.getJsonObject().get("name").getAsString());
 
         if (proxy == null) {
@@ -66,22 +67,17 @@ public class BukkitServerListener implements PacketListener {
 
     @IncomingPacketHandler
     public void onMaintennaceList(MaintenanceListPacket packet) {
-
-        final UUID uuid = packet.getUuid();
-        final MaintenanceListPacket.Action action = packet.getAction();
+        UUID uuid = packet.getUuid();
+        MaintenanceListPacket.Action action = packet.getAction();
 
         if (action == MaintenanceListPacket.Action.ADD) {
-
             if (!OxygenBukkit.getInstance().getServerManager().getMaintenanceList().contains(uuid)) {
                 OxygenBukkit.getInstance().getServerManager().getMaintenanceList().add(uuid);
             }
-
         } else if (action == MaintenanceListPacket.Action.REMOVE) {
             if (OxygenBukkit.getInstance().getServerManager().getMaintenanceList().contains(uuid)) {
                 OxygenBukkit.getInstance().getServerManager().getMaintenanceList().remove(uuid);
             }
-
         }
     }
-
 }

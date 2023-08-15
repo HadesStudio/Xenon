@@ -97,8 +97,7 @@ public class Server {
     }
 
     public JsonObject toJsonObject() {
-
-        final JsonObject toReturn = new JsonObject();
+        JsonObject toReturn = new JsonObject();
 
         toReturn.addProperty("name",this.name);
         toReturn.addProperty("port",this.port);
@@ -131,8 +130,7 @@ public class Server {
     }
 
     public void cache(JedisPool pool) {
-
-        final String key = ServerManager.SERVER_CACHE_KEY + this.port;
+        String key = ServerManager.SERVER_CACHE_KEY + this.port;
 
         try (Jedis jedis = pool.getResource()) {
 
@@ -153,7 +151,6 @@ public class Server {
             jedis.hset(ServerManager.SERVER_LOOKUP_KEY + "port","" + this.port,this.name);
             jedis.hset(ServerManager.SERVER_LOOKUP_KEY + "name",this.name,"" + this.port);
         }
-
     }
 
     public boolean canJoin(UUID uuid) {

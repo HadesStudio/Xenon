@@ -40,8 +40,6 @@ public class RedisModule implements ModuleLoader {
 
     private Multimap<Object, Method> listeners;
     private Set<String> channels;
-    private Map<Integer, Class> idToType;
-    private Map<Class, Integer> typeToId;
 
     @Override
     public void enable() {
@@ -62,13 +60,13 @@ public class RedisModule implements ModuleLoader {
 
         this.listeners = ArrayListMultimap.create();
         this.channels = new HashSet<>();
-        ForkJoinPool.commonPool().execute(() -> {
 
+        ForkJoinPool.commonPool().execute(() -> {
             try (Jedis jedis = this.jedisPool.getResource()) {
                 jedis.subscribe(this.getJedisPubSub(),channel);
             }
-
         });
+
         System.out.print(jedisPool.getResource());
         enabled = true;
     }

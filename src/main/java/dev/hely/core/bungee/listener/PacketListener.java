@@ -69,8 +69,8 @@ public class PacketListener implements Listener {
 
     @IncomingPacketHandler
     public void onMaintennaceList(MaintenanceListPacket packet) {
-        final UUID uuid = UUID.fromString(packet.getUuid().toString());
-        final MaintenanceListPacket.Action action = MaintenanceListPacket.Action.valueOf(packet.getAction().toString());
+        UUID uuid = UUID.fromString(packet.getUuid().toString());
+        MaintenanceListPacket.Action action = MaintenanceListPacket.Action.valueOf(packet.getAction().toString());
 
         if (action == MaintenanceListPacket.Action.ADD) {
             if (!OxygenBungee.getInstance().getServerManager().getMaintenanceList().contains(uuid)) {

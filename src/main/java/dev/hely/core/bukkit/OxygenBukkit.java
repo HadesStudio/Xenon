@@ -216,10 +216,12 @@ public class OxygenBukkit extends JavaPlugin {
     }
 
     public void initModules(){
-        redisModule = new RedisModule();
-        googleAuthenticator = new GoogleAuthenticator();
         tasks = new Tasks(OxygenBukkit.getInstance());
+
+        redisModule = new RedisModule();
         mongoModule = new MongoModule();
+
+        googleAuthenticator = new GoogleAuthenticator();
         saleManager = new SaleManager();
         clientManager = new ClientModule();
         commandManager = new CommandManager();

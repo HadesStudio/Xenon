@@ -23,11 +23,9 @@ import dev.hely.core.bungee.server.packets.ProxyUpdatePacket;
 public class BungeeRunnable implements Runnable {
     @Override
     public void run() {
-        final Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")), OxygenBungee.getInstance());
-
+        Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")), OxygenBungee.getInstance());
         proxy.cache(OxygenBungee.getInstance().getRedisBungeeModule().getJedisPool());
 
         OxygenBungee.getInstance().getRedisBungeeModule().sendPacket(new ProxyUpdatePacket(proxy.getName(), proxy.getPort(), proxy.toJsonObject()));
     }
-
 }

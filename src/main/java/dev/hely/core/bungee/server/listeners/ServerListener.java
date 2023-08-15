@@ -36,8 +36,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ServerListener implements Listener {
     @EventHandler
     public void onPing(ProxyPingEvent event) {
-        final ServerPing proxy = event.getResponse();
-        final ServerPing.Players players = proxy.getPlayers();
+        ServerPing proxy = event.getResponse();
+        ServerPing.Players players = proxy.getPlayers();
 
         int playerCount = 0;
 
@@ -56,8 +56,7 @@ public class ServerListener implements Listener {
             return;
         }
 
-        final List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
-
+         List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
         if (availableHubs.isEmpty()) {
             event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later! Exit code: 1"));
             event.setCancelled(true);
@@ -65,7 +64,6 @@ public class ServerListener implements Listener {
         }
 
         ServerInfo serverInfo = OxygenBungee.getInstance().getProxy().getServerInfo(availableHubs.get(ThreadLocalRandom.current().nextInt(availableHubs.size())).getName());
-
         if (serverInfo == null) {
             event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later! Exit code: 2"));
             event.setCancelled(true);
@@ -83,8 +81,7 @@ public class ServerListener implements Listener {
             return;
         }
 
-        final List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
-
+        List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
         if (availableHubs.isEmpty()) {
             event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later!"));
             event.setCancelled(true);
@@ -92,7 +89,6 @@ public class ServerListener implements Listener {
         }
 
         ServerInfo serverInfo = OxygenBungee.getInstance().getProxy().getServerInfo(availableHubs.get(ThreadLocalRandom.current().nextInt(availableHubs.size())).getName());
-
         if (serverInfo == null) {
             event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later!"));
             event.setCancelled(true);
@@ -106,7 +102,6 @@ public class ServerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPostLogin(PostLoginEvent event) {
-
         if (!OxygenBungee.getInstance().getServerManager().isMaintenanceMode()) {
             return;
         }

@@ -71,8 +71,6 @@ public class OxygenBungee extends Plugin {
         this.startupMessages();
         this.registerConfigs();
 
-        redisBungeeModule = new RedisBungeeModule();
-
         initModules();
         setupModules();
         setupPackets();
@@ -108,20 +106,21 @@ public class OxygenBungee extends Plugin {
 
     @Override
     public void onDisable() {
-        final Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")),this);
+        Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")),this);
 
         proxy.setStatus(ProxyServerStatus.OFFLINE);
         proxy.getOnlinePlayers().set(0);
 
         this.redisBungeeModule.sendPacket(new ProxyUpdatePacket(proxy.getName(), proxy.getPort(), proxy.toJsonObject()));
 
-        redisBungeeModule.disable();
+        this.redisBungeeModule.disable();
 
         modules.forEach(this::unloadModule);
     }
 
 
     public void initModules(){
+        redisBungeeModule = new RedisBungeeModule();
         maintenanceManager = new MaintenanceManager();
         mongoManager = new MongoManager();
         serverManager = new ServerManager();

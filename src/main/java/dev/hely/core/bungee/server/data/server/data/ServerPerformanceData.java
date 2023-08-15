@@ -34,8 +34,7 @@ public class ServerPerformanceData {
     }
 
     public JsonObject toJsonObject() {
-
-        final JsonObject toReturn = new JsonObject();
+        JsonObject toReturn = new JsonObject();
 
         toReturn.addProperty("tps", this.tps);
         toReturn.addProperty("fullTick", this.fullTick);

@@ -23,6 +23,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ProxyUpdatePacket implements Packet {
+
     private final String proxyName;
     private final int proxyPort;
     private final JsonObject jsonObject;

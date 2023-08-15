@@ -41,17 +41,15 @@ import java.util.stream.Collectors;
 
 @Getter
 public class BukkitServerManager implements ModuleLoader {
-    public static Gson GSON = new Gson();
+
     private boolean enabled;
-    private final JedisPool pool = OxygenBukkit.getInstance().getRedisModule().getJedisPool(); // the easiest way i can think of create this sytem :) puta
+
 
     private List<Proxy> proxies;
     private List<Server> servers;
     private List<String> serverGroups;
 
-    @Getter
-    @Setter
-    private boolean maintenanceMode;
+    @Getter @Setter private boolean maintenanceMode;
     @Getter private List<UUID> maintenanceList;
 
     public static String PROXY_CACHE_KEY = "oxygen:proxy-cache:";
@@ -93,22 +91,22 @@ public class BukkitServerManager implements ModuleLoader {
     }
 
     public void load() {
-        try (Jedis jedis = this.pool.getResource()) {
+        try (Jedis jedis = OxygenBukkit.getInstance().getRedisModule().getJedisPool().getResource()) {
             if (jedis.get("oxygen:maintenanceMode") != null) {
                 this.maintenanceMode = Boolean.parseBoolean(jedis.get("oxygen:maintenanceMode"));
             }
             if (jedis.get("oxygen:maintenanceList") != null) {
-                this.maintenanceList = GSON.<List<String>>fromJson(jedis.get("oxygen:maintenanceList"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
+                this.maintenanceList = OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(jedis.get("oxygen:maintenanceList"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
             } else {
                 this.maintenanceList = new ArrayList<>();
             }
 
             for (String path : jedis.keys("oxygen:proxy-cache:*")) {
 
-                final String[] split = path.split(":");
-                final int port = Integer.parseInt(split[2]);
+                String[] split = path.split(":");
+                int port = Integer.parseInt(split[2]);
 
-                final Map<String,String> map = jedis.hgetAll(path);
+                Map<String,String> map = jedis.hgetAll(path);
 
                 if (map == null || map.isEmpty()) {
                     continue;
@@ -134,10 +132,10 @@ public class BukkitServerManager implements ModuleLoader {
 
             for (String path : jedis.keys("oxygen:server-cache:*")) {
 
-                final Map<String, String> map = jedis.hgetAll(path);
+                Map<String, String> map = jedis.hgetAll(path);
 
-                final String[] split = path.split(":");
-                final int port = Integer.parseInt(split[2]);
+                String[] split = path.split(":");
+                int port = Integer.parseInt(split[2]);
 
                 if (map == null || map.isEmpty()) {
                     continue;
@@ -154,16 +152,14 @@ public class BukkitServerManager implements ModuleLoader {
                 server.setOnlinePlayers(new AtomicInteger(Integer.parseInt(map.get("onlinePlayers"))));
                 server.setMaximumPlayers(new AtomicInteger(Integer.parseInt(map.get("maximumPlayers"))));
 
-                server.setOppedPlayers(GSON.<List<String>>fromJson(map.get("oppedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
-                server.setWhitelistedPlayers(GSON.<List<String>>fromJson(map.get("whitelistedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
+                server.setOppedPlayers(OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(map.get("oppedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
+                server.setWhitelistedPlayers(OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(map.get("whitelistedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
 
                 if (!this.servers.contains(server)) {
                     this.servers.add(server);
                 }
-
             }
         }
-
     }
 
     public Server serverFromName(String name) {
@@ -206,7 +202,7 @@ public class BukkitServerManager implements ModuleLoader {
 
 
     public List<Server> getAvailableServers(UUID uuid, List<String> groups) {
-        final List<Server> toReturn = new ArrayList<>();
+        List<Server> toReturn = new ArrayList<>();
         for (Server server : this.servers) {
             if (!groups.contains(server.getGroup())) {
                 continue;
@@ -235,8 +231,7 @@ public class BukkitServerManager implements ModuleLoader {
     }
 
     public int getPlayersOnRegion(List<ProxyServerRegion> regions) {
-
-        final AtomicInteger toReturn = new AtomicInteger(0);
+        AtomicInteger toReturn = new AtomicInteger(0);
 
         for (Proxy proxy : this.proxies) {
 

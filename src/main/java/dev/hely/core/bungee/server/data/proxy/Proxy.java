@@ -74,8 +74,7 @@ public class Proxy {
     }
 
     public JsonObject toJsonObject() {
-
-        final JsonObject toReturn = new JsonObject();
+        JsonObject toReturn = new JsonObject();
 
         toReturn.addProperty("name",this.name);
         toReturn.addProperty("port",this.port);
@@ -98,7 +97,7 @@ public class Proxy {
     }
 
     public void cache(JedisPool pool) {
-        final String key = ServerManager.PROXY_CACHE_KEY + this.port;
+        String key = ServerManager.PROXY_CACHE_KEY + this.port;
 
         try (Jedis jedis = pool.getResource()) {
             jedis.hset(key,"name",this.name);
