@@ -1,4 +1,4 @@
-package dev.hely.core.bukkit.server;
+package dev.hely.core.bukkit.server.runnable;
 
 //============================================================
 // This file was created by DevDipin!
@@ -19,7 +19,6 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bungee.server.data.server.Server;
 import dev.hely.core.bungee.server.data.server.data.StatusData;
 import dev.hely.core.bungee.server.packets.ServerUpdatePacket;
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ServerRunnable extends BukkitRunnable {
@@ -35,8 +34,6 @@ public class ServerRunnable extends BukkitRunnable {
         server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
-
-        Bukkit.getConsoleSender().sendMessage(server.getName());
-        Bukkit.getConsoleSender().sendMessage(String.valueOf(server.toJsonObject()));
+        System.out.print(server.toJsonObject());
     }
 }

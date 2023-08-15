@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bungee.commands.HubCommand;
+import dev.hely.core.bungee.commands.ServerCommand;
 import dev.hely.core.bungee.commands.ServerManagerCommand;
 import dev.hely.core.bungee.databases.mongo.MongoManager;
 import dev.hely.core.bungee.listener.PacketListener;
@@ -153,6 +154,7 @@ public class OxygenBungee extends Plugin {
     public void setupCommands() {
         this.getProxy().getPluginManager().registerCommand(this, new ServerManagerCommand());
         this.getProxy().getPluginManager().registerCommand(this, new HubCommand());
+        this.getProxy().getPluginManager().registerCommand(this, new ServerCommand());
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered all commands."));
     }

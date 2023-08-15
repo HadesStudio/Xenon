@@ -17,14 +17,13 @@ package dev.hely.core.bungee.server.data.server.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.ChatColor;
 
 @AllArgsConstructor
 public enum StatusData {
 
-    ONLINE("Online", ChatColor.GREEN + "Online"),
-    OFFLINE("Offline", ChatColor.RED + "Offline"),
-    WHITELISTED("Whitelisted", ChatColor.WHITE + "Whitelisted");
+    ONLINE("Online", "Online"),
+    OFFLINE("Offline", "Offline"),
+    WHITELISTED("Whitelisted", "Whitelisted");
 
     @Getter private String name;
     @Getter private String display;

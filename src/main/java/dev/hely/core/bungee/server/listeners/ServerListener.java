@@ -50,14 +50,15 @@ public class ServerListener implements Listener {
         event.setResponse(proxy);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPostLogin(ServerConnectEvent event) {
         if (event.getPlayer().getServer() != null) {
             return;
         }
 
-         List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
+        List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
         if (availableHubs.isEmpty()) {
+            OxygenBungee.getInstance().debug_message("Available Hubs: " + Arrays.asList(availableHubs));
             event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later! Exit code: 1"));
             event.setCancelled(true);
             return;

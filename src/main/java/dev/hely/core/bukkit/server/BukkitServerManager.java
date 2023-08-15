@@ -18,6 +18,7 @@ package dev.hely.core.bukkit.server;
 import com.google.gson.Gson;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
+import dev.hely.core.bungee.OxygenBungee;
 import dev.hely.core.bungee.server.data.proxy.Proxy;
 import dev.hely.core.bungee.server.data.proxy.comparator.ProxyPlayersData;
 import dev.hely.core.bungee.server.data.proxy.comparator.ProxyPortData;
@@ -151,7 +152,7 @@ public class BukkitServerManager implements ModuleLoader {
                 server.setGroup(map.get("group"));
                 server.setOnlinePlayers(new AtomicInteger(Integer.parseInt(map.get("onlinePlayers"))));
                 server.setMaximumPlayers(new AtomicInteger(Integer.parseInt(map.get("maximumPlayers"))));
-
+                server.setLastHeartBeat(Long.parseLong(map.get("lastHeartBeat")));
                 server.setOppedPlayers(OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(map.get("oppedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
                 server.setWhitelistedPlayers(OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(map.get("whitelistedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
 
@@ -193,11 +194,15 @@ public class BukkitServerManager implements ModuleLoader {
     }
 
     public List<Server> getAvailableServers(UUID uuid, String group) {
+        OxygenBukkit.getInstance().debug_message("UUID: " + uuid);
+        OxygenBukkit.getInstance().debug_message("Server Group: " + group);
+        OxygenBukkit.getInstance().debug_message("Group List: " + Arrays.asList(group));
         return this.getAvailableServers(uuid,Arrays.asList(group));
     }
 
     public void setupGroupList() {
         this.serverGroups.addAll(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getStringList("server-groups"));
+        OxygenBukkit.getInstance().debug_message("Server Groups List: " + serverGroups);
     }
 
 
@@ -205,22 +210,27 @@ public class BukkitServerManager implements ModuleLoader {
         List<Server> toReturn = new ArrayList<>();
         for (Server server : this.servers) {
             if (!groups.contains(server.getGroup())) {
+                OxygenBukkit.getInstance().debug_message("NOPE 1");
                 continue;
             }
 
             if (server.getStatus().equals(StatusData.OFFLINE)) {
+                OxygenBukkit.getInstance().debug_message("NOPE 2");
                 continue;
             }
 
             if (server.getOnlinePlayers().get() >= server.getMaximumPlayers().get() && !server.getOppedPlayers().contains(uuid)) {
+                OxygenBukkit.getInstance().debug_message("NOPE 3");
                 continue;
             }
 
             if (server.getStatus().equals(StatusData.WHITELISTED) && !(server.getOppedPlayers().contains(uuid) || server.getWhitelistedPlayers().contains(uuid))) {
+                OxygenBukkit.getInstance().debug_message("NOPE 4");
                 continue;
             }
 
             toReturn.add(server);
+            OxygenBukkit.getInstance().debug_message("Adding server - " + server);
         }
 
         return toReturn;

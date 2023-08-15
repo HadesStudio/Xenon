@@ -31,12 +31,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Setter
 public class Proxy {
 
-    @Getter private String name;
-    @Getter private Integer port;
-
+    private String name;
+    private Integer port;
     private ProxyServerStatus status;
     private ProxyServerRegion region;
-
     private AtomicInteger onlinePlayers;
     private AtomicInteger maximumPlayers;
 

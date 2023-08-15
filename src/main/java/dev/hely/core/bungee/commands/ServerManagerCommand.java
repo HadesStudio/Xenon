@@ -16,6 +16,8 @@ package dev.hely.core.bungee.commands;
 //============================================================
 
 import dev.hely.core.bungee.OxygenBungee;
+import dev.hely.core.bungee.server.data.proxy.Proxy;
+import dev.hely.core.bungee.server.data.server.Server;
 import dev.hely.core.bungee.utils.BungeeCC;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
@@ -27,11 +29,11 @@ public class ServerManagerCommand extends Command {
 
     @Override
     public void execute(CommandSender commandSender, String[] strings) {
-        if (strings.length < 1) {
-            for (String message : OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getStringList("server-manager-command.usage")) {
-                commandSender.sendMessage(BungeeCC.translate(message));
-            }
-            return;
+        for (Proxy proxy : OxygenBungee.getInstance().getServerManager().getProxies()) {
+            commandSender.sendMessage(BungeeCC.translate("&cProxy Server: &6" + proxy.getName()));
+        }
+        for (Server server : OxygenBungee.getInstance().getServerManager().getServers()) {
+            commandSender.sendMessage(BungeeCC.translate("&cBukkit Servers: &6" + server.getName()));
         }
     }
 }

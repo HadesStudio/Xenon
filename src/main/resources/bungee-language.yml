@@ -3,6 +3,7 @@ only-player: "&cSorry, only player's can execute this command."
 hub-command:
   already-connected: "&6You are already connected to the hub server."
   connecting: "&6You are now being connected to an available hub."
+  no-servers: "&cSorry, no suitable &6Hub Servers &ccould be found."
 
 server-manager-command:
   usage:
@@ -14,3 +15,8 @@ server-manager-command:
     - "&6* &f/servermanager delete <name> &7- Deletes the specified server."
     - "&6* &f/servermanager list &7- Lists all server instances."
     - "&7&l&m---------------------------------"
+
+server-command:
+  usage: "&cCorrect Usage: /server <server_name>"
+  invalid-server: "&cSorry, the server by the name of '&6%server%&c' could not be found."
+  sent: "&cYou have successfully joined &6%server%&c."

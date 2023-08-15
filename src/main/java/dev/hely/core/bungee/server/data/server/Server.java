@@ -53,29 +53,26 @@ public class Server {
         this.port = port;
         this.performance = new ServerPerformanceData(20.0D,0.0D);
         this.status = StatusData.OFFLINE;
-        this.group = "Hub";
+        this.group = "Lobbies";
         this.onlinePlayers = new AtomicInteger(0);
         this.maximumPlayers = new AtomicInteger(0);
         this.oppedPlayers = new ArrayList<>();
         this.whitelistedPlayers = new ArrayList<>();
+        this.lastHeartBeat = System.currentTimeMillis();
     }
 
     public Server(String name, String group, JavaPlugin plugin, boolean stopping) {
         this.name = name;
         this.port = plugin.getServer().getPort();
-
         this.performance = new ServerPerformanceData(20.0,10.0);
         this.status = plugin.getServer().hasWhitelist() ? StatusData.WHITELISTED : StatusData.ONLINE;
-
         if (stopping) {
             this.status = StatusData.OFFLINE;
         }
-
         this.group = group;
-
         this.onlinePlayers = new AtomicInteger(plugin.getServer().getOnlinePlayers().size());
         this.maximumPlayers = new AtomicInteger(plugin.getServer().getMaxPlayers());
-
+        this.lastHeartBeat = System.currentTimeMillis();
         this.oppedPlayers = plugin.getServer().getOperators().stream().map(OfflinePlayer::getUniqueId).collect(Collectors.toList());
         this.whitelistedPlayers = plugin.getServer().getWhitelistedPlayers().stream().map(OfflinePlayer::getUniqueId).collect(Collectors.toList());
     }
@@ -83,15 +80,12 @@ public class Server {
     public Server(JsonObject jsonObject) {
         this.name = jsonObject.get("name").getAsString();
         this.port = jsonObject.get("port").getAsInt();
-
         this.performance = new ServerPerformanceData(jsonObject.get("performance").getAsJsonObject());
-
         this.status = StatusData.valueOf(jsonObject.get("status").getAsString());
         this.group = jsonObject.get("group").getAsString();
-
+        this.lastHeartBeat = jsonObject.get("lastHeartBeat").getAsLong();
         this.onlinePlayers = new AtomicInteger(jsonObject.get("onlinePlayers").getAsInt());
         this.maximumPlayers = new AtomicInteger(jsonObject.get("maximumPlayers").getAsInt());
-
         this.oppedPlayers = ServerManager.GSON.<List<String>>fromJson(jsonObject.get("oppedPlayers").getAsString(),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
         this.whitelistedPlayers = ServerManager.GSON.<List<String>>fromJson(jsonObject.get("whitelistedPlayers").getAsString(),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
     }
@@ -101,15 +95,12 @@ public class Server {
 
         toReturn.addProperty("name",this.name);
         toReturn.addProperty("port",this.port);
-
         toReturn.add("performance",this.performance.toJsonObject());
-
         toReturn.addProperty("status", this.status.name());
         toReturn.addProperty("group", this.group);
-
         toReturn.addProperty("onlinePlayers", this.onlinePlayers.get());
         toReturn.addProperty("maximumPlayers", this.maximumPlayers.get());
-
+        toReturn.addProperty("lastHeartBeat", System.currentTimeMillis());
         toReturn.addProperty("oppedPlayers", ServerManager.GSON.toJson(this.oppedPlayers.stream().map(UUID::toString).collect(Collectors.toList())));
         toReturn.addProperty("whitelistedPlayers", ServerManager.GSON.toJson(this.whitelistedPlayers.stream().map(UUID::toString).collect(Collectors.toList())));
 
@@ -118,13 +109,11 @@ public class Server {
 
     public void refresh(JsonObject jsonObject) {
         this.performance = new ServerPerformanceData(jsonObject.get("performance").getAsJsonObject());
-
         this.status = StatusData.valueOf(jsonObject.get("status").getAsString());
         this.group = jsonObject.get("group").getAsString();
-
         this.onlinePlayers.set(jsonObject.get("onlinePlayers").getAsInt());
         this.maximumPlayers.set(jsonObject.get("maximumPlayers").getAsInt());
-
+        this.lastHeartBeat= jsonObject.get("lastHeartBeat").getAsLong();
         this.oppedPlayers = ServerManager.GSON.<List<String>>fromJson(jsonObject.get("oppedPlayers").getAsString(),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
         this.whitelistedPlayers = ServerManager.GSON.<List<String>>fromJson(jsonObject.get("whitelistedPlayers").getAsString(),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
     }
@@ -144,7 +133,7 @@ public class Server {
 
             jedis.hset(key,"onlinePlayers","" + this.onlinePlayers.get());
             jedis.hset(key,"maximumPlayers",""+ this.maximumPlayers.get());
-
+            jedis.hset(key, "lastHeartBeat", ""+ this.lastHeartBeat);
             jedis.hset(key,"oppedPlayers", ServerManager.GSON.toJson(this.oppedPlayers.stream().map(UUID::toString).collect(Collectors.toList())));
             jedis.hset(key,"whitelistedPlayers", ServerManager.GSON.toJson(this.whitelistedPlayers.stream().map(UUID::toString).collect(Collectors.toList())));
 
