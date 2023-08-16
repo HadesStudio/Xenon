@@ -36,8 +36,6 @@ public class RedisModule implements ModuleLoader {
     private String password;
     private String channel;
     private JedisPool jedisPool;
-    private JedisPubSub pubsub;
-    private JsonParser PARSER = new JsonParser();
 
     private Multimap<Object, Method> listeners;
     private Set<String> channels;

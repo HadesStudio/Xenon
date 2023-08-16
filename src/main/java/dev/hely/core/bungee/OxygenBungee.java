@@ -107,6 +107,13 @@ public class OxygenBungee extends Plugin {
 
     @Override
     public void onDisable() {
+        Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")), this);
+
+        proxy.setStatus(ProxyServerStatus.OFFLINE);
+        proxy.getOnlinePlayers().set(0);
+
+        this.redisBungeeModule.sendPacket(new ProxyUpdatePacket(proxy.getName(), proxy.getPort(), proxy.toJsonObject()));
+
         modules.forEach(this::unloadModule);
     }
 

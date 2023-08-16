@@ -75,14 +75,6 @@ public class ServerManager implements ModuleLoader {
 
     @Override
     public void disable() {
-        Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")),OxygenBungee.getInstance());
-
-        proxy.setStatus(ProxyServerStatus.OFFLINE);
-        proxy.getOnlinePlayers().set(0);
-
-        OxygenBungee.getInstance().getRedisBungeeModule().sendPacket(new ProxyUpdatePacket(proxy.getName(), proxy.getPort(), proxy.toJsonObject()));
-
-        OxygenBungee.getInstance().getRedisBungeeModule().disable();
     }
 
     @Override
