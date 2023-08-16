@@ -20,7 +20,9 @@ import dev.hely.core.bukkit.punishment.packet.PunishmentPacketListener;
 import dev.hely.core.bukkit.ranks.rank.RankManager;
 import dev.hely.core.bukkit.server.BukkitServerListener;
 import dev.hely.core.bukkit.server.BukkitServerManager;
+import dev.hely.core.bukkit.server.packets.ServerPacketListener;
 import dev.hely.core.bukkit.server.queue.QueueManager;
+import dev.hely.core.bukkit.server.queue.packets.QueuePacketListener;
 import dev.hely.core.bukkit.server.queue.runnables.MainQueueRunnable;
 import dev.hely.core.bukkit.server.queue.runnables.QueuePositionRunnable;
 import dev.hely.core.bukkit.server.queue.runnables.QueueUpdateRunnable;
@@ -141,6 +143,7 @@ public class OxygenBukkit extends JavaPlugin {
 
         final Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
 
+        server.setStartupTime(0L);
         server.setStatus(StatusData.OFFLINE);
         server.getOnlinePlayers().set(0);
         server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
@@ -272,6 +275,8 @@ public class OxygenBukkit extends JavaPlugin {
         redisModule.registerListener(new PunishmentPacketListener(this));
         redisModule.registerListener(new TagPacketListener(tagManager));
         redisModule.registerListener(new BukkitServerListener());
+        redisModule.registerListener(new QueuePacketListener());
+        redisModule.registerListener(new ServerPacketListener());
 
         redisModule.subscribeJedis();
     }

@@ -41,12 +41,5 @@ public class ServerManagerCommand extends Command {
         for (Server server : OxygenBungee.getInstance().getServerManager().getServers()) {
             commandSender.sendMessage(BungeeCC.translate("&cBukkit Servers: &6" + server.getName()));
         }
-        ProxiedPlayer proxiedPlayer = (ProxiedPlayer) commandSender;
-
-        List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(proxiedPlayer.getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
-        commandSender.sendMessage(BungeeCC.translate("&cAvailable Hubs: &6" + availableHubs));
-        if (availableHubs.isEmpty()) {
-            commandSender.sendMessage(BungeeCC.translate("&cAvailable Hubs (NONE?): &6" + availableHubs));
-        }
     }
 }

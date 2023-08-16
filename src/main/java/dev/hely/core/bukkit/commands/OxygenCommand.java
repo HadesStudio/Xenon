@@ -37,10 +37,14 @@ public class OxygenCommand extends BaseCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) {
-            for (UUID admin : uuidList) {
-                Player player = (Player) sender;
-                if (admin.equals(player.getUniqueId())) {
-                    new OxygenMenu(player).openMenu(player);
+            Player player = (Player) sender;
+            if (player.isOp()) {
+                new OxygenMenu(player).openMenu(player);
+            } else {
+                for (UUID admin : uuidList) {
+                    if (admin.equals(player.getUniqueId())) {
+                        new OxygenMenu(player).openMenu(player);
+                    }
                 }
             }
         }

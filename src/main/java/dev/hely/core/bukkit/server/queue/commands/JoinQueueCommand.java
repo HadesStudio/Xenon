@@ -1,4 +1,4 @@
-package dev.hely.core.bukkit.commands.implement.queue;
+package dev.hely.core.bukkit.server.queue.commands;
 
 //============================================================
 // This file was created by DevDipin!
@@ -17,16 +17,11 @@ package dev.hely.core.bukkit.commands.implement.queue;
 
 import com.google.gson.JsonObject;
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.configuration.Locale;
-import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.profile.packet.implement.AdminChatPacket;
 import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.server.queue.QueueRank;
 import dev.hely.core.bukkit.server.queue.packets.implement.QueueAddPlayerPacket;
-import dev.hely.core.bukkit.utils.ChatUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.core.bungee.server.data.server.data.StatusData;
-import dev.hely.core.bungee.utils.BungeeUtil;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -60,11 +55,11 @@ public class JoinQueueCommand extends BaseCommand {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.offline").replace("%server%", args[0])));
             return;
         }
-        if (player.hasPermission("oxygen.queue.bypass")) {
+        /*if (player.hasPermission("oxygen.queue.bypass")) { ** DISABLED FOR TESTING PURPOSES
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.bypassed-queue").replace("%server%", args[0])));
             BungeeUtil.sendToServer(player, args[0]);
             return;
-        }
+        }*/
         QueueRank queueRank = OxygenBukkit.getInstance().getQueueManager().getPriority(player);
 
         JsonObject rankObject = new JsonObject();

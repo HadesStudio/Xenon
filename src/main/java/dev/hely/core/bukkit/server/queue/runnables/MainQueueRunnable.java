@@ -30,10 +30,7 @@ public class MainQueueRunnable extends BukkitRunnable {
         for(Queue queue : Queue.getQueues()) {
             Server serverData = queue.getServerData();
 
-            if(serverData == null
-                    || !queue.isEnabled()
-                    || (!(serverData.getStatus() == StatusData.OFFLINE))
-                    || (serverData.getStatus() == StatusData.WHITELISTED)) {
+            if(serverData == null || !queue.isEnabled() || (!(serverData.getStatus() == StatusData.OFFLINE)) || (serverData.getStatus() == StatusData.WHITELISTED)) {
                 continue;
             }
 

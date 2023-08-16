@@ -130,7 +130,7 @@ public class ServerManager implements ModuleLoader {
 
                 Server server = this.serverFromName(map.get("name"));
                 if (server == null) {
-                    this.servers.add(server = new Server(map.get("name"),port));
+                    this.servers.add(server = new Server(map.get("name"),port, System.currentTimeMillis()));
                 }
 
                 server.setStatus(StatusData.valueOf(map.get("status")));

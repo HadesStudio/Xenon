@@ -15,10 +15,9 @@ package dev.hely.core.bukkit.server;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import com.google.gson.Gson;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.bungee.OxygenBungee;
+import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bungee.server.data.proxy.Proxy;
 import dev.hely.core.bungee.server.data.proxy.comparator.ProxyPlayersData;
 import dev.hely.core.bungee.server.data.proxy.comparator.ProxyPortData;
@@ -34,7 +33,6 @@ import dev.hely.core.bungee.server.data.server.data.StatusData;
 import lombok.Getter;
 import lombok.Setter;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -103,7 +101,6 @@ public class BukkitServerManager implements ModuleLoader {
             }
 
             for (String path : jedis.keys("oxygen:proxy-cache:*")) {
-
                 String[] split = path.split(":");
                 int port = Integer.parseInt(split[2]);
 
@@ -132,7 +129,7 @@ public class BukkitServerManager implements ModuleLoader {
             }
 
             for (String path : jedis.keys("oxygen:server-cache:*")) {
-
+                OxygenBukkit.getInstance().debug_message("Loading server cache:");
                 Map<String, String> map = jedis.hgetAll(path);
 
                 String[] split = path.split(":");
@@ -145,7 +142,7 @@ public class BukkitServerManager implements ModuleLoader {
                 Server server = this.serverFromName(map.get("name"));
 
                 if (server == null) {
-                    this.servers.add(server = new Server(map.get("name"),port));
+                    this.servers.add(server = new Server(map.get("name"),port, System.currentTimeMillis()));
                 }
 
                 server.setStatus(StatusData.valueOf(map.get("status")));
@@ -156,6 +153,14 @@ public class BukkitServerManager implements ModuleLoader {
                 server.setOppedPlayers(OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(map.get("oppedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
                 server.setWhitelistedPlayers(OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(map.get("whitelistedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
                 server.setUseQueue(Boolean.parseBoolean(map.get("queue")));
+
+                OxygenBukkit.getInstance().debug_message("Creating new queue:");
+                Queue queue = Queue.getByName(server.getName());
+                if (queue == null && server.isUseQueue()) {
+                    queue = new Queue(server.getName(), server.getName());
+                    queue.setEnabled(true);
+                    OxygenBukkit.getInstance().debug_message("Creating new queue - " + queue.getName());
+                }
 
                 if (!this.servers.contains(server)) {
                     this.servers.add(server);

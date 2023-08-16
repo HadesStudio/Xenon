@@ -45,13 +45,13 @@ public class QueuePacketListener implements PacketListener {
             queueRank.setName(rank.get("rankName").getAsString());
             queueRank.setPriority(rank.get("priority").getAsInt());
 
-            QueuePlayer queuePlayer = new QueuePlayer();
-            queuePlayer.setUuid(UUID.fromString(player.get("uuid").getAsString()));
-            queuePlayer.setRank(queueRank);
-            queuePlayer.setInserted(player.get("inserted").getAsLong());
+        QueuePlayer queuePlayer = new QueuePlayer();
+        queuePlayer.setUuid(UUID.fromString(player.get("uuid").getAsString()));
+        queuePlayer.setRank(queueRank);
+        queuePlayer.setInserted(player.get("inserted").getAsLong());
 
-            players.add(queuePlayer);
-        });
+        players.add(queuePlayer);
+    });
 
         queue.setPlayers(players);
         queue.setEnabled(queueJson.get("status").getAsBoolean());

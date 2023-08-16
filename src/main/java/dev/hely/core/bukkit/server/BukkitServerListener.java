@@ -50,7 +50,7 @@ public class BukkitServerListener implements PacketListener {
         Server server = OxygenBukkit.getInstance().getServerManager().serverFromName(packet.getJsonObject().get("name").getAsString());
 
         if (server == null) {
-            server = new Server(packet.getJsonObject().get("name").getAsString(),packet.getJsonObject().get("port").getAsInt());
+            server = new Server(packet.getJsonObject().get("name").getAsString(),packet.getJsonObject().get("port").getAsInt(), System.currentTimeMillis());
             OxygenBukkit.getInstance().getServerManager().getServers().add(server);
         }
 

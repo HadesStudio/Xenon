@@ -20,6 +20,7 @@ import dev.hely.core.bukkit.core.menus.submenus.CommandsMenu;
 import dev.hely.core.bukkit.core.menus.submenus.ConfigReloadMenu;
 import dev.hely.core.bukkit.core.menus.submenus.ModulesMenu;
 import dev.hely.core.bukkit.modules.ModuleLoader;
+import dev.hely.core.bukkit.server.menu.ServerListMenu;
 import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
@@ -71,6 +72,7 @@ public class OxygenMenu extends Menu {
 
         buttons.put(4, new Info_Button(player));
         buttons.put(11, new Reload_Config_Button());
+        buttons.put(12, new Servers_Button());
         buttons.put(13, new Modules_Button());
         buttons.put(15, new Commands_Button());
 
@@ -99,6 +101,36 @@ public class OxygenMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
+        }
+
+        @Override
+        public boolean toUpdate(Player player, int slot, ClickType clickType) {
+            return clickType.isCreativeAction() || clickType.isRightClick() || clickType.isLeftClick();
+        }
+    }
+
+    @AllArgsConstructor
+    public static class Servers_Button extends Button {
+        @Override
+        public ItemStack getItemStack(Player player) {
+            ItemMaker builder = ItemMaker.of(Material.REDSTONE_BLOCK);
+            builder.setData((short) 0);
+            builder.setOwner(player.getName());
+            builder.setDisplayName("&6Server Manager");
+            builder.setLore(Arrays.asList(
+                    "&7This feature allows you to view",
+                    "&7your active servers, and proxies.",
+                    "&7",
+                    "&6Left-Click &7to view more information."
+            ));
+            return builder.build();
+        }
+
+        @Override
+        public void onClick(Player player, int slot, ClickType clickType) {
+            if (clickType.isLeftClick()) {
+                new ServerListMenu(player).openMenu(player);
+            }
         }
 
         @Override

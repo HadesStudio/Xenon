@@ -16,6 +16,7 @@ package dev.hely.core.bukkit.server.runnable;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bungee.server.data.server.Server;
 import dev.hely.lib.CC;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +24,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.concurrent.TimeUnit;
+
 @RequiredArgsConstructor
 public class HeartBeatRunnable extends BukkitRunnable {
-    private static final long TIME_OUT_DELAY = 15_000L;
-
     @Override
     public void run() {
         for (Server servers : OxygenBukkit.getInstance().getServerManager().getServers()) {
             Server server = OxygenBukkit.getInstance().getServerManager().serverFromName(servers.getName());
 
-            if (System.currentTimeMillis() - server.getLastHeartBeat() >= TIME_OUT_DELAY) {
+            if (server != null && (System.currentTimeMillis() - server.getLastHeartBeat()) > TimeUnit.SECONDS.toMillis(15)) {
+                Queue queue = Queue.getByName(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
+                if (queue != null && queue.isEnabled()) {
+                    queue.getPlayers().clear();
+                }
+
                 Bukkit.getOnlinePlayers().stream().filter(player -> player.isOp()
                         && OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()) != null).forEach(player -> {
                     player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("server-manager.server-offline").replace("%server%", server.getName())));

@@ -48,7 +48,7 @@ public class PacketListener implements Listener {
         Server server = OxygenBungee.getInstance().getServerManager().serverFromName(packet.getServerName());
 
         if (server == null) {
-            server = new Server(packet.getServerName(), packet.getServerPort());
+            server = new Server(packet.getServerName(), packet.getServerPort(), System.currentTimeMillis());
             OxygenBungee.getInstance().getServerManager().getServers().add(server);
         }
 

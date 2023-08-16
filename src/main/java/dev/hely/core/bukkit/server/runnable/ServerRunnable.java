@@ -26,6 +26,7 @@ public class ServerRunnable extends BukkitRunnable {
     @Override
     public void run() {
         Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
+        server.setStartupTime(server.getStartupTime());
 
         if (OxygenBukkit.getInstance().isStopping()) {
             server.setStatus(StatusData.OFFLINE);
@@ -34,6 +35,5 @@ public class ServerRunnable extends BukkitRunnable {
         server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
-        System.out.print(server.toJsonObject());
     }
 }
