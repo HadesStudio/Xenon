@@ -48,9 +48,9 @@ public class TFAListener implements Listener {
 
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerCommandPreprocess(final PlayerCommandPreprocessEvent event) {
-        final Player player = event.getPlayer();
-        final String command = event.getMessage();
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        String command = event.getMessage();
         if (command.startsWith("/auth") || command.startsWith("/2fa")) {
             return;
         }
@@ -81,7 +81,7 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler
-    public static void onJoin(AsyncPlayerPreLoginEvent event) {
+    public void onJoin(AsyncPlayerPreLoginEvent event) {
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(event.getUniqueId());
         if (profile == null) {
             return;
@@ -103,7 +103,7 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler
-    public static void onJoin(PlayerJoinEvent event) {
+    public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(event.getPlayer().getUniqueId());
@@ -114,8 +114,6 @@ public class TFAListener implements Listener {
             }
         } else if (profile.isNeedsVerify() || profile.getNextAuthenticationNeeded() == -1) {
             OxygenBukkit.getInstance().getServer().getScheduler().runTaskLater(OxygenBukkit.getInstance(), () -> {
-                OxygenBukkit.getInstance().getTfaManager().clearItems(player);
-
                 if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("two-factor.settings.join-sound.enabled")) {
                     Sound join_sound = Sound.valueOf(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.join-sound.name"));
 
@@ -143,19 +141,18 @@ public class TFAListener implements Listener {
         }
     }
     @EventHandler
-    public void onQuit(final PlayerQuitEvent event) {
-        final Player player = event.getPlayer();
+    public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
 
         TFAUtil.removeQrMapFromInventory(player);
         OxygenBukkit.getInstance().getTfaManager().giveItems(player);
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onAsyncPlayerChat(final AsyncPlayerChatEvent event) {
+    public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(event.getPlayer().getUniqueId());
-        if (profile == null) {
-            return;
-        }
+        if (profile == null) return;
+
         if (isNeeding2FA(event.getPlayer())) {
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {
                 event.getPlayer().sendMessage(CC.translate(message));
@@ -165,7 +162,7 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerDropItem(final PlayerDropItemEvent event) {
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
         if (isNeeding2FA(event.getPlayer())) {
             event.setCancelled(true);
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {
@@ -175,8 +172,8 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onInventoryOpen(final InventoryOpenEvent event) {
-        final Player player = (Player)event.getPlayer();
+    public void onInventoryOpen(InventoryOpenEvent event) {
+        Player player = (Player)event.getPlayer();
         if (isNeeding2FA(player)) {
             event.setCancelled(true);
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {
@@ -186,8 +183,8 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockBreak(final BlockBreakEvent event) {
-        final Player player = event.getPlayer();
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
         if (isNeeding2FA(event.getPlayer())) {
             event.setCancelled(true);
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {
@@ -197,8 +194,8 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockPlace(final BlockPlaceEvent event) {
-        final Player player = event.getPlayer();
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
         if (isNeeding2FA(event.getPlayer())) {
             event.setCancelled(true);
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {
@@ -208,9 +205,9 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onEntityDamage(final EntityDamageByEntityEvent event) {
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
-            final Player player = (Player)event.getDamager();
+            Player player = (Player)event.getDamager();
             if (isNeeding2FA(player)) {
                 event.setCancelled(true);
                 for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {
@@ -221,8 +218,8 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerInteract(final PlayerInteractEvent event) {
-        final Player player = event.getPlayer();
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
         if (isNeeding2FA(player)) {
             event.setCancelled(true);
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {
@@ -232,8 +229,8 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerBucketEmpty(final PlayerBucketEmptyEvent event) {
-        final Player player = event.getPlayer();
+    public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
+        Player player = event.getPlayer();
         if (isNeeding2FA(player)) {
             event.setCancelled(true);
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {
@@ -243,8 +240,8 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerBucketFill(final PlayerBucketFillEvent event) {
-        final Player player = event.getPlayer();
+    public void onPlayerBucketFill(PlayerBucketFillEvent event) {
+        Player player = event.getPlayer();
         if (isNeeding2FA(player)) {
             event.setCancelled(true);
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {
@@ -254,8 +251,8 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onInventoryClick(final InventoryClickEvent event) {
-        final Player player = (Player)event.getWhoClicked();
+    public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player)event.getWhoClicked();
         if (isNeeding2FA(player)) {
             event.setCancelled(true);
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.need-authenticate")) {
@@ -265,10 +262,11 @@ public class TFAListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onMove(final PlayerMoveEvent event) {
-        final Player player = event.getPlayer();
-        final Location to = event.getTo();
-        final Location from = event.getFrom();
+    public void onMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+
+        Location to = event.getTo();
+        Location from = event.getFrom();
         if (isNeeding2FA(player)) {
             if ((from.getX() != to.getX()) || (from.getZ() != to.getZ())) {
                 player.teleport(from);

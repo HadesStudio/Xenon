@@ -77,29 +77,27 @@ public class TFAManager implements ModuleLoader {
     }
 
     public void clearItems(Player player) {
-        OxygenBukkit.getInstance().getTasks().runAsync(() -> {
-            AuthData authData = new AuthData();
-            authData.setInvItems(player.getInventory().getContents());
-            authData.setArmor(player.getInventory().getArmorContents());
-            authData.setGameMode(player.getGameMode());
-            authData.setLocation(player.getLocation());
+        AuthData authData = new AuthData();
+        authData.setInvItems(player.getInventory().getContents());
+        authData.setArmor(player.getInventory().getArmorContents());
+        authData.setGameMode(player.getGameMode());
+        authData.setLocation(player.getLocation());
 
-            authMode.put(player.getUniqueId(), authData);
+        authMode.put(player.getUniqueId(), authData);
 
-            player.getInventory().clear();
-            player.getInventory().setArmorContents(null);
+        player.getInventory().clear();
+        player.getInventory().setArmorContents(null);
 
-            player.setGameMode(GameMode.CREATIVE);
+        player.setGameMode(GameMode.CREATIVE);
 
-            player.getInventory().setItem(0, this.placeholder());
-            player.getInventory().setItem(1, this.placeholder());
-            player.getInventory().setItem(2, this.placeholder());
-            player.getInventory().setItem(3, this.placeholder());
-            player.getInventory().setItem(5, this.placeholder());
-            player.getInventory().setItem(6, this.placeholder());
-            player.getInventory().setItem(7, this.placeholder());
-            player.getInventory().setItem(8, this.placeholder());
-        });
+        player.getInventory().setItem(0, this.placeholder());
+        player.getInventory().setItem(1, this.placeholder());
+        player.getInventory().setItem(2, this.placeholder());
+        player.getInventory().setItem(3, this.placeholder());
+        player.getInventory().setItem(5, this.placeholder());
+        player.getInventory().setItem(6, this.placeholder());
+        player.getInventory().setItem(7, this.placeholder());
+        player.getInventory().setItem(8, this.placeholder());
     }
 
     public void giveItems(Player player) {
@@ -122,11 +120,12 @@ public class TFAManager implements ModuleLoader {
     }
 
     public void giveQRMap(Player player) {
-        final Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
+        Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
         GoogleAuthenticator authenticator = new GoogleAuthenticator();
         GoogleAuthenticatorKey key = authenticator.createCredentials();
         try {
             OxygenBukkit.getInstance().getTfaManager().clearItems(player);
+
             URL url = new URL(TFAUtil.getQrImageURL(key.getKey(), "Oxygen"));
             BufferedImage image = ImageIO.read(url);
 
@@ -142,7 +141,7 @@ public class TFAManager implements ModuleLoader {
 
             item.setData(view.getId());
 
-            player.setItemInHand(item.build());
+            player.getInventory().setItem(4, item.build());
 
             profile.setNeedsVerify(true);
             profile.setTfaKey(key.getKey());

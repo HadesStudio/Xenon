@@ -38,6 +38,7 @@ import java.net.URL;
 import java.util.Arrays;
 
 public class AuthCommand extends BaseCommand {
+
     public AuthCommand(){
         super("auth", Arrays.asList("2fa", "twofactor", "code", "authcode"), "oxygen.staff", true);
     }
@@ -46,24 +47,28 @@ public class AuthCommand extends BaseCommand {
     public void execute(CommandSender sender, String[] args) {
         OxygenBukkit.getInstance().getTasks().run(() -> {
             Player player = (Player) sender;
+
             if (OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()) == null) {
                 player.sendMessage(CC.translate("&cYour profile is null somehow? Please create a ticket in Hely Development discord."));
                 return;
             }
 
-            final Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
+            Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
             if (profile.isSettingUpAuth() && !profile.isNeedsVerify()) {
                 OxygenBukkit.getInstance().getTfaManager().giveQRMap(player);
                 return;
             }
+
             if (!profile.isNeedsVerify()) {
                 player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("auth-command.already-auth")));
                 return;
             }
+
             if (args.length == 0) {
                 player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("auth-command.usage")));
                 return;
             }
+
             int tfaCode;
             try {
                 tfaCode = Integer.parseInt(args[0]);
@@ -71,16 +76,18 @@ public class AuthCommand extends BaseCommand {
                 player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("auth-command.invalid-code")));
                 return;
             }
+
             if (!TFAUtil.checkCode(profile.getTfaKey(), tfaCode)) {
                 player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("auth-command.invalid-code")));
                 return;
             }
+
             TFAUtil.removeQrMapFromInventory(player);
             profile.setSettingUpAuth(false);
             profile.setNeedsVerify(false);
             long next = TimeUtil.parseTime("5h");
             profile.setNextAuthenticationNeeded(next == -1 ? TimeUtil.parseTime("5h") + System.currentTimeMillis() : next + System.currentTimeMillis());
-            OxygenBukkit.getInstance().getTfaManager().clearItems(player);
+            OxygenBukkit.getInstance().getTfaManager().giveItems(player);
         });
     }
 }
