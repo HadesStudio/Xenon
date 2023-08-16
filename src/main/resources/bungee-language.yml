@@ -5,6 +5,11 @@ hub-command:
   connecting: "&6You are now being connected to an available hub."
   no-servers: "&cSorry, no suitable &6Hub Servers &ccould be found."
 
+server-system:
+  unable-suitable-hub: "&cSorry, we could not find a suitable &6Hub Server &cfor you."
+  connected: "&6You have successfully been connected to our &6&l%server% Server&6!"
+  maintenance: "&cSorry, this server is currently in &6Maintenance Mode&c."
+
 server-manager-command:
   usage:
     - "&7&l&m---------------------------------"

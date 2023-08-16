@@ -56,6 +56,31 @@ chat-command:
     broadcast:
       - "&aChat has just been put on slowdown by &6%player%&a."
 
+server-manager:
+  server-offline: "&c⚠ &6%server% &7has just went &cOFFLINE&7! &c⚠"
+
+queue-system:
+  in-queue: "&cSorry, you are already in another &6Server Queue&c."
+  not-exist: "&cSorry, the queue by the name of '&6%server%&c' could not be found."
+  offline: "&cSorry, the server '&6%server%&c' is currently &noffline&c."
+  bypassed-queue: "&aYou have bypassed the queue because of your &6Staff Permissions&a."
+  removed: "&cYou have just been removed from the &6%server% Queue&c."
+  joined:
+    - "&7&l&m--------------------------------------------"
+    - "&7You have successfully joined the &6%server% Queue&7!"
+    - "&7Your current position is &6#%position% &7out of &6%queue_size%&7 players."
+    - "&7"
+    - "&7Want to get a higher queue priority?"
+    - "&6&nstore.helydev.com"
+    - "&7&l&m--------------------------------------------"
+  cleared: "&aYou have cleared all &6%queue_size% Players &afrom the &6%server% Queue&a."
+  toggled:
+    enabled: "&aYou have successfully &a&nenabled&a the &6%server% Queue&a."
+    disabled: "&cYou have successfully &c&ndisabled&c the &6%server% Queue&c."
+
+join-queue-command:
+  usage: "&cCorrect Usage: /joinqueue <server>"
+
 auth-command:
   usage: "&cCorrect Usage: /auth <code>"
   invalid-code: "&cYou have provided a invalid &6Authentication Code&c."

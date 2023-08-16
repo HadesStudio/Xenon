@@ -40,6 +40,7 @@ public class Rank {
     private List<String> inheritances = new ArrayList<>();
     private List<String> servers = new ArrayList<>();
     private ChatColor display_color = ChatColor.WHITE;
+    private int queuePriority = 0;
 
     public void save() {
         Document document = new Document();
@@ -52,6 +53,7 @@ public class Rank {
         document.put("weight", weight);
         document.put("display_color", ColorUtil.convertChatColor(display_color));
         document.put("globalRank", globalRank);
+        document.put("queuePriority", queuePriority);
 
 
         document.put("permissionsData", OxygenBukkit.PLAIN_GSON.toJson(permissionsData, GSONUtil.PERMISSION_DATA));
@@ -74,7 +76,7 @@ public class Rank {
             setWeight(document.getInteger("weight"));
             setDisplay_color(ChatColor.valueOf(document.getString("display_color")));
             setGlobalRank(document.getBoolean("globalRank"));
-
+            setQueuePriority(document.getInteger("queuePriority"));
             setPermissionsData(OxygenBukkit.PLAIN_GSON.fromJson(document.getString("permissionsData"), GSONUtil.PERMISSION_DATA));
             setBungeePermissions(OxygenBukkit.PLAIN_GSON.fromJson(document.getString("bungeePermissions"), GSONUtil.LIST_STRING_TYPE));
             setInheritances(OxygenBukkit.PLAIN_GSON.fromJson(document.getString("inheritances"), GSONUtil.LIST_STRING_TYPE));

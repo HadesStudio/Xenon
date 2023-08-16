@@ -103,6 +103,7 @@ public class RankManager implements ModuleLoader {
         rank.setDisplay_color(ChatColor.LIGHT_PURPLE);
         rank.setWeight(1);
         rank.setType(RankType.DEFAULT);
+        rank.setQueuePriority(1);
 
         this.ranks.add(rank);
         saveRanks();
@@ -137,6 +138,7 @@ public class RankManager implements ModuleLoader {
             rank.setBungeePermissions(config.getStringList(key + ".bungee-permissions"));
             rank.setPrefix(config.getString(key + ".prefix"));
             rank.setSuffix(config.getString(key + ".suffix"));
+            rank.setQueuePriority(config.getInt(key + ".queue-priority"));
             rank.setDefaultRank(config.getBoolean(key + ".default-rank"));
             rank.setInheritances(config.getStringList(key + ".inheritances"));
             rank.setWeight(config.getInt(key + ".weight"));
@@ -168,6 +170,7 @@ public class RankManager implements ModuleLoader {
             file.set(rankData.getName() + ".suffix", rankData.getSuffix());
             file.set(rankData.getName() + ".default-rank", rankData.isDefaultRank());
             file.set(rankData.getName() + ".global-rank", rankData.isGlobalRank());
+            file.set(rankData.getName() + ".queue-priority", rankData.getQueuePriority());
             file.set(rankData.getName() + ".weight", rankData.getWeight());
             file.set(rankData.getName() + ".permissions-data", OxygenBukkit.PLAIN_GSON.toJson(rankData.getPermissionsData(), GSONUtil.PERMISSION_DATA));
             file.set(rankData.getName() + ".bungee-permissions", OxygenBukkit.PLAIN_GSON.toJson(rankData.getBungeePermissions(), GSONUtil.LIST_STRING_TYPE));

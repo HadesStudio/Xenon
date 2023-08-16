@@ -7,6 +7,7 @@ import dev.hely.core.bukkit.commands.implement.punishment.*;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBanCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBlacklistCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnMuteCommand;
+import dev.hely.core.bukkit.commands.implement.queue.JoinQueueCommand;
 import dev.hely.core.bukkit.commands.implement.staff.AdminChatCommand;
 import dev.hely.core.bukkit.commands.implement.staff.StaffChatCommand;
 import dev.hely.core.bukkit.commands.OxygenCommand;
@@ -105,7 +106,7 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new ToggleSoundsCommand());
         loadedCommands.add(new AuthCommand());
         loadedCommands.add(new RemoveAuthCommand());
-
+        loadedCommands.add(new JoinQueueCommand());
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));
     }

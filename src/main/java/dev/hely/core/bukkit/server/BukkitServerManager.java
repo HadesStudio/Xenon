@@ -155,6 +155,7 @@ public class BukkitServerManager implements ModuleLoader {
                 server.setLastHeartBeat(Long.parseLong(map.get("lastHeartBeat")));
                 server.setOppedPlayers(OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(map.get("oppedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
                 server.setWhitelistedPlayers(OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(map.get("whitelistedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
+                server.setUseQueue(Boolean.parseBoolean(map.get("queue")));
 
                 if (!this.servers.contains(server)) {
                     this.servers.add(server);

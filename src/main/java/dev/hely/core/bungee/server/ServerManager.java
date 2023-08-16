@@ -32,6 +32,7 @@ import dev.hely.core.bungee.server.data.server.comparator.ServerPlayersData;
 import dev.hely.core.bungee.server.data.server.comparator.ServerPortData;
 import dev.hely.core.bungee.server.data.server.comparator.ServerStatusData;
 import dev.hely.core.bungee.server.data.server.data.StatusData;
+import dev.hely.core.bungee.server.packets.ProxyUpdatePacket;
 import lombok.Getter;
 import lombok.Setter;
 import redis.clients.jedis.Jedis;
@@ -74,7 +75,14 @@ public class ServerManager implements ModuleLoader {
 
     @Override
     public void disable() {
+        Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")),OxygenBungee.getInstance());
 
+        proxy.setStatus(ProxyServerStatus.OFFLINE);
+        proxy.getOnlinePlayers().set(0);
+
+        OxygenBungee.getInstance().getRedisBungeeModule().sendPacket(new ProxyUpdatePacket(proxy.getName(), proxy.getPort(), proxy.toJsonObject()));
+
+        OxygenBungee.getInstance().getRedisBungeeModule().disable();
     }
 
     @Override
@@ -101,49 +109,37 @@ public class ServerManager implements ModuleLoader {
             for (String path : jedis.keys("oxygen:proxy-cache:*")) {
                 String[] split = path.split(":");
                 int port = Integer.parseInt(split[2]);
-
                 Map<String,String> map = jedis.hgetAll(path);
-
                 if (map == null || map.isEmpty()) {
                     continue;
                 }
 
                 Proxy proxy = this.proxyFromName(map.get("name"));
-
                 if (proxy == null) {
                     this.proxies.add(proxy = new Proxy(map.get("name"),port));
                 }
-
                 proxy.setStatus(ProxyServerStatus.valueOf(map.get("status")));
                 proxy.setRegion(ProxyServerRegion.valueOf(map.get("region")));
-
                 proxy.setOnlinePlayers(new AtomicInteger(Integer.parseInt(map.get("onlinePlayers"))));
                 proxy.setMaximumPlayers(new AtomicInteger(Integer.parseInt(map.get("maximumPlayers"))));
 
                 if (!this.proxies.contains(proxy)) {
                     this.proxies.add(proxy);
                 }
-
             }
 
             for (String path : jedis.keys("oxygen:server-cache:*")) {
                 Map<String, String> map = jedis.hgetAll(path);
-
                 String[] split = path.split(":");
                 int port = Integer.parseInt(split[2]);
-
                 if (map == null || map.isEmpty()) {
                     continue;
                 }
 
-                OxygenBungee.getInstance().debug_message("Attempting to add Server - " + map.get("name"));
                 Server server = this.serverFromName(map.get("name"));
-
                 if (server == null) {
                     this.servers.add(server = new Server(map.get("name"),port));
                 }
-
-                OxygenBungee.getInstance().debug_message("Adding Server - " + server.getName());
 
                 server.setStatus(StatusData.valueOf(map.get("status")));
                 server.setGroup(map.get("group"));
@@ -152,6 +148,7 @@ public class ServerManager implements ModuleLoader {
                 server.setLastHeartBeat(Long.parseLong(map.get("lastHeartBeat")));
                 server.setOppedPlayers(GSON.<List<String>>fromJson(map.get("oppedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
                 server.setWhitelistedPlayers(GSON.<List<String>>fromJson(map.get("whitelistedPlayers"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList()));
+                server.setUseQueue(Boolean.parseBoolean(map.get("queue")));
 
                 if (!this.servers.contains(server)) {
                     this.servers.add(server);
@@ -192,15 +189,11 @@ public class ServerManager implements ModuleLoader {
     }
 
     public List<Server> getAvailableServers(UUID uuid, String group) {
-        OxygenBungee.getInstance().debug_message("UUID: " + uuid);
-        OxygenBungee.getInstance().debug_message("Server Group: " + group);
-        OxygenBungee.getInstance().debug_message("Group List: " + Arrays.asList(group));
-        return this.getAvailableServers(uuid,Arrays.asList(group));
+        return this.getAvailableServers(uuid, Collections.singletonList(group));
     }
 
     public void setupGroupList() {
         this.serverGroups.addAll(OxygenBungee.getInstance().getServerConfig().getConfiguration().getStringList("server-groups"));
-        OxygenBungee.getInstance().debug_message("Server Groups List: " + serverGroups);
     }
 
 
@@ -208,25 +201,20 @@ public class ServerManager implements ModuleLoader {
         List<Server> toReturn = new ArrayList<>();
         for (Server server : this.servers) {
             if (!groups.contains(server.getGroup())) {
-                OxygenBungee.getInstance().debug_message("NOPE 1");
                 continue;
             }
             if (server.getStatus().equals(StatusData.OFFLINE)) {
-                OxygenBungee.getInstance().debug_message("NOPE 2");
                 continue;
             }
             if (server.getOnlinePlayers().get() >= server.getMaximumPlayers().get() && !server.getOppedPlayers().contains(uuid)) {
-                OxygenBungee.getInstance().debug_message("NOPE 3");
                 continue;
             }
 
             if (server.getStatus().equals(StatusData.WHITELISTED) && !(server.getOppedPlayers().contains(uuid) || server.getWhitelistedPlayers().contains(uuid))) {
-                OxygenBungee.getInstance().debug_message("NOPE 4");
                 continue;
             }
 
             toReturn.add(server);
-            OxygenBungee.getInstance().debug_message("Adding Server - " + server);
         }
 
         return toReturn;

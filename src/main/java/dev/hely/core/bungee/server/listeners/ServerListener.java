@@ -17,6 +17,7 @@ package dev.hely.core.bungee.server.listeners;
 
 import dev.hely.core.bungee.OxygenBungee;
 import dev.hely.core.bungee.server.data.server.Server;
+import dev.hely.core.bungee.utils.BungeeCC;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -30,6 +31,7 @@ import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -58,21 +60,19 @@ public class ServerListener implements Listener {
 
         List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
         if (availableHubs.isEmpty()) {
-            OxygenBungee.getInstance().debug_message("Available Hubs: " + Arrays.asList(availableHubs));
-            event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later! Exit code: 1"));
+            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub")));
             event.setCancelled(true);
             return;
         }
 
         ServerInfo serverInfo = OxygenBungee.getInstance().getProxy().getServerInfo(availableHubs.get(ThreadLocalRandom.current().nextInt(availableHubs.size())).getName());
         if (serverInfo == null) {
-            event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later! Exit code: 2"));
+            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub")));
             event.setCancelled(true);
             return;
         }
 
-        System.out.println("Connecting " + event.getPlayer().getName() + " to " + serverInfo.getName() + " on port " + serverInfo.getAddress().getPort() + " with version " + event.getPlayer().getPendingConnection().getVersion());
-        event.getPlayer().sendMessage(new TextComponent(ChatColor.RED + "Connecting you to " + ChatColor.WHITE + serverInfo.getName() + ChatColor.RED + "..."));
+        event.getPlayer().sendMessage(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.connected").replace("%server%", serverInfo.getName())));
         event.setTarget(serverInfo);
     }
 
@@ -84,19 +84,19 @@ public class ServerListener implements Listener {
 
         List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
         if (availableHubs.isEmpty()) {
-            event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later!"));
+            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub")));
             event.setCancelled(true);
             return;
         }
 
         ServerInfo serverInfo = OxygenBungee.getInstance().getProxy().getServerInfo(availableHubs.get(ThreadLocalRandom.current().nextInt(availableHubs.size())).getName());
         if (serverInfo == null) {
-            event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "Unavailable to find a suitable hub, please try again later!"));
+            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub")));
             event.setCancelled(true);
             return;
         }
 
-        event.getPlayer().sendMessage(new TextComponent(ChatColor.RED + "Sending you to " + ChatColor.WHITE + serverInfo.getName() + ChatColor.RED + "..."));
+        event.getPlayer().sendMessage(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.connected").replace("%server%", serverInfo.getName())));
         event.setCancelled(true);
         event.setCancelServer(serverInfo);
     }
@@ -111,6 +111,6 @@ public class ServerListener implements Listener {
             return;
         }
 
-        event.getPlayer().disconnect(ChatColor.RED + "The server is currently in maintenance mode.");
+        event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.maintenance")));
     }
 }

@@ -20,6 +20,11 @@ import dev.hely.core.bukkit.punishment.packet.PunishmentPacketListener;
 import dev.hely.core.bukkit.ranks.rank.RankManager;
 import dev.hely.core.bukkit.server.BukkitServerListener;
 import dev.hely.core.bukkit.server.BukkitServerManager;
+import dev.hely.core.bukkit.server.queue.QueueManager;
+import dev.hely.core.bukkit.server.queue.runnables.MainQueueRunnable;
+import dev.hely.core.bukkit.server.queue.runnables.QueuePositionRunnable;
+import dev.hely.core.bukkit.server.queue.runnables.QueueUpdateRunnable;
+import dev.hely.core.bukkit.server.runnable.HeartBeatRunnable;
 import dev.hely.core.bukkit.server.runnable.ServerRunnable;
 import dev.hely.core.bukkit.staff.requests.RequestManager;
 import dev.hely.core.bukkit.tag.TagManager;
@@ -105,6 +110,7 @@ public class OxygenBukkit extends JavaPlugin {
     private SaleManager saleManager;
     private StoreManager storeManager;
     private TFAManager tfaManager;
+    private QueueManager queueManager;
 
     private boolean debug_mode;
 
@@ -122,7 +128,11 @@ public class OxygenBukkit extends JavaPlugin {
         setupPackets();
         registerTasks();
 
+        new QueuePositionRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        new QueueUpdateRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        new MainQueueRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         new ServerRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        new HeartBeatRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
     }
 
@@ -233,6 +243,7 @@ public class OxygenBukkit extends JavaPlugin {
         requestHandler = new RequestManager();
         storeManager = new StoreManager();
         tfaManager = new TFAManager();
+        queueManager = new QueueManager();
     }
 
     public void setupModules(){
@@ -253,6 +264,7 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(serverManager);
         this.loadModule(storeManager);
         this.loadModule(tfaManager);
+        this.loadModule(queueManager);
     }
 
     public void setupPackets(){

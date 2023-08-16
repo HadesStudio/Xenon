@@ -47,6 +47,7 @@ public class Server {
     private List<UUID> oppedPlayers;
     private List<UUID> whitelistedPlayers;
     private long lastHeartBeat;
+    private boolean useQueue;
 
     public Server(String name,Integer port) {
         this.name = name;
@@ -59,6 +60,7 @@ public class Server {
         this.oppedPlayers = new ArrayList<>();
         this.whitelistedPlayers = new ArrayList<>();
         this.lastHeartBeat = System.currentTimeMillis();
+        this.useQueue = true;
     }
 
     public Server(String name, String group, JavaPlugin plugin, boolean stopping) {
@@ -75,6 +77,7 @@ public class Server {
         this.lastHeartBeat = System.currentTimeMillis();
         this.oppedPlayers = plugin.getServer().getOperators().stream().map(OfflinePlayer::getUniqueId).collect(Collectors.toList());
         this.whitelistedPlayers = plugin.getServer().getWhitelistedPlayers().stream().map(OfflinePlayer::getUniqueId).collect(Collectors.toList());
+        this.useQueue = true;
     }
 
     public Server(JsonObject jsonObject) {
@@ -84,6 +87,7 @@ public class Server {
         this.status = StatusData.valueOf(jsonObject.get("status").getAsString());
         this.group = jsonObject.get("group").getAsString();
         this.lastHeartBeat = jsonObject.get("lastHeartBeat").getAsLong();
+        this.useQueue = jsonObject.get("queue").getAsBoolean();
         this.onlinePlayers = new AtomicInteger(jsonObject.get("onlinePlayers").getAsInt());
         this.maximumPlayers = new AtomicInteger(jsonObject.get("maximumPlayers").getAsInt());
         this.oppedPlayers = ServerManager.GSON.<List<String>>fromJson(jsonObject.get("oppedPlayers").getAsString(),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
@@ -98,6 +102,7 @@ public class Server {
         toReturn.add("performance",this.performance.toJsonObject());
         toReturn.addProperty("status", this.status.name());
         toReturn.addProperty("group", this.group);
+        toReturn.addProperty("queue", this.useQueue);
         toReturn.addProperty("onlinePlayers", this.onlinePlayers.get());
         toReturn.addProperty("maximumPlayers", this.maximumPlayers.get());
         toReturn.addProperty("lastHeartBeat", System.currentTimeMillis());
@@ -114,6 +119,7 @@ public class Server {
         this.onlinePlayers.set(jsonObject.get("onlinePlayers").getAsInt());
         this.maximumPlayers.set(jsonObject.get("maximumPlayers").getAsInt());
         this.lastHeartBeat= jsonObject.get("lastHeartBeat").getAsLong();
+        this.useQueue = jsonObject.get("queue").getAsBoolean();
         this.oppedPlayers = ServerManager.GSON.<List<String>>fromJson(jsonObject.get("oppedPlayers").getAsString(),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
         this.whitelistedPlayers = ServerManager.GSON.<List<String>>fromJson(jsonObject.get("whitelistedPlayers").getAsString(),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
     }
@@ -130,7 +136,7 @@ public class Server {
 
             jedis.hset(key,"status",this.status.name());
             jedis.hset(key,"group",this.group);
-
+            jedis.hset(key, "queue", String.valueOf(this.useQueue));
             jedis.hset(key,"onlinePlayers","" + this.onlinePlayers.get());
             jedis.hset(key,"maximumPlayers",""+ this.maximumPlayers.get());
             jedis.hset(key, "lastHeartBeat", ""+ this.lastHeartBeat);

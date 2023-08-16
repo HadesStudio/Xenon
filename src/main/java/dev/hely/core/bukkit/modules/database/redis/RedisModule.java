@@ -2,12 +2,12 @@ package dev.hely.core.bukkit.modules.database.redis;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.gson.JsonParser;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.modules.database.redis.packet.Packet;
 import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
-import dev.hely.core.bukkit.server.BukkitServerManager;
 import lombok.Getter;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -30,13 +30,14 @@ import java.util.stream.Collectors;
  */
 @Getter
 public class RedisModule implements ModuleLoader {
-
     private boolean enabled;
 
     private boolean auth;
     private String password;
     private String channel;
     private JedisPool jedisPool;
+    private JedisPubSub pubsub;
+    private JsonParser PARSER = new JsonParser();
 
     private Multimap<Object, Method> listeners;
     private Set<String> channels;
