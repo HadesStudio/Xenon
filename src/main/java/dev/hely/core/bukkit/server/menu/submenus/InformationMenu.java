@@ -22,6 +22,7 @@ import dev.hely.core.bukkit.core.menus.submenus.ConfigReloadMenu;
 import dev.hely.core.bukkit.core.menus.submenus.ModulesMenu;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.server.menu.ServerListMenu;
+import dev.hely.core.bukkit.server.packets.ShutdownPacket;
 import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bungee.server.data.server.Server;
@@ -125,7 +126,7 @@ public class InformationMenu extends Menu {
         public void onClick(Player player, int slot, ClickType clickType) {
             if (server.getStatus() == StatusData.ONLINE) {
                 if (clickType.isLeftClick()) {
-                    
+                    OxygenBukkit.getInstance().getRedisModule().sendPacket(new ShutdownPacket(server.getName()));
                 } else {
                     server.setStatus(StatusData.WHITELISTED);
                     player.sendMessage(CC.translate("&aYou have successfully enabled the &dWhitelist &aon &6" + server.getName() + " Server&a."));
