@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.profile.log.LoggerTracker;
+import dev.hely.core.bukkit.profile.log.LogManager;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -64,26 +65,26 @@ public class KickCommand extends BaseCommand {
 
         if (sender instanceof Player) {
             Player sender_player = (Player) sender;
-            LoggerTracker.logPlayerAction(sender_player.getUniqueId(), LogActionTypes.KICKED_PLAYER, ImmutableMap.of(
-                    "staffMember", sender_player.getName(),
-                    "kickedPlayer", player.getName(),
-                    "reason", punishment.getAddedReason(),
-                    "silent", punishment.isSilent()
-            ));
+            OxygenBukkit.getInstance().getLogManager().logPlayerAction(sender_player.getUniqueId(), sender_player.getName(), Arrays.asList(
+                    "&6Staff Member&7: &a" + sender_player.getName(),
+                    "&6Kicked Player&7: &a" + player.getName(),
+                    "&6Reason&7: &a" + punishment.getAddedReason(),
+                    "&6Silent&7: &a" + punishment.isSilent()
+            ),LogActionTypes.KICKED_PLAYER);
 
-            LoggerTracker.logPlayerAction(player.getUniqueId(), LogActionTypes.PUNISHMENT_RECEIVED, ImmutableMap.of(
-                    "kickedPlayer", player.getName(),
-                    "staffMember", sender_player.getName(),
-                    "reason", punishment.getAddedReason(),
-                    "silent", punishment.isSilent()
-            ));
+            OxygenBukkit.getInstance().getLogManager().logPlayerAction(player.getUniqueId(), player.getName(), Arrays.asList(
+                    "&6Staff Member&7: &a" + sender_player.getName(),
+                    "&6Kicked Player&7: &a" + player.getName(),
+                    "&6Reason&7: &a" + punishment.getAddedReason(),
+                    "&6Silent&7: &a" + punishment.isSilent()
+            ),LogActionTypes.PUNISHMENT_RECEIVED);
         } else {
-            LoggerTracker.logPlayerAction(player.getUniqueId(), LogActionTypes.PUNISHMENT_RECEIVED, ImmutableMap.of(
-                    "kickedPlayer", player.getName(),
-                    "staffMember", "console",
-                    "reason", punishment.getAddedReason(),
-                    "silent", punishment.isSilent()
-            ));
+            OxygenBukkit.getInstance().getLogManager().logPlayerAction(player.getUniqueId(), player.getName(), Arrays.asList(
+                    "&6Staff Member&7: &4Console",
+                    "&6Kicked Player&7: &a" + player.getName(),
+                    "&6Reason&7: &a" + punishment.getAddedReason(),
+                    "&6Silent&7: &a" + punishment.isSilent()
+            ),LogActionTypes.PUNISHMENT_RECEIVED);
         }
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new PunishmentExecutePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));

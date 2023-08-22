@@ -16,75 +16,48 @@ package dev.hely.core.bukkit.profile.log.types;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 public enum LogActionTypes {
     EXECUTED_COMMAND(
-            true,
-            LogCategories.COMMAND_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.used-command")
     ),
     OP_PLAYER_COMMAND(
-            true,
-            LogCategories.COMMAND_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.op-player-command")
     ),
 
     PUNISHMENT_RECEIVED(
-            true,
-            LogCategories.PUNISHMENT_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.punishment-given")
     ),
     PUNISHMENT_REMOVED(
-            true,
-            LogCategories.PUNISHMENT_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.punishment-removed")
     ),
     BANNED_PLAYER(
-            true,
-            LogCategories.PUNISHMENT_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.banned-player")
     ),
     UNBANNED_PLAYER(
-            true,
-            LogCategories.PUNISHMENT_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.unbanned-player")
     ),
     BLACKLISTED_PLAYER(
-            true,
-            LogCategories.PUNISHMENT_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.blacklisted-player")
     ),
     UNBLACKLISTED_PLAYER(
-            true,
-            LogCategories.PUNISHMENT_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.unblacklisted-player")
     ),
     MUTED_PLAYER(
-            true,
-            LogCategories.PUNISHMENT_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.muted-player")
     ),
     UNMUTED_PLAYER(
-            true,
-            LogCategories.PUNISHMENT_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.unmuted-player")
     ),
     KICKED_PLAYER(
-            true,
-            LogCategories.PUNISHMENT_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.kicked-player")
     ),
     WARNED_PLAYER(
-            true,
-            LogCategories.PUNISHMENT_LOGS,
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.warned-player")
     );
 
-    @Getter private boolean logging;
-    @Getter private LogCategories category;
-    @Getter private String display_name;
+    @Getter private final String display_name;
 }

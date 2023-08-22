@@ -1,10 +1,8 @@
 package dev.hely.core.bukkit.commands.implement.punishment;
 
-import com.google.common.collect.ImmutableMap;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.profile.log.LoggerTracker;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
@@ -15,6 +13,7 @@ import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -68,26 +67,24 @@ public class BlacklistCommand extends BaseCommand {
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            LoggerTracker.logPlayerAction(player.getUniqueId(), LogActionTypes.BLACKLISTED_PLAYER, ImmutableMap.of(
-                    "staffMember", player.getName(),
-                    "blacklistedPlayer", profile.getName(),
-                    "reason", punishment.getAddedReason(),
-                    "silent", punishment.isSilent()
-            ));
 
-            LoggerTracker.logPlayerAction(profile.getUniqueId(), LogActionTypes.PUNISHMENT_RECEIVED, ImmutableMap.of(
-                    "blacklistedPlayer", profile.getName(),
-                    "staffMember", player.getName(),
-                    "reason", punishment.getAddedReason(),
-                    "silent", punishment.isSilent()
-            ));
+            OxygenBukkit.getInstance().getLogManager().logPlayerAction(
+                    player.getUniqueId(),
+                    player.getName(),
+                    Arrays.asList(
+                    "&6Staff Member&7: &a" + player.getName(),
+                    "&6Blacklisted Player&7: &a" + profile.getName(),
+                    "&6Reason&7: &a" + punishment.getAddedReason(),
+                    "&6Silent&7: &a" + punishment.isSilent()
+                    ),
+                    LogActionTypes.BLACKLISTED_PLAYER);
         } else {
-            LoggerTracker.logPlayerAction(profile.getUniqueId(), LogActionTypes.PUNISHMENT_RECEIVED, ImmutableMap.of(
-                    "blacklistedPlayer", profile.getName(),
-                    "staffMember", "console",
-                    "reason", punishment.getAddedReason(),
-                    "silent", punishment.isSilent()
-            ));
+            OxygenBukkit.getInstance().getLogManager().logPlayerAction(profile.getUniqueId(), profile.getName(), Arrays.asList(
+                    "&6Staff Member&7: &4Console",
+                    "&6Blacklisted Player&7: &a" + profile.getName(),
+                    "&6Reason&7: &a" + punishment.getAddedReason(),
+                    "&6Silent&7: &a" + punishment.isSilent()
+            ),LogActionTypes.BLACKLISTED_PLAYER);
         }
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new PunishmentExecutePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));

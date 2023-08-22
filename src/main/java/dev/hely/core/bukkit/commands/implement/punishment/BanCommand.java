@@ -1,10 +1,8 @@
 package dev.hely.core.bukkit.commands.implement.punishment;
 
-import com.google.common.collect.ImmutableMap;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.profile.log.LoggerTracker;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
@@ -15,6 +13,7 @@ import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -67,29 +66,29 @@ public class BanCommand extends BaseCommand {
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            LoggerTracker.logPlayerAction(player.getUniqueId(), LogActionTypes.BANNED_PLAYER, ImmutableMap.of(
-                    "staffMember", player.getName(),
-                    "bannedPlayer", profile.getName(),
-                    "duration", "permanent",
-                    "reason", punishment.getAddedReason(),
-                    "silent", punishment.isSilent()
-            ));
+            OxygenBukkit.getInstance().getLogManager().logPlayerAction(player.getUniqueId(), player.getName(), Arrays.asList(
+                    "&6Staff Member&7: &a" + player.getName(),
+                    "&6Banned Player&7: &a" + profile.getName(),
+                    "&6Reason&7: &a" + punishment.getAddedReason(),
+                    "&6Duration&7: &cPermanent",
+                    "&6Silent&7: &a" + punishment.isSilent()
+            ),LogActionTypes.BANNED_PLAYER);
 
-            LoggerTracker.logPlayerAction(profile.getUniqueId(), LogActionTypes.PUNISHMENT_RECEIVED, ImmutableMap.of(
-                    "bannedPlayer", profile.getName(),
-                    "staffMember", player.getName(),
-                    "duration", "permanent",
-                    "reason", punishment.getAddedReason(),
-                    "silent", punishment.isSilent()
-            ));
+            OxygenBukkit.getInstance().getLogManager().logPlayerAction(profile.getUniqueId(), profile.getName(), Arrays.asList(
+                    "&6Staff Member&7: &a" + player.getName(),
+                    "&6Banned Player&7: &a" + profile.getName(),
+                    "&6Reason&7: &a" + punishment.getAddedReason(),
+                    "&6Duration&7: &cPermanent",
+                    "&6Silent&7: &a" + punishment.isSilent()
+            ),LogActionTypes.PUNISHMENT_RECEIVED);
         } else {
-            LoggerTracker.logPlayerAction(profile.getUniqueId(), LogActionTypes.PUNISHMENT_RECEIVED, ImmutableMap.of(
-                    "bannedPlayer", profile.getName(),
-                    "staffMember", "console",
-                    "duration", "permanent",
-                    "reason", punishment.getAddedReason(),
-                    "silent", punishment.isSilent()
-            ));
+            OxygenBukkit.getInstance().getLogManager().logPlayerAction(profile.getUniqueId(), profile.getName(), Arrays.asList(
+                    "&6Staff Member&7: &4Console",
+                    "&6Banned Player&7: &a" + profile.getName(),
+                    "&6Reason&7: &a" + punishment.getAddedReason(),
+                    "&6Duration&7: &cPermanent",
+                    "&6Silent&7: &a" + punishment.isSilent()
+            ),LogActionTypes.PUNISHMENT_RECEIVED);
         }
         OxygenBukkit.getInstance().getProfileManager().sendBanPunishmentNotification(profile.getUniqueId(), punishment);
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new PunishmentExecutePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));

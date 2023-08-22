@@ -14,6 +14,7 @@ import dev.hely.core.bukkit.modules.database.mongo.MongoModule;
 import dev.hely.core.bukkit.modules.database.redis.RedisModule;
 import dev.hely.core.bukkit.modules.listener.ListenerModule;
 import dev.hely.core.bukkit.profile.ProfileManager;
+import dev.hely.core.bukkit.profile.log.LogManager;
 import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
 import dev.hely.core.bukkit.profile.tfa.TFAManager;
 import dev.hely.core.bukkit.punishment.packet.PunishmentPacketListener;
@@ -113,6 +114,7 @@ public class OxygenBukkit extends JavaPlugin {
     private StoreManager storeManager;
     private TFAManager tfaManager;
     private QueueManager queueManager;
+    private LogManager logManager;
 
     private boolean debug_mode;
 
@@ -136,6 +138,8 @@ public class OxygenBukkit extends JavaPlugin {
         new ServerRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         new HeartBeatRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
+
+        logManager.registerAllLogs();
     }
 
     public void onDisable() {
@@ -247,6 +251,7 @@ public class OxygenBukkit extends JavaPlugin {
         storeManager = new StoreManager();
         tfaManager = new TFAManager();
         queueManager = new QueueManager();
+        logManager = new LogManager();
     }
 
     public void setupModules(){
