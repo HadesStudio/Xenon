@@ -1,11 +1,10 @@
 commands:
   no-permission: "&c&cYou do not have sufficient permissions to execute this command."
-  argument-not-found: "&cArgument &f%argument% &ccould not be found."
+  argument-not-found: "&cSorry, the command argument '&f%argument%&c' could not be found."
   only-player: "&cSorry, only players can execute this command."
   only-console: "&cYou cannot execute this command."
   never-played: "&cThe player by the name of '&c&l%player%&c' has never connected to the server."
   offline-player: "&cThe player by the name of '&c&l%player%&c' is currently not connected to the server!"
-
 chat:
   muted: "&cYou cannot speak in chat right now because it is currently muted!"
   only-high-rank: "&cSorry, you must purchase &6Hely Rank &cto be able to speak in chat right now!"
@@ -14,11 +13,10 @@ chat:
     - "&cPlease wait another &c&l%wait_time% &cbefore chatting again."
   filtered-message-alert: "&c[Chat Filter] &7%format%"
   blocked: "&cYour message contained blocked content. It has been blocked from sending in chat."
-
 chat-command:
   usage:
     - "&7&l&m-----------------------------------"
-    - "&6&lChat Commands"
+    - "&6&lChat Manager"
     - "&7All chat moderation commands are listed below."
     - "&7"
     - "&6* /chat mute &7- Mute the server chat."
@@ -54,11 +52,9 @@ chat-command:
     disabled-slow: "&aYou have successfully removed the &6Chat Slowdown&a."
     slowed-chat: "&aYou have successfully set the &6Chat Slowdown &ato &6%time% seconds&a."
     broadcast:
-      - "&aChat has just been put on slowdown by &6%player%&a."
-
+      - "&aChat has just been put on slow mode by &6%player%&a."
 server-manager:
-  server-offline: "&c⚠ &6%server% &7has just went &cOFFLINE&7! &c⚠"
-
+  server-offline: "&6[Server Manager] &c%server% &7has just went &4Offline&7!"
 queue-system:
   in-queue: "&cSorry, you are already in another &6Server Queue&c."
   not-exist: "&cSorry, the queue by the name of '&6%server%&c' could not be found."
@@ -78,10 +74,8 @@ queue-system:
   toggled:
     enabled: "&aYou have successfully &a&nenabled&a the &6%server% Queue&a."
     disabled: "&cYou have successfully &c&ndisabled&c the &6%server% Queue&c."
-
 join-queue-command:
   usage: "&cCorrect Usage: /joinqueue <server>"
-
 auth-command:
   usage: "&cCorrect Usage: /auth <code>"
   invalid-code: "&cYou have provided a invalid &6Authentication Code&c."
@@ -98,12 +92,10 @@ auth-command:
   already-auth: "&aYou have already been &6Authenticated&a."
   success: "&aYou have successfully &6Authenticated &ayour account."
   to-many-attempts: "&cYou have been kicked for failing your &6Staff Authentication&c."
-
 removeauth-command:
   usage: "&cCorrect Usage: /removeauth <player>"
   already-removed: "&cThis player does not have &6Two Factor Authentication&c."
   success: "&aYou have successfully removed &c%player%'s &a2FA requirement."
-
 two-factor:
   join:
     - "&7&l&m---------------------------------------"
@@ -117,36 +109,29 @@ two-factor:
     - "&cYou need to &6Authenticate&c! Type &6/auth &cto begin the process."
   next-auth-needed:
     - "&7You will need to authenticate again in &6%time%&7."
-
 togglepm-command:
   enabled: "&aYou have successfully enabled your &6Private Messages&a."
   disabled: "&cYou have successfully disabled your &6Private Messages&c."
-
 togglesounds-command:
   enabled: "&aYou have successfully enabled your &6Message Sounds&a."
   disabled: "&cYou have successfully disabled your &6Message Sounds&c."
-
 chat-spy:
   message: "&6[Chat Spy] &a%sender% &7&o-> &a%target%&7: &c%message%" # %sender%, %target%, %message%
-
 message-command:
   usage: "&cCorrect Usage: /message <player> <message>"
   messages-disabled: "&cYou cannot send &6Private Messages &cwhile you have &6Private Messages &cdisabled."
   not-receiving: "&cSorry, &6%player% &cis currently not accepting &6Private Messages&c."
   to-format: "&7(To %target%) &6%message%"
   from-format: "&7(From %target%) &6%message%"
-
 reply-command:
   usage: "&cCorrect Usage: /reply <message>"
   not-receiving: "&cSorry, &6%player% &cis currently not accepting &6Private Messages&c."
   messages-disabled: "&cYou cannot send &6Private Messages &cwhile you have &6Private Messages &cdisabled."
   no-last-message: "&cYou have not sent a message to anyone recently."
   conversation: "&7You are currently in a conversation with &6%player_name%&7."
-
 seen-command:
   usage: "&cCorrect Usage: /seen <player>"
   message: "&6%player% &awas last seen &6%time% ago &aon &6%server%&a."
-
 vpn:
   usage: "&cCorrect Usage: /vpn <check|whitelist|unwhitelist> <player>"
   check:
@@ -178,35 +163,33 @@ vpn:
   unwhitelist:
     not-whitelist: "&cThis player does not have a &6VPN Whitelist&c."
     unwhitelisted: "&cYou have successfully removed this players &6VPN Whitelist&a."
-
 punishments:
   history-menu:
     pardon:
       ban:
         already-removed: "&cThis ban has already been removed by &c&n%remover%&c.."
-        enter-pardon-reason: "&cPlease enter in a reason for this &dPardon&c:"
+        enter-pardon-reason: "&cPlease enter in a reason for this &6Pardon&c:"
         pardoned: "&cYou have successfully pardoned this players ban."
-        no-permission: "&cYou do not have permission to &dPardon Bans&c."
+        no-permission: "&cYou do not have permission to &6Pardon Bans&c."
       blacklist:
         already-removed: "&cThis blacklist has already been removed by &c&n%remover%&c.."
-        enter-pardon-reason: "&cPlease enter in a reason for this &dPardon&c:"
+        enter-pardon-reason: "&cPlease enter in a reason for this &6Pardon&c:"
         pardoned: "&cYou have successfully pardoned this players blacklist."
-        no-permission: "&cYou do not have permission to &dPardon Blacklists&c."
+        no-permission: "&cYou do not have permission to &6Pardon Blacklists&c."
       mute:
         already-removed: "&cThis mute has already been removed by &c&n%remover%&c.."
-        enter-pardon-reason: "&cPlease enter in a reason for this &dPardon&c:"
+        enter-pardon-reason: "&cPlease enter in a reason for this &6Pardon&c:"
         pardoned: "&cYou have successfully pardoned this players mute."
-        no-permission: "&cYou do not have permission to &dPardon Mutes&c."
-
+        no-permission: "&cYou do not have permission to &6Pardon Mutes&c."
   broadcast:
     blacklist:
-      message: "%target% &awas blacklisted by &4%sender%&a."
+      message: "&c%target% &6was just blacklisted by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
     blacklist-silent:
-      message: "%target% &awas &esilently &ablacklisted by &4%sender%&a."
+      message: "&7[S] &c%target% &6was just blacklisted by &c%sender%&6."
       hover:
         enabled: true
         message:
@@ -218,214 +201,194 @@ punishments:
         message:
           - "&eReason: &c%reason%"
     un-blacklist-silent:
-      message: "%target% &awas &esilently &aun-blacklisted by &4%sender%&c."
+      message: "&7[S] &c%target% &6was just unblacklisted by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
-          
     ban:
-      message: "%target% &awas banned by &4%sender%&a."
+      message: "&c%target% &6was just banned by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     ban-silent:
-      message: "%target% &awas &esilently &abanned by &4%sender%&a."
+      message: "&7[S] &c%target% &6was just banned by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     temp-ban:
-      message: "%target% &awas temporarily banned by &4%sender%&a."
+      message: "&c%target% &6was just temporarily banned by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
     temp-ban-silent:
-      message: "%target% &awas &esilently &atemporarily banned by &4%sender%&a."
+      message: "&7[S] &c%target% &6was just temporarily banned by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"  
     unban:
-      message: "%target% &awas unbanned by &4%sender%&a."
+      message: "&c%target% &6was just unbanned by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
     unban-silent:
-      message: "%target% &awas &esilently &aunbanned by &4%sender%&a."
+      message: "&7[S] &c%target% &6was just unbanned by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
-
     mute:
-      message: "%target% &ahas been muted by &4%sender%&a."
+      message: "&c%target% &6was just muted by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     mute-silent:
-      message: "%target% &ahas been &esilently &amuted by &4%sender%&a."
+      message: "&7[S] &c%target% &6was just muted by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     temp-mute:
-      message: "%target% &ahas been temporarily muted by &4%sender%&a."
+      message: "&c%target% &6was just temporarily muted by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
     temp-mute-silent:
-      message: "%target% &ahas been &esilently &atemporarily muted by &4%sender%&a."
+      message: "&7[S] &c%target% &6was just temporarily muted by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
     unmute:
-      message: "%target% &awas un-muted by &4%sender%&a."
+      message: "&c%target% &6was just unmuted by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
     unmute-silent:
-      message: "%target% &awas &esilently &aun-muted by &4%sender%&a."
+      message: "&7[S] &c%target% &6was just unmuted by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
-    
-    
     warn:
-      message: "%target% &awas warned by &4%sender%&a."
+      message: "&c%target% &6was just given a warning by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     warn-silent:
-      message: "%target% &awas &esilently &awarned by &4%sender%&a."
+      message: "&7[S] &c%target% &6was just given a warning by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     temp-warn:
-      message: "%target% &awas temporarily warned by &4%sender%&a."
+      message: "&c%target% &6was just given a temporary warning by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
     temp-warn-silent:
-      message: "%target% &awas &esilently &atemporarily warned by &4%sender%&a."
+      message: "&7[S] &c%target% &6was just given a temporary warning by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
-          
-      
-      
     kick:
-      message: "%target% &awas kicked by &4%sender%&a."
+      message: "&c%target% &6was just kicked by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
     kick-silent:
-      message: "%target% &awas &esilent &akicked by &4%sender%&a."
+      message: "&7[S] &c%target% &6was just kicked by &c%sender%&6."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
-          
   kick:
     blacklist:
-      - "&cYour account has been blacklisted from the OxygenGlobal Network."
+      - "&cYour account has been blacklisted from the &6Hely Network&c."
       - "&cReason: %reason%"
       - "&cThis type of punishment cannot be appealed."
     ban:
-      - "&cYour account has been suspended from the OxygenGlobal Network."
+      - "&cYour account has been suspended from the &6Hely Network&c."
       - "&cReason: %reason%"
       - "&cAppeal at %teamspeak%"
     temp-ban:
-      - "&cYour account has been suspended from the OxygenGlobal Network."
+      - "&cYour account has been suspended from the &6Hely Network&c."
       - "&cReason: %reason%"
       - "&cExpires in %duration%"
     kick:
-      - "&cYou have been kicked by %sender%"
+      - "&cYou have been kicked by &c&l%sender%&c."
       - "&cReason: %reason%"
   muted:
-    permanent: "&cYou have been permanently muted by &l%sender% &cfor &l%reason%&c."
-    temp: "&cYou have been temporarily muted by &l%sender% &cfor &l%reason% &cfor &l%duration%&c."
+    permanent: "&6You have been permanently muted by &c%sender% &6for &c%reason%&6."
+    temp: "&6You have been temporarily muted by &c%sender% &6for &c%reason% &6for &c%duration%&6."
   warned:
-    permanent: "&cYou have been permanently warned by &l%sender% &cfor &l%reason%&c."
-    temp: "&cYou have been temporarily warned by &l%sender% &cfor &l%reason% &cfor &l%duration%&c."
-
+    permanent: "&6You have been given a warning by &c%sender% &6for &c%reason%&6."
+    temp: "&cYou have been given a temporary warning by &c%sender% &6for &c%reason% &6for &c%duration%&6."
 history:
   usage: "&cUsage: /history <player>"
-
 blacklist:
-  usage: "&cUsage: /blacklist <player> <reason> (&b-s&c) (&b-c&c)"
+  usage: "&cUsage: /blacklist <player> <reason> <-s>"
   already-blacklisted: "&cThat player has already been blacklisted."
-
 un-blacklist:
-  usage: "&cUsage: /unblacklist <player> <reason> (&b-s&c)"
+  usage: "&cUsage: /unblacklist <player> <reason> <-s>"
   not-blacklisted: "&cThat player is not blacklisted."
-
 edit-profile:
   usage: "&cUsage: /editprofile <player>"
-
 ban:
-  usage: "&cUsage: /ban <player> <reason> (&b-s&c) (&b-c&c)"
+  usage: "&cUsage: /ban <player> <reason> <-s>"
   already-banned: "&cThat player already has an active ban."
-
 temp-ban:
-  usage: "&cUsage: /tempban <player> <duration> <reason> (&b-s&c) (&b-c&c)"
-
+  usage: "&cUsage: /tempban <player> <duration> <reason> <-s>"
 un-ban:
-  usage: "&cUsage: /unban <player> <reason> (&b-s&c)"
+  usage: "&cUsage: /unban <player> <reason> <-s>"
   not-banned: "&cThat player is not banned."
-
 mute:
-  usage: "&cUsage: /mute <player> [optional:duration] <reason> (&b-s&c)"
+  usage: "&cUsage: /mute <player> <duration> <reason> <-s>"
   already-muted: "&cThat player is already muted"
-
 un-mute:
-  usage: "&cUsage: /unmute <player> <reason> (&b-s&c)"
+  usage: "&cUsage: /unmute <player> <reason> <-s>"
   not-muted: "&cThat player is not muted."
-
 warn:
-  usage: "&cUsage: /warn <player> [optional:duration] <reason> (&b-s&c)"
-
+  usage: "&cUsage: /warn <player> <duration> <reason> <-s>"
 kick:
-  usage: "&cUsage: /warn <player> <reason> (&b-s&c)"
-
+  usage: "&cUsage: /warn <player> <reason> <-s>"
 tag:
   usage:
     - "&7&l&m-----------------------------------"
-    - "&d&lTag System Help"
+    - "&6&lTag System Help"
     - "&7All commands and usages are listed below."
     - ""
-    - "&d* &f/tag create <name> &7- Create a tag with specified name."
-    - "&d* &f/tag remove <tag> &7- Delete a tag."
-    - "&d* &f/tag setprefix <tag> <prefix> &7- ."
-    - "&d* &f/tag setweight <tag> <weight> &7- ."
-    - "&d* &f/tag import &7- ."
-    - "&d* &f/tag export &7- ."
-    - "&d* &f/tag list &7- View a list of all created tags."
+    - "&6* &f/tag create <name> &7- Create a tag with specified name."
+    - "&6* &f/tag remove <tag> &7- Delete a tag."
+    - "&6* &f/tag setprefix <tag> <prefix> &7- Change the prefix of a tag."
+    - "&6* &f/tag setweight <tag> <weight> &7- Change the weight of a tag."
+    - "&6* &f/tag import &7- Import all tags from the YAML file."
+    - "&6* &f/tag export &7- Export all tags to the YAML file."
+    - "&6* &f/tag list &7- View a list of all created tags."
     - "&7&l&m-----------------------------------"
   create:
     usage: "&cUsage: /tag create <name>"
@@ -445,44 +408,40 @@ tag:
   import:
     imported: "&aThe tags have been imported from tags.yml!"
   dont-exists: "&cA tag with that name doesn't exists."
-
-
 profile-system:
   social-system:
-    updated-link: "&7You have successfully update your &d%type% Social Link&7!"
-    removed: "&cYou have successfully removed your &d%type% Social Link&c!"
-    setup-message: "&7Please type your &d%type% &7link in chat. You can always type 'CANCEL' to cancel this."
-    cancelled-setup: "&cYou have cancelled setting up your &d%type% Social Link&7!"
+    updated-link: "&7You have successfully update your &6%type% Social Link&7!"
+    removed: "&cYou have successfully removed your &6%type% Social Link&c!"
+    setup-message: "&7Please type your &6%type% &7link in chat. You can always type 'CANCEL' to cancel this."
+    cancelled-setup: "&cYou have cancelled setting up your &6%type% Social Link&7!"
     invalid-link: "&cYou have provided a invalid social link. Please try again."
-    setup-link: "&aYou have successfully setup your &d%type% Social Link&a!"
+    setup-link: "&aYou have successfully setup your &6%type% Social Link&a!"
   notifications:
     join: # %notification_amount%
-      - ""
-      - "&4&lNotifications"
-      - "&7You have %notification_amount% unread notifications!"
-      - "&7Use /notifications to view them."
-      - ""
+      - "&7&l&m-----------------------------------"
+      - "&6&lNotifications"
+      - "&7You have &6%notification_amount% unread &7notifications!"
+      - "&7Use &6/notifications &7to view them."
+      - "&7&l&m-----------------------------------"
     new-notification:
-      - ""
-      - "&4&lNotifications"
-      - "&7You have just received a new notification!"
-      - "&7Use /notifications to view it."
-      - ""
+      - "&7&l&m-----------------------------------"
+      - "&6&lNotifications"
+      - "&7You have just received a new &6notification&7!"
+      - "&7Use &6/notifications &7to view more information."
+      - "&7&l&m-----------------------------------"
     read-all: "&cYou have marked all notifications as read."
     read: "&cYou have successfully marked this notification as read."
-
 friends:
   friend-add:
-    friend-self: "&cYou cannot send a friend request to yourself."
-    not-real: "&cThat player has never joined the server before."
-    already-friend: "&cYou are already friends with that player."
-    already-outgoing: "&cSorry, you already have an outgoing friend request to '&c&l%player%&c'."
-    added-friend-message: "&9&lFriends &7| &a%player% &fhas just added you as a friend! Click here to accept it."
+    friend-self: "&6[Friends] &cYou cannot send a friend request to yourself."
+    not-real: "&6[Friends] &cThat player has never joined the server before."
+    already-friend: "&6[Friends] &cYou are already friends with that player."
+    already-outgoing: "&6[Friends] &cSorry, you already have an outgoing friend request to '&c&l%player%&c'."
+    added-friend-message: "&6[Friends] &a%player% &fhas just added you as a friend! Click here to accept it."
     hover-message: "&7Click here to add &9%player% &7as your friend."
     sent:
       - ""
-      - "&4&lNotifications"
-      - "&7You have sent a friend request to &a%player%&7."
+      - "&6[Friends] &7You have sent a friend request to &a%player%&7."
       - ""
   friend-accept:
     accept-self: "&cYou cannot send a friend request to yourself."
@@ -491,41 +450,34 @@ friends:
     no-request: "&cYou have not received a friend request from that player."
     added:
       - ""
-      - "&4&lNotifications"
-      - "&7You are now friends with &a%player%&7."
+      - "&6[Friends] &7You are now friends with &a%player%&7."
       - ""
-
 admin-chat:
   enabled: "&eAdmin chat has been &aenabled&e."
   disabled: "&eAdmin chat has been &cdisabled&e."
   format: "&4[Admin] &7(%server_name%) &r%player%&7: &c%message%"
-
 staff-chat:
   enabled: "&eStaff chat has been &aenabled&e."
   disabled: "&eStaff chat has been &cdisabled&e."
   format: "&9[Staff] &7(%server_name%) &r%player%&7: &b%message%"
-
 requests:
   invalid-message: "&cYou must provide a valid message."
   closed: "&cYou have successfully closed %player%'s staff request."
   closed-player: "&aYour &6Staff Request &ahas just been closed by &c%staff_member%&a."
   type-note: "&aPlease type the note you would like to add to this request."
   note-added: "&aYou have successfully added a new &6Staff Note &ato this player request."
-  closed-broadcast: "&9[Requests] &6%staff_member% &7has just closed &a%player%'s &7staff request."
-
+  closed-broadcast: "&6[Requests] &6%staff_member% &7has just closed &a%player%'s &7staff request."
   claim:
-    claimed: "&9[Requests] &7You have successfully claimed &a%player%'s &7staff request."
-    broadcast: "&9[Requests] &a%player% &7has claimed &a%creator_name% &6Staff Request&7."
-    unclaimed: "&9[Requests] &cYou have successfully unclaimed &a%player%'s &cstaff request."
-    already-claimed: "&9[Requests] &cYou cannot claim this &6Staff Request &cbecause it already has been claimed."
-
-
+    claimed: "&6[Requests] &7You have successfully claimed &a%player%'s &7staff request."
+    broadcast: "&6[Requests] &a%player% &7has claimed &a%creator_name% &6Staff Request&7."
+    unclaimed: "&6[Requests] &cYou have successfully unclaimed &a%player%'s &cstaff request."
+    already-claimed: "&6[Requests] &cYou cannot claim this &6Staff Request &cbecause it already has been claimed."
   helpop:
     usage: "&cCorrect Usage: /helpop <message>"
-    broadcast: "&9[Request] &7(%server%) &a&n%player%&a has requested staff assistance: &7%message%"
+    broadcast: "&6[Request] &7(%server%) &a&n%player%&a has requested staff assistance: &7%message%"
     created: "&aYou have successfully sent a &6Staff Request&a."
   report:
     usage: "&cCorrect Usage: /report <player> <message>"
     not-online: "&cThat player is not on the server.."
-    broadcast: "&9[Request] &7(%server%) &a&n%player%&a has just reported &6%reported_player%&a: &7%message%"
+    broadcast: "&6[Request] &7(%server%) &a&n%player%&a has just reported &6%reported_player%&a: &7%message%"
     created: "&aYou have successfully sent a &6Staff Report Request&a."
