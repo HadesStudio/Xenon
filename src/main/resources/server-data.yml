@@ -1,3 +1,10 @@
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
+
 server-name: "Kitmap" # This is the name of THIS server that it is running on.
 region: "UNITED_STATES" # This is the proxy region for THIS server. (UNITED_STATES, EUROPE, AUSTRALIA, RUSSIA)
 group: "Lobbies" # The group that THIS server is categorized in.
