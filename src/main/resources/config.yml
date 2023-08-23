@@ -6,29 +6,23 @@
 ###################################################################################
 
 debug-mode: true # Do not edit the status of this via the config, use the debug mode command in game.
-
 server:
   name: "Hub" # This is the name of the server this plugin is currently installed in.
-
-
 # Advanced Client Version Data:
 # This plugin will give you further information about your players.
 # What client they are using, like lunar client, cosmic client, etc.
 # This system can also detect some hacked clients!
 advanced-client-version-data:
   enabled: true # Do you want to enable this system? NOTE: This system is always WIP.
-
   hacked-client: "&d[HAC]"
   cheat-breaker: "&7[&4C&bB&7]"
   cosmic-client: "&9[CC]"
   lunar-client: "&b[LC]"
   forge: "&6[F]"
   vanilla: "&a[V]"
-
 command-system:
   disabled-commands:
     - "test"
-
 name-mc:
   enabled: true # Do you want to enable the NameMC System?
   reminder: true # Do you want to send reminders when someone hasn't voted for your server?
@@ -46,11 +40,9 @@ name-mc:
     broadcast:
       - "&a%player% &7has just voted for our server on &6NameMC&7!"
     not-liked: "&cYou have not liked our server on &6NameMC &cyet, you must do that before claiming your rewards."
-
 chat-system:
   enabled: true # Do you want to use the built in chat system?
   warning-system: true # Do you want to use the blocked chat message warning system?
-
   mute-bypass-permission: "oxygen.chat.highrank"
   staff-bypass-permission: "oxygen.chat.bypass" # The permission that makes people exempt from chat punishments,etc.
   warning-amount: 5 # How many warnings are they given before a mute or ban?
@@ -64,7 +56,6 @@ chat-system:
     - "helydev.com"
     - "store.helydev.com"
   chat-format: "%tags% %rank_prefix% %player%%rank_suffix%&7: &f"
-
 two-factor:
   enabled: true
   settings:
@@ -80,7 +71,6 @@ two-factor:
       - "&7Scan the QR code supplied on this"
       - "&7map to complete your &6Authentication&7."
       - "&7&l&m----------------------------"
-
 punishments:
   join:
     allow-banned: false
@@ -106,9 +96,6 @@ punishments:
       - "&cBanned By: &7%banner%"
       - "&cDuration: &7%duration%"
       - "&cServer: &7%server%"
-
-
-
 statistics-settings:
   server-1:
     enabled: true # Do you want to enable statistics for this server?
