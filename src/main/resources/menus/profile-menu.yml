@@ -1,168 +1,167 @@
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
+
 title: "%player% - Profile" # %player%
 placeholders:
   style: "SPECIFIC" # Options: FILLED, SPECIFIC
   glowing: false
   specific-slots: [1, 2, 3, 7, 8, 9, 37, 45, 46, 47, 53, 54] # This will only work if you have the 'style' set to 'FILLED'.
 size: 54 # This is how big the inventory is. This must be in increments of 9.
-
 statistics-button:
   slot: 30
-  title: "&4&lYour Statistics"
+  title: "&6Statistics"
   material: "PAPER"
   data: 0
   lore: # %player%, %total_kills%, %total_deaths%
     - "&7This will view all your statistics across all servers."
     - ""
-    - " &fGlobal Kills: &c%total_kills%"
-    - " &fGlobal Deaths: &c%total_deaths%"
+    - " &6Global Kills: &c%total_kills%"
+    - " &6Global Deaths: &c%total_deaths%"
     - ""
-    - "&7Click here to view extended information."
-
+    - "&6Left-Click &7here to view extended information."
 social-button:
   slot: 20
-  title: "&4&lSocial Media"
+  title: "&6Social Media"
   material: "PAINTING"
   data: 0
   lore: # %player%, %total_kills%, %total_deaths%
     - "&7Release your social media links to others."
     - ""
-    - " &fSocials Linked: &c%total_linked%/5"
+    - " &6Social Linked: &c%total_linked%/5"
     - ""
-    - "&7Click here to view extended information."
-
+    - "&6Left-Click &7here to view extended information."
 profile-button:
   slot: 13
-  title: "&4&lYour Profile"
+  title: "&6Profile"
   material: "SKULL_ITEM" # If you want the players head to appear, use "SKULL_ITEM".
   data: 0
   lore: # %player%, %total_kills%, %total_deaths%
     - "&7View all of your useful information."
     - ""
-    - " &fRank: &c%rank%"
-    - " &fRank Duration: &c%rank_time%"
+    - " &6Rank: &c%rank%"
+    - " &6Ranm Duration: &c%rank_time%"
     - ""
-    - "&7Click here to view extended information."
-
+    - "&6Left-Click &7here to view extended information."
 friends-button:
   slot: 24
-  title: "&4&lFriends"
+  title: "&6Friends"
   material: "EYE_OF_ENDER"
   data: 0
   lore: # %player%, %total_kills%, %total_deaths%
     - "&7You can manage all of your friends using this."
     - ""
-    - " &fFriends: &c%friends_size%"
-    - " &fFriend Requests: &c%friend_requests_size%"
+    - " &6Friends: &c%friends_size%"
+    - " &6Friend Requests: &c%friend_requests_size%"
     - ""
-    - "&dLeft-Click &7to view all your friends."
-    - "&dRight-Click &7to view all friend requests."
-
+    - "&6Left-Click &7to view all your friends."
+    - "&6Right-Click &7to view all friend requests."
 notifications-button:
   slot: 32
-  title: "&4&lNotifications"
+  title: "&6Notificationz"
   material: "WATCH"
   data: 0
   lore: # %player%, %total_kills%, %total_deaths%
     - "&7View all of your notifications."
     - ""
-    - " &fUnread Notifications: &c%unread_size%"
+    - " &6Unread Notifications: &c%unread_size%"
     - ""
     - "&7Click here to view all notifications."
 
 social-media-menu:
-  title: "&d&lSocial Media"
+  title: "&6Social Media"
   size: 27
-
   discord:
     slot: 0
-    name: "&d&lDiscord"
+    name: "&6Discord"
     material: "SKULL_ITEM"
     data:
       data: 0
       skull-owner: "MHF_Discord" # Leave blank to just use data.
     lore:
-      - "&d&lDiscord Tag: &c%discord%"
+      - "&6Discord Tag: &c%discord%"
       - ""
-      - "&dLeft-Click &chere to change your discord."
-      - "&dRight-Click &chere to remove your discord."
+      - "&6Left-Click &chere to change your discord."
+      - "&6Right-Click &chere to remove your discord."
   twitter:
     slot: 1
-    name: "&d&lTwitter"
+    name: "&6Twitter"
     material: "SKULL_ITEM"
     data:
       data: 0
       skull-owner: "MHF_Twitter" # Leave blank to just use data.
     lore:
-      - "&d&lTwitter Link: &c%link%"
+      - "&6Twitter Link: &c%link%"
       - ""
-      - "&dLeft-Click &chere to change your twitter link."
-      - "&dRight-Click &chere to remove your twitter link."
+      - "&6Left-Click &chere to change your twitter link."
+      - "&6Right-Click &chere to remove your twitter link."
   youtube:
     slot: 2
-    name: "&d&lYouTube"
+    name: "&6YouTube"
     material: "SKULL_ITEM"
     data:
       data: 0
       skull-owner: "MHF_YouTube" # Leave blank to just use data.
     lore:
-      - "&d&lYouTube Link: &c%link%"
+      - "&6YouTube Link: &c%link%"
       - ""
-      - "&dLeft-Click &chere to change your Youtube link."
-      - "&dRight-Click &chere to remove your Youtube link."
+      - "&6Left-Click &chere to change your Youtube link."
+      - "&6Right-Click &chere to remove your Youtube link."
   twitch:
     slot: 3
-    name: "&d&lTwitch"
+    name: "&6Twitch"
     material: "SKULL_ITEM"
     data:
       data: 0
       skull-owner: "MHF_Twitch" # Leave blank to just use data.
     lore:
-      - "&d&lTwitch Link: &c%link%"
+      - "&6Twitch Link: &c%link%"
       - ""
-      - "&dLeft-Click &chere to change your Twitch link."
-      - "&dRight-Click &chere to remove your Twitch link."
+      - "&6Left-Click &chere to change your Twitch link."
+      - "&6Right-Click &chere to remove your Twitch link."
   instagram:
     slot: 4
-    name: "&d&lInstagram"
+    name: "&6Instagram"
     material: "SKULL_ITEM"
     data:
       data: 0
       skull-owner: "MHF_Instagram" # Leave blank to just use data.
     lore:
-      - "&d&lTwitch Link: &c%link%"
+      - "&6Twitch Link: &c%link%"
       - ""
-      - "&dLeft-Click &chere to change your Instagram link."
-      - "&dRight-Click &chere to remove your Instagram link."
-
+      - "&6Left-Click &chere to change your Instagram link."
+      - "&6Right-Click &chere to remove your Instagram link."
 friends:
   friends-menu:
-    title: "&d&lFriends"
+    title: "&6Friends"
     button:
-      name: "&d%player_name%"
+      name: "&6%player_name%"
       lore: # %player%
-        - "&dLeft-Click &7to remove this player from"
-        - "&7your &dFriends List&7."
-        - "&dRight-Click &7to view the players profile."
+        - "&6Left-Click &7to remove this player from"
+        - "&7your &6Friends List&7."
+        - "&6Right-Click &7to view the players profile."
   friends-request-menu:
-    title: "&d&lFriend Requests"
+    title: "&6Friend Requests"
     button:
-      name: "&d%player_name%"
+      name: "&6%player_name%"
       lore: # %player%
-        - "&dLeft-Click &7to accept this friend request."
-        - "&dRight-Click &7to view the players profile."
-
+        - "&6Left-Click &7to accept this friend request."
+        - "&6Right-Click &7to view the players profile."
 notifications:
   notification-menu:
-    title: "&d&lNotifications"
+    title: "&6Notifications"
     read-all:
       material: "NETHER_STAR"
       data: 0
-      name: "&d&lRead All"
+      name: "&6Read All"
       lore: # %notification_size%
         - "&7Click here to mark all notifications"
         - "&7as &cread&7."
     notification:
       material: "PAPER"
       data: 0
-      name: "&dNotification #%number% - %date%"
-      read-line-lore: "&dLeft-Click &7to mark this notification as read."
+      name: "&6New Notification #%number% - %date%"
+      read-line-lore: "&6Left-Click &7to mark this notification as read."
