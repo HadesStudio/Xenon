@@ -57,6 +57,12 @@ public enum LogActionTypes {
     ),
     WARNED_PLAYER(
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.warned-player")
+    ),
+    JOINED_SERVER(
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.joined-server")
+    ),
+    DISCONNECTED_SERVER(
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.leave-server")
     );
 
     @Getter private final String display_name;

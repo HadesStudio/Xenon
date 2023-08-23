@@ -3,6 +3,7 @@ package dev.hely.core.bukkit.commands.implement.punishment;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
@@ -77,14 +78,14 @@ public class BlacklistCommand extends BaseCommand {
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Silent&7: &a" + punishment.isSilent()
                     ),
-                    LogActionTypes.BLACKLISTED_PLAYER);
+                    LogActionTypes.BLACKLISTED_PLAYER, LogCategories.PUNISHMENT_LOGS);
         } else {
             OxygenBukkit.getInstance().getLogManager().logPlayerAction(profile.getUniqueId(), profile.getName(), Arrays.asList(
                     "&6Staff Member&7: &4Console",
                     "&6Blacklisted Player&7: &a" + profile.getName(),
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.BLACKLISTED_PLAYER);
+            ),LogActionTypes.BLACKLISTED_PLAYER, LogCategories.PUNISHMENT_LOGS);
         }
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new PunishmentExecutePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));

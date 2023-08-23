@@ -5,6 +5,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.log.LogManager;
+import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
@@ -70,21 +71,21 @@ public class KickCommand extends BaseCommand {
                     "&6Kicked Player&7: &a" + player.getName(),
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.KICKED_PLAYER);
+            ),LogActionTypes.KICKED_PLAYER, LogCategories.PUNISHMENT_LOGS);
 
             OxygenBukkit.getInstance().getLogManager().logPlayerAction(player.getUniqueId(), player.getName(), Arrays.asList(
                     "&6Staff Member&7: &a" + sender_player.getName(),
                     "&6Kicked Player&7: &a" + player.getName(),
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.PUNISHMENT_RECEIVED);
+            ),LogActionTypes.PUNISHMENT_RECEIVED, LogCategories.PUNISHMENT_LOGS);
         } else {
             OxygenBukkit.getInstance().getLogManager().logPlayerAction(player.getUniqueId(), player.getName(), Arrays.asList(
                     "&6Staff Member&7: &4Console",
                     "&6Kicked Player&7: &a" + player.getName(),
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.PUNISHMENT_RECEIVED);
+            ),LogActionTypes.PUNISHMENT_RECEIVED, LogCategories.PUNISHMENT_LOGS);
         }
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new PunishmentExecutePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));

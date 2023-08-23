@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import lombok.Getter;
@@ -36,13 +37,15 @@ public class Log {
     private final Integer id;
     private List<String> message;
     private LogActionTypes logType;
+    private LogCategories logCategory;
     private Long date;
     private boolean loaded = false;
 
-    public Log(Integer id, UUID userUUID, List<String> message, Long date) {
+    public Log(Integer id, UUID userUUID, List<String> message, Long date, String logCategory) {
         this.id = id;
         this.userUUID = userUUID;
         this.message = message;
+        this.logCategory = LogCategories.valueOf(logCategory);
         this.date = date;
     }
 
@@ -55,11 +58,11 @@ public class Log {
         Document document = new Document();
         document.put("userUUID", userUUID.toString());
         document.put("userName", userName);
-        document.put("logID", String.valueOf(id));
         Type messageListType = new TypeToken<List<String>>() {}.getType();
         document.put("message", OxygenBukkit.PLAIN_GSON.toJson(this.message, messageListType));
         document.put("logDate", date);
         document.put("logType", logType.toString());
+        document.put("logCategory", logCategory.toString());
 
         OxygenBukkit.getInstance().getMongoModule().getLogsCollection().replaceOne(Filters.eq("logID", id.toString()), document, new ReplaceOptions().upsert(true));
         if (leave) {
@@ -76,19 +79,20 @@ public class Log {
             Type messageListType = new TypeToken<List<String>>() {}.getType();
             message = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("message"), messageListType);
             date = document.getLong("logDate");
+            logCategory = LogCategories.valueOf(document.getString("logCategory"));
             logType = LogActionTypes.valueOf(document.getString("logType"));
         }
 
         loaded = true;
     }
 
-    private List<String> formatMessage(List<String> message) {
+    public List<String> formatMessage(List<String> message) {
         List<String> finalMessage = new ArrayList<>();
 
         finalMessage.add("&7&l&m------------------------");
         finalMessage.add("&6Username&7: &a" + userName);
         finalMessage.add("&6Log Type&7: &a" + logType.getDisplay_name());
-        finalMessage.add("&6Date&7: &a" + TimeUtil.formatSimplifiedDateDiff(date));
+        finalMessage.add("&6Date&7: &a" + TimeUtil.formatSimplifiedDateDiff(date) + " ago");
         finalMessage.add("&7");
         for (String messages : message) {
             finalMessage.add(messages);

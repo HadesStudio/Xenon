@@ -15,20 +15,24 @@ package dev.hely.core.bukkit.profile.log.commands;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
+import com.google.gson.reflect.TypeToken;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
+import dev.hely.core.bukkit.profile.log.Log;
+import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.profile.log.menus.LogSelectionMenu;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Type;
+import java.util.*;
 
 public class LogsCommand extends BaseCommand {
 
@@ -51,21 +55,30 @@ public class LogsCommand extends BaseCommand {
         OfflinePlayer player = Bukkit.getPlayer(args[0]);
         if(!this.checkOfflinePlayer(sender, player, args[0])) return;
 
-        Map<LogActionTypes, Map<String, Object>> info = new HashMap<>();
-        OxygenBukkit.getInstance().getMongoModule().getPlayerLogsCollection().find().into(new ArrayList<>()).forEach(document -> {
-            System.out.print("------------------------------------------------");
-            System.out.print("Log Command Debug:");
-            System.out.print("");
-            System.out.print("Log Type - " + LogActionTypes.valueOf(document.getString("logType")));
-            System.out.print(document.get("Parameters - " + document.get("params")));
-            System.out.print("Player Name - " + player.getName());
-            System.out.print("UUID - " + player.getUniqueId());
-            System.out.print("------------------------------------------------");
-            info.put(LogActionTypes.valueOf(document.getString("logType")), (Map<String, Object>) document.get("params"));
+        Map<Integer, Log> logs = new HashMap<>();
+        Bukkit.getScheduler().runTaskAsynchronously(OxygenBukkit.getInstance(), () -> {
+            long startTime = System.currentTimeMillis();
+            for (Document document : OxygenBukkit.getInstance().getMongoModule().getLogsCollection().find()) {
+                if (player.getUniqueId().equals(UUID.fromString(document.getString("userUUID")))) {
+                    // If the above is true, it's 100% a log regarding them!
+                    Type messageListType = new TypeToken<List<String>>() {}.getType();
+
+
+                    Log log = new Log(document.getInteger("logID"), UUID.randomUUID(), Arrays.asList("Test"), System.currentTimeMillis(), "PUNISHMENT_LOGS");
+                    log.setUserUUID(UUID.fromString(document.getString("userUUID")));
+                    log.setUserName(document.getString("userName"));
+                    log.setMessage((OxygenBukkit.PLAIN_GSON.fromJson(document.getString("message"), messageListType)));
+                    log.setDate(document.getLong("logDate"));
+                    log.setLogType(LogActionTypes.valueOf(document.getString("logType")));
+                    log.setLogCategory(LogCategories.valueOf(document.getString("logCategory")));
+
+                    logs.put(document.getInteger("logID"), log);
+                }
+                long endTime = System.currentTimeMillis();
+                System.out.print("Successfully stored all logs for " + player.getName() + "! This took a total of " + TimeUtil.formatTimeMillis(startTime - endTime));
+            }
         });
 
-
-
-        new LogSelectionMenu(player, info).openMenu((Player) sender);
+        new LogSelectionMenu(player, logs).openMenu((Player) sender);
     }
 }

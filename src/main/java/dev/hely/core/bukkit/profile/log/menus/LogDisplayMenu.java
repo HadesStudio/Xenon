@@ -16,10 +16,13 @@ package dev.hely.core.bukkit.profile.log.menus;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.profile.log.Log;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
+import dev.hely.lib.menu.button.implement.InformationButton;
+import dev.hely.lib.menu.button.implement.PageButton;
 import dev.hely.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
@@ -35,9 +38,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class LogDisplayMenu extends PaginatedMenu {
-    private OfflinePlayer player;
-    private LogCategories category;
-    private Map<LogActionTypes, Map<String, Object>> logs;
+    private Map<Integer, Log> logs;
 
     @Override
     public String getName() {
@@ -50,26 +51,55 @@ public class LogDisplayMenu extends PaginatedMenu {
     }
 
     @Override
+    public Map<Integer, Button> getGlobalContent(Player player) {
+        Map<Integer, Button> buttons = new HashMap<>();
+        buttons.put(0, Button.getPlaceholder());
+        buttons.put(1, Button.getPlaceholder());
+        buttons.put(2, Button.getPlaceholder());
+        buttons.put(3, Button.getPlaceholder());
+        buttons.put(5, Button.getPlaceholder());
+        buttons.put(6, Button.getPlaceholder());
+        buttons.put(7, Button.getPlaceholder());
+        buttons.put(8, Button.getPlaceholder());
+        buttons.put(4, Button.getPlaceholder());
+
+        buttons.put(9, Button.getPlaceholder());
+        buttons.put(17, Button.getPlaceholder());
+        buttons.put(18, Button.getPlaceholder());
+        buttons.put(26, Button.getPlaceholder());
+        buttons.put(27, Button.getPlaceholder());
+        buttons.put(35, Button.getPlaceholder());
+
+        buttons.put(36, Button.getPlaceholder());
+        buttons.put(37, new PageButton(-1, this));
+        buttons.put(38, Button.getPlaceholder());
+        buttons.put(39, Button.getPlaceholder());
+        buttons.put(40, Button.getPlaceholder());
+        buttons.put(41, Button.getPlaceholder());
+        buttons.put(42, Button.getPlaceholder());
+        buttons.put(43, new PageButton(1, this));
+        buttons.put(44, Button.getPlaceholder());
+
+        return buttons;
+    }
+
+    @Override
     public Map<Integer, Button> getPaginatedContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        for (Map.Entry<LogActionTypes, Map<String, Object>> entry : logs.entrySet()) {
+        for (Map.Entry<Integer, Log> entry : logs.entrySet()) {
             buttons.put(buttons.size(), new Button() {
                 public List<String> getLore() {
-                    final List<String> string = new ArrayList<>();
+                    List<String> defaultMessage = entry.getValue().getMessage();
 
-                    for (Map.Entry<String, Object> entry2 : entry.getValue().entrySet()) {
-                        string.add(entry2.getKey() + " <-- Result: " + entry2.getValue());
-                    }
-
-                    return string;
+                    return entry.getValue().formatMessage(defaultMessage);
                 }
 
                 @Override
                 public ItemStack getItemStack(Player player) {
                     ItemMaker builder = ItemMaker.of(Material.PAPER);
                     builder.setData((short) 0);
-                    builder.setDisplayName("&6" + entry.getKey().getDisplay_name());
+                    builder.setDisplayName("&6Log - " + entry.getValue().getLogType().getDisplay_name());
                     builder.setLore(getLore());
 
                     return builder.build();

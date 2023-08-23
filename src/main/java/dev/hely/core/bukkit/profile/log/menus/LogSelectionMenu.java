@@ -16,6 +16,7 @@ package dev.hely.core.bukkit.profile.log.menus;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.profile.log.Log;
 import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.lib.maker.ItemMaker;
@@ -38,7 +39,7 @@ public class LogSelectionMenu extends Menu {
         setPlaceholder(true);
     }
     private OfflinePlayer player;
-    private Map<LogActionTypes, Map<String, Object>> logs;
+    private Map<Integer, Log> logs;
 
     @Override
     public String getName() {
@@ -63,11 +64,10 @@ public class LogSelectionMenu extends Menu {
             buttons.put(value.getSlot(), new Button() {
                 public List<String> getLore() {
                     final List<String> string = new ArrayList<>();
-                    int logCount = logs.values().size();
+                    int logCount = logs.size();
 
                     for (String line : value.getLore()) {
                         string.add(line
-                                .replace("%request_size%", String.valueOf(OxygenBukkit.getInstance().getRequestHandler().generateClosedRequestInteger()))
                                 .replace("%log_size%", String.valueOf(logCount))
                         );
                     }
@@ -87,20 +87,10 @@ public class LogSelectionMenu extends Menu {
 
                 @Override
                 public void onClick(Player player, int slot, ClickType clickType) {
-                    Map<LogActionTypes, Map<String, Object>> params = new HashMap<>();
+                    Map<Integer, Log> params = new HashMap<>();
 
-                    logs.entrySet().stream().filter(it -> value == LogCategories.ALL || it.getKey().getCategory() == value).forEach(it -> params.put(it.getKey(), it.getValue()));
-                    new LogDisplayMenu(player, value, params).openMenu(player);
-
-                    for (Map.Entry<LogActionTypes, Map<String, Object>> entry : logs.entrySet()) {
-                        System.out.print("----------------------------------");
-                        System.out.print("Type - " + entry.getKey().getDisplay_name());
-                        System.out.print("Category - " + entry.getKey().getCategory());
-                        for (Map.Entry<String, Object> entry2 : entry.getValue().entrySet()) {
-                            System.out.print(entry2.getKey() + " <-- Result: " + entry2.getValue());
-                        }
-                        System.out.print("----------------------------------");
-                    }
+                    logs.entrySet().stream().filter(it -> value == LogCategories.ALL || it.getValue().getLogCategory() == value).forEach(it -> params.put(it.getKey(), it.getValue()));
+                    new LogDisplayMenu(params).openMenu(player);
                 }
             });
 

@@ -3,6 +3,7 @@ package dev.hely.core.bukkit.commands.implement.punishment.undo;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.packet.implement.PunishmentRemovePacket;
@@ -64,20 +65,20 @@ public class UnBlacklistCommand extends BaseCommand {
                     "&6Unblacklisted Player&7: &a" + profile.getName(),
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.UNBLACKLISTED_PLAYER);
+            ),LogActionTypes.UNBLACKLISTED_PLAYER, LogCategories.PUNISHMENT_LOGS);
             OxygenBukkit.getInstance().getLogManager().logPlayerAction(profile.getUniqueId(), profile.getName(), Arrays.asList(
                     "&6Staff Member&7: &a" + player.getName(),
                     "&6Unblacklisted Player&7: &a" + profile.getName(),
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.PUNISHMENT_REMOVED);
+            ),LogActionTypes.PUNISHMENT_REMOVED, LogCategories.PUNISHMENT_LOGS);
         } else {
             OxygenBukkit.getInstance().getLogManager().logPlayerAction(profile.getUniqueId(), profile.getName(), Arrays.asList(
                     "&6Staff Member&7: &4Console",
                     "&6Unblacklisted Player&7: &a" + profile.getName(),
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.PUNISHMENT_REMOVED);
+            ),LogActionTypes.PUNISHMENT_REMOVED, LogCategories.PUNISHMENT_LOGS);
         }
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new PunishmentRemovePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));

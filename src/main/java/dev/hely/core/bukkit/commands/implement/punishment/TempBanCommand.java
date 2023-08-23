@@ -3,6 +3,7 @@ package dev.hely.core.bukkit.commands.implement.punishment;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
@@ -84,7 +85,7 @@ public class TempBanCommand extends BaseCommand {
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Duration&7: &a" + punishment.getDuration(),
                     "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.BANNED_PLAYER);
+            ),LogActionTypes.BANNED_PLAYER, LogCategories.PUNISHMENT_LOGS);
 
             OxygenBukkit.getInstance().getLogManager().logPlayerAction(profile.getUniqueId(), profile.getName(), Arrays.asList(
                     "&6Staff Member&7: &a" + player.getName(),
@@ -92,7 +93,7 @@ public class TempBanCommand extends BaseCommand {
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Duration&7: &a" + punishment.getDuration(),
                     "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.PUNISHMENT_RECEIVED);
+            ),LogActionTypes.PUNISHMENT_RECEIVED, LogCategories.PUNISHMENT_LOGS);
         } else {
             OxygenBukkit.getInstance().getLogManager().logPlayerAction(profile.getUniqueId(), profile.getName(), Arrays.asList(
                     "&6Staff Member&7: &4Console",
@@ -100,7 +101,7 @@ public class TempBanCommand extends BaseCommand {
                     "&6Reason&7: &a" + punishment.getAddedReason(),
                     "&6Duration&7: &a" + punishment.getDuration(),
                     "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.PUNISHMENT_RECEIVED);
+            ),LogActionTypes.PUNISHMENT_RECEIVED, LogCategories.PUNISHMENT_LOGS);
         }
 
         OxygenBukkit.getInstance().getProfileManager().sendBanPunishmentNotification(profile.getUniqueId(), punishment);

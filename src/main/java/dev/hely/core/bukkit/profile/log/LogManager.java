@@ -24,6 +24,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.UUIDUtil;
@@ -46,15 +47,15 @@ public final class LogManager {
     @Getter private final Map<Integer, Log> logMap = new HashMap<>();
 
     public Log getLogById(int id) {
-        return this.logMap.get(id) == null ? new Log(id, null, Collections.singletonList("Unkonw"), System.currentTimeMillis()) : this.logMap.get(id);
+        return this.logMap.get(id) == null ? new Log(id, null, Collections.singletonList("Unkonw"), System.currentTimeMillis(), null) : this.logMap.get(id);
     }
 
     public void registerAllLogs() {
         long startTime = System.currentTimeMillis();
         for (Document document : OxygenBukkit.getInstance().getMongoModule().getLogsCollection().find()) {
-            Integer id = document.getInteger("id");
+            Integer id = document.getInteger("logID");
             Type messageListType = new TypeToken<List<String>>() {}.getType();
-            Log log = new Log(id, UUID.fromString(document.getString("userUUID")), (OxygenBukkit.PLAIN_GSON.fromJson(document.getString("message"), messageListType)), document.getLong("logDate"));
+            Log log = new Log(id, UUID.fromString(document.getString("userUUID")), (OxygenBukkit.PLAIN_GSON.fromJson(document.getString("message"), messageListType)), document.getLong("logDate"), document.getString("logCategory"));
             log.setUserName(document.getString("userName"));
             log.setLogType(LogActionTypes.valueOf(document.getString("logType")));
 
@@ -65,10 +66,10 @@ public final class LogManager {
     }
 
 
-    public void logPlayerAction(UUID playerUUID, String userName, List<String> message, LogActionTypes type) {
+    public void logPlayerAction(UUID playerUUID, String userName, List<String> message, LogActionTypes type, LogCategories logCategories) {
         Bukkit.getScheduler().runTaskAsynchronously(OxygenBukkit.getInstance(), () -> {
             long startTime = System.currentTimeMillis();
-            Log log = new Log((000 + this.logMap.size()), playerUUID, message, System.currentTimeMillis());
+            Log log = new Log((000 + this.logMap.size()), playerUUID, message, System.currentTimeMillis(), logCategories.toString());
             log.setLogType(type);
             log.setUserName(userName);
             log.save();
