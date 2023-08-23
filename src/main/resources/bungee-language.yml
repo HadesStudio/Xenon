@@ -1,15 +1,19 @@
-only-player: "&cSorry, only player's can execute this command."
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
 
+only-player: "&cSorry, only player's can execute this command."
 hub-command:
   already-connected: "&6You are already connected to the hub server."
   connecting: "&6You are now being connected to an available hub."
   no-servers: "&cSorry, no suitable &6Hub Servers &ccould be found."
-
 server-system:
   unable-suitable-hub: "&cSorry, we could not find a suitable &6Hub Server &cfor you."
   connected: "&6You have successfully been connected to our &6&l%server% Server&6!"
   maintenance: "&cSorry, this server is currently in &6Maintenance Mode&c."
-
 server-manager-command:
   usage:
     - "&7&l&m---------------------------------"
@@ -20,7 +24,6 @@ server-manager-command:
     - "&6* &f/servermanager delete <name> &7- Deletes the specified server."
     - "&6* &f/servermanager list &7- Lists all server instances."
     - "&7&l&m---------------------------------"
-
 server-command:
   usage: "&cCorrect Usage: /server <server_name>"
   invalid-server: "&cSorry, the server by the name of '&6%server%&c' could not be found."
