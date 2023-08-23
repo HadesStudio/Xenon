@@ -1,8 +1,8 @@
 Oxygen:
-  name: "OxygenGlobal"
-  prefix: "&8[&d&nOxygen&8]"
+  name: "Oxygen"
+  prefix: "&8[&6&nOxygen&8]"
   weight: 10
-Void:
-  name: "Void"
-  prefix: "&8[&6#Void&8]"
+Hely:
+  name: "Hely"
+  prefix: "&8[&6#Hely&8]"
   weight: 5
