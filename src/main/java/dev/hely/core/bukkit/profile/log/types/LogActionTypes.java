@@ -63,6 +63,18 @@ public enum LogActionTypes {
     ),
     DISCONNECTED_SERVER(
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.leave-server")
+    ),
+    GRANT_GIVEN(
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.grant-given")
+    ),
+    GRANT_REMOVED(
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.grant-removed")
+    ),
+    GRANT_EXPIRED(
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.grant-expired")
+    ),
+    GAVE_RANK(
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.given-rank")
     );
 
     @Getter private final String display_name;

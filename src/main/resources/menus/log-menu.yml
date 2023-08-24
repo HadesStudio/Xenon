@@ -24,6 +24,10 @@ log-types:
   punishment-remove: "Punishment was removed"
   joined-server: "Connected to server"
   leave-server: "Disconnected from server"
+  grant-given: "Received a rank grant"
+  grant-removed: "Rank grant removed"
+  grant-expired: "Rank grant expired"
+  given-rank: "Gave someone a rank"
 
 log-viewer:
   title: "Player Logs"

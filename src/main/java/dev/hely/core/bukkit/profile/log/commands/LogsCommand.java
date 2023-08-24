@@ -35,6 +35,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public class LogsCommand extends BaseCommand {
+    int size = 0;
 
     public LogsCommand(){
         super("logs", "oxygen.staff.logs");
@@ -55,30 +56,6 @@ public class LogsCommand extends BaseCommand {
         OfflinePlayer player = Bukkit.getPlayer(args[0]);
         if(!this.checkOfflinePlayer(sender, player, args[0])) return;
 
-        Map<Integer, Log> logs = new HashMap<>();
-        Bukkit.getScheduler().runTaskAsynchronously(OxygenBukkit.getInstance(), () -> {
-            long startTime = System.currentTimeMillis();
-            for (Document document : OxygenBukkit.getInstance().getMongoModule().getLogsCollection().find()) {
-                if (player.getUniqueId().equals(UUID.fromString(document.getString("userUUID")))) {
-                    // If the above is true, it's 100% a log regarding them!
-                    Type messageListType = new TypeToken<List<String>>() {}.getType();
-
-
-                    Log log = new Log(document.getInteger("logID"), UUID.randomUUID(), Arrays.asList("Test"), System.currentTimeMillis(), "PUNISHMENT_LOGS");
-                    log.setUserUUID(UUID.fromString(document.getString("userUUID")));
-                    log.setUserName(document.getString("userName"));
-                    log.setMessage((OxygenBukkit.PLAIN_GSON.fromJson(document.getString("message"), messageListType)));
-                    log.setDate(document.getLong("logDate"));
-                    log.setLogType(LogActionTypes.valueOf(document.getString("logType")));
-                    log.setLogCategory(LogCategories.valueOf(document.getString("logCategory")));
-
-                    logs.put(document.getInteger("logID"), log);
-                }
-                long endTime = System.currentTimeMillis();
-                System.out.print("Successfully stored all logs for " + player.getName() + "! This took a total of " + TimeUtil.formatTimeMillis(startTime - endTime));
-            }
-        });
-
-        new LogSelectionMenu(player, logs).openMenu((Player) sender);
+        new LogSelectionMenu(player).openMenu((Player) sender);
     }
 }

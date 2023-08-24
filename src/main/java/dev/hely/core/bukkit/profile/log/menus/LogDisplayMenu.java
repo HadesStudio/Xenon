@@ -16,29 +16,32 @@ package dev.hely.core.bukkit.profile.log.menus;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.core.menus.OxygenMenu;
 import dev.hely.core.bukkit.profile.log.Log;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.profile.log.category.LogCategories;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.button.implement.InformationButton;
 import dev.hely.lib.menu.button.implement.PageButton;
 import dev.hely.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @AllArgsConstructor
 public class LogDisplayMenu extends PaginatedMenu {
-    private Map<Integer, Log> logs;
+    private LogCategories categories;
+    private OfflinePlayer offlinePlayer;
+
+    static int size = 0;
 
     @Override
     public String getName() {
@@ -53,7 +56,7 @@ public class LogDisplayMenu extends PaginatedMenu {
     @Override
     public Map<Integer, Button> getGlobalContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        buttons.put(0, Button.getPlaceholder());
+        buttons.put(0, new Back_Button(offlinePlayer));
         buttons.put(1, Button.getPlaceholder());
         buttons.put(2, Button.getPlaceholder());
         buttons.put(3, Button.getPlaceholder());
@@ -87,32 +90,87 @@ public class LogDisplayMenu extends PaginatedMenu {
     public Map<Integer, Button> getPaginatedContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        for (Map.Entry<Integer, Log> entry : logs.entrySet()) {
-            buttons.put(buttons.size(), new Button() {
-                public List<String> getLore() {
-                    List<String> defaultMessage = entry.getValue().getMessage();
-
-                    return entry.getValue().formatMessage(defaultMessage);
+        for (Map.Entry<Log, Long> sortedList : getSortedLogs().entrySet()) {
+            Log logEntry = sortedList.getKey();
+            if (logEntry.getUserUUID().equals(offlinePlayer.getUniqueId())) {
+                if (categories == LogCategories.ALL || logEntry.getLogCategory() == categories) {
+                    buttons.put(buttons.size(), new LogButton(logEntry));
+                    size = size + 1;
                 }
-
-                @Override
-                public ItemStack getItemStack(Player player) {
-                    ItemMaker builder = ItemMaker.of(Material.PAPER);
-                    builder.setData((short) 0);
-                    builder.setDisplayName("&6Log - " + entry.getValue().getLogType().getDisplay_name());
-                    builder.setLore(getLore());
-
-                    return builder.build();
-                }
-
-                @Override
-                public void onClick(Player player, int slot, ClickType clickType) {
-                }
-            });
-
+            }
         }
 
         return buttons;
+    }
+
+
+    @AllArgsConstructor
+    public static class LogButton extends Button {
+        final Log log;
+
+        public List<String> getLore() {
+            List<String> defaultMessage = log.getMessage();
+
+            return log.formatMessage(defaultMessage);
+        }
+
+        @Override
+        public ItemStack getItemStack(Player player) {
+            ItemMaker builder = ItemMaker.of(Material.PAPER);
+            builder.setData((short) 0);
+            builder.setDisplayName("&6Log - " + log.getLogType().getDisplay_name());
+            builder.setLore(getLore());
+
+            return builder.build();
+        }
+
+        @Override
+        public void onClick(Player player, int slot, ClickType clickType) {
+
+        }
+    }
+
+    @AllArgsConstructor
+    public static class Back_Button extends Button {
+        private OfflinePlayer offlinePlayer;
+
+        @Override
+        public ItemStack getItemStack(Player player) {
+            ItemMaker builder = ItemMaker.of(Material.BED);
+            builder.setData((short) 0);
+            builder.setDisplayName("&cBack");
+            builder.setLore(Collections.singletonList(
+                    "&7Click here to return to the main menu."
+            ));
+            return builder.build();
+        }
+
+        @Override
+        public void onClick(Player player, int slot, ClickType clickType) {
+            new LogSelectionMenu(offlinePlayer).openMenu(player);
+        }
+    }
+
+    public Map<Log, Long> getSortedLogs() {
+        final Map<Long, Log> firstLogs = new HashMap<>(); // date, long
+
+        for (Log log : OxygenBukkit.getInstance().getLogManager().getLogMap().values()) {
+            firstLogs.put(log.getDate(), log);
+        }
+
+        LinkedList<Map.Entry<Long, Log>> list = new LinkedList<>(firstLogs.entrySet());
+
+        list.sort((o1, o2) -> (o2.getKey().compareTo(o1.getKey())));
+
+        Collections.reverse(list);
+
+        LinkedHashMap<Log, Long> sortedHashMap = new LinkedHashMap<>();
+
+        for (Map.Entry<Long, Log> entry : list) {
+            sortedHashMap.put(entry.getValue(), entry.getKey());
+        }
+
+        return sortedHashMap;
     }
 
 }

@@ -52,31 +52,31 @@ public final class LogManager {
 
     public void registerAllLogs() {
         long startTime = System.currentTimeMillis();
+        int size = 0;
         for (Document document : OxygenBukkit.getInstance().getMongoModule().getLogsCollection().find()) {
             Integer id = document.getInteger("logID");
             Type messageListType = new TypeToken<List<String>>() {}.getType();
             Log log = new Log(id, UUID.fromString(document.getString("userUUID")), (OxygenBukkit.PLAIN_GSON.fromJson(document.getString("message"), messageListType)), document.getLong("logDate"), document.getString("logCategory"));
             log.setUserName(document.getString("userName"));
             log.setLogType(LogActionTypes.valueOf(document.getString("logType")));
-
+            size = size + 1;
             this.logMap.put(id, log);
         }
         startTime = startTime - System.currentTimeMillis();
-        System.out.print("Loaded all logs! Took a total of " + TimeUtil.formatTimeMillis(startTime) + "ms.");
     }
 
 
     public void logPlayerAction(UUID playerUUID, String userName, List<String> message, LogActionTypes type, LogCategories logCategories) {
         Bukkit.getScheduler().runTaskAsynchronously(OxygenBukkit.getInstance(), () -> {
             long startTime = System.currentTimeMillis();
-            Log log = new Log((000 + this.logMap.size()), playerUUID, message, System.currentTimeMillis(), logCategories.toString());
+            Log log = new Log((this.logMap.size() + 1), playerUUID, message, System.currentTimeMillis(), logCategories.toString());
             log.setLogType(type);
             log.setUserName(userName);
             log.save();
+            logMap.put(log.getId(), log);
 
             logToFile(playerUUID, userName, message, type);
             startTime = startTime - System.currentTimeMillis();
-            System.out.print("Successfully created player log! Took a total of " + TimeUtil.formatTimeMillis(startTime) + "ms.");
         });
     }
 

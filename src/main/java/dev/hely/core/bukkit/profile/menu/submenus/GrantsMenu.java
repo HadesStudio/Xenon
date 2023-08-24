@@ -18,6 +18,7 @@ package dev.hely.core.bukkit.profile.menu.submenus;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.menu.EditProfileMenu;
+import dev.hely.core.bukkit.ranks.events.GrantGivenEvent;
 import dev.hely.core.bukkit.ranks.grants.Grant;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.DurationWrapper;
@@ -368,6 +369,7 @@ public class GrantsMenu extends PaginatedMenu {
             grant.setRankName(rank);
             grant.setAddedTime(System.currentTimeMillis());
             grant.setReason(input);
+            new GrantGivenEvent(grant, profile, sender);
 
 
             profile.getGrants().add(grant);

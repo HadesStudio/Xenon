@@ -18,28 +18,26 @@ package dev.hely.core.bukkit.profile.log.menus;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.log.Log;
 import dev.hely.core.bukkit.profile.log.category.LogCategories;
-import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
 import dev.hely.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @AllArgsConstructor
 public class LogSelectionMenu extends Menu {
     {
         setPlaceholder(true);
     }
-    private OfflinePlayer player;
-    private Map<Integer, Log> logs;
+    private OfflinePlayer offlinePlayer;
 
     @Override
     public String getName() {
@@ -61,41 +59,50 @@ public class LogSelectionMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
 
         for (LogCategories value : LogCategories.values()) {
-            buttons.put(value.getSlot(), new Button() {
-                public List<String> getLore() {
-                    final List<String> string = new ArrayList<>();
-                    int logCount = logs.size();
+            buttons.put(value.getSlot(), new CategoryButton(offlinePlayer, value));
+        }
+        return buttons;
+    }
 
-                    for (String line : value.getLore()) {
-                        string.add(line
-                                .replace("%log_size%", String.valueOf(logCount))
-                        );
+
+    @AllArgsConstructor
+    public static class CategoryButton extends Button {
+        final OfflinePlayer offlinePlayer;
+        final LogCategories logCategories;
+
+        public List<String> getLore() {
+            final List<String> string = new ArrayList<>();
+            int size = 0;
+            for (Log log : OxygenBukkit.getInstance().getLogManager().getLogMap().values()) {
+                if (log.getUserUUID().equals(offlinePlayer.getUniqueId())) {
+                    if (log.getLogCategory() == logCategories || logCategories == LogCategories.ALL) {
+                        size = size + 1;
                     }
-
-                    return string;
                 }
+            }
 
-                @Override
-                public ItemStack getItemStack(Player player) {
-                    ItemMaker builder = ItemMaker.of(value.getMaterial());
-                    builder.setData((short) value.getMaterial_data());
-                    builder.setDisplayName(value.getDisplay_name());
-                    builder.setLore(getLore());
+            for (String line : logCategories.getLore()) {
+                string.add(line
+                        .replace("%log_size%", String.valueOf(size))
+                );
+            }
 
-                    return builder.build();
-                }
-
-                @Override
-                public void onClick(Player player, int slot, ClickType clickType) {
-                    Map<Integer, Log> params = new HashMap<>();
-
-                    logs.entrySet().stream().filter(it -> value == LogCategories.ALL || it.getValue().getLogCategory() == value).forEach(it -> params.put(it.getKey(), it.getValue()));
-                    new LogDisplayMenu(params).openMenu(player);
-                }
-            });
-
+            return string;
         }
 
-        return buttons;
+        @Override
+        public ItemStack getItemStack(Player player) {
+            ItemMaker builder = ItemMaker.of(logCategories.getMaterial());
+            builder.setData((short) logCategories.getMaterial_data());
+            builder.setDisplayName(logCategories.getDisplay_name());
+            builder.setLore(getLore());
+
+            return builder.build();
+        }
+
+        @Override
+        public void onClick(Player player, int slot, ClickType clickType) {
+            new LogDisplayMenu(logCategories, offlinePlayer).openMenu(player);
+        }
     }
 }

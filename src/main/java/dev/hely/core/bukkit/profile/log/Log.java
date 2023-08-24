@@ -34,7 +34,7 @@ import java.util.*;
 public class Log {
     private UUID userUUID;
     private String userName;
-    private final Integer id;
+    private Integer id;
     private List<String> message;
     private LogActionTypes logType;
     private LogCategories logCategory;
@@ -63,6 +63,7 @@ public class Log {
         document.put("logDate", date);
         document.put("logType", logType.toString());
         document.put("logCategory", logCategory.toString());
+        document.put("logID", id);
 
         OxygenBukkit.getInstance().getMongoModule().getLogsCollection().replaceOne(Filters.eq("logID", id.toString()), document, new ReplaceOptions().upsert(true));
         if (leave) {
@@ -81,6 +82,7 @@ public class Log {
             date = document.getLong("logDate");
             logCategory = LogCategories.valueOf(document.getString("logCategory"));
             logType = LogActionTypes.valueOf(document.getString("logType"));
+            id = document.getInteger("logID");
         }
 
         loaded = true;
