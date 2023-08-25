@@ -20,6 +20,18 @@ chat:
     - "&cPlease wait another &c&l%wait_time% &cbefore chatting again."
   filtered-message-alert: "&c[Chat Filter] &7%format%"
   blocked: "&cYour message contained blocked content. It has been blocked from sending in chat."
+alts-command:
+  usage: "&cCorrect Usage: /alts <player>"
+  no-alts: "&cSorry, &6%player% &cdoes not have any alternate accounts on file."
+  first-chat-message: "&7%profile_name% (&b%alt_size%&7): "
+  hover:
+    - "&7&l&m-------------------------------------"
+    - "&6Playtime: &c%playtime%"
+    - "&6Last Seen: &c%last_seen%"
+    - "&6Banned: &c%ban_status%"
+    - "&6Blacklisted: &c%blacklist_status%"
+    - "&6Muted: &c%muted_status%"
+    - "&7&l&m-------------------------------------"
 chat-command:
   usage:
     - "&7&l&m-----------------------------------"

@@ -7,3 +7,5 @@
 
 debug-mode: true # Do you want to use debug mode?
 hub-name: "Hub" # The name of your hub server.
+
+server-manager: true # Do you want to use server manager system?

@@ -52,6 +52,7 @@ public class Profile {
     private boolean loaded = false;
     private String currentAddress = "";
     private List<String> addresses = new ArrayList<>();
+    private List<Profile> altAccounts = new ArrayList<>();
     private Long firstSeen;
     private Long lastSeen;
     private String currentServer = "Unknown";
@@ -97,7 +98,7 @@ public class Profile {
     private long nextAuthenticationNeeded = -1, loginTime = -1;
     private boolean settingUpAuth = false;
     private String tfaKey = "";
-
+    private boolean frozen;
     private List<Sibling> siblings = new ArrayList<>();
 
 
@@ -149,7 +150,9 @@ public class Profile {
         document.put("lastReceivedMessageMillis", lastReceivedMessageMillis);
         document.put("lastSentMessageMillis", lastSentMessageMillis);
         document.put("lastRepliedTo", lastRepliedTo);
-
+        document.put("frozen", frozen);
+        Type altAccountsType = new TypeToken<List<Profile>>() {}.getType();
+        document.put("altsAccounts", OxygenBukkit.PLAIN_GSON.toJson(this.altAccounts, altAccountsType));
         Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
         document.put("settings", OxygenBukkit.PLAIN_GSON.toJson(this.settings, settingsType));
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
@@ -205,7 +208,7 @@ public class Profile {
             loginTime = document.getLong("loginTime");
             settingUpAuth = document.getBoolean("settingUpAuth");
             tfaKey = document.getString("tfaKey");
-
+            frozen = document.getBoolean("frozen");
             lastReceivedMessageMillis = document.getLong("lastReceivedMessageMillis");
             lastSentMessageMillis = document.getLong("lastSentMessageMillis");
             lastRepliedTo = document.getString("lastRepliedTo");
@@ -218,6 +221,8 @@ public class Profile {
                 staffProfile = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("staffProfile"), staffProfileType);
             }
 
+            Type altAccountsType = new TypeToken<List<Profile>>() {}.getType();
+            altAccounts = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("altAccounts"), altAccountsType);
             Type grantType = new TypeToken<List<Grant>>() {}.getType();
             grants = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("grants"), grantType);
             grants.removeIf(Objects::isNull);
@@ -429,5 +434,16 @@ public class Profile {
 
     public long getTotalPlayTime() {
         return playTime + session.calculateDifference();
+    }
+
+    public void setupAlts() {
+        for (Document document : OxygenBukkit.getInstance().getMongoModule().getProfilesCollection().find()) {
+            Type addressesType = new TypeToken<List<String>>() {}.getType();
+            List<String> profileAddresses = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("addresses"), addressesType);
+
+            if (profileAddresses.contains(currentAddress)) {
+                altAccounts.add(OxygenBukkit.getInstance().getProfileManager().getProfile(UUID.fromString(document.getString("uuid"))));
+            }
+        }
     }
 }

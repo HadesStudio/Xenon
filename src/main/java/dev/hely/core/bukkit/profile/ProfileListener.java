@@ -102,61 +102,6 @@ public class ProfileListener implements Listener {
                 }, 5);
             }
 
-            OxygenBukkit.getInstance().debug_message("---------------------------------");
-            OxygenBukkit.getInstance().debug_message("Debug Messages:");
-            if (OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank() != null) {
-                String activeHighestRank = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank().getName();
-                OxygenBukkit.getInstance().debug_message("Active Highest Rank: " + activeHighestRank);
-                if (OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank().getPrefix() != null) {
-                    OxygenBukkit.getInstance().debug_message(" - Prefix: " + OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank().getPrefix());
-                } else {
-                    OxygenBukkit.getInstance().debug_message(" - Prefix: Null (URGENT ERROR)");
-                }
-                if (OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank().getSuffix() != null) {
-                    OxygenBukkit.getInstance().debug_message(" - Suffix: " + OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank().getSuffix());
-                } else {
-                    OxygenBukkit.getInstance().debug_message(" - Suffix: Null (URGENT ERROR)");
-                }
-
-            } else {
-                OxygenBukkit.getInstance().debug_message("Active Highest Rank: Null (URGENT ERROR)");
-            }
-            if (OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant() != null) {
-                Grant activeHighestRank = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant();
-                OxygenBukkit.getInstance().debug_message("Active Highest Grant: " + activeHighestRank.getRank().getName());
-                if (OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant().getRank().getPrefix() != null) {
-                    OxygenBukkit.getInstance().debug_message(" - Prefix: " + OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant().getRank().getPrefix());
-                } else {
-                    OxygenBukkit.getInstance().debug_message(" - Prefix: Null (URGENT ERROR)");
-                }
-                if (OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant().getRank().getSuffix() != null) {
-                    OxygenBukkit.getInstance().debug_message(" - Suffix: " + OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getHighestGrant().getRank().getSuffix());
-                } else {
-                    OxygenBukkit.getInstance().debug_message(" - Suffix: Null (URGENT ERROR)");
-                }
-
-            } else {
-                OxygenBukkit.getInstance().debug_message("Active Highest Grant: Null (URGENT ERROR)");
-            }
-            OxygenBukkit.getInstance().debug_message("");
-            OxygenBukkit.getInstance().debug_message("All Grants: ");
-            if (OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getGrants() != null) {
-                for (Grant rank : OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getGrants()) {
-                    if (rank.getRank() != null) {
-                        OxygenBukkit.getInstance().debug_message(" - " + rank.getRank().getName() + " Rank Grant");
-                    } else {
-                        OxygenBukkit.getInstance().debug_message(" - Null (URGENT ERROR)");
-                        OxygenBukkit.getInstance().debug_message(" - This user has " + OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getGrants().size() + " grants.");
-                    }
-                }
-            } else {
-                OxygenBukkit.getInstance().debug_message(" - Null (URGENT ERROR)");
-            }
-            OxygenBukkit.getInstance().debug_message("");
-            OxygenBukkit.getInstance().debug_message("What the fuck?");
-            OxygenBukkit.getInstance().debug_message("Love DevDipin");
-            OxygenBukkit.getInstance().debug_message("---------------------------------");
-
             plugin.getRedisModule().sendPacket(new FriendSessionPacket(player.getName(), serverName, false));
             profile.setCurrentServer(serverName);
 

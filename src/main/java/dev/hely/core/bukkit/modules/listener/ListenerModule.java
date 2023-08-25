@@ -35,8 +35,7 @@ public class ListenerModule implements ModuleLoader {
                 new MenuListener(plugin),
                 new TFAListener(),
                 new LogListeners(),
-                new NoteListener(),
-                new QueueListener());
+                new NoteListener());
 
         this.enabled = true;
     }

@@ -20,9 +20,12 @@ advanced-client-version-data:
   lunar-client: "&b[LC]"
   forge: "&6[F]"
   vanilla: "&a[V]"
+server-manager:
+  enabled: false # Do you want to use the server system?
 command-system:
   disabled-commands:
     - "test"
+
 name-mc:
   enabled: true # Do you want to enable the NameMC System?
   reminder: true # Do you want to send reminders when someone hasn't voted for your server?
