@@ -406,7 +406,7 @@ public class OxygenBukkit extends JavaPlugin {
                 HttpURLConnection connection = createConnection();
                 sendData(connection, postData);
                 String[] res = handleResponse(connection);
-                if (res[0] != null && res[1] != null) {
+                if (res.length >= 2 && (res[0] != null && res[1] != null)) {
 
                     if (res[1].equals("0")) {
                         bukkitCommandSender.sendMessage(CC.translate("&6Successfully verified your license key.."));
@@ -512,7 +512,7 @@ public class OxygenBukkit extends JavaPlugin {
 
             // Extract and print values from the JSON response
             String message = (String) jsonObject.get("message");
-            String code = jsonObject.get("code").toString();
+            String code = (String) jsonObject.get("code");
             String lastVersion = (String) jsonObject.get("latestVersion");
 
             String expectedSocket = createExpectedSocket(product, license);
