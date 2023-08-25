@@ -161,24 +161,32 @@ public class OxygenBukkit extends JavaPlugin {
     }
 
     public void onDisable() {
-        stopping = true;
-        
-        if (OxygenBukkit.getInstance().getServerConfig() != null) {
-            final Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
-            server.setStartupTime(0L);
-            server.setStatus(StatusData.OFFLINE);
-            server.getOnlinePlayers().set(0);
-            server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
-            redisModule.sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
-        }
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
-            if (profile != null) {
-                profile.getSession().stopTimings();
-            }
-        }
+        try {
+            stopping = true;
 
-        modules.forEach(this::unloadModule);
+            if (OxygenBukkit.getInstance().getServerConfig() != null) {
+                final Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
+                server.setStartupTime(0L);
+                server.setStatus(StatusData.OFFLINE);
+                server.getOnlinePlayers().set(0);
+                server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
+                redisModule.sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
+            }
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
+                if (profile != null) {
+                    profile.getSession().stopTimings();
+                }
+            }
+
+            for (ModuleLoader module : modules) {
+                if (module != null) {
+                    module.disable();
+                }
+            }
+        } catch (NoClassDefFoundError | NullPointerException e) {
+            return;
+        }
     }
 
     public long getUptime() {

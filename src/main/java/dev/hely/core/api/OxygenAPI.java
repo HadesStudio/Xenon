@@ -5,6 +5,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.ranks.grants.Grant;
 import dev.hely.core.bukkit.ranks.rank.Rank;
+import org.bukkit.plugin.IllegalPluginAccessException;
 
 import java.util.List;
 import java.util.UUID;
