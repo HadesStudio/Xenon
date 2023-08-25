@@ -74,6 +74,7 @@ public class ChatListener implements Listener {
                 for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("chat.slow-chat")) {
                     player.sendMessage(CC.translate(message).replace("%time%", String.valueOf(OxygenBukkit.getInstance().getChatManager().getSlowTime())).replace("%wait_time%", TimeUtil.formatTime((int) OxygenBukkit.getInstance().getChatManager().getSlowChatRemaining(player.getUniqueId()) / 1000)));
                 }
+                event.setCancelled(true);
                 return;
             }
 
