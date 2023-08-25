@@ -389,7 +389,7 @@ public class OxygenBukkit extends JavaPlugin {
         private final String version;
 
         public SkyLicense(String apiUrl, String license) {
-            this.apiKey = "API_KEY";
+            this.apiKey = "7jn2zWa@{(RyCHtxq}g^CTnS/yUxuR}uAa]";
             this.apiUrl = apiUrl;
             this.license = license;
             this.product = instance.getDescription().getName();
@@ -416,7 +416,7 @@ public class OxygenBukkit extends JavaPlugin {
                 String[] res = handleResponse(connection);
                 if (res.length >= 2 && (res[0] != null && res[1] != null)) {
 
-                    if (res[1].equals("0")) {
+                    if (res[1].equals("000")) {
                         bukkitCommandSender.sendMessage(CC.translate("&6Successfully verified your license key.."));
                         bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
                         bukkitCommandSender.sendMessage(CC.translate("&6Loading plugin.."));

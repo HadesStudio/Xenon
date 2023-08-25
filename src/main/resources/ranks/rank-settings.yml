@@ -38,6 +38,9 @@ commands:
   setweight:
     usage: "&cCorrect usage: /rank setweight <rank> <weight>"
     set: "&aYou have updated this ranks weight to: &6%weight%"
+  setqueuepriority:
+    usage: "&cCorrect Usage: /rank setqueuepriority <rank> <priority>"
+    set: "&aYou have updated this ranks queue priority to: &6%priority%"
   settype:
     usage: "&cCorrect usage: /rank settype <rank> <type>"
     set: "&aYou have updated this ranks type to: &6%type%"
