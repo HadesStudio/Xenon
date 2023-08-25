@@ -87,6 +87,7 @@ public class ProfileListener implements Listener {
                     plugin.getRedisModule().sendPacket(new StaffSwitchPacket(player.getName(), serverName, profile.getCurrentServer()));
                 }
             }
+            profile.getSession().startTimings();
 
             if (!profile.getNotifications().isEmpty()) {
                 OxygenBukkit.getInstance().getServer().getScheduler().runTaskLater(OxygenBukkit.getInstance(), () -> {
@@ -178,6 +179,9 @@ public class ProfileListener implements Listener {
             if (player.hasPermission("oxygen.staff.alerts")) {
                 plugin.getRedisModule().sendPacket(new StaffLeavePacket(player.getName(), serverName));
             }
+
+            profile.getSession().stopTimings();
+
 
             new BukkitRunnable() {
                 @Override

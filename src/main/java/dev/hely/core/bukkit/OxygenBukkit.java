@@ -13,6 +13,7 @@ import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.modules.database.mongo.MongoModule;
 import dev.hely.core.bukkit.modules.database.redis.RedisModule;
 import dev.hely.core.bukkit.modules.listener.ListenerModule;
+import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.ProfileManager;
 import dev.hely.core.bukkit.profile.log.LogManager;
 import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
@@ -51,14 +52,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.*;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -124,7 +131,18 @@ public class OxygenBukkit extends JavaPlugin {
         configList = new ArrayList<>();
         stopping = false;
 
-        startupMessages();
+        try {
+            this.licenseConfig = new Config(this, "license");
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        boolean verify = new SkyLicense("http://207.244.252.245:5555/api/license", "CCBBC5-5937C6-2235EE-F91CAC").verify();
+        if (!verify) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            Bukkit.getScheduler().cancelTasks(this);
+        }
+
         setupConfig();
         setDebugMode(true);
         initModules();
@@ -146,12 +164,18 @@ public class OxygenBukkit extends JavaPlugin {
         stopping = true;
 
         final Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
-
         server.setStartupTime(0L);
         server.setStatus(StatusData.OFFLINE);
         server.getOnlinePlayers().set(0);
         server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
         redisModule.sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
+            if (profile != null) {
+                profile.getSession().stopTimings();
+            }
+        }
 
         modules.forEach(this::unloadModule);
     }
@@ -160,29 +184,8 @@ public class OxygenBukkit extends JavaPlugin {
         return System.currentTimeMillis() - LAST_START_TIME;
     }
 
-    public void startupMessages() {
-        try {
-            ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
-
-            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-            bukkitCommandSender.sendMessage(CC.translate("&d&l" + FigletFont.convertOneLine("Oxygen Core")));
-            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-            bukkitCommandSender.sendMessage(CC.translate("&dAuthors: &c" + OxygenBukkit.getInstance().getDescription().getAuthors()));
-            bukkitCommandSender.sendMessage(CC.translate("&dDiscord: &cdiscord.gg/helydev"));
-            bukkitCommandSender.sendMessage(CC.translate("&dDebug Mode: " + displayDebugStatus()));
-            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-        } catch (IOException ignored) {
-            OxygenBukkit.getInstance().getLogger().info("Their was an error while displaying the startup messages..");
-            OxygenBukkit.getInstance().getLogger().info("Please open a discord ticket on our discord.");
-            this.onDisable();
-            Bukkit.shutdown();
-        }
-    }
-
     public void setupConfig(){
         try {
-            this.licenseConfig = new Config(OxygenBukkit.getInstance(), "license");
-            this.configList.add(licenseConfig);
             this.configuration = new Config(OxygenBukkit.getInstance(), "config");
             this.configList.add(configuration);
             this.languageConfig = new Config(OxygenBukkit.getInstance(), "language");
@@ -218,12 +221,12 @@ public class OxygenBukkit extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
 
-            bukkitCommandSender.sendMessage(CC.translate("&c-------------------------------------"));
+            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
             bukkitCommandSender.sendMessage(CC.translate("&6Oxygen Core - Configuration Error"));
             bukkitCommandSender.sendMessage(CC.translate("&cThis is more than likely caused by a broken configuration file!"));
             bukkitCommandSender.sendMessage(CC.translate("&cError:"));
             e.printStackTrace();
-            bukkitCommandSender.sendMessage(CC.translate("&c-------------------------------------"));
+            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
         }
     }
 
@@ -291,7 +294,7 @@ public class OxygenBukkit extends JavaPlugin {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
             module.enable();
             if (this.debug_mode) {
-                bukkitCommandSender.sendMessage(CC.translate("&dModules: &aSuccessfully loaded &a&n"  + module.getName() + " Module&a."));
+                bukkitCommandSender.sendMessage(CC.translate("&aSuccessfully loaded &a&n"  + module.getName() + " Module&a."));
             }
             modules.add(module);
         }
@@ -302,7 +305,7 @@ public class OxygenBukkit extends JavaPlugin {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
             module.disable();
             if (this.debug_mode) {
-                bukkitCommandSender.sendMessage(CC.translate("&dModules: &cSuccessfully unloaded &c&n"  + module.getName() + " Module&c."));
+                bukkitCommandSender.sendMessage(CC.translate("&cSuccessfully unloaded &c&n"  + module.getName() + " Module&c."));
             }
         }
     }
@@ -312,7 +315,7 @@ public class OxygenBukkit extends JavaPlugin {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
             module.reload();
             if (this.debug_mode) {
-                bukkitCommandSender.sendMessage(CC.translate("&dModules: &aSuccessfully reloaded &a&n"  + module + " Module&a."));
+                bukkitCommandSender.sendMessage(CC.translate("&aSuccessfully reloaded &a&n"  + module + " Module&a."));
             }
         }
     }
@@ -349,6 +352,227 @@ public class OxygenBukkit extends JavaPlugin {
             } else {
                 Bukkit.getConsoleSender().sendMessage(CC.translate(message));
             }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static class SkyLicense {
+        private final String apiUrl;
+        private final String apiKey = "API_KEY";
+        private final String license;
+        private final String product = "Test";
+        private final String version = "1.0-SNAPSHOT";
+
+        public SkyLicense(String apiUrl, String license) {
+            this.apiUrl = apiUrl;
+            this.license = license;
+        }
+
+        public boolean verify() {
+            ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
+
+            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
+            bukkitCommandSender.sendMessage(CC.translate("&6Attempting to verify your license.."));
+            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
+
+
+            String javaVersion = System.getProperty("java.version");
+            String hwid = getHWID();
+            String os = System.getProperty("os.name");
+
+            String postData = createJSONData(javaVersion, hwid, os);
+
+            try {
+                HttpURLConnection connection = createConnection();
+                sendData(connection, postData);
+                String[] res = handleResponse(connection);
+                if (res[0] != null && res[1] != null) {
+
+                    if (res[1].equals("0")) {
+                        bukkitCommandSender.sendMessage(CC.translate("&6Successfully verified your license key.."));
+                        bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
+                        bukkitCommandSender.sendMessage(CC.translate("&6Loading plugin.."));
+                        bukkitCommandSender.sendMessage(CC.translate(""));
+                        bukkitCommandSender.sendMessage(CC.translate("&6&lOxygen Rank Core"));
+                        bukkitCommandSender.sendMessage(CC.translate(""));
+                        bukkitCommandSender.sendMessage(CC.translate("&6Debug Mode: " + instance.displayDebugStatus()));
+                        bukkitCommandSender.sendMessage(CC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
+                        bukkitCommandSender.sendMessage(CC.translate("&6Current Version&7:&r " + instance.getDescription().getVersion()));
+                        bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
+                        bukkitCommandSender.sendMessage(CC.translate("&6Loading plugin.."));
+                        if (!version.equals(res[2])) {
+                            bukkitCommandSender.sendMessage(CC.translate("&6Successfully verified your license key.."));
+                            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
+                            bukkitCommandSender.sendMessage(CC.translate("&6Loading plugin.."));
+                            bukkitCommandSender.sendMessage(CC.translate(""));
+                            bukkitCommandSender.sendMessage(CC.translate("&6&lOxygen Rank Core"));
+                            bukkitCommandSender.sendMessage(CC.translate("&cThis plugin is outdated!"));
+                            bukkitCommandSender.sendMessage(CC.translate("&cPlease download the new updated version in our discord."));
+                            bukkitCommandSender.sendMessage(CC.translate("&cSupport will NOT be offered on outdated versions."));
+                            bukkitCommandSender.sendMessage(CC.translate(""));
+                            bukkitCommandSender.sendMessage(CC.translate("&6Debug Mode: " + instance.displayDebugStatus()));
+                            bukkitCommandSender.sendMessage(CC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
+                            bukkitCommandSender.sendMessage(CC.translate("&6Current Version&7:&r " + instance.getDescription().getVersion()));
+                            bukkitCommandSender.sendMessage(CC.translate("&6New Version&7:&r " + res[2]));
+                            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
+                            bukkitCommandSender.sendMessage(CC.translate("&6Loading plugin.."));
+                        }
+                        return true;
+                    } else {
+                        bukkitCommandSender.sendMessage(CC.translate("&cTheir was an error while verifying your license."));
+                        bukkitCommandSender.sendMessage(CC.translate(""));
+                        bukkitCommandSender.sendMessage(CC.translate("&7\u2605 &6Error Message&7:&r " + res[0]));
+                        bukkitCommandSender.sendMessage(CC.translate("&7\u2605 &6Error Code&7:&r " + res[1]));
+                        bukkitCommandSender.sendMessage(CC.translate(""));
+                        bukkitCommandSender.sendMessage(CC.translate("&6Create a ticket in Discord!"));
+                        bukkitCommandSender.sendMessage(CC.translate("&6Discord:&r helydev.com/discord"));
+                        Bukkit.getConsoleSender().sendMessage(CC.translate("&7&m=================================================================================="));
+                        return false;
+                    }
+                } else {
+                    bukkitCommandSender.sendMessage(CC.translate("&cTheir was an error while verifying your license."));
+                    bukkitCommandSender.sendMessage(CC.translate(""));
+                    bukkitCommandSender.sendMessage(CC.translate("&cThe License API is currently offline."));
+                    bukkitCommandSender.sendMessage(CC.translate("&cPlease be patient, it will be back available soon."));
+                    bukkitCommandSender.sendMessage(CC.translate(""));
+                    bukkitCommandSender.sendMessage(CC.translate("&6Create a ticket in Discord!"));
+                    bukkitCommandSender.sendMessage(CC.translate("&6Discord:&r helydev.com/discord"));
+                    Bukkit.getConsoleSender().sendMessage(CC.translate("&7&m=================================================================================="));
+                    return false;
+                }
+            } catch (IOException | ParseException e) {
+                bukkitCommandSender.sendMessage(CC.translate("&cTheir was an error while verifying your license."));
+                bukkitCommandSender.sendMessage(CC.translate(""));
+                bukkitCommandSender.sendMessage(CC.translate("&7\u2605 &6Error&7:&r " + e.getMessage()));
+                bukkitCommandSender.sendMessage(CC.translate(""));
+                bukkitCommandSender.sendMessage(CC.translate("&6Create ticket in Discord!"));
+                bukkitCommandSender.sendMessage(CC.translate("&6Discord:&r helydev.com/discord"));
+                Bukkit.getConsoleSender().sendMessage(CC.translate("&7&m=================================================================================="));
+                return false;
+            }
+        }
+
+        private String createJSONData(String javaVersion, String hwid, String os) {
+            return "{\"licensekey\":\"" + license + "\","
+                    + "\"product\":\"" + product + "\","
+                    + "\"version\":\"" + version + "\","
+                    + "\"java\":\"" + javaVersion + "\","
+                    + "\"hwid\":\"" + hwid + "\","
+                    + "\"OS\":\"" + os + "\"}";
+        }
+
+        private HttpURLConnection createConnection() throws IOException {
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("authorization", apiKey);
+            connection.setDoOutput(true);
+            return connection;
+        }
+
+
+        private void sendData(HttpURLConnection connection, String postData) throws IOException {
+            try (OutputStream out = connection.getOutputStream()) {
+                byte[] input = postData.getBytes("utf-8");
+                out.write(input, 0, input.length);
+            }
+        }
+
+        private String[] handleResponse(HttpURLConnection connection) throws IOException, ParseException {
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) return new String[]{ String.valueOf(responseCode) };
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            String jsonResponse = response.toString();
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject;
+            try {
+                jsonObject = (JSONObject) parser.parse(jsonResponse);
+            } catch (org.json.simple.parser.ParseException e) {
+                return null;
+            }
+
+            // Extract and print values from the JSON response
+            String message = (String) jsonObject.get("message");
+            String code = jsonObject.get("code").toString();
+            String socket = decodeSocket((String) jsonObject.get("socket"));
+            String lastVersion = (String) jsonObject.get("latestVersion");
+
+            String expectedSocket = createExpectedSocket(product, license);
+            if (message == null || code == null) return new String[]{"Error"};
+
+            if (!code.equals("0")) return new String[]{ message, code };
+
+            if (socket == null || !expectedSocket.equals(socket)) return new String[]{ message, code };
+
+            if (lastVersion == null) return new String[]{ message, code };
+            return new String[]{ message, code, lastVersion };
+        }
+
+
+        private String decodeSocket(String base64Socket) throws UnsupportedEncodingException {
+            byte[] socketBytes = Base64.getDecoder().decode(base64Socket);
+            return new String(socketBytes, "utf-16le");
+        }
+
+        private String createExpectedSocket(String product, String license) {
+            String expectedSocket = product + System.currentTimeMillis();
+            expectedSocket = expectedSocket.substring(0, expectedSocket.length() - 5)
+                    + license.substring(0, license.length() - 7);
+            return expectedSocket;
+        }
+
+        // Función para obtener el HWID
+        private String getHWID() {
+            StringBuilder hwidBuilder = new StringBuilder();
+
+            try {
+                Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+                while (networkInterfaces.hasMoreElements()) {
+                    NetworkInterface iface = networkInterfaces.nextElement();
+                    Enumeration<InetAddress> addresses = iface.getInetAddresses();
+                    while (addresses.hasMoreElements()) {
+                        InetAddress address = addresses.nextElement();
+                        if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
+                            byte[] macAddress = iface.getHardwareAddress();
+                            if (macAddress != null) {
+                                for (byte b : macAddress) {
+                                    hwidBuilder.append(String.format("%02X", b));
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
+
+            return hwidBuilder.toString();
         }
     }
 }

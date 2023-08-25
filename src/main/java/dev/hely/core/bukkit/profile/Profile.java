@@ -17,6 +17,7 @@ import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.StatisticsSer
 import dev.hely.core.bukkit.profile.profilesystem.impl.social.SocialMediaType;
 import dev.hely.core.bukkit.profile.siblings.Sibling;
 import dev.hely.core.bukkit.profile.tfa.TwoFactorAuth;
+import dev.hely.core.bukkit.profile.utils.PlaytimeUtil;
 import dev.hely.core.bukkit.punishment.PunishmentType;
 import dev.hely.core.bukkit.ranks.grants.Grant;
 import dev.hely.core.bukkit.profile.permission.ProfilePermission;
@@ -79,6 +80,10 @@ public class Profile {
     private OxygenBukkit plugin = OxygenBukkit.getInstance();
     private int currency;
 
+    //playtime puta;
+    private long playTime = 0;
+    private PlaytimeUtil session;
+
     private List<String> ignoredList = new ArrayList<>();
     private long lastReceivedMessageMillis;
     private long lastSentMessageMillis;
@@ -110,6 +115,7 @@ public class Profile {
 
         this.conversations = new MessageConversations(this);
         this.preferences = new Preferences();
+        this.session = new PlaytimeUtil(name + "-playtime-session");
 
         load();
     }
@@ -129,7 +135,7 @@ public class Profile {
         document.put("loginTime", loginTime);
         document.put("settingUpAuth", settingUpAuth);
         document.put("tfaKey", tfaKey);
-
+        document.put("playTime", playTime + session.calculateDifference());
         document.put("currentAddress", currentAddress);
         document.put("addresses", OxygenBukkit.PLAIN_GSON.toJson(addresses, GSONUtil.LIST_STRING_TYPE));
         document.put("firstSeen", firstSeen);
@@ -192,8 +198,7 @@ public class Profile {
             tag = document.getString("tag");
             vpnWhitelist = document.getBoolean("vpnWhitelist");
             currency = document.getInteger("currency");
-
-
+            playTime = document.getLong("playTime");
             authPassword = document.getString("authPassword");
             needsVerify = document.getBoolean("needsVerify");
             nextAuthenticationNeeded = document.getLong("nextAuthenticationNeeded");
@@ -420,5 +425,9 @@ public class Profile {
         }
 
         return null;
+    }
+
+    public long getTotalPlayTime() {
+        return playTime + session.calculateDifference();
     }
 }

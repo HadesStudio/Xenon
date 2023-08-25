@@ -81,6 +81,7 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new BanCommand());
         loadedCommands.add(new TempBanCommand());
         loadedCommands.add(new MuteCommand());
+        loadedCommands.add(new PlaytimeCommand());
         loadedCommands.add(new KickCommand());
         loadedCommands.add(new WarnCommand());
         loadedCommands.add(new UnBlacklistCommand());

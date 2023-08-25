@@ -81,6 +81,31 @@ queue-system:
   toggled:
     enabled: "&aYou have successfully &a&nenabled&a the &6%server% Queue&a."
     disabled: "&cYou have successfully &c&ndisabled&c the &6%server% Queue&c."
+playtime-command:
+  view:
+    global: "&6You have played a total of &6&n%time%&6 on the &bHely Network&6."
+    global-player: "&6&n%player%&6 has played for a total of &6&n%time%&6 on the &bHely Network&6."
+  top:
+    top-format:
+      - "&7&l&m---------------------------------"
+      - "&6&lPlaytime"
+      - "&7This is the players with the most playtime."
+      - "&7"
+    format: "&6#%number% %player%&7: &a%time%"
+    bottom-format:
+      - "&7"
+      - "&7&l&m---------------------------------"
+  remove:
+    usage: "&cCorrect Usage: /playtime remove <player> <amount>"
+    invalid-time: "&cYou have specified an invalid amount of time to remove from this player's playtime."
+    cannot-remove: "&cYou cannot remove this much playtime because they don't even have that much time.."
+    removed: "&6[Playtime] &fYou have successfully removed &6%time% &ffrom &c%player%&f."
+    alert: "&6[Playtime] &c%player% &fhas just removed &6%time% &ffrom your &6Playtime&f."
+  add:
+    usage: "&cCorrect Usage: /playtime add <player> <amount>"
+    invalid-time: "&cYou have specified an invalid amount of time to remove from this player's playtime."
+    added: "&6[Playtime] &fYou have successfully added &6%time% &fto &c%player%&f playtime."
+    alert: "&6[Playtime] &c%player% &fhas just added &6%time% &fto your &6Playtime&f."
 join-queue-command:
   usage: "&cCorrect Usage: /joinqueue <server>"
 auth-command:
