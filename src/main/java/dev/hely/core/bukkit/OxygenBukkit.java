@@ -137,7 +137,7 @@ public class OxygenBukkit extends JavaPlugin {
             e.printStackTrace();
         }
 
-        boolean verify = new SkyLicense("http://207.244.252.245:5555/api/license", "CCBBC5-5937C6-2235EE-F91CAC").verify();
+        boolean verify = new SkyLicense("http://207.244.252.245:5555/api/license", this.licenseConfig.getConfiguration().getString("license")).verify();
         if (!verify) {
             Bukkit.getPluginManager().disablePlugin(this);
             Bukkit.getScheduler().cancelTasks(this);
@@ -162,14 +162,15 @@ public class OxygenBukkit extends JavaPlugin {
 
     public void onDisable() {
         stopping = true;
-
-        final Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
-        server.setStartupTime(0L);
-        server.setStatus(StatusData.OFFLINE);
-        server.getOnlinePlayers().set(0);
-        server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
-        redisModule.sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
-
+        
+        if (OxygenBukkit.getInstance().getServerConfig() != null) {
+            final Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
+            server.setStartupTime(0L);
+            server.setStatus(StatusData.OFFLINE);
+            server.getOnlinePlayers().set(0);
+            server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
+            redisModule.sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
+        }
         for (Player player : Bukkit.getOnlinePlayers()) {
             Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
             if (profile != null) {
@@ -374,14 +375,17 @@ public class OxygenBukkit extends JavaPlugin {
 
     public static class SkyLicense {
         private final String apiUrl;
-        private final String apiKey = "API_KEY";
+        private final String apiKey;
         private final String license;
-        private final String product = "Test";
-        private final String version = "1.0-SNAPSHOT";
+        private final String product;
+        private final String version;
 
         public SkyLicense(String apiUrl, String license) {
+            this.apiKey = "API_KEY";
             this.apiUrl = apiUrl;
             this.license = license;
+            this.product = instance.getDescription().getName();
+            this.version = instance.getDescription().getVersion();
         }
 
         public boolean verify() {
@@ -411,28 +415,17 @@ public class OxygenBukkit extends JavaPlugin {
                         bukkitCommandSender.sendMessage(CC.translate(""));
                         bukkitCommandSender.sendMessage(CC.translate("&6&lOxygen Rank Core"));
                         bukkitCommandSender.sendMessage(CC.translate(""));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Debug Mode: " + instance.displayDebugStatus()));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Current Version&7:&r " + instance.getDescription().getVersion()));
-                        bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Loading plugin.."));
                         if (!version.equals(res[2])) {
-                            bukkitCommandSender.sendMessage(CC.translate("&6Successfully verified your license key.."));
-                            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-                            bukkitCommandSender.sendMessage(CC.translate("&6Loading plugin.."));
-                            bukkitCommandSender.sendMessage(CC.translate(""));
-                            bukkitCommandSender.sendMessage(CC.translate("&6&lOxygen Rank Core"));
                             bukkitCommandSender.sendMessage(CC.translate("&cThis plugin is outdated!"));
                             bukkitCommandSender.sendMessage(CC.translate("&cPlease download the new updated version in our discord."));
                             bukkitCommandSender.sendMessage(CC.translate("&cSupport will NOT be offered on outdated versions."));
                             bukkitCommandSender.sendMessage(CC.translate(""));
-                            bukkitCommandSender.sendMessage(CC.translate("&6Debug Mode: " + instance.displayDebugStatus()));
-                            bukkitCommandSender.sendMessage(CC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
-                            bukkitCommandSender.sendMessage(CC.translate("&6Current Version&7:&r " + instance.getDescription().getVersion()));
                             bukkitCommandSender.sendMessage(CC.translate("&6New Version&7:&r " + res[2]));
-                            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-                            bukkitCommandSender.sendMessage(CC.translate("&6Loading plugin.."));
                         }
+                        bukkitCommandSender.sendMessage(CC.translate("&6Debug Mode: " + instance.displayDebugStatus()));
+                        bukkitCommandSender.sendMessage(CC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
+                        bukkitCommandSender.sendMessage(CC.translate("&6Current Version&7:&r " + instance.getDescription().getVersion()));
+                        bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
                         return true;
                     } else {
                         bukkitCommandSender.sendMessage(CC.translate("&cTheir was an error while verifying your license."));
