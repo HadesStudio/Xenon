@@ -513,14 +513,14 @@ public class OxygenBukkit extends JavaPlugin {
             // Extract and print values from the JSON response
             String message = (String) jsonObject.get("message");
             String code = jsonObject.get("code").toString();
-            String socket = decodeSocket((String) jsonObject.get("socket"));
             String lastVersion = (String) jsonObject.get("latestVersion");
 
             String expectedSocket = createExpectedSocket(product, license);
             if (message == null || code == null) return new String[]{"Error"};
 
             if (!code.equals("0")) return new String[]{ message, code };
-
+            
+            String socket = decodeSocket((String) jsonObject.get("socket"));
             if (socket == null || !expectedSocket.equals(socket)) return new String[]{ message, code };
 
             if (lastVersion == null) return new String[]{ message, code };
