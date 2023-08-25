@@ -526,7 +526,7 @@ public class OxygenBukkit extends JavaPlugin {
             String expectedSocket = createExpectedSocket(product, license);
             if (message == null || code == null) return new String[]{"Error"};
 
-            if (!code.equals("0")) return new String[]{ message, code };
+            if (!code.equals("000")) return new String[]{ message, code };
             
             String socket = decodeSocket((String) jsonObject.get("socket"));
             if (socket == null || !expectedSocket.equals(socket)) return new String[]{ message, code };
