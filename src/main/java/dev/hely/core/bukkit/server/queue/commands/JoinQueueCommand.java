@@ -22,15 +22,17 @@ import dev.hely.core.bukkit.server.queue.QueueRank;
 import dev.hely.core.bukkit.server.queue.packets.implement.QueueAddPlayerPacket;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.core.bungee.server.data.server.data.StatusData;
+import dev.hely.core.bungee.utils.BungeeUtil;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 public class JoinQueueCommand extends BaseCommand {
     public JoinQueueCommand(){
-        super("joinqueue", Collections.singletonList("jq"), true);
+        super("joinqueue", Arrays.asList("jq", "play", "playserver", "joinserver", "serverjoin"), true);
     }
 
     @Override
@@ -55,11 +57,14 @@ public class JoinQueueCommand extends BaseCommand {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.offline").replace("%server%", args[0])));
             return;
         }
-        /*if (player.hasPermission("oxygen.queue.bypass")) { ** DISABLED FOR TESTING PURPOSES
+        if (queue.containsPlayer(player.getUniqueId())) {
+            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.already-queue")));
+        }
+        if (player.hasPermission("oxygen.queue.bypass")) {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.bypassed-queue").replace("%server%", args[0])));
             BungeeUtil.sendToServer(player, args[0]);
             return;
-        }*/
+        }
         QueueRank queueRank = OxygenBukkit.getInstance().getQueueManager().getPriority(player);
 
         JsonObject rankObject = new JsonObject();

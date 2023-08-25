@@ -78,6 +78,7 @@ queue-system:
     - "&6&nstore.helydev.com"
     - "&7&l&m--------------------------------------------"
   cleared: "&aYou have cleared all &6%queue_size% Players &afrom the &6%server% Queue&a."
+  already-queue: "&cSorry, you are already queueing for a server. You cannot join multiple."
   toggled:
     enabled: "&aYou have successfully &a&nenabled&a the &6%server% Queue&a."
     disabled: "&cYou have successfully &c&ndisabled&c the &6%server% Queue&c."
