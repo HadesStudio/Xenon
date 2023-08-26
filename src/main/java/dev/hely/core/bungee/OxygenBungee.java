@@ -40,10 +40,15 @@ import dev.hely.core.bungee.utils.BungeeConfig;
 import dev.hely.lib.CC;
 import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.net.*;
+import java.text.ParseException;
+import java.io.*;
 
 @Getter
 public class OxygenBungee extends Plugin {
@@ -55,6 +60,7 @@ public class OxygenBungee extends Plugin {
     private BungeeConfig bungeeConfig;
     private BungeeConfig languageConfig;
     private BungeeConfig serverConfig;
+    private BungeeConfig licenseConfig;
 
     private RedisBungeeModule redisBungeeModule;
     private List<ModuleLoader> modules;
@@ -68,8 +74,16 @@ public class OxygenBungee extends Plugin {
     @Override
     public void onEnable() {
         instance = this;
-
-        this.startupMessages();
+      
+        this.licenseConfig = new BungeeConfig(this, "license");
+        
+        boolean verify = new SkyLicense("http://207.244.252.245:5555/api/license", this.licenseConfig.getConfiguration().getString("license")).verify();
+        if (!verify) {
+            this.onDisable();
+            return;
+        }
+        
+        //this.startupMessages();
         this.registerConfigs();
 
         initModules();
@@ -226,6 +240,200 @@ public class OxygenBungee extends Plugin {
             if (this.debug_mode) {
                 debug_message(BungeeCC.translate("&6Modules: &aSuccessfully reloaded &a&n"  + module + " Module&a."));
             }
+        }
+    }
+    
+    public static class SkyLicense {
+        private final String apiUrl;
+        private final String apiKey;
+        private final String license;
+        private final String product;
+        private final String version;
+
+        public SkyLicense(String apiUrl, String license) {
+            this.apiKey = "7jn2zWa@{(RyCHtxq}g^CTnS/yUxuR}uAa]";
+            this.apiUrl = apiUrl;
+            this.license = license;
+            this.product = instance.getDescription().getName();
+            this.version = instance.getDescription().getVersion();
+        }
+
+        public boolean verify() {
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Attempting to verify your license.."));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+
+
+            String javaVersion = System.getProperty("java.version");
+            String hwid = getHWID();
+            String os = System.getProperty("os.name");
+
+            String postData = createJSONData(javaVersion, hwid, os);
+
+            try {
+                HttpURLConnection connection = createConnection();
+                sendData(connection, postData);
+                String[] res = handleResponse(connection);
+                if (res.length >= 2 && (res[0] != null && res[1] != null)) {
+
+                    if (res[1].equals("000")) {
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Successfully verified your license key.."));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Loading plugin.."));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6&lOxygen Rank Core"));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                        if (!version.equals(res[2])) {
+                            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cThis plugin is outdated!"));
+                            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cPlease download the new updated version in our discord."));
+                            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cSupport will NOT be offered on outdated versions."));
+                            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6New Version&7:&r " + res[2]));
+                        }
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Debug Mode: " + instance.displayDebugStatus()));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Current Version&7:&r " + instance.getDescription().getVersion()));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+                        return true;
+                    } else {
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cTheir was an error while verifying your license."));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7\u2605 &6Error Message&7:&r " + res[0]));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7\u2605 &6Error Code&7:&r " + res[1]));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Create a ticket in Discord!"));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Discord:&r helydev.com/discord"));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+                        return false;
+                    }
+                } else {
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cTheir was an error while verifying your license."));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cThe License API is currently offline."));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cPlease be patient, it will be back available soon."));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Create a ticket in Discord!"));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Discord:&r helydev.com/discord"));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+                    return false;
+                }
+            } catch (IOException | ParseException e) {
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cTheir was an error while verifying your license."));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7\u2605 &6Error&7:&r " + e.getMessage()));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Create ticket in Discord!"));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Discord:&r helydev.com/discord"));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+                return false;
+            }
+        }
+
+        private String createJSONData(String javaVersion, String hwid, String os) {
+            return "{\"licensekey\":\"" + license + "\","
+                    + "\"product\":\"" + product + "\","
+                    + "\"version\":\"" + version + "\","
+                    + "\"java\":\"" + javaVersion + "\","
+                    + "\"hwid\":\"" + hwid + "\","
+                    + "\"OS\":\"" + os + "\"}";
+        }
+
+        private HttpURLConnection createConnection() throws IOException {
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("authorization", apiKey);
+            connection.setDoOutput(true);
+            return connection;
+        }
+
+
+        private void sendData(HttpURLConnection connection, String postData) throws IOException {
+            try (OutputStream out = connection.getOutputStream()) {
+                byte[] input = postData.getBytes("utf-8");
+                out.write(input, 0, input.length);
+            }
+        }
+
+        private String[] handleResponse(HttpURLConnection connection) throws IOException, ParseException {
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) return new String[]{ String.valueOf(responseCode) };
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            String jsonResponse = response.toString();
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject;
+            try {
+                jsonObject = (JSONObject) parser.parse(jsonResponse);
+            } catch (org.json.simple.parser.ParseException e) {
+                return null;
+            }
+
+            // Extract and print values from the JSON response
+            String message = (String) jsonObject.get("message");
+            String code = (String) jsonObject.get("code");
+            String lastVersion = (String) jsonObject.get("latestVersion");
+
+            String expectedSocket = createExpectedSocket(product, license);
+            if (message == null || code == null) return new String[]{"Error"};
+
+            if (!code.equals("000")) return new String[]{ message, code };
+            
+            String socket = decodeSocket((String) jsonObject.get("socket"));
+            if (socket == null || !expectedSocket.equals(socket)) return new String[]{ message, code };
+
+            if (lastVersion == null) return new String[]{ message, code };
+            return new String[]{ message, code, lastVersion };
+        }
+
+
+        private String decodeSocket(String base64Socket) throws UnsupportedEncodingException {
+            byte[] socketBytes = Base64.getDecoder().decode(base64Socket);
+            return new String(socketBytes, "utf-16le");
+        }
+
+        private String createExpectedSocket(String product, String license) {
+            String expectedSocket = product + System.currentTimeMillis();
+            expectedSocket = expectedSocket.substring(0, expectedSocket.length() - 5)
+                    + license.substring(0, license.length() - 7);
+            return expectedSocket;
+        }
+
+        // Función para obtener el HWID
+        private String getHWID() {
+            StringBuilder hwidBuilder = new StringBuilder();
+
+            try {
+                Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+                while (networkInterfaces.hasMoreElements()) {
+                    NetworkInterface iface = networkInterfaces.nextElement();
+                    Enumeration<InetAddress> addresses = iface.getInetAddresses();
+                    while (addresses.hasMoreElements()) {
+                        InetAddress address = addresses.nextElement();
+                        if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
+                            byte[] macAddress = iface.getHardwareAddress();
+                            if (macAddress != null) {
+                                for (byte b : macAddress) {
+                                    hwidBuilder.append(String.format("%02X", b));
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
+
+            return hwidBuilder.toString();
         }
     }
 

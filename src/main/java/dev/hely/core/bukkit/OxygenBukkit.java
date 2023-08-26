@@ -141,6 +141,7 @@ public class OxygenBukkit extends JavaPlugin {
         if (!verify) {
             Bukkit.getPluginManager().disablePlugin(this);
             Bukkit.getScheduler().cancelTasks(this);
+            return;
         }
 
         setupConfig();
