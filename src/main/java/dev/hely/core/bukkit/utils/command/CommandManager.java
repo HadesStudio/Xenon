@@ -7,13 +7,10 @@ import dev.hely.core.bukkit.commands.implement.punishment.*;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBanCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBlacklistCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnMuteCommand;
-import dev.hely.core.bukkit.commands.implement.staff.AltsCommand;
+import dev.hely.core.bukkit.commands.implement.staff.*;
 import dev.hely.core.bukkit.server.queue.commands.JoinQueueCommand;
-import dev.hely.core.bukkit.commands.implement.staff.AdminChatCommand;
-import dev.hely.core.bukkit.commands.implement.staff.StaffChatCommand;
 import dev.hely.core.bukkit.commands.OxygenCommand;
 import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.bukkit.commands.implement.staff.VPNCommand;
 import dev.hely.core.bukkit.profile.commands.EditProfileCommand;
 import dev.hely.core.bukkit.profile.log.commands.LogsCommand;
 import dev.hely.core.bukkit.profile.profilesystem.commands.NotificationCommand;
@@ -114,6 +111,9 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new QueueListCommand());
         loadedCommands.add(new LeaveQueueCommand());
         loadedCommands.add(new AltsCommand());
+        loadedCommands.add(new HideStaffCommand());
+        loadedCommands.add(new StaffBuildCommand());
+        loadedCommands.add(new StaffModeCommand());
 
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));

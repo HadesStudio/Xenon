@@ -124,3 +124,136 @@ statistics-settings:
     display-name: "&3&lSurvival" # The name of the server.
     use-hcf-core: false # This should ONLY be set to true if you are using a compatible HCF core on the server provided.
     inventory-slot: 3 # The slot that the item is displayed in.
+staff_mode:
+  enabled: true
+  on_join:
+    staff_mode: true # Enable staffmode when joining the server
+    vanish: true # Enable vanish when joining the server
+  silent_view_title: "&8Silent View"
+  armor:
+    # All staffs previous armor and inventory items are saved automatically when using /staffmode!
+    # The armor listed below is automatically removed after exiting staff mode.
+    helmet: "" # The helmet item given when activating mod mode.
+    chestplate: "" # The chestplate item given when activating mod mode.
+    leggings: "304:0" # The leggings item given when activating mod mode.
+    boots: "" # The boots item given when activating mod mode.
+  hotbar:
+    teleportation:
+      enabled: true
+      slot: 1
+      item:
+        material: "345:0"
+        name: "&6Teleportation Compass"
+        lore:
+          - "&7Right Click = Move through nearest block."
+          - "&7Left Click = Move to block your looking at."
+    inspection:
+      enabled: true
+      slot: 2
+      item:
+        material: "340:0"
+        name: "&6Inspection Tool"
+        lore:
+          - "&7Right-Click to view a player's inventory."
+    freeze_player:
+      enabled: true
+      slot: 5
+      item:
+        material: "079:0"
+        name: "&6Freeze Player"
+        lore:
+          - "&7Right-Click to freeze the clicked player."
+    worldedit_wand:
+      enabled: true
+      permission_only:
+        enabled: true # Do you want to only give players the wand if they have a specific permission?
+        permission: "oxygen.admin.wand"
+      slot: 3
+      item:
+        material: "271:0"
+        name: "&6WorldEdit Wand"
+        lore:
+          - "&7Right-Click to use your worldedit wand."
+    random_teleportation:
+      enabled: true
+      slot: 9
+      item:
+        material: "2265:0"
+        name: "&6Random Teleport"
+        lore:
+          - "&7Right-Click to teleport to a random player."
+    online_staff:
+      enabled: true
+      slot: 4
+      item:
+        material: "339:0"
+        name: "&6Online Staff"
+        lore:
+          - "&7Right-Click to view online staff members."
+    vanish:
+      enabled: true # Do you want to enable the main vanish button?
+      enabled_button:
+        enabled: true
+        slot: 8
+        item:
+          material: "351:10"
+          name: "&6Vanished: &aTrue"
+          lore:
+            - "&7Right-Click to disable your vanish mode."
+      disabled_button:
+        enabled: true
+        slot: 8
+        item:
+          material: "351:8"
+          name: "&6Vanished: &cFalse"
+          lore:
+            - "&7Right-Click to enable your vanish mode."
+  inventory_view:
+    title: "&8%player_name% - Inventory"
+    fill:
+      enabled: true # Do you want to use the inventory filler?
+      data: 7 # This is the item data of your glass pane.
+    buttons:
+      helmet_slot: 46
+      chestplate_slot: 47
+      leggings_slot: 48
+      boots_slot: 49
+      health:
+        slot: 50
+        item:
+          material: "382:0"
+          name: "&6Health"
+          lore:
+            - "&6Health&7: &e%health%"
+      food:
+        slot: 51
+        item:
+          material: "364:0"
+          name: "&6Food"
+          lore:
+            - "&6Food Level&7: &e%food_level%"
+            - "&6Saturation&7: &e%saturation%"
+      active_effects:
+        slot: 52
+        item:
+          material: "379:0"
+          name: "&6Active Potion Effect's"
+          lore: "&6%effect_name% &7(%effect_level%)&7: &c%duration%"
+      player_info:
+        slot: 53
+        item:
+          name: "&6Player Info"
+          lore:
+            - "&6Rank&7: &b%rank_prefix%"
+            - "&6Rank Name&7: &b%rank_name%"
+            - "&6Playtime&7: &b%playtime%"
+  online_menu:
+    title: "&8Online Staff"
+    name: "&r%rank_prefix%%target_name%"
+    lore:
+      - "&7&m-------------------------------"
+      - "&eVanished&7: &r%vanish%"
+      - "&eMod Mode&7: &r%staffmode%"
+      - ""
+      - "&7Click to teleport"
+      - "&7&m-------------------------------"

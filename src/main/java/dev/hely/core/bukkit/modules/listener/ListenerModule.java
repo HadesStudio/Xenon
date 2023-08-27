@@ -9,6 +9,7 @@ import dev.hely.core.bukkit.profile.permission.bukkit.BukkitPermissionListener;
 import dev.hely.core.bukkit.profile.tfa.listeners.TFAListener;
 import dev.hely.core.bukkit.punishment.PunishmentListener;
 import dev.hely.core.bukkit.server.queue.listener.QueueListener;
+import dev.hely.core.bukkit.staff.staffmode.listeners.StaffListener;
 import dev.hely.lib.menu.MenuListener;
 import org.bukkit.event.Listener;
 
@@ -35,6 +36,7 @@ public class ListenerModule implements ModuleLoader {
                 new MenuListener(plugin),
                 new TFAListener(),
                 new LogListeners(),
+                new StaffListener(),
                 new NoteListener());
 
         this.enabled = true;

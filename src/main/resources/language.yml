@@ -20,6 +20,34 @@ chat:
     - "&cPlease wait another &c&l%wait_time% &cbefore chatting again."
   filtered-message-alert: "&c[Chat Filter] &7%format%"
   blocked: "&cYour message contained blocked content. It has been blocked from sending in chat."
+hide-staff:
+  enabled: "&cYou have successfully hidden all &6Staff Members&c."
+  disabled: "&aYou can now see all &6Staff Members&a."
+vanish:
+  enabled: "&aYou have successfully enabled your &6Staff Vanish&a."
+  disabled: "&cYou have successfully disabled your &6Staff Vanish&a."
+  enable-alert: # If you want players to see the alert, they need "oxygen.staff.alerts" permission.
+    enabled: true # Do you want to send a message to staff members when someone enables vanish?
+    alert:
+      - "&6[Staff] &c%player% &ahas just enabled their &6Vanish Mode&a."
+  disable-alert: # If you want players to see the alert, they need "oxygen.staff.alerts" permission.
+    enabled: true # Do you want to send a message to staff members when someone enables vanish?
+    alert:
+      - "&6[Staff] &c%player% &ahas just disabled their &6Vanish Mode&a."
+staff-mode-system:
+  no-online-players: "&cSorry, it seems their is no online players to teleport to."
+  open-chest: "&6Opening this chest silently.."
+  open-furnace: "&6Opening this furnace silently.."
+  open-hopper: "&6Opening this hopper silently.."
+staff-build:
+  enabled: "&aYou have successfully enabled your &6Staff Build Mode&a."
+  disabled: "&cYou have successfully disabled your &6Staff Build Mode&c."
+staff-mode:
+  enabled: "&aYou have successfully enabled your &6Staff Mode&a."
+  disabled: "&cYou have successfully disabled your &6Staff Mode&c."
+  others: # If you want staff to be able to take others out of staff mode, they need "oxygen.commands.staffmode.others" permission.
+    enabled: "&aYou have successfully enabled &c%player%'s &6Staff Mode&a."
+    disabled: "&cYou have successfully disabled &4%player%'s &6Staff Mode&c."
 alts-command:
   usage: "&cCorrect Usage: /alts <player>"
   no-alts: "&cSorry, &6%player% &cdoes not have any alternate accounts on file."

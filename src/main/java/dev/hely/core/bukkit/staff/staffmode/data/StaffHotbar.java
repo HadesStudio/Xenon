@@ -1,4 +1,4 @@
-package dev.hely.core.bukkit.staff.staffmode;
+package dev.hely.core.bukkit.staff.staffmode.data;
 
 //============================================================
 // This file was created by DevDipin!
@@ -7,13 +7,23 @@ package dev.hely.core.bukkit.staff.staffmode;
 // If any questions, please contact on discord.
 //
 // File Information:
-//   Path: dev.hely.core.bukkit.staff.staffmode
-//   Date: Thursday, August 24, 2023 - 3:01 PM
+//   Path: dev.hely.core.bukkit.staff.staffmode.data
+//   Date: Saturday, August 26, 2023 - 3:44 PM
 //
 // Contact Information:
 //   Discord: Andrew!!#4468
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-public class StaffMode {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.bukkit.inventory.ItemStack;
+
+@Getter
+@AllArgsConstructor
+public class StaffHotbar {
+    public final ItemStack itemStack;
+    public final int slot;
+    public final boolean enabled;
 }
+

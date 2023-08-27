@@ -32,6 +32,7 @@ import dev.hely.core.bukkit.server.queue.runnables.QueueUpdateRunnable;
 import dev.hely.core.bukkit.server.runnable.HeartBeatRunnable;
 import dev.hely.core.bukkit.server.runnable.ServerRunnable;
 import dev.hely.core.bukkit.staff.requests.RequestManager;
+import dev.hely.core.bukkit.staff.staffmode.StaffManager;
 import dev.hely.core.bukkit.tag.TagManager;
 import dev.hely.core.bukkit.tag.packet.TagPacketListener;
 import dev.hely.core.bukkit.tasks.NameMCReminderTask;
@@ -100,6 +101,7 @@ public class OxygenBukkit extends JavaPlugin {
     private Config coinShopConfig;
     private GoogleAuthenticator googleAuthenticator;
     private Config serverConfig;
+    private Config itemsConfig;
 
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
@@ -123,6 +125,7 @@ public class OxygenBukkit extends JavaPlugin {
     private TFAManager tfaManager;
     private QueueManager queueManager;
     private LogManager logManager;
+    private StaffManager staffManager;
 
     private boolean debug_mode;
 
@@ -216,6 +219,8 @@ public class OxygenBukkit extends JavaPlugin {
                 this.serverConfig = new Config(OxygenBukkit.getInstance(), "server-data");
                 this.configList.add(serverConfig);
             }
+            this.itemsConfig = new Config(OxygenBukkit.getInstance(), "items");
+            this.configList.add(itemsConfig);
             this.profileMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "profile-menu");
             this.configList.add(profileMenuConfig);
             this.historyMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "history-menu");
@@ -269,6 +274,7 @@ public class OxygenBukkit extends JavaPlugin {
         storeManager = new StoreManager();
         tfaManager = new TFAManager();
         logManager = new LogManager();
+        staffManager = new StaffManager();
 
         if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("server-manager.enabled")) {
             queueManager = new QueueManager();
@@ -293,6 +299,7 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(tagManager);
         this.loadModule(storeManager);
         this.loadModule(tfaManager);
+        this.loadModule(staffManager);
 
         if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("server-manager.enabled")) {
             this.loadModule(queueManager);
