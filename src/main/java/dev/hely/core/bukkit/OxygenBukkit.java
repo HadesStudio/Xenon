@@ -39,6 +39,7 @@ import dev.hely.core.bukkit.tasks.NameMCReminderTask;
 import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.bukkit.utils.command.CommandManager;
 import dev.hely.core.bukkit.utils.command.SubCommandManager;
+import dev.hely.core.bukkit.utils.item.ItemUtils;
 import dev.hely.core.bungee.server.data.server.Server;
 import dev.hely.core.bungee.server.data.server.data.StatusData;
 import dev.hely.core.bungee.server.packets.ServerUpdatePacket;
@@ -155,14 +156,12 @@ public class OxygenBukkit extends JavaPlugin {
         setupPackets();
         registerTasks();
 
-        if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("server-manager.enabled")) {
-            new QueuePositionRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-            new QueueUpdateRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-            new MainQueueRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-            new ServerRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-            new HeartBeatRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-            this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
-        }
+        new QueuePositionRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        new QueueUpdateRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        new MainQueueRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        new ServerRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        new HeartBeatRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
 
         logManager.registerAllLogs();
     }
@@ -171,15 +170,13 @@ public class OxygenBukkit extends JavaPlugin {
         try {
             stopping = true;
 
-            if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("server-manager.enabled")) {
-                if (OxygenBukkit.getInstance().getServerConfig() != null) {
-                    final Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
-                    server.setStartupTime(0L);
-                    server.setStatus(StatusData.OFFLINE);
-                    server.getOnlinePlayers().set(0);
-                    server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
-                    redisModule.sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
-                }
+            if (OxygenBukkit.getInstance().getServerConfig() != null) {
+                final Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
+                server.setStartupTime(0L);
+                server.setStatus(StatusData.OFFLINE);
+                server.getOnlinePlayers().set(0);
+                server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
+                redisModule.sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
             }
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
@@ -202,7 +199,7 @@ public class OxygenBukkit extends JavaPlugin {
         return System.currentTimeMillis() - LAST_START_TIME;
     }
 
-    public void setupConfig(){
+    public void setupConfig() {
         try {
             this.configuration = new Config(OxygenBukkit.getInstance(), "config");
             this.configList.add(configuration);
@@ -216,12 +213,11 @@ public class OxygenBukkit extends JavaPlugin {
             this.configList.add(rankSettingsConfig);
             this.tagConfig = new Config(OxygenBukkit.getInstance(), "tags");
             this.configList.add(tagConfig);
-            if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("server-manager.enabled")) {
-                this.serverConfig = new Config(OxygenBukkit.getInstance(), "server-data");
-                this.configList.add(serverConfig);
-            }
+            this.serverConfig = new Config(OxygenBukkit.getInstance(), "server-data");
+            this.configList.add(serverConfig);
             this.itemsConfig = new Config(OxygenBukkit.getInstance(), "items");
             this.configList.add(itemsConfig);
+            ItemUtils.setupItemStack();
             this.profileMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "profile-menu");
             this.configList.add(profileMenuConfig);
             this.historyMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "history-menu");
@@ -277,10 +273,8 @@ public class OxygenBukkit extends JavaPlugin {
         logManager = new LogManager();
         staffManager = new StaffManager();
 
-        if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("server-manager.enabled")) {
-            queueManager = new QueueManager();
-            serverManager = new BukkitServerManager();
-        }
+        queueManager = new QueueManager();
+        serverManager = new BukkitServerManager();
     }
 
     public void setupModules() {
@@ -302,12 +296,10 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(tfaManager);
         this.loadModule(staffManager);
 
-        if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("server-manager.enabled")) {
-            this.loadModule(queueManager);
-            this.loadModule(serverManager);
+        this.loadModule(queueManager);
+        this.loadModule(serverManager);
 
-            instance.getServer().getPluginManager().registerEvents(new QueueListener(), this);
-        }
+        instance.getServer().getPluginManager().registerEvents(new QueueListener(), this);
     }
 
     public void setupPackets() {
@@ -315,11 +307,9 @@ public class OxygenBukkit extends JavaPlugin {
         redisModule.registerListener(new PunishmentPacketListener(this));
         redisModule.registerListener(new TagPacketListener(tagManager));
 
-        if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("server-manager.enabled")) {
-            redisModule.registerListener(new BukkitServerListener());
-            redisModule.registerListener(new QueuePacketListener());
-            redisModule.registerListener(new ServerPacketListener());
-        }
+        redisModule.registerListener(new BukkitServerListener());
+        redisModule.registerListener(new QueuePacketListener());
+        redisModule.registerListener(new ServerPacketListener());
 
         redisModule.subscribeJedis();
     }

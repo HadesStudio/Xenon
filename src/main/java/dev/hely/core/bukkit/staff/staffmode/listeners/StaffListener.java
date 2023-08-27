@@ -80,10 +80,10 @@ public class StaffListener implements Listener {
         if (!event.hasItem() || !itemStack.hasItemMeta()) return;
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-        StaffHotbar randomTeleport = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(5);
-        StaffHotbar staffGui = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(6);
-        StaffHotbar vanishOff = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(7);
-        StaffHotbar vanishOn = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(8);
+        StaffHotbar randomTeleport = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(4);
+        StaffHotbar staffGui = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(5);
+        StaffHotbar vanishOff = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(6);
+        StaffHotbar vanishOn = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(7);
 
 
         if (itemStack.isSimilar(staffGui.getItemStack())) {
@@ -167,8 +167,8 @@ public class StaffListener implements Listener {
 
         Player target = (Player) entity;
 
-        StaffHotbar inspector = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(2);
-        StaffHotbar freeze = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(3);
+        StaffHotbar inspector = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(1);
+        StaffHotbar freeze = OxygenBukkit.getInstance().getStaffManager().getHotbarData().get(2);
 
 
         if (itemStack.isSimilar(inspector.getItemStack())) {
@@ -207,7 +207,13 @@ public class StaffListener implements Listener {
         Player player = event.getPlayer();
         if (!OxygenBukkit.getInstance().getStaffManager().isVanished(player) || !OxygenBukkit.getInstance().getStaffManager().isStaffModeActive(player))
             return;
-        if (OxygenBukkit.getInstance().getStaffManager().isStaffBuild(player)) return;
+        if (OxygenBukkit.getInstance().getStaffManager().isStaffBuild(player)) {
+            for (StaffHotbar hotbar : OxygenBukkit.getInstance().getStaffManager().getHotbarData()) {
+                if (hotbar.getItemStack().isSimilar(event.getPlayer().getItemInHand())) {
+                    return;
+                }
+            }
+        }
 
         event.setCancelled(true);
     }

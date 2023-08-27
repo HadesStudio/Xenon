@@ -6,8 +6,6 @@
 ###################################################################################
 
 debug-mode: true # Do not edit the status of this via the config, use the debug mode command in game.
-server:
-  name: "Hub" # This is the name of the server this plugin is currently installed in.
 # Advanced Client Version Data:
 # This plugin will give you further information about your players.
 # What client they are using, like lunar client, cosmic client, etc.
@@ -20,8 +18,6 @@ advanced-client-version-data:
   lunar-client: "&b[LC]"
   forge: "&6[F]"
   vanilla: "&a[V]"
-server-manager:
-  enabled: false # Do you want to use the server system?
 command-system:
   disabled-commands:
     - "test"

@@ -80,7 +80,7 @@ public class StaffManager implements ModuleLoader {
         boolean enabled;
 
         enabled = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.teleportation.enabled");
-        item = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.teleportation.item.material")))
+        item = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfig().getString("staff_mode.hotbar.teleportation.item.material")))
                 .setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.teleportation.item.name"))
                 .setLore(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.teleportation.item.lore"))
                 .build();
@@ -167,8 +167,8 @@ public class StaffManager implements ModuleLoader {
 
         boolean vanished = isVanished(player);
 
-        StaffHotbar vanishOn = hotbarData.get(7);
-        StaffHotbar vanishOff = hotbarData.get(8);
+        StaffHotbar vanishOn = hotbarData.get(6);
+        StaffHotbar vanishOff = hotbarData.get(7);
 
 
         hotbarData.forEach(hotbar -> {
