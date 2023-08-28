@@ -1,7 +1,13 @@
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
+
 selection-menu:
   title: "%player% - Profile Details" # %player%
   size: 27 # The size of the menu. (It must be integers of 9)
-
   messages:
     no-permissions: "&cYou do not have permissions to use this feature in the profile menu."
   buttons:
@@ -14,7 +20,7 @@ selection-menu:
       lore:
         # Available placeholders: %player_name%, %last_seen_date%, %first_join_date%, %note_size%, %current_server%, %siblings_size%
         - "&7This menu contains all information"
-        - "&7about a users profile save."
+        - "&7about a users profile current cached data."
         - ""
         - "&aFirst Join: &6%first_join_date% ago"
         - "&aLast Seen: &6%last_seen_date% ago"
@@ -32,7 +38,7 @@ selection-menu:
         - "&7Click here to view this players"
         - "&7profile notes."
         - ""
-        - "&aNote: &6%note_size% Notes"
+        - "&aNotes: &6%note_size% Notes"
     siblings-button:
       slot: 12
       material: "ENCHANTED_BOOK"
@@ -66,10 +72,8 @@ selection-menu:
         - "&7expired, and active grants."
         - ""
         - "&aGrants: &6%grants_size% Grants"
-
 notes-menu:
   title: "%player% - Profile Notes"
-
   messages:
     cannot-delete: "&cYou do not have permissions to delete player notes."
     removed-note: "&aYou have successfully removed a &6Player Note &afrom &6%player%&a."
@@ -100,7 +104,6 @@ notes-menu:
       lore:
         - "&7Click here to create a new note on"
         - "&7this player's profile."
-
 siblings-menu:
   title: "%player% - Siblings"
 
@@ -133,10 +136,8 @@ siblings-menu:
       lore:
         - "&7Click here to add a new profile"
         - "&7sibling to this player."
-
 grants-menu:
   title: "%player% - Rank Grants"
-
   messages:
     cannot-delete: "&cYou do not have permissions to delete player grants."
     removed-grant: "&aYou have successfully removed the grant from &6%player%&a."
@@ -176,4 +177,3 @@ grants-menu:
       lore:
         - "&7Click here to give this player a"
         - "&7new grant on their profile."
-
