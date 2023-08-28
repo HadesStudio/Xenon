@@ -1,12 +1,17 @@
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
+
 settings:
   # NOTE: They will still be logged in the database if set to false.
   save-to-file: true # Do you want to save files to a folder in your plugin folder?
   log-commands: true # Do you want to log anytime someone executes ANY command?
   log-joins: true # Do you want to log anytime a player joins or leaves?
-
 messages:
   usage: "&cCorrect Usage: /logs <player>"
-
 log-types:
   # WARNING: Do NOT put color codes.
   # If you put color codes, it will break your database..
@@ -28,10 +33,8 @@ log-types:
   grant-removed: "Rank grant removed"
   grant-expired: "Rank grant expired"
   given-rank: "Gave someone a rank"
-
 log-viewer:
   title: "Player Logs"
-
 categories:
   title: "Log Category Selection"
   size: 27
