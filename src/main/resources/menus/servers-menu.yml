@@ -1,6 +1,12 @@
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
+
 menu:
   title: "Server Manager"
-
   messages:
     whitelist:
       disabled: "&cYou have successfully disabled the whitelist on &6%server_name% Server&c! All players can now connect."
