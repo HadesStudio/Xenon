@@ -43,12 +43,10 @@ whitelist-command:
   usage: "&cCorrect Usage: /whitelist <add|remove|on|off> <player>"
   already-whitelisted: "&cThis server's whitelist is already enabled."
   not-whitelisted: "&cThis server's whitelist is currently not enabled."
-  on:
-    enabled: "&aYou have successfully enabled this servers &6Whitelist&a."
-    staff-broadcast: "&6[Server Manager] &c%player% &7has just enabled the &6%server_name% &dWhitelist&7."
-  off:
-    disabled: "&cYou have successfully disabled this servers &6Whitelist&c."
-    staff-broadcast: "&6[Server Manager] &c%player% &7has just disabled the &6%server_name% &dWhitelist&7."
+  enabled-whitelist: "&aYou have successfully enabled this servers &6Whitelist&a."
+  enabled-staff-broadcast: "&6[Server Manager] &c%player% &7has just enabled the &6%server_name% &dWhitelist&7."
+  disabled-whitelist: "&cYou have successfully disabled this servers &6Whitelist&c."
+  disabled-staff-broadcast: "&6[Server Manager] &c%player% &7has just disabled the &6%server_name% &dWhitelist&7."
   player-whitelisted: "&cSorry, this player is already whitelisted on this server."
   player-not-whitelisted: "&cSorry, this player is not whitelist on this server."
   added-player: "&aYou have successfully whitelisted &6%player% &aon this server."

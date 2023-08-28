@@ -47,8 +47,8 @@ public class WhitelistCommand extends BaseCommand {
                 return;
             }
             server.setStatus(StatusData.WHITELISTED);
-            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.on.enabled")));
-            OxygenBukkit.getInstance().getRedisModule().sendPacket(new WhitelistBroadcastPacket(sender.getName(), server.getName(), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.on.staff-broadcast")));
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.disabled-whitelist")));
+            OxygenBukkit.getInstance().getRedisModule().sendPacket(new WhitelistBroadcastPacket(sender.getName(), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.disabled-staff-whitelist"), server.getName()));
         } else if (args[0].equalsIgnoreCase("off")) {
             Server server = OxygenBukkit.getInstance().getServerManager().serverFromName(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
             if (server == null) {
@@ -60,8 +60,8 @@ public class WhitelistCommand extends BaseCommand {
                 return;
             }
             server.setStatus(StatusData.ONLINE);
-            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.off.enabled")));
-            OxygenBukkit.getInstance().getRedisModule().sendPacket(new WhitelistBroadcastPacket(sender.getName(), server.getName(), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.on.staff-broadcast")));
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.enabled-whitelist")));
+            OxygenBukkit.getInstance().getRedisModule().sendPacket(new WhitelistBroadcastPacket(sender.getName(), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.enabled-staff-whitelist"), server.getName()));
         } else if (args[0].equalsIgnoreCase("toggle")) {
             Server server = OxygenBukkit.getInstance().getServerManager().serverFromName(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
             if (server == null) {
@@ -70,12 +70,12 @@ public class WhitelistCommand extends BaseCommand {
             }
             if (server.getStatus() == StatusData.WHITELISTED) {
                 server.setStatus(StatusData.ONLINE);
-                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.on.enabled")));
-                OxygenBukkit.getInstance().getRedisModule().sendPacket(new WhitelistBroadcastPacket(sender.getName(), server.getName(), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.on.staff-broadcast")));
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.enabled-whitelist")));
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new WhitelistBroadcastPacket(sender.getName(), server.getName(), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.enabled-staff-whitelist")));
             } else {
                 server.setStatus(StatusData.WHITELISTED);
-                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.off.disabled")));
-                OxygenBukkit.getInstance().getRedisModule().sendPacket(new WhitelistBroadcastPacket(sender.getName(), server.getName(), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.off.staff-broadcast")));
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.disabled-whitelist")));
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new WhitelistBroadcastPacket(sender.getName(), server.getName(), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.disabled-staff-whitelist")));
             }
         } else if (args[0].equalsIgnoreCase("add")) {
             if (args.length == 2) {
