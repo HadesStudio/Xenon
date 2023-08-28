@@ -1,15 +1,22 @@
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
+
 commands:
   usage:
     - "&7&l&m-----------------------------------"
-    - "&d&lRank System Help"
+    - "&6&lRank System Help"
     - "&7All commands and usages are listed below."
     - ""
-    - "&d* &f/rank create <name> &7- Create a rank with specified name."
-    - "&d* &f/rank delete <name> &7- Delete a rank."
-    - "&d* &f/rank inherit <add|list|remove> <rank> <inheritance> &7- Modify inheritances for a rank."
-    - "&d* &f/rank rename <rank> <new_name> &7- Rename a existing rank to a new name."
-    - "&d* &f/rank bungeeperms <add|list|remove> <rank> <permission> &7- Modify a ranks bungee permissions."
-    - "&d* &f/rank list &7- View a list of all created ranks."
+    - "&6* &f/rank create <name> &7- Create a rank with specified name."
+    - "&6* &f/rank delete <name> &7- Delete a rank."
+    - "&6* &f/rank inherit <add|list|remove> <rank> <inheritance> &7- Modify inheritances for a rank."
+    - "&6* &f/rank rename <rank> <new_name> &7- Rename a existing rank to a new name."
+    - "&6* &f/rank bungeeperms <add|list|remove> <rank> <permission> &7- Modify a ranks bungee permissions."
+    - "&6* &f/rank list &7- View a list of all created ranks."
     - "&7&l&m-----------------------------------"
   create:
     usage: "&cCorrect Usage: /rank create <name>"
@@ -75,7 +82,6 @@ commands:
     removed: "&cYou have successfully removed this &6Permission&c."
     not-have: "&cThis rank does not have that permission?"
   dont-exists: "&cA rank with that name doesn't exists."
-
 menu:
   rank-list:
     rank-button:
@@ -98,14 +104,14 @@ menu:
         # Available placeholders:
         # %rank_color%, %rank_weight%, %rank_prefix%, %rank_suffix%, %%rank_inheritances%%, %rank_permissions_size%
         - "&7&l&m-----------------------------------------"
-        - "&dColor: &f%rank_color%"
-        - "&dWeight: &f%rank_weight%"
-        - "&dPrefix: &f%rank_prefix%"
-        - "&dSuffix: &f%rank_suffix%"
-        - "&dInheritances: &f%rank_inheritances%"
-        - "&dPermissions: &f%rank_permissions_size%"
+        - "&6Color: &f%rank_color%"
+        - "&6Weight: &f%rank_weight%"
+        - "&6Prefix: &f%rank_prefix%"
+        - "&6Suffix: &f%rank_suffix%"
+        - "&6Inheritances: &f%rank_inheritances%"
+        - "&6Permissions: &f%rank_permissions_size%"
         - ""
-        - "&dLeft-Click to view full permissions of this rank."
-        - "&dRight-Click to view this ranks inheritances."
+        - "&6Left-Click &7to view full permissions of this rank."
+        - "&6Right-Click &7to view this ranks inheritances."
         - "&7&l&m-----------------------------------------"
 
