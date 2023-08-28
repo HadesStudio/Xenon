@@ -1,6 +1,12 @@
-menu:
-  title: "Select a tag."
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
 
+menu:
+  title: "Tag Selection"
   messages:
     reset-tag: "&cYou have successfully disabled your active chat tag."
     activated-tag: "&aYou have successfully activated this &6Chat Tag&a."
