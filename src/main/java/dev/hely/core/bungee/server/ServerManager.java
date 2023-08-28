@@ -193,16 +193,20 @@ public class ServerManager implements ModuleLoader {
         List<Server> toReturn = new ArrayList<>();
         for (Server server : this.servers) {
             if (!groups.contains(server.getGroup())) {
+                OxygenBungee.getInstance().getLogger().info(server.getName() + " is not in a server group.");
                 continue;
             }
             if (server.getStatus().equals(StatusData.OFFLINE)) {
+                OxygenBungee.getInstance().getLogger().info(server.getName() + " is currently offline.");
                 continue;
             }
             if (server.getOnlinePlayers().get() >= server.getMaximumPlayers().get() && !server.getOppedPlayers().contains(uuid)) {
+                OxygenBungee.getInstance().getLogger().info(server.getName() + " is not in a server group.");
                 continue;
             }
 
             if (server.getStatus().equals(StatusData.WHITELISTED) && !(server.getOppedPlayers().contains(uuid) || server.getWhitelistedPlayers().contains(uuid))) {
+                OxygenBungee.getInstance().getLogger().info(server.getName() + " is currently whitelisted.");
                 continue;
             }
 

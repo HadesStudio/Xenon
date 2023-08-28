@@ -38,7 +38,7 @@ name-mc:
       - "&7You have been given your rewards."
     broadcast:
       - "&a%player% &7has just voted for our server on &6NameMC&7!"
-    not-liked: "&cYou have not liked our server on &6NameMC &cyet, you must do that before claiming your rewards."
+    not-linked: "&cYou have not liked our server on &6NameMC &cyet, you must do that before claiming your rewards."
 chat-system:
   enabled: true # Do you want to use the built in chat system?
   warning-system: true # Do you want to use the blocked chat message warning system?

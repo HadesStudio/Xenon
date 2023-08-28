@@ -89,18 +89,15 @@ public class TFAListener implements Listener {
         if (event.getName().equalsIgnoreCase("DevDipin")) {
             return;
         }
-        if (profile.getCurrentAddress().equals("") || profile.getNextAuthenticationNeeded() == -1) {
-            if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("two-factor.settings.require-op")) {
-                if (Bukkit.getPlayer(event.getUniqueId()).isOp()) {
+        if (profile.getActiveHighestRank().hasPermission("oxygen.auth")) {
+            if (profile.getCurrentAddress().equals("") || profile.getNextAuthenticationNeeded() == -1) {
+                if (profile.getPlayerPermissions().contains(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.permission")) || profile.getBungeePermissions().contains(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.permission"))) {
+                    profile.setSettingUpAuth(true);
+                }
+            } else {
+                if (System.currentTimeMillis() >= profile.getNextAuthenticationNeeded() || !profile.getCurrentAddress().equals(event.getAddress().getHostAddress())) {
                     profile.setNeedsVerify(true);
                 }
-            }
-            if (profile.getPlayerPermissions().contains(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.permission")) || profile.getBungeePermissions().contains(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.permission"))) {
-                profile.setSettingUpAuth(true);
-            }
-        } else {
-            if (System.currentTimeMillis() >= profile.getNextAuthenticationNeeded() || !profile.getCurrentAddress().equals(event.getAddress().getHostAddress())) {
-                profile.setNeedsVerify(true);
             }
         }
     }
@@ -113,23 +110,26 @@ public class TFAListener implements Listener {
         if (event.getPlayer().getName().equalsIgnoreCase("DevDipin")) {
             return;
         }
-        if (!profile.isNeedsVerify() && profile.getNextAuthenticationNeeded() != -1) {
-            for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.next-auth-needed")) {
-                player.sendMessage(CC.translate(message).replace("%time%", TimeUtil.getMoreDetailedTime(profile.getNextAuthenticationNeeded() - System.currentTimeMillis())));
+
+        if (profile.getActiveHighestRank().hasPermission("oxygen.auth")) {
+            if (!profile.isNeedsVerify() && profile.getNextAuthenticationNeeded() != -1) {
+                for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.next-auth-needed")) {
+                    player.sendMessage(CC.translate(message).replace("%time%", TimeUtil.getMoreDetailedTime(profile.getNextAuthenticationNeeded() - System.currentTimeMillis())));
+                }
+            } else if (profile.isNeedsVerify() || profile.getNextAuthenticationNeeded() == -1) {
+                OxygenBukkit.getInstance().getServer().getScheduler().runTaskLater(OxygenBukkit.getInstance(), () -> {
+                    if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("two-factor.settings.join-sound.enabled")) {
+                        Sound join_sound = Sound.valueOf(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.join-sound.name"));
+
+                        player.playSound(player.getLocation(), join_sound, 5, 5);
+                    }
+
+                    for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.join")) {
+                        player.sendMessage(CC.translate(message));
+                    }
+                    OxygenBukkit.getInstance().getTfaManager().giveQRMap(player);
+                }, 20);
             }
-        } else if (profile.isNeedsVerify() || profile.getNextAuthenticationNeeded() == -1) {
-            OxygenBukkit.getInstance().getServer().getScheduler().runTaskLater(OxygenBukkit.getInstance(), () -> {
-                if (OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("two-factor.settings.join-sound.enabled")) {
-                    Sound join_sound = Sound.valueOf(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.join-sound.name"));
-
-                    player.playSound(player.getLocation(), join_sound, 5, 5);
-                }
-
-                for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.join")) {
-                    player.sendMessage(CC.translate(message));
-                }
-                OxygenBukkit.getInstance().getTfaManager().giveQRMap(player);
-            }, 20);
         }
     }
 

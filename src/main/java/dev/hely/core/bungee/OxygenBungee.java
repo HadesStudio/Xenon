@@ -18,9 +18,7 @@ package dev.hely.core.bungee;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.bungee.commands.HubCommand;
 import dev.hely.core.bungee.commands.ServerCommand;
 import dev.hely.core.bungee.commands.ServerManagerCommand;
@@ -41,19 +39,16 @@ import dev.hely.core.bungee.utils.BungeeCC;
 import dev.hely.core.bungee.utils.BungeeConfig;
 import dev.hely.lib.CC;
 import lombok.Getter;
-import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.plugin.Plugin;
-import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.*;
-import java.net.*;
-import java.text.ParseException;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.net.*;
+import java.text.ParseException;
+import java.io.*;
 
 @Getter
 public class OxygenBungee extends Plugin {
@@ -82,11 +77,13 @@ public class OxygenBungee extends Plugin {
 
         this.licenseConfig = new BungeeConfig(this, "license");
 
-        boolean verify = new OxygenBukkit.SkyLicense("http://207.244.252.245:5555/api/license", this.licenseConfig.getConfiguration().getString("license")).verify();
+        boolean verify = new SkyLicense("http://207.244.252.245:5555/api/license", this.licenseConfig.getConfiguration().getString("license")).verify();
         if (!verify) {
-            BungeeCord.getInstance().stop();
             this.onDisable();
+            return;
         }
+
+        //this.startupMessages();
         this.registerConfigs();
 
         initModules();
@@ -101,23 +98,35 @@ public class OxygenBungee extends Plugin {
         bungeeConfig = new BungeeConfig(this, "bungee-config");
         databaseConfig = new BungeeConfig(this, "bungee-databases");
         languageConfig = new BungeeConfig(this, "bungee-language");
-        if (OxygenBungee.getInstance().getBungeeConfig().getConfiguration().getBoolean("server-manager")) {
-            serverConfig = new BungeeConfig(this, "server-data");
-        }
+        serverConfig = new BungeeConfig(this, "server-data");
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully loaded all configuration files."));
     }
 
+    public void startupMessages() {
+        try {
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6&l" + FigletFont.convertOneLine("Oxygen Core")));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Authors: &c" + OxygenBungee.getInstance().getDescription().getAuthor()));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Discord: &cdiscord.gg/helydev"));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Debug Mode: " + displayDebugStatus()));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+        } catch (IOException ignored) {
+            OxygenBungee.getInstance().getLogger().info("Their was an error while displaying the startup messages..");
+            OxygenBungee.getInstance().getLogger().info("Please open a discord ticket on our discord.");
+            this.onDisable();
+        }
+    }
+
     @Override
     public void onDisable() {
-        if (OxygenBungee.getInstance().getBungeeConfig().getConfiguration().getBoolean("server-manager")) {
-            Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")), this);
+        Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")), this);
 
-            proxy.setStatus(ProxyServerStatus.OFFLINE);
-            proxy.getOnlinePlayers().set(0);
+        proxy.setStatus(ProxyServerStatus.OFFLINE);
+        proxy.getOnlinePlayers().set(0);
 
-            this.redisBungeeModule.sendPacket(new ProxyUpdatePacket(proxy.getName(), proxy.getPort(), proxy.toJsonObject()));
-        }
+        this.redisBungeeModule.sendPacket(new ProxyUpdatePacket(proxy.getName(), proxy.getPort(), proxy.toJsonObject()));
 
         modules.forEach(this::unloadModule);
     }
@@ -127,20 +136,15 @@ public class OxygenBungee extends Plugin {
         redisBungeeModule = new RedisBungeeModule();
         maintenanceManager = new MaintenanceManager();
         mongoManager = new MongoManager();
-        if (OxygenBungee.getInstance().getBungeeConfig().getConfiguration().getBoolean("server-manager")) {
-            serverManager = new ServerManager();
-        }
+        serverManager = new ServerManager();
     }
 
     public void setupModules(){
         modules = new ArrayList<>();
 
-        if (OxygenBungee.getInstance().getBungeeConfig().getConfiguration().getBoolean("server-manager")) {
-            this.loadModule(serverManager);
-        }
-
         this.loadModule(maintenanceManager);
         this.loadModule(mongoManager);
+        this.loadModule(serverManager);
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered &a&n" + modules.size() + " Modules&a."));
     }
@@ -160,20 +164,15 @@ public class OxygenBungee extends Plugin {
     }
 
     public void setupCommands() {
-        if (OxygenBungee.getInstance().getBungeeConfig().getConfiguration().getBoolean("server-manager")) {
-            this.getProxy().getPluginManager().registerCommand(this, new ServerManagerCommand());
-            this.getProxy().getPluginManager().registerCommand(this, new HubCommand());
-            this.getProxy().getPluginManager().registerCommand(this, new ServerCommand());
-        }
+        this.getProxy().getPluginManager().registerCommand(this, new ServerManagerCommand());
+        this.getProxy().getPluginManager().registerCommand(this, new HubCommand());
+        this.getProxy().getPluginManager().registerCommand(this, new ServerCommand());
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered all commands."));
     }
 
     public void setupListeners() {
-        if (OxygenBungee.getInstance().getBungeeConfig().getConfiguration().getBoolean("server-manager")) {
-            this.getProxy().getPluginManager().registerListener(this, new ServerListener());
-        }
-
+        this.getProxy().getPluginManager().registerListener(this, new ServerListener());
         this.getProxy().getPluginManager().registerListener(this, new PermissionListener());
         this.getProxy().getPluginManager().registerListener(this, new PacketListener());
 
@@ -244,7 +243,6 @@ public class OxygenBungee extends Plugin {
         }
     }
 
-
     public static class SkyLicense {
         private final String apiUrl;
         private final String apiKey;
@@ -261,11 +259,9 @@ public class OxygenBungee extends Plugin {
         }
 
         public boolean verify() {
-            ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
-
-            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-            bukkitCommandSender.sendMessage(CC.translate("&6Attempting to verify your license.."));
-            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Attempting to verify your license.."));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
 
 
             String javaVersion = System.getProperty("java.version");
@@ -281,54 +277,54 @@ public class OxygenBungee extends Plugin {
                 if (res.length >= 2 && (res[0] != null && res[1] != null)) {
 
                     if (res[1].equals("000")) {
-                        bukkitCommandSender.sendMessage(CC.translate("&6Successfully verified your license key.."));
-                        bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Loading plugin.."));
-                        bukkitCommandSender.sendMessage(CC.translate(""));
-                        bukkitCommandSender.sendMessage(CC.translate("&6&lOxygen Rank Core"));
-                        bukkitCommandSender.sendMessage(CC.translate(""));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Successfully verified your license key.."));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Loading plugin.."));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6&lOxygen Rank Core"));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
                         if (!version.equals(res[2])) {
-                            bukkitCommandSender.sendMessage(CC.translate("&cThis plugin is outdated!"));
-                            bukkitCommandSender.sendMessage(CC.translate("&cPlease download the new updated version in our discord."));
-                            bukkitCommandSender.sendMessage(CC.translate("&cSupport will NOT be offered on outdated versions."));
-                            bukkitCommandSender.sendMessage(CC.translate(""));
-                            bukkitCommandSender.sendMessage(CC.translate("&6New Version&7:&r " + res[2]));
+                            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cThis plugin is outdated!"));
+                            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cPlease download the new updated version in our discord."));
+                            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cSupport will NOT be offered on outdated versions."));
+                            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6New Version&7:&r " + res[2]));
                         }
-                        bukkitCommandSender.sendMessage(CC.translate("&6Debug Mode: " + instance.displayDebugStatus()));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Current Version&7:&r " + instance.getDescription().getVersion()));
-                        bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Debug Mode: " + instance.displayDebugStatus()));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Current Version&7:&r " + instance.getDescription().getVersion()));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
                         return true;
                     } else {
-                        bukkitCommandSender.sendMessage(CC.translate("&cTheir was an error while verifying your license."));
-                        bukkitCommandSender.sendMessage(CC.translate(""));
-                        bukkitCommandSender.sendMessage(CC.translate("&7\u2605 &6Error Message&7:&r " + res[0]));
-                        bukkitCommandSender.sendMessage(CC.translate("&7\u2605 &6Error Code&7:&r " + res[1]));
-                        bukkitCommandSender.sendMessage(CC.translate(""));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Create a ticket in Discord!"));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Discord:&r helydev.com/discord"));
-                        Bukkit.getConsoleSender().sendMessage(CC.translate("&7&m=================================================================================="));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cTheir was an error while verifying your license."));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7\u2605 &6Error Message&7:&r " + res[0]));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7\u2605 &6Error Code&7:&r " + res[1]));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Create a ticket in Discord!"));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Discord:&r helydev.com/discord"));
+                        OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
                         return false;
                     }
                 } else {
-                    bukkitCommandSender.sendMessage(CC.translate("&cTheir was an error while verifying your license."));
-                    bukkitCommandSender.sendMessage(CC.translate(""));
-                    bukkitCommandSender.sendMessage(CC.translate("&cThe License API is currently offline."));
-                    bukkitCommandSender.sendMessage(CC.translate("&cPlease be patient, it will be back available soon."));
-                    bukkitCommandSender.sendMessage(CC.translate(""));
-                    bukkitCommandSender.sendMessage(CC.translate("&6Create a ticket in Discord!"));
-                    bukkitCommandSender.sendMessage(CC.translate("&6Discord:&r helydev.com/discord"));
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&7&m=================================================================================="));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cTheir was an error while verifying your license."));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cThe License API is currently offline."));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cPlease be patient, it will be back available soon."));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Create a ticket in Discord!"));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Discord:&r helydev.com/discord"));
+                    OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
                     return false;
                 }
             } catch (IOException | ParseException e) {
-                bukkitCommandSender.sendMessage(CC.translate("&cTheir was an error while verifying your license."));
-                bukkitCommandSender.sendMessage(CC.translate(""));
-                bukkitCommandSender.sendMessage(CC.translate("&7\u2605 &6Error&7:&r " + e.getMessage()));
-                bukkitCommandSender.sendMessage(CC.translate(""));
-                bukkitCommandSender.sendMessage(CC.translate("&6Create ticket in Discord!"));
-                bukkitCommandSender.sendMessage(CC.translate("&6Discord:&r helydev.com/discord"));
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&7&m=================================================================================="));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&cTheir was an error while verifying your license."));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7\u2605 &6Error&7:&r " + e.getMessage()));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(""));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Create ticket in Discord!"));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6Discord:&r helydev.com/discord"));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&7&m=================================================================================="));
                 return false;
             }
         }
@@ -440,4 +436,5 @@ public class OxygenBungee extends Plugin {
             return hwidBuilder.toString();
         }
     }
+
 }

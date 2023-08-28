@@ -98,7 +98,6 @@ public class Profile {
     private long nextAuthenticationNeeded = -1, loginTime = -1;
     private boolean settingUpAuth = false;
     private String tfaKey = "";
-    private boolean frozen;
     private List<Sibling> siblings = new ArrayList<>();
 
 
@@ -127,9 +126,9 @@ public class Profile {
 
     public void save(boolean leave) {
         Document document = new Document();
+
         document.put("uniqueId", uniqueId.toString());
         document.put("name", name);
-
         document.put("authPassword", authPassword);
         document.put("needsVerify", needsVerify);
         document.put("nextAuthenticationNeeded", nextAuthenticationNeeded);
@@ -150,14 +149,12 @@ public class Profile {
         document.put("lastReceivedMessageMillis", lastReceivedMessageMillis);
         document.put("lastSentMessageMillis", lastSentMessageMillis);
         document.put("lastRepliedTo", lastRepliedTo);
-        document.put("frozen", frozen);
         Type altAccountsType = new TypeToken<List<Profile>>() {}.getType();
         document.put("altsAccounts", OxygenBukkit.PLAIN_GSON.toJson(this.altAccounts, altAccountsType));
         Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
         document.put("settings", OxygenBukkit.PLAIN_GSON.toJson(this.settings, settingsType));
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
         document.put("staffProfile", OxygenBukkit.PLAIN_GSON.toJson(this.staffProfile, staffProfileType));
-
         Type ignoredListType = new TypeToken<List<String>>() {}.getType();
         document.put("ignoredList", OxygenBukkit.PLAIN_GSON.toJson(this.comments, ignoredListType));
         Type commentsType = new TypeToken<List<Comment>>() {}.getType();
@@ -208,7 +205,6 @@ public class Profile {
             loginTime = document.getLong("loginTime");
             settingUpAuth = document.getBoolean("settingUpAuth");
             tfaKey = document.getString("tfaKey");
-            frozen = document.getBoolean("frozen");
             lastReceivedMessageMillis = document.getLong("lastReceivedMessageMillis");
             lastSentMessageMillis = document.getLong("lastSentMessageMillis");
             lastRepliedTo = document.getString("lastRepliedTo");

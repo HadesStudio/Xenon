@@ -60,14 +60,14 @@ public class ServerListener implements Listener {
 
         List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
         if (availableHubs.isEmpty()) {
-            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub")));
+            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub") + " &c(Error #1)"));
             event.setCancelled(true);
             return;
         }
 
         ServerInfo serverInfo = OxygenBungee.getInstance().getProxy().getServerInfo(availableHubs.get(ThreadLocalRandom.current().nextInt(availableHubs.size())).getName());
         if (serverInfo == null) {
-            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub")));
+            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub") + " &c(Error #2)"));
             event.setCancelled(true);
             return;
         }
@@ -84,14 +84,14 @@ public class ServerListener implements Listener {
 
         List<Server> availableHubs = OxygenBungee.getInstance().getServerManager().getAvailableServers(event.getPlayer().getUniqueId(), OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("lobby-group"));
         if (availableHubs.isEmpty()) {
-            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub")));
+            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub") + " &c(Error #3)"));
             event.setCancelled(true);
             return;
         }
 
         ServerInfo serverInfo = OxygenBungee.getInstance().getProxy().getServerInfo(availableHubs.get(ThreadLocalRandom.current().nextInt(availableHubs.size())).getName());
         if (serverInfo == null) {
-            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub")));
+            event.getPlayer().disconnect(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("server-system.unable-suitable-hub") + " &c(Error #4)"));
             event.setCancelled(true);
             return;
         }

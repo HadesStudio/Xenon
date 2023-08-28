@@ -47,7 +47,6 @@ public class BukkitServerManager implements ModuleLoader {
     private List<Proxy> proxies;
     private List<Server> servers;
     private List<String> serverGroups;
-
     @Getter @Setter private boolean maintenanceMode;
     @Getter private List<UUID> maintenanceList;
 

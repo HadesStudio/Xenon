@@ -18,6 +18,7 @@ package dev.hely.core.bukkit.server.runnable;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bungee.server.data.server.Server;
+import dev.hely.core.bungee.server.data.server.data.StatusData;
 import dev.hely.lib.CC;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
@@ -34,6 +35,9 @@ public class HeartBeatRunnable extends BukkitRunnable {
             Server server = OxygenBukkit.getInstance().getServerManager().serverFromName(servers.getName());
 
             if (server != null && (System.currentTimeMillis() - server.getLastHeartBeat()) > TimeUnit.SECONDS.toMillis(15)) {
+                if (server.getStatus() == StatusData.OFFLINE) {
+                    return;
+                }
                 Queue queue = Queue.getByName(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
                 if (queue != null && queue.isEnabled()) {
                     queue.getPlayers().clear();

@@ -27,6 +27,17 @@ public class ProfilePacketListener implements PacketListener {
     }
 
     @IncomingPacketHandler
+    public void onServerWhitelist(WhitelistBroadcastPacket packet){
+        String name = packet.getPlayerName();
+        String message = packet.getMessage();
+        String server = packet.getServer();
+
+        Messages.sendMessage(message
+                .replace("%player%", name)
+                .replace("%server_name%", server), "oxygen.commands.whitelist");
+    }
+
+    @IncomingPacketHandler
     public void onStaffLeave(StaffLeavePacket packet){
         String name = packet.getPlayerName();
         String server = packet.getServerName();
