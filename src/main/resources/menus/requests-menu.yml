@@ -1,7 +1,13 @@
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
+
 main-menu:
   title: "Staff Requests"
   size: 27
-
   buttons:
     requests:
       slot: 12
@@ -12,7 +18,7 @@ main-menu:
         - "&7Click here to view all active staff"
         - "&7requests."
         - ""
-        - "&7Active Requests: &a%request_size%"
+        - "&6Active Requests: &a%request_size%"
     closed:
       slot: 14
       material: "REDSTONE_BLOCK"
@@ -22,11 +28,9 @@ main-menu:
         - "&7Click here to view all closed staff"
         - "&7requests."
         - ""
-        - "&7Closed Requests: &c%request_size%"
-
+        - "&6Closed Requests: &c%request_size%"
 closed-requests:
   title: "Closed Staff Requests"
-
   buttons:
     requests:
       material: "PAPER"
@@ -75,11 +79,8 @@ closed-requests:
             - "&7Date Closed: &c%date_closed%"
             - ""
             - "&6Left-Click &ato reopen this request."
-
-
 active-requests:
   title: "Active Staff Requests"
-
   buttons:
     requests:
       material: "PAPER"
