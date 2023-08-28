@@ -1,3 +1,10 @@
+###################################################################################
+#                            OXYGEN ALL-IN-ONE RANK CORE                          #
+#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
+#                                                                                 #
+#    If you run into any bugs, or have suggestions, let us know on our discord!   #
+###################################################################################
+
 messages:
   commands:
     sale-command:
@@ -44,13 +51,11 @@ messages:
       - "&6&lHely Development Store &7➥ &6%player_name% &fhas just"
       - "&fpurchased &a%item% &fand saved &6%amount%% &fbecause of our &6Store Sale&f!"
       - "&7&l&m--------------------------------------------"
-
 placeholders:
   default-price-format: "&6Price: &e%price% Coins"
   rank-sale-format: "&6Price: &e%price% Coins &7(Rank Sale)"
   percent-sale-format: "&6Price: &c&m%old_price%&7 &e%new_price% Coins &7(%discount%% OFF)"
   item-sale-format: "&6Price: &e%price% Coins &7(Buy 1 Get %amount%)"
-
 menu:
   title: "&8Coin Shop"
   rows: 5
@@ -60,7 +65,6 @@ menu:
     style: CORNERS # Available Options: FILLED, CORNERS
     slots: [ 1, 2, 8, 9, 10, 18, 28, 36, 37, 38, 44, 45 ] # These are the slots where your panes appear. This only works if the above option is set to CORNERS.
     glow: true # Do you want to add glow to your Glass Panes?
-
   buttons:
     ranks:
       item:
@@ -85,8 +89,6 @@ menu:
           name: "ranks"
       commands: # These commands are executed when item is bought
         - "broadcast %player% is a cool guy wow, they purchased hely rank"
-
-
 categories:
   ranks:
     title: "&6Ranks"
