@@ -150,8 +150,6 @@ public class Profile {
         document.put("lastSentMessageMillis", lastSentMessageMillis);
         document.put("lastRepliedTo", lastRepliedTo);
         Type altAccountsType = new TypeToken<List<Profile>>() {}.getType();
-        document.put("altsAccounts", OxygenBukkit.PLAIN_GSON.toJson(this.altAccounts, altAccountsType));
-        Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
         document.put("settings", OxygenBukkit.PLAIN_GSON.toJson(this.settings, settingsType));
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
         document.put("staffProfile", OxygenBukkit.PLAIN_GSON.toJson(this.staffProfile, staffProfileType));
