@@ -28,3 +28,6 @@ server-command:
   usage: "&cCorrect Usage: /server <server_name>"
   invalid-server: "&cSorry, the server by the name of '&6%server%&c' could not be found."
   sent: "&cYou have successfully joined &6%server%&c."
+maintenance-command:
+  disabled: "&6[Server Manager] &7You have successfully &cdisabled &7the maintenance mode."
+  enabled: "&6[Server Manager] &7You have successfully &aenabled &7the maintenance mode."

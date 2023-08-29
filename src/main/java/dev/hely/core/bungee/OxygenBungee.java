@@ -20,11 +20,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bungee.commands.HubCommand;
+import dev.hely.core.bungee.commands.MaintenanceCommand;
 import dev.hely.core.bungee.commands.ServerCommand;
 import dev.hely.core.bungee.commands.ServerManagerCommand;
 import dev.hely.core.bungee.databases.mongo.MongoManager;
 import dev.hely.core.bungee.listener.PacketListener;
 import dev.hely.core.bungee.listener.PermissionListener;
+import dev.hely.core.bungee.listener.ProxyListener;
 import dev.hely.core.bungee.maintenance.MaintenanceManager;
 import dev.hely.core.bungee.packet.PermissionPacketListener;
 import dev.hely.core.bungee.databases.redis.RedisBungeeModule;
@@ -167,6 +169,7 @@ public class OxygenBungee extends Plugin {
         this.getProxy().getPluginManager().registerCommand(this, new ServerManagerCommand());
         this.getProxy().getPluginManager().registerCommand(this, new HubCommand());
         this.getProxy().getPluginManager().registerCommand(this, new ServerCommand());
+        this.getProxy().getPluginManager().registerCommand(this, new MaintenanceCommand());
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered all commands."));
     }
@@ -175,6 +178,7 @@ public class OxygenBungee extends Plugin {
         this.getProxy().getPluginManager().registerListener(this, new ServerListener());
         this.getProxy().getPluginManager().registerListener(this, new PermissionListener());
         this.getProxy().getPluginManager().registerListener(this, new PacketListener());
+        this.getProxy().getPluginManager().registerListener(this, new ProxyListener());
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered all listeners."));
     }

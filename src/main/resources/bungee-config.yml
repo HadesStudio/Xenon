@@ -9,3 +9,11 @@ debug-mode: true # Do you want to use debug mode?
 hub-name: "Hub" # The name of your hub server.
 
 server-manager: true # Do you want to use server manager system?
+
+motd-lines:
+  maintenance:
+    top-line: "&6&lHely Development &7| &aOxygen Rank Core"
+    bottom-line: "&7This proxy is under &dmaintenance&7!"
+  normal:
+    top-line: "&6&lHely Development &7| &aOxygen Rank Core"
+    bottom-line: "&7This plugin is releasing soon!"

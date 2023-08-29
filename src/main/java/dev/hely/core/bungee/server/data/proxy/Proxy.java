@@ -33,6 +33,7 @@ public class Proxy {
 
     private String name;
     private Integer port;
+    private boolean maintenance;
     private ProxyServerStatus status;
     private ProxyServerRegion region;
     private AtomicInteger onlinePlayers;
@@ -44,7 +45,7 @@ public class Proxy {
 
         this.status = ProxyServerStatus.OFFLINE;
         this.region = ProxyServerRegion.UNITED_STATES;
-
+        this.maintenance = false;
         this.onlinePlayers = new AtomicInteger(0);
         this.maximumPlayers = new AtomicInteger(0);
     }
@@ -55,7 +56,7 @@ public class Proxy {
 
         this.status = ProxyServerStatus.ONLINE;
         this.region = region;
-
+        this.maintenance = false;
         this.onlinePlayers = new AtomicInteger(plugin.getProxy().getPlayers().size());
         this.maximumPlayers = new AtomicInteger(plugin.getProxy().getConfig().getPlayerLimit());
     }
@@ -66,7 +67,7 @@ public class Proxy {
 
         this.status = ProxyServerStatus.valueOf(jsonObject.get("status").getAsString());
         this.region = ProxyServerRegion.valueOf(jsonObject.get("region").getAsString());
-
+        this.maintenance = jsonObject.get("maintenance").getAsBoolean();
         this.onlinePlayers = new AtomicInteger(jsonObject.get("onlinePlayers").getAsInt());
         this.maximumPlayers = new AtomicInteger(jsonObject.get("maximumPlayers").getAsInt());
     }
@@ -79,7 +80,7 @@ public class Proxy {
 
         toReturn.addProperty("status",this.status.name());
         toReturn.addProperty("region",this.region.name());
-
+        toReturn.addProperty("maintenance", this.maintenance);
         toReturn.addProperty("onlinePlayers",this.onlinePlayers.get());
         toReturn.addProperty("maximumPlayers",this.maximumPlayers.get());
 
@@ -89,7 +90,7 @@ public class Proxy {
     public void refresh(JsonObject jsonObject) {
         this.status = ProxyServerStatus.valueOf(jsonObject.get("status").getAsString());
         this.region = ProxyServerRegion.valueOf(jsonObject.get("region").getAsString());
-
+        this.maintenance = jsonObject.get("maintenance").getAsBoolean();
         this.onlinePlayers.set(jsonObject.get("onlinePlayers").getAsInt());
         this.maximumPlayers.set(jsonObject.get("maximumPlayers").getAsInt());
     }
@@ -103,7 +104,7 @@ public class Proxy {
 
             jedis.hset(key,"status",this.status.name());
             jedis.hset(key,"region",this.region.name());
-
+            jedis.hset(key, "maintenance", String.valueOf(this.maintenance));
             jedis.hset(key,"onlinePlayers","" + this.onlinePlayers.get());
             jedis.hset(key,"maximumPlayers",""+ this.maximumPlayers.get());
 
