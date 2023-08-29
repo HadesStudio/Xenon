@@ -16,6 +16,7 @@ package dev.hely.core.bungee.server.data.proxy;
 //============================================================
 
 import com.google.gson.JsonObject;
+import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bungee.server.ServerManager;
 import dev.hely.core.bungee.server.data.proxy.data.ProxyServerRegion;
 import dev.hely.core.bungee.server.data.proxy.data.ProxyServerStatus;
@@ -25,7 +26,11 @@ import net.md_5.bungee.api.plugin.Plugin;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -38,6 +43,7 @@ public class Proxy {
     private ProxyServerRegion region;
     private AtomicInteger onlinePlayers;
     private AtomicInteger maximumPlayers;
+    private List<UUID> maintenanceList;
 
     public Proxy(String name, Integer port) {
         this.name = name;
@@ -46,6 +52,7 @@ public class Proxy {
         this.status = ProxyServerStatus.OFFLINE;
         this.region = ProxyServerRegion.UNITED_STATES;
         this.maintenance = false;
+        this.maintenanceList = new ArrayList<>();
         this.onlinePlayers = new AtomicInteger(0);
         this.maximumPlayers = new AtomicInteger(0);
     }
@@ -57,6 +64,7 @@ public class Proxy {
         this.status = ProxyServerStatus.ONLINE;
         this.region = region;
         this.maintenance = false;
+        this.maintenanceList = new ArrayList<>();
         this.onlinePlayers = new AtomicInteger(plugin.getProxy().getPlayers().size());
         this.maximumPlayers = new AtomicInteger(plugin.getProxy().getConfig().getPlayerLimit());
     }
@@ -68,6 +76,7 @@ public class Proxy {
         this.status = ProxyServerStatus.valueOf(jsonObject.get("status").getAsString());
         this.region = ProxyServerRegion.valueOf(jsonObject.get("region").getAsString());
         this.maintenance = jsonObject.get("maintenance").getAsBoolean();
+        this.maintenanceList = OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(jsonObject.get("maintenanceList"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
         this.onlinePlayers = new AtomicInteger(jsonObject.get("onlinePlayers").getAsInt());
         this.maximumPlayers = new AtomicInteger(jsonObject.get("maximumPlayers").getAsInt());
     }
@@ -83,7 +92,7 @@ public class Proxy {
         toReturn.addProperty("maintenance", this.maintenance);
         toReturn.addProperty("onlinePlayers",this.onlinePlayers.get());
         toReturn.addProperty("maximumPlayers",this.maximumPlayers.get());
-
+        toReturn.addProperty("maintenanceList", String.valueOf(this.maintenanceList));
         return toReturn;
     }
 
@@ -92,6 +101,7 @@ public class Proxy {
         this.region = ProxyServerRegion.valueOf(jsonObject.get("region").getAsString());
         this.maintenance = jsonObject.get("maintenance").getAsBoolean();
         this.onlinePlayers.set(jsonObject.get("onlinePlayers").getAsInt());
+        this.maintenanceList = OxygenBukkit.PLAIN_GSON.<List<String>>fromJson(jsonObject.get("maintenanceList"),ArrayList.class).stream().map(UUID::fromString).collect(Collectors.toList());
         this.maximumPlayers.set(jsonObject.get("maximumPlayers").getAsInt());
     }
 
@@ -107,6 +117,7 @@ public class Proxy {
             jedis.hset(key, "maintenance", String.valueOf(this.maintenance));
             jedis.hset(key,"onlinePlayers","" + this.onlinePlayers.get());
             jedis.hset(key,"maximumPlayers",""+ this.maximumPlayers.get());
+            jedis.hset(key, "maintenanceList", ""+ this.maintenanceList);
 
             jedis.hset(ServerManager.PROXY_LOOKUP_KEY + "port","" + this.port,this.name);
             jedis.hset(ServerManager.PROXY_LOOKUP_KEY + "name",this.name,"" + this.port);

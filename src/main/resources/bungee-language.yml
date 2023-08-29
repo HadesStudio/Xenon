@@ -31,3 +31,4 @@ server-command:
 maintenance-command:
   disabled: "&6[Server Manager] &7You have successfully &cdisabled &7the maintenance mode."
   enabled: "&6[Server Manager] &7You have successfully &aenabled &7the maintenance mode."
+  kick: "&cSorry, this proxy is currently in &6Maintenance Mode&c."

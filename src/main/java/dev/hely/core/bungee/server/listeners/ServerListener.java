@@ -16,16 +16,14 @@ package dev.hely.core.bungee.server.listeners;
 //============================================================
 
 import dev.hely.core.bungee.OxygenBungee;
+import dev.hely.core.bungee.server.data.proxy.Proxy;
 import dev.hely.core.bungee.server.data.server.Server;
 import dev.hely.core.bungee.utils.BungeeCC;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.event.ProxyPingEvent;
-import net.md_5.bungee.api.event.ServerConnectEvent;
-import net.md_5.bungee.api.event.ServerKickEvent;
+import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
@@ -50,6 +48,15 @@ public class ServerListener implements Listener {
         proxy.setPlayers(new ServerPing.Players(players.getMax(), playerCount, players.getSample()));
 
         event.setResponse(proxy);
+    }
+
+    @EventHandler
+    public void onPreLogin(LoginEvent event) {
+        Proxy proxy = OxygenBungee.getInstance().getServerManager().proxyFromName(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"));
+        if (proxy.isMaintenance()) {
+            event.setCancelReason(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("maintenance-command.kick")));
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
