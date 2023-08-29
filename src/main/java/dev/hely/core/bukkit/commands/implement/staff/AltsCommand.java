@@ -50,14 +50,22 @@ public class AltsCommand extends BaseCommand {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
             return;
         }
-        profile.setupAlts();
-        if (profile.getAltAccounts().isEmpty()) {
+
+        if (profile.getAlts().isEmpty()){
+            profile.setupAlts();
+        }
+
+
+        if (profile.getAlts().isEmpty()) {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("alts-command.no-alts").replace("%player%", args[0])));
             return;
         }
 
+        List<Profile> altProfile = new ArrayList<>();
+        profile.getAlts().forEach(uuid -> altProfile.add(OxygenBukkit.getInstance().getProfileManager().getProfile(uuid)));
 
-        sendAltsMessage((Player)sender, profile, profile.getAltAccounts());
+
+        sendAltsMessage((Player)sender, profile, altProfile);
     }
 
     public void sendAltsMessage(Player sender, Profile profile, List<Profile> alts) {

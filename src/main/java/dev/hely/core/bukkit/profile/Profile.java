@@ -47,18 +47,25 @@ import java.util.stream.Collectors;
 @Setter
 public class Profile {
 
+    private OxygenBukkit plugin = OxygenBukkit.getInstance();
+
     private final UUID uniqueId;
     private String name;
     private boolean loaded = false;
+
     private String currentAddress = "";
     private List<String> addresses = new ArrayList<>();
-    private List<Profile> altAccounts = new ArrayList<>();
+
+    private List<UUID> alts;
+
     private Long firstSeen;
     private Long lastSeen;
     private String currentServer = "Unknown";
     private String lastServer = "";
+
     private int totalKills;
     private int totalDeaths;
+
     private List<Punishment> punishments = new ArrayList<>();
     private List<Grant> grants = new ArrayList<>();
     private List<ProfilePermission> profilePermissions = new ArrayList<>();
@@ -78,7 +85,7 @@ public class Profile {
     private boolean vpnWhitelist = false;
     private String tag = "";
     private StaffProfile staffProfile = new StaffProfile();
-    private OxygenBukkit plugin = OxygenBukkit.getInstance();
+
     private int currency;
 
     //playtime puta;
@@ -215,8 +222,6 @@ public class Profile {
                 staffProfile = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("staffProfile"), staffProfileType);
             }
 
-            Type altAccountsType = new TypeToken<List<Profile>>() {}.getType();
-            altAccounts = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("altAccounts"), altAccountsType);
             Type grantType = new TypeToken<List<Grant>>() {}.getType();
             grants = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("grants"), grantType);
             grants.removeIf(Objects::isNull);
@@ -431,12 +436,17 @@ public class Profile {
     }
 
     public void setupAlts() {
-        for (Document document : OxygenBukkit.getInstance().getMongoModule().getProfilesCollection().find()) {
-            Type addressesType = new TypeToken<List<String>>() {}.getType();
-            List<String> profileAddresses = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("addresses"), addressesType);
+        alts.clear();
 
-            if (profileAddresses.contains(currentAddress)) {
-                altAccounts.add(OxygenBukkit.getInstance().getProfileManager().getProfile(UUID.fromString(document.getString("uuid"))));
+        try (MongoCursor<Document> cursor = plugin.getMongoModule().getProfilesCollection().find(Filters.eq("addresses", addresses)).iterator()) {
+            while (cursor.hasNext()) {
+                Document document = cursor.next();
+
+                Profile profile = new Profile(UUID.fromString(document.getString("uniqueId")), document.getString("name"));
+
+                if (!profile.getUniqueId().toString().equals(this.uniqueId.toString())) {
+                    this.alts.add(profile.getUniqueId());
+                }
             }
         }
     }

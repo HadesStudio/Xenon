@@ -18,6 +18,7 @@ advanced-client-version-data:
   lunar-client: "&b[LC]"
   forge: "&6[F]"
   vanilla: "&a[V]"
+
 command-system:
   disabled-commands:
     - "test"
@@ -126,19 +127,13 @@ staff_mode:
     staff_mode: true # Enable staffmode when joining the server
     vanish: true # Enable vanish when joining the server
   silent_view_title: "&8Silent View"
-  armor:
-    # All staffs previous armor and inventory items are saved automatically when using /staffmode!
-    # The armor listed below is automatically removed after exiting staff mode.
-    helmet: "" # The helmet item given when activating mod mode.
-    chestplate: "" # The chestplate item given when activating mod mode.
-    leggings: "304:0" # The leggings item given when activating mod mode.
-    boots: "" # The boots item given when activating mod mode.
   hotbar:
     teleportation:
       enabled: true
       slot: 1
       item:
-        material: "345:0"
+        material: "COMPASS"
+        data: 0
         name: "&6Teleportation Compass"
         lore:
           - "&7Right Click = Move through nearest block."
@@ -147,7 +142,8 @@ staff_mode:
       enabled: true
       slot: 2
       item:
-        material: "340:0"
+        material: "BOOK"
+        data: 0
         name: "&6Inspection Tool"
         lore:
           - "&7Right-Click to view a player's inventory."
@@ -155,7 +151,8 @@ staff_mode:
       enabled: true
       slot: 5
       item:
-        material: "079:0"
+        material: "PACKED_ICE"
+        data: 0
         name: "&6Freeze Player"
         lore:
           - "&7Right-Click to freeze the clicked player."
@@ -166,7 +163,8 @@ staff_mode:
         permission: "oxygen.admin.wand"
       slot: 3
       item:
-        material: "271:0"
+        material: "WOOD_AXE"
+        data: 0
         name: "&6WorldEdit Wand"
         lore:
           - "&7Right-Click to use your worldedit wand."
@@ -174,7 +172,8 @@ staff_mode:
       enabled: true
       slot: 9
       item:
-        material: "2265:0"
+        material: "NETHER_STAR"
+        data: 0
         name: "&6Random Teleport"
         lore:
           - "&7Right-Click to teleport to a random player."
@@ -182,7 +181,8 @@ staff_mode:
       enabled: true
       slot: 4
       item:
-        material: "339:0"
+        material: "SKULL_ITEM"
+        data: 0
         name: "&6Online Staff"
         lore:
           - "&7Right-Click to view online staff members."
@@ -192,7 +192,8 @@ staff_mode:
         enabled: true
         slot: 8
         item:
-          material: "351:10"
+          material: "INK_SACK"
+          data: 10
           name: "&6Vanished: &aTrue"
           lore:
             - "&7Right-Click to disable your vanish mode."
@@ -200,7 +201,8 @@ staff_mode:
         enabled: true
         slot: 8
         item:
-          material: "351:8"
+          material: "INK_SACK"
+          data: 8
           name: "&6Vanished: &cFalse"
           lore:
             - "&7Right-Click to enable your vanish mode."
@@ -217,14 +219,16 @@ staff_mode:
       health:
         slot: 50
         item:
-          material: "382:0"
+          material: "SPECKLED_MELON"
+          data: 0
           name: "&6Health"
           lore:
             - "&6Health&7: &e%health%"
       food:
         slot: 51
         item:
-          material: "364:0"
+          material: "COOKED_BEEF"
+          data: 0
           name: "&6Food"
           lore:
             - "&6Food Level&7: &e%food_level%"
@@ -232,7 +236,8 @@ staff_mode:
       active_effects:
         slot: 52
         item:
-          material: "379:0"
+          material: "BLAZE_POWDER"
+          data: 0
           name: "&6Active Potion Effect's"
           lore: "&6%effect_name% &7(%effect_level%)&7: &c%duration%"
       player_info:

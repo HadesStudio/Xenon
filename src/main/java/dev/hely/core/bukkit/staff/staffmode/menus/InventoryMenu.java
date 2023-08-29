@@ -19,7 +19,6 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.utils.BukkitUtils;
 import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.core.bukkit.utils.item.ItemUtils;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
@@ -59,7 +58,8 @@ public class InventoryMenu extends Menu {
             }
         }
 
-        ItemMaker health = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.health.item.material")));
+        ItemMaker health = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.health.item.material")));
+        health.setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.health.item.data"));
         health.setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.health.item.name"));
         for (String healhLine : OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.inventory_view.buttons.health.item.lore")) {
             health.addLore(CC.translate(healhLine.replace("%health%", String.valueOf((int) this.target.getHealth()))));
@@ -68,7 +68,8 @@ public class InventoryMenu extends Menu {
         buttons.put(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.health.slot") - 1, new ButtonBuilder(health.build()));
 
 
-        ItemMaker food = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.food.item.material")));
+        ItemMaker food = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.food.item.material")));
+        food.setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.food.item.data"));
         food.setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.food.item.name"));
         for (String healhLine : OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.inventory_view.buttons.food.item.lore")) {
             food.addLore(CC.translate(healhLine
@@ -79,7 +80,8 @@ public class InventoryMenu extends Menu {
         buttons.put(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.food.slot") - 1, new ButtonBuilder(food.build()));
 
 
-        ItemMaker effects = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.active_effects.item.material")));
+        ItemMaker effects = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.active_effects.item.material")));
+        effects.setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.active_effects.item.data"));
         effects.setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.active_effects.item.name"));
         target.getActivePotionEffects().forEach(effect ->
                 effects.addLore(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.active_effects.item.lore")

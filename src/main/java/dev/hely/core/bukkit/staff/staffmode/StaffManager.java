@@ -22,12 +22,12 @@ import dev.hely.core.bukkit.staff.staffmode.data.StaffArmor;
 import dev.hely.core.bukkit.staff.staffmode.data.StaffHotbar;
 import dev.hely.core.bukkit.staff.staffmode.data.StaffPlayerData;
 import dev.hely.core.bukkit.staff.staffmode.events.StaffModeToggleEvent;
-import dev.hely.core.bukkit.utils.item.ItemUtils;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,6 +36,7 @@ import java.util.*;
 @Getter
 public class StaffManager implements ModuleLoader {
     private boolean enabled;
+
     private Map<UUID, StaffPlayerData> staffMode;
     private HashSet<UUID> staffToggled, vanishedPlayers, staffBuild;
     private List<StaffArmor> armors;
@@ -80,7 +81,8 @@ public class StaffManager implements ModuleLoader {
         boolean enabled;
 
         enabled = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.teleportation.enabled");
-        item = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfig().getString("staff_mode.hotbar.teleportation.item.material")))
+        item = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfig().getString("staff_mode.hotbar.teleportation.item.material")))
+                .setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.teleportation.item.data"))
                 .setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.teleportation.item.name"))
                 .setLore(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.teleportation.item.lore"))
                 .build();
@@ -89,7 +91,8 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.inspection.enabled");
-        item = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.inspection.item.material")))
+        item = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.inspection.item.material")))
+                .setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.inspection.item.data"))
                 .setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.inspection.item.name"))
                 .setLore(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.inspection.item.lore"))
                 .build();
@@ -98,7 +101,8 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.freeze_player.enabled");
-        item = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.freeze_player.item.material")))
+        item = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.freeze_player.item.material")))
+                .setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.freeze_player.item.data"))
                 .setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.freeze_player.item.name"))
                 .setLore(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.freeze_player.item.lore"))
                 .build();
@@ -107,7 +111,8 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.worldedit_wand.enabled");
-        item = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.worldedit_wand.item.material")))
+        item = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.worldedit_wand.item.material")))
+                .setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.worldedit_wand.item.data"))
                 .setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.worldedit_wand.item.name"))
                 .setLore(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.worldedit_wand.item.lore"))
                 .build();
@@ -116,7 +121,8 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.random_teleportation.enabled");
-        item = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.random_teleportation.item.material")))
+        item = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.random_teleportation.item.material")))
+                .setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.random_teleportation.item.data"))
                 .setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.random_teleportation.item.name"))
                 .setLore(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.random_teleportation.item.lore"))
                 .build();
@@ -125,7 +131,8 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.online_staff.enabled");
-        item = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.online_staff.item.material")))
+        item = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.online_staff.item.material")))
+                .setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.online_staff.item.data"))
                 .setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.online_staff.item.name"))
                 .setLore(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.online_staff.item.lore"))
                 .build();
@@ -134,7 +141,8 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.vanish.enabled_button.enabled");
-        item = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.enabled_button.item.material")))
+        item = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.enabled_button.item.material")))
+                .setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.vanish.enabled_button.item.data"))
                 .setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.enabled_button.item.name"))
                 .setLore(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.vanish.enabled_button.item.lore"))
                 .build();
@@ -143,7 +151,8 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.vanish.disabled_button.enabled");
-        item = ItemMaker.copyOf(ItemUtils.parseItem(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.disabled_button.item.material")))
+        item = ItemMaker.of(Material.getMaterial(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.disabled_button.item.material")))
+                .setData((short) OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.vanish.disabled_button.item.data"))
                 .setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.disabled_button.item.name"))
                 .setLore(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.vanish.disabled_button.item.lore"))
                 .build();
