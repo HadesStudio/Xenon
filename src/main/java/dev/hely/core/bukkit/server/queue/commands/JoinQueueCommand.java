@@ -21,14 +21,12 @@ import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.server.queue.QueueRank;
 import dev.hely.core.bukkit.server.queue.packets.implement.QueueAddPlayerPacket;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.core.bungee.server.data.server.data.StatusData;
 import dev.hely.core.bungee.utils.BungeeUtil;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 public class JoinQueueCommand extends BaseCommand {
     public JoinQueueCommand(){
@@ -53,7 +51,7 @@ public class JoinQueueCommand extends BaseCommand {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.not-exist").replace("%server%", args[0])));
             return;
         }
-        if(queue.getServerData() == null || !(queue.getServerData().getStatus() == StatusData.ONLINE)) {
+        if(queue.getServerData() == null || !(queue.getServerData().getStatus().equalsIgnoreCase("Online"))) {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.offline").replace("%server%", args[0])));
             return;
         }

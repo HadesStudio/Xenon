@@ -1,4 +1,4 @@
-package dev.hely.core.bungee.server.data.proxy.data;
+package dev.hely.core.bukkit.server.packets;
 
 //============================================================
 // This file was created by DevDipin!
@@ -7,24 +7,22 @@ package dev.hely.core.bungee.server.data.proxy.data;
 // If any questions, please contact on discord.
 //
 // File Information:
-//   Path: dev.hely.core.bungee.server.data.proxy.data
-//   Date: Monday, August 14, 2023 - 11:19 AM
+//   Path: dev.hely.core.bungee.server.packets
+//   Date: Monday, August 14, 2023 - 11:59 AM
 //
 // Contact Information:
 //   Discord: Andrew!!#4468
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
+import dev.hely.core.bukkit.modules.database.redis.packet.Packet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
-public enum ProxyServerStatus {
-    ONLINE("Online"),
-    OFFLINE("Offline"),
-    STARTING("Starting Up");
-
-    @Getter
-    private String name;
+public class ServerUpdatePacket implements Packet {
+    @Getter private String name;
+    private String status;
+    private long startupTime;
 }
-

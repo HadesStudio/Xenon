@@ -16,8 +16,7 @@ package dev.hely.core.bukkit.server.queue;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bungee.server.ServerManager;
-import dev.hely.core.bungee.server.data.server.Server;
+import dev.hely.core.bukkit.server.Server;
 import lombok.Getter;
 import lombok.Setter;
 import redis.clients.jedis.Jedis;
@@ -48,7 +47,7 @@ public class Queue {
     }
 
     public Server getServerData() {
-        return OxygenBukkit.getInstance().getServerManager().serverFromName(this.name);
+        return OxygenBukkit.getInstance().getServerManager().getOrSetupServer(this.name);
     }
 
     public int getPosition(UUID uuid) {

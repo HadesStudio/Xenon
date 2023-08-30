@@ -8,7 +8,7 @@ import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.server.queue.QueuePlayer;
 import dev.hely.core.bukkit.server.queue.QueueRank;
 import dev.hely.core.bukkit.server.queue.packets.implement.*;
-import dev.hely.core.bungee.server.data.server.Server;
+import dev.hely.core.bukkit.server.Server;
 import dev.hely.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
@@ -31,7 +31,7 @@ public class QueuePacketListener implements PacketListener {
         Queue queue = Queue.getByName(name);
 
         if (queue == null) {
-            Server data = OxygenBukkit.getInstance().getServerManager().serverFromName(name);
+            Server data = OxygenBukkit.getInstance().getServerManager().getOrSetupServer(name);
             queue = new Queue(name, data != null ? data.getName() : name);
         }
 
@@ -148,8 +148,8 @@ public class QueuePacketListener implements PacketListener {
 
         if (packet.getObject().get("global").getAsBoolean()) {
             if (OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name").equals(name)) {
-                OxygenBukkit.getInstance().getServerManager().serverFromName(name).setUseQueue(!OxygenBukkit.getInstance().getServerManager().serverFromName(name).isUseQueue());
-                check = OxygenBukkit.getInstance().getServerManager().serverFromName(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name")).isUseQueue();
+                OxygenBukkit.getInstance().getServerManager().getOrSetupServer(name).setUseQueue(!OxygenBukkit.getInstance().getServerManager().getOrSetupServer(name).isUseQueue());
+                check = OxygenBukkit.getInstance().getServerManager().getOrSetupServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name")).isUseQueue();
             }
         } else {
             Queue queue = Queue.getByName(name);

@@ -18,12 +18,9 @@ package dev.hely.core.bukkit.server.menu;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.core.menus.OxygenMenu;
 import dev.hely.core.bukkit.core.menus.buttons.InfoButton;
+import dev.hely.core.bukkit.server.Server;
 import dev.hely.core.bukkit.utils.TPSUtil;
 import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.core.bungee.server.data.proxy.Proxy;
-import dev.hely.core.bungee.server.data.proxy.data.ProxyServerStatus;
-import dev.hely.core.bungee.server.data.server.Server;
-import dev.hely.core.bungee.server.data.server.data.StatusData;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.button.implement.PageButton;
@@ -84,9 +81,6 @@ public class ServerListMenu extends PaginatedMenu {
     public Map<Integer, Button> getPaginatedContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        for (Proxy proxies : OxygenBukkit.getInstance().getServerManager().getProxies()) {
-            buttons.put(buttons.size(), new ProxyButton(proxies));
-        }
         for (Server servers : OxygenBukkit.getInstance().getServerManager().getServers()) {
             buttons.put(buttons.size(), new ServerButton(servers));
         }
@@ -130,49 +124,13 @@ public class ServerListMenu extends PaginatedMenu {
     }
 
     @AllArgsConstructor
-    public static class ProxyButton extends Button {
-        Proxy proxy;
-
-        public Material getMaterial() {
-            if(proxy.getStatus() == ProxyServerStatus.OFFLINE) return Material.REDSTONE_BLOCK;
-            if(proxy.getStatus() == ProxyServerStatus.STARTING) return Material.GOLD_BLOCK;
-            if(proxy.getStatus() == ProxyServerStatus.ONLINE) return Material.EMERALD_BLOCK;
-            return null;
-        }
-
-        @Override
-        public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(getMaterial());
-            builder.setData((short) 0);
-            builder.setDisplayName("&6Proxy - " + proxy.getName() + " &7(&c" + proxy.getStatus() + "&7)");
-            builder.setLore(Arrays.asList(
-                    "&7Below, is a few options you have",
-                    "&7to modify and make changes to this",
-                    "&7proxy server.",
-                    "&7",
-                    "&6Left-Click &7to view more information.",
-                    "&6Right-Click &7to shutdown this server."
-            ));
-            builder.addFakeGlow();
-            return builder.build();
-        }
-
-        @Override
-        public void onClick(Player player, int slot, ClickType clickType) {
-            if (clickType.isLeftClick()) {
-            } else if (clickType.isRightClick()) {
-            }
-        }
-    }
-
-    @AllArgsConstructor
     public static class ServerButton extends Button {
         Server server;
 
         public Material getMaterial() {
-            if(server.getStatus() == StatusData.OFFLINE) return Material.REDSTONE_BLOCK;
-            if(server.getStatus() == StatusData.WHITELISTED) return Material.GOLD_BLOCK;
-            if(server.getStatus() == StatusData.ONLINE) return Material.EMERALD_BLOCK;
+            if(server.getStatus().equalsIgnoreCase("Offline")) return Material.REDSTONE_BLOCK;
+            if(server.getStatus().equalsIgnoreCase("Whitelisted")) return Material.GOLD_BLOCK;
+            if(server.getStatus().equalsIgnoreCase("Online")) return Material.EMERALD_BLOCK;
             return null;
         }
 
@@ -187,11 +145,9 @@ public class ServerListMenu extends PaginatedMenu {
                     "&7server.",
                     "&7",
                     "&6Server Information:",
-                    " &6- TPS: &c" + TPSUtil.getTPSColor(server.getPerformance().getTps()),
+                    " &6- TPS: &c" + TPSUtil.getTPSStatus(server.getLastTps()),
                     " &6- Players: &c" + server.getOnlinePlayers() + "&7/&c" + server.getMaximumPlayers(),
-                    " &6- Status: &c" + server.getStatus().getDisplay(),
-                    " &6- MOTD: &c" + server.getMotd(),
-                    " &6- Group: &c" + server.getGroup(),
+                    " &6- Status: &c" + server.getStatus(),
                     " &6- Start Time: &c" + TimeUtil.formatIntoCalendarString(new Date(server.getStartupTime())),
                     " &6- Uptime: &c" + TimeUtil.formatTimeMillis(System.currentTimeMillis() - server.getStartupTime()),
                     " &6- Last Haertbeat: &c" + TimeUtil.formatTimeMillis(System.currentTimeMillis() - server.getLastHeartBeat()),

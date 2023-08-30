@@ -5,9 +5,7 @@ import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.permission.ProfilePermission;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
-import dev.hely.core.bungee.server.data.server.Server;
 import dev.hely.lib.CC;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -36,7 +34,7 @@ public class ProfileAddPermission extends SubCommand {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[1]));
             return;
         }
-        if (OxygenBukkit.getInstance().getServerManager().serverFromName(args[3]) == null) {
+        if (OxygenBukkit.getInstance().getServerManager().getOrSetupServer(args[3]) == null) {
             if (!args[3].equalsIgnoreCase("Global")) {
                 sender.sendMessage(CC.translate("&cThe server with this name does not exist."));
                 return;

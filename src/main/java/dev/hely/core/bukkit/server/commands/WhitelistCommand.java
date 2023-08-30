@@ -20,14 +20,13 @@ import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.packet.implement.WhitelistBroadcastPacket;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.core.bungee.server.data.server.Server;
-import dev.hely.core.bungee.server.data.server.data.StatusData;
+import dev.hely.core.bukkit.server.Server;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
 
-public class WhitelistCommand extends BaseCommand {
+/*public class WhitelistCommand extends BaseCommand {
     public WhitelistCommand(){
         super("whitelist", Collections.singletonList("wl"), "oxygen.command.whitelist");
     }
@@ -125,4 +124,4 @@ public class WhitelistCommand extends BaseCommand {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("whitelist-command.usage")));
         }
     }
-}
+}*/

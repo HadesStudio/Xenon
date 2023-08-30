@@ -16,26 +16,14 @@ package dev.hely.core.bukkit.server.menu.submenus;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.core.menus.OxygenMenu;
-import dev.hely.core.bukkit.core.menus.submenus.CommandsMenu;
-import dev.hely.core.bukkit.core.menus.submenus.ConfigReloadMenu;
-import dev.hely.core.bukkit.core.menus.submenus.ModulesMenu;
-import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.bukkit.server.menu.ServerListMenu;
 import dev.hely.core.bukkit.server.packets.ShutdownPacket;
-import dev.hely.core.bukkit.utils.Config;
-import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.core.bungee.server.data.server.Server;
-import dev.hely.core.bungee.server.data.server.data.StatusData;
+import dev.hely.core.bukkit.server.Server;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
 import dev.hely.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -79,26 +67,26 @@ public class InformationMenu extends Menu {
         Server server;
 
         public Material getMaterial() {
-            if(server.getStatus() == StatusData.OFFLINE) return Material.REDSTONE_BLOCK;
-            if(server.getStatus() == StatusData.WHITELISTED) return Material.GOLD_BLOCK;
-            if(server.getStatus() == StatusData.ONLINE) return Material.EMERALD_BLOCK;
+            if(server.getStatus().equalsIgnoreCase("Offline")) return Material.REDSTONE_BLOCK;
+            if(server.getStatus().equalsIgnoreCase("Whitelisted")) return Material.GOLD_BLOCK;
+            if(server.getStatus().equalsIgnoreCase("Online")) return Material.EMERALD_BLOCK;
             return null;
         }
         public String getDisplayName() {
-            if (server.getStatus() == StatusData.OFFLINE) return CC.translate("&cOffline");
-            if (server.getStatus() == StatusData.WHITELISTED) return CC.translate("&dWhitelisted");
-            if (server.getStatus() == StatusData.ONLINE) return CC.translate("&aOnline");
+            if (server.getStatus().equalsIgnoreCase("Offline")) return CC.translate("&cOffline");
+            if (server.getStatus().equalsIgnoreCase("Whitelisted")) return CC.translate("&dWhitelisted");
+            if (server.getStatus().equalsIgnoreCase("Online")) return CC.translate("&aOnline");
             return "Unknown?";
         }
 
         public List<String> getLore() {
             List<String> lore = new ArrayList<>();
 
-            if (server.getStatus() == StatusData.OFFLINE) {
+            if (server.getStatus().equalsIgnoreCase("Offline")) {
                 lore.clear();
                 lore.add("&7This server is currently &coffline&7.");
                 return lore;
-            } else if (server.getStatus() == StatusData.WHITELISTED) {
+            } else if (server.getStatus().equalsIgnoreCase("Whitelisted")) {
                 lore.clear();
                 lore.add("&7This server is currently &dwhitelisted&7.");
                 lore.add("&7");
@@ -124,17 +112,17 @@ public class InformationMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            if (server.getStatus() == StatusData.ONLINE) {
+            if (server.getStatus().equalsIgnoreCase("Online")) {
                 if (clickType.isLeftClick()) {
                     OxygenBukkit.getInstance().getRedisModule().sendPacket(new ShutdownPacket(server.getName()));
                 } else {
-                    server.setStatus(StatusData.WHITELISTED);
+                    server.setStatus("Whitelisted");
                     player.sendMessage(CC.translate("&aYou have successfully enabled the &dWhitelist &aon &6" + server.getName() + " Server&a."));
                 }
                 return;
-            } else if (server.getStatus() == StatusData.WHITELISTED) {
-                if (server.getStatus() == StatusData.WHITELISTED) {
-                    server.setStatus(StatusData.ONLINE);
+            } else if (server.getStatus().equalsIgnoreCase("Whitelisted")) {
+                if (server.getStatus().equalsIgnoreCase("Whitelisted")) {
+                    server.setStatus("Online");
                     player.sendMessage(CC.translate("&aYou have successfully disabled the &dWhitelist &aon &6" + server.getName() + " Server&a."));
                 }
             }

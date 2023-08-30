@@ -1,6 +1,5 @@
 package dev.hely.core.bukkit;
 
-import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
@@ -13,15 +12,15 @@ import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.modules.database.mongo.MongoModule;
 import dev.hely.core.bukkit.modules.database.redis.RedisModule;
 import dev.hely.core.bukkit.modules.listener.ListenerModule;
-import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.ProfileManager;
 import dev.hely.core.bukkit.profile.log.LogManager;
 import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
 import dev.hely.core.bukkit.profile.tfa.TFAManager;
 import dev.hely.core.bukkit.punishment.packet.PunishmentPacketListener;
 import dev.hely.core.bukkit.ranks.rank.RankManager;
-import dev.hely.core.bukkit.server.BukkitServerListener;
-import dev.hely.core.bukkit.server.BukkitServerManager;
+import dev.hely.core.bukkit.server.ServerListener;
+import dev.hely.core.bukkit.server.ServerManager;
+import dev.hely.core.bukkit.server.packets.ServerMonitorStatusPacket;
 import dev.hely.core.bukkit.server.packets.ServerPacketListener;
 import dev.hely.core.bukkit.server.queue.QueueManager;
 import dev.hely.core.bukkit.server.queue.listener.QueueListener;
@@ -30,7 +29,7 @@ import dev.hely.core.bukkit.server.queue.runnables.MainQueueRunnable;
 import dev.hely.core.bukkit.server.queue.runnables.QueuePositionRunnable;
 import dev.hely.core.bukkit.server.queue.runnables.QueueUpdateRunnable;
 import dev.hely.core.bukkit.server.runnable.HeartBeatRunnable;
-import dev.hely.core.bukkit.server.runnable.ServerRunnable;
+import dev.hely.core.bukkit.server.runnable.ServerDataUpdateThread;
 import dev.hely.core.bukkit.staff.requests.RequestManager;
 import dev.hely.core.bukkit.staff.staffmode.StaffManager;
 import dev.hely.core.bukkit.tag.TagManager;
@@ -39,9 +38,6 @@ import dev.hely.core.bukkit.tasks.NameMCReminderTask;
 import dev.hely.core.bukkit.utils.Config;
 import dev.hely.core.bukkit.utils.command.CommandManager;
 import dev.hely.core.bukkit.utils.command.SubCommandManager;
-import dev.hely.core.bungee.server.data.server.Server;
-import dev.hely.core.bungee.server.data.server.data.StatusData;
-import dev.hely.core.bungee.server.packets.ServerUpdatePacket;
 import dev.hely.lib.CC;
 import dev.hely.lib.Tasks;
 import dev.hely.lib.adapter.BlockVectorAdapter;
@@ -54,7 +50,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.BlockVector;
@@ -113,7 +108,7 @@ public class OxygenBukkit extends JavaPlugin {
     private ProfileManager profileManager;
     private RankManager rankManager;
     private TagManager tagManager;
-    private BukkitServerManager serverManager;
+    private ServerManager serverManager;
     private CommandManager commandManager;
     private SubCommandManager subCommandManager;
     private ListenerModule listenerModule;
@@ -126,6 +121,7 @@ public class OxygenBukkit extends JavaPlugin {
     private QueueManager queueManager;
     private LogManager logManager;
     private StaffManager staffManager;
+    private ServerDataUpdateThread serverDataUpdateThread;
 
     private boolean debug_mode;
 
@@ -158,36 +154,31 @@ public class OxygenBukkit extends JavaPlugin {
         new QueuePositionRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         new QueueUpdateRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         new MainQueueRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-        new ServerRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         new HeartBeatRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        this.serverDataUpdateThread = new ServerDataUpdateThread(this);
         this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
 
         logManager.registerAllLogs();
+        this.redisModule.sendPacket(new ServerMonitorStatusPacket(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), true));
+        this.serverDataUpdateThread.start();
     }
 
     public void onDisable() {
         try {
             stopping = true;
-
-            if (OxygenBukkit.getInstance().getServerConfig() != null) {
-                final Server server = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("group"), OxygenBukkit.getInstance(), false);
-                server.setStartupTime(0L);
-                server.setStatus(StatusData.OFFLINE);
-                server.getOnlinePlayers().set(0);
-                server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
-                redisModule.sendPacket(new ServerUpdatePacket(server.getName(), server.getPort(), server.toJsonObject()));
+            if (this.serverDataUpdateThread != null && this.serverDataUpdateThread.isAlive()) {
+                this.serverDataUpdateThread.stop();
             }
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
-                if (profile != null) {
-                    profile.getSession().stopTimings();
-                }
-            }
-
+            this.redisModule.sendPacket(new ServerMonitorStatusPacket(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), false));
             for (ModuleLoader module : modules) {
                 if (module != null) {
                     module.disable();
                 }
+            }
+            try {
+                Thread.sleep(1000L);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } catch (NoClassDefFoundError | NullPointerException e) {
             return;
@@ -270,7 +261,7 @@ public class OxygenBukkit extends JavaPlugin {
         staffManager = new StaffManager();
 
         queueManager = new QueueManager();
-        serverManager = new BukkitServerManager();
+        serverManager = new ServerManager();
     }
 
     public void setupModules() {
@@ -303,7 +294,7 @@ public class OxygenBukkit extends JavaPlugin {
         redisModule.registerListener(new PunishmentPacketListener(this));
         redisModule.registerListener(new TagPacketListener(tagManager));
 
-        redisModule.registerListener(new BukkitServerListener());
+        redisModule.registerListener(new ServerListener());
         redisModule.registerListener(new QueuePacketListener());
         redisModule.registerListener(new ServerPacketListener());
 

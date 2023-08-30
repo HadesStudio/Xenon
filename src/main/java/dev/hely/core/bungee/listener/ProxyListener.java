@@ -15,25 +15,8 @@ package dev.hely.core.bungee.listener;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import dev.hely.core.bungee.OxygenBungee;
-import dev.hely.core.bungee.server.data.proxy.Proxy;
-import dev.hely.core.bungee.utils.BungeeCC;
-import lombok.RequiredArgsConstructor;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ServerPing;
-import net.md_5.bungee.api.event.ProxyPingEvent;
-import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.event.EventHandler;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
-
-@RequiredArgsConstructor
+/*@RequiredArgsConstructor
 public class ProxyListener implements Listener {
     @EventHandler
     public void onPing(ProxyPingEvent event) {
@@ -244,4 +227,4 @@ public class ProxyListener implements Listener {
         }
         return null;
     }
-}
+}*/

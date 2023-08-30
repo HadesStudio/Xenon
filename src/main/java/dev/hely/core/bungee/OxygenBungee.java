@@ -19,24 +19,14 @@ import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.bungee.commands.HubCommand;
-import dev.hely.core.bungee.commands.MaintenanceCommand;
-import dev.hely.core.bungee.commands.ServerCommand;
-import dev.hely.core.bungee.commands.ServerManagerCommand;
 import dev.hely.core.bungee.databases.mongo.MongoManager;
 import dev.hely.core.bungee.listener.PacketListener;
 import dev.hely.core.bungee.listener.PermissionListener;
-import dev.hely.core.bungee.listener.ProxyListener;
 import dev.hely.core.bungee.maintenance.MaintenanceManager;
 import dev.hely.core.bungee.packet.PermissionPacketListener;
 import dev.hely.core.bungee.databases.redis.RedisBungeeModule;
-import dev.hely.core.bungee.server.ServerManager;
-import dev.hely.core.bungee.server.data.proxy.Proxy;
-import dev.hely.core.bungee.server.data.proxy.data.ProxyServerRegion;
-import dev.hely.core.bungee.server.data.proxy.data.ProxyServerStatus;
-import dev.hely.core.bungee.server.listeners.ServerListener;
-import dev.hely.core.bungee.server.packets.ProxyUpdatePacket;
-import dev.hely.core.bungee.server.runnable.BungeeRunnable;
+import dev.hely.core.bungee.server.BungeeServerManager;
+import dev.hely.core.bungee.server.runnable.ServerDataUpdateThread;
 import dev.hely.core.bungee.utils.BungeeCC;
 import dev.hely.core.bungee.utils.BungeeConfig;
 import dev.hely.lib.CC;
@@ -47,7 +37,6 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.net.*;
 import java.text.ParseException;
 import java.io.*;
@@ -68,7 +57,8 @@ public class OxygenBungee extends Plugin {
     private List<ModuleLoader> modules;
     private MaintenanceManager maintenanceManager;
     private MongoManager mongoManager;
-    private ServerManager serverManager;
+    private BungeeServerManager bungeeServerManager;
+    private ServerDataUpdateThread serverDataUpdateThread;
 
     private final Map<UUID, List<String>> playerPermissions = new HashMap<>();
     public static final Gson PLAIN_GSON = (new GsonBuilder()).serializeNulls().create();
@@ -94,6 +84,8 @@ public class OxygenBungee extends Plugin {
         setupCommands();
         setupListeners();
         setupRunnables();
+
+        this.serverDataUpdateThread = new ServerDataUpdateThread(this);
     }
 
     public void registerConfigs() {
@@ -123,13 +115,14 @@ public class OxygenBungee extends Plugin {
 
     @Override
     public void onDisable() {
-        Proxy proxy = new Proxy(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"), ProxyServerRegion.valueOf(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("region")), this);
-
-        proxy.setStatus(ProxyServerStatus.OFFLINE);
-        proxy.getOnlinePlayers().set(0);
-
-        this.redisBungeeModule.sendPacket(new ProxyUpdatePacket(proxy.getName(), proxy.getPort(), proxy.toJsonObject()));
-
+        if (this.serverDataUpdateThread != null && this.serverDataUpdateThread.isAlive()) {
+            this.serverDataUpdateThread.stop();
+        }
+        try {
+            Thread.sleep(1000L);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         modules.forEach(this::unloadModule);
     }
 
@@ -138,7 +131,7 @@ public class OxygenBungee extends Plugin {
         redisBungeeModule = new RedisBungeeModule();
         maintenanceManager = new MaintenanceManager();
         mongoManager = new MongoManager();
-        serverManager = new ServerManager();
+        bungeeServerManager = new BungeeServerManager();
     }
 
     public void setupModules(){
@@ -146,14 +139,12 @@ public class OxygenBungee extends Plugin {
 
         this.loadModule(maintenanceManager);
         this.loadModule(mongoManager);
-        this.loadModule(serverManager);
+        this.loadModule(bungeeServerManager);
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered &a&n" + modules.size() + " Modules&a."));
     }
 
     public void setupRunnables() {
-        this.getProxy().getScheduler().schedule(this,new BungeeRunnable(),0,3L, TimeUnit.SECONDS);
-
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered all runnables."));
     }
 
@@ -166,19 +157,12 @@ public class OxygenBungee extends Plugin {
     }
 
     public void setupCommands() {
-        this.getProxy().getPluginManager().registerCommand(this, new ServerManagerCommand());
-        this.getProxy().getPluginManager().registerCommand(this, new HubCommand());
-        this.getProxy().getPluginManager().registerCommand(this, new ServerCommand());
-        this.getProxy().getPluginManager().registerCommand(this, new MaintenanceCommand());
-
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered all commands."));
     }
 
     public void setupListeners() {
-        this.getProxy().getPluginManager().registerListener(this, new ServerListener());
         this.getProxy().getPluginManager().registerListener(this, new PermissionListener());
         this.getProxy().getPluginManager().registerListener(this, new PacketListener());
-        this.getProxy().getPluginManager().registerListener(this, new ProxyListener());
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered all listeners."));
     }

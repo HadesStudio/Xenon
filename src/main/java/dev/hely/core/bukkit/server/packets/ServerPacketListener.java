@@ -18,8 +18,7 @@ package dev.hely.core.bukkit.server.packets;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
-import dev.hely.core.bungee.server.data.proxy.Proxy;
-import dev.hely.core.bungee.server.packets.ProxyUpdatePacket;
+import dev.hely.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 
@@ -34,6 +33,22 @@ public class ServerPacketListener implements PacketListener {
             OxygenBukkit.getInstance().getTasks().runAsync(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stop"));
         } else if (server.equalsIgnoreCase(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"))) {
             OxygenBukkit.getInstance().getTasks().runAsync(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stop"));
+        }
+    }
+
+    @IncomingPacketHandler
+    public void onServerMonitorStatusUpdate(ServerMonitorStatusPacket packet) {
+        String server = packet.getServer();
+        boolean starting = packet.isStarting();
+
+        if (starting) { // The server is starting up
+            Bukkit.getOnlinePlayers().stream().filter(player -> player.hasPermission("oxygen.server.updates")).forEach(player -> {
+                player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("server-manager.server-online").replace("%server%", server)));
+            });
+        } else {
+            Bukkit.getOnlinePlayers().stream().filter(player -> player.hasPermission("oxygen.server.updates")).forEach(player -> {
+                player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("server-manager.server-offline").replace("%server%", server)));
+            });
         }
     }
 }

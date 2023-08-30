@@ -9,7 +9,6 @@ import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBlacklistComman
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnMuteCommand;
 import dev.hely.core.bukkit.commands.implement.staff.*;
 import dev.hely.core.bukkit.server.commands.SetSlotsCommand;
-import dev.hely.core.bukkit.server.commands.WhitelistCommand;
 import dev.hely.core.bukkit.server.queue.commands.JoinQueueCommand;
 import dev.hely.core.bukkit.commands.OxygenCommand;
 import dev.hely.core.bukkit.modules.ModuleLoader;
@@ -116,7 +115,6 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new HideStaffCommand());
         loadedCommands.add(new StaffBuildCommand());
         loadedCommands.add(new StaffModeCommand());
-        loadedCommands.add(new WhitelistCommand());
         loadedCommands.add(new SetSlotsCommand());
 
         loadedCommands.forEach(this::registerCommand);

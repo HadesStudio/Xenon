@@ -114,6 +114,7 @@ chat-command:
       - "&aChat has just been put on slow mode by &6%player%&a."
 server-manager:
   server-offline: "&6[Server Manager] &c%server% &7has just went &4Offline&7!"
+  server-online: "&6[Server Manager] &c%server% &7is now &aOnline&7!"
 queue-system:
   in-queue: "&cSorry, you are already in another &6Server Queue&c."
   not-exist: "&cSorry, the queue by the name of '&6%server%&c' could not be found."
