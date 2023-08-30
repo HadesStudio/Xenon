@@ -29,6 +29,12 @@ server-command:
   invalid-server: "&cSorry, the server by the name of '&6%server%&c' could not be found."
   sent: "&cYou have successfully joined &6%server%&c."
 maintenance-command:
+  usage: "&cCorrect Usage: /maintenance <toggle|add|remove> <player>"
+  not-online: "&cThe player by this name is currently not online."
   disabled: "&6[Server Manager] &7You have successfully &cdisabled &7the maintenance mode."
   enabled: "&6[Server Manager] &7You have successfully &aenabled &7the maintenance mode."
   kick: "&cSorry, this proxy is currently in &6Maintenance Mode&c."
+  already-added: "&cThis player is already on the maintenance bypass list."
+  not-added: "&cThis player is not on the maintenance bypass list."
+  added: "&6[Server Manager] &7You have successfully added &a%player% &7from the &6Maintenance Bypass&7."
+  removed: "&6[Server Manager] &7You have successfully removed &a%player% &7from the &6Maintenance Bypass&7."

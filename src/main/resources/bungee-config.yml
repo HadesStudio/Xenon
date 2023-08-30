@@ -10,10 +10,19 @@ hub-name: "Hub" # The name of your hub server.
 
 server-manager: true # Do you want to use server manager system?
 
+time-zone: 'EST' # The timezone for your server.
+
 motd-lines:
+  enabled: true # Do you want to enable this sytem?
   maintenance:
+    version: "&cMaintenance"
     top-line: "&6&lHely Development &7| &aOxygen Rank Core"
     bottom-line: "&7This proxy is under &dmaintenance&7!"
   normal:
     top-line: "&6&lHely Development &7| &aOxygen Rank Core"
-    bottom-line: "&7This plugin is releasing soon!"
+    bottom-line: "&7Plugin Release: %cooldown%"
+  cooldown: # Below, is the configuration section for your MOTD Cooldown Message.
+    timezone: 'EST' # Timezone Options: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    date: '08/31/23 16:00:00' # Date Format: "MM/dd/yy HH:mm:ss"
+    format: 'SUMMARIZED' # SUMMARIZED Format: "1d, 10h, 10m, 10s" |  DETAILED Format: "1 day, 10 hours, 10 minutes, 10 seconds"
+    end_message: '&aPlugin released, BETA phase.' # This is the message disabled when the countdown is over.

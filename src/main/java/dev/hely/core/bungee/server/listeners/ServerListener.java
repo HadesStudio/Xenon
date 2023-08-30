@@ -54,8 +54,10 @@ public class ServerListener implements Listener {
     public void onPreLogin(LoginEvent event) {
         Proxy proxy = OxygenBungee.getInstance().getServerManager().proxyFromName(OxygenBungee.getInstance().getServerConfig().getConfiguration().getString("server-name"));
         if (proxy.isMaintenance()) {
-            event.setCancelReason(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("maintenance-command.kick")));
-            event.setCancelled(true);
+            if (!proxy.getMaintenanceList().contains(event.getConnection().getUniqueId()))  {
+                event.setCancelReason(BungeeCC.translate(OxygenBungee.getInstance().getLanguageConfig().getConfiguration().getString("maintenance-command.kick")));
+                event.setCancelled(true);
+            }
         }
     }
 
