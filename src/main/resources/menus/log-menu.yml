@@ -33,6 +33,10 @@ log-types:
   grant-removed: "Rank grant removed"
   grant-expired: "Rank grant expired"
   given-rank: "Gave someone a rank"
+  received-currency: "Received ingame currency"
+  currency-removed: "Ingame currency was taken"
+  staff-currency-update: "Updated a players currency"
+
 log-viewer:
   title: "Player Logs"
 categories:
@@ -83,4 +87,12 @@ categories:
       - "&7Click here to view all punishment logs."
       - ""
       - "&6Logs: &a%log_size% Logs"
-
+  currency-logs:
+    slot: 14
+    display-name: "&6Currency Logs"
+    material: "GOLD_BLOCK"
+    data: 0
+    lore:
+      - "&7Click here to view all currency logs."
+      - ""
+      - "&6Logs: &a%log_size% Logs"

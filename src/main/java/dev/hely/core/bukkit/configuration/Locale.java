@@ -98,9 +98,14 @@ public class Locale {
     public static String REQUEST_CLOSED_BROADCAST;
     public static String EDITPROFILE_USAGE;
 
+    public static String INVALID_INTEGER;
+
+
     public static void load(){
         Config language = OxygenBukkit.getInstance().getLanguageConfig();
         Config config = OxygenBukkit.getInstance().getConfiguration();
+
+        INVALID_INTEGER = language.getConfiguration().getString("commands.invalid-integer");
 
         EDITPROFILE_USAGE = language.getConfiguration().getString("edit-profile.usage");
         REQUEST_CLOSED_BROADCAST = language.getConfiguration().getString("requests.closed-broadcast");

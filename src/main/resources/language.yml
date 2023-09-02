@@ -12,6 +12,7 @@ commands:
   only-console: "&cYou cannot execute this command."
   never-played: "&cThe player by the name of '&c&l%player%&c' has never connected to the server."
   offline-player: "&cThe player by the name of '&c&l%player%&c' is currently not connected to the server!"
+  invalid-integer: "&cYou have provided a invalid integer in your command argument."
 chat:
   muted: "&cYou cannot speak in chat right now because it is currently muted!"
   only-high-rank: "&cSorry, you must purchase &6Hely Rank &cto be able to speak in chat right now!"
@@ -115,6 +116,69 @@ chat-command:
 server-manager:
   server-offline: "&6[Server Manager] &c%server% &7has just went &4Offline&7!"
   server-online: "&6[Server Manager] &c%server% &7is now &aOnline&7!"
+profile-commands:
+  main:
+    usage:
+      - "&7&l&m-----------------------------------"
+      - "&6&lProfile Manager"
+      - "&7All profile management commands are listed below."
+      - "&7"
+      - "&6* /profile addperm <name> <permission> <server|global> &7- Add a permission to a profile."
+      - "&6* /profile removeperm <name> <permission> &7- Remove a permission from a profile."
+      - "&6* /profile info <name> &7- View all profile information for a player."
+      - "&6* /profile addcurrency <name> <amount> &7- Add a currency amount to the player."
+      - "&6* /profile removecurrency <name> <amount> &7- Remove a currency amount from the player."
+      - "&7&l&m-----------------------------------"
+  add-currency:
+    usage: "&cCorrect Usage: /profile addcurrency <name> <amount>"
+    added: "&6[Profile] &cYou have successfully added &6%amount% Coins &cto &c&n%profile%'s&c profile."
+    received: "&6[Profile] &aYou have just received &6%amount% Coins&a." # %sender%
+    notification:
+      - "&cWhile you where offline, you where"
+      - "&cgiven in-game currency!"
+      - "&cIn-game currency can be used in &6/shop&c."
+      - "&7"
+      - "&cAmount: &7%banner%"
+  add-permission:
+    usage: "&cCorrect Usage: /profile addperm <name> <permission> <server|global>"
+    invalid-server: "&cSorry, the server by this name does not exist."
+    added: "&6[Profile] &aYou have successfully given &6%player% &athe &c'%permission%' &apermission."
+    already-has: "&6[Profile] &cSorry, &6%player% &calready has this permission. Please remove it first."
+  info:
+    usage: "&cCorrect Usage: /profile info <name>"
+    command:
+      - "&7&l&m-----------------------------------"
+      - "&7Viewing Profile: &6%player%"
+      - "&7"
+      - "&6UUID&7: &c%uuid%"
+      - "&6Current Rank&7: &c%current_rank%"
+      - "&6Active Grants&7: &c%active_grants%"
+      - "&6Profile Permissions&7: &c%profile_permissions_size%"
+      - "&6Bungee Permissions&7: &c%bungee_permissions_size%"
+      - "&6Player Permissions&7: &c%player_permissions_size%"
+      - "&6Current Tag&7: &c%tag%"
+      - "&6Friends&7: &c%friends_size%"
+      - "&7"
+      - "&6First Seen&7: &c%first_seen%"
+      - "&6Last Seen&7: &c%last_seen%"
+      - "&6Last Server&7: &c%last_server%"
+      - "&6Currency&7: &c%currency_amount%"
+      - "&7"
+      - "&7You can edit their profile by typing '&6/editprofile %player%&7'!"
+      - "&7&l&m-----------------------------------"
+  remove-permission:
+    usage: "&cCorrect Usage: /profile removeperm <name> <permission>"
+    removed: "&6[Profile] &aYou have successfully removed &c'%permission%' &afrom &6%player%&a."
+  remove-currency:
+    usage: "&cCorrect Usage: /profile removecurrency <name> <amount>"
+    invalid: "&cThis player does not have enough currency for you to remove, please lower your amount."
+    removed: "&6[Profile] &cYou have successfully removed &6%amount% Coins &cfrom &c&n%profile%'s&c profile."
+    taken: "&6[Profile] &6%amount% coins&a has been removed from your profile." # %sender%
+    notification:
+      - "&cWhile you where offline, currency"
+      - "&cwas removed from your proflie!"
+      - "&7"
+      - "&cAmount: &7%banner%"
 queue-system:
   in-queue: "&cSorry, you are already in another &6Server Queue&c."
   not-exist: "&cSorry, the queue by the name of '&6%server%&c' could not be found."

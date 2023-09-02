@@ -25,6 +25,7 @@ import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.ranks.gson.GSONUtil;
 import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.ranks.rank.RankType;
+import dev.hely.core.bukkit.tag.Tag;
 import dev.hely.lib.CC;
 import lombok.*;
 import org.bson.Document;
@@ -379,6 +380,14 @@ public class Profile {
         }
 
         return null;
+    }
+
+    public String getTagFormated() {
+        if (this.getTag() == null || this.getTag().isEmpty()) {
+            return "Empty";
+        } else {
+            return this.getTag();
+        }
     }
 
     public int getPunishmentCountByType(PunishmentType type) {

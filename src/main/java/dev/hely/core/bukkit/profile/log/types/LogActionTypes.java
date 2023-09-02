@@ -75,6 +75,15 @@ public enum LogActionTypes {
     ),
     GAVE_RANK(
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.given-rank")
+    ),
+    RECEIVED_CURRENCY(
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.received-currency")
+    ),
+    REMOVED_CURRENCY(
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.currency-removed")
+    ),
+    STAFF_UPDATED_CURRENCY(
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-types.staff-currency-update")
     );
 
     @Getter private final String display_name;

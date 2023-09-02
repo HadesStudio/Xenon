@@ -50,18 +50,6 @@ selection-menu:
         - "&7they are not using alt accounts!"
         - ""
         - "&aSiblings: &6%siblings_size% Notes"
-    permissions-button:
-      slot: 14
-      material: "REDSTONE"
-      data: 0
-      display-name: "&6Player Permissions"
-      lore:
-        - "&7Click here to view this players"
-        - "&7profile permissions they have."
-        - ""
-        - "&aProfile Permissions: &6%profile_perm_size% Permissions"
-        - "&aPlayer Permissions: &6%player_perm_size% Permissions"
-        - "&aBungee Permissions: &6%bungee_perm_size% Permissions"
     ranks-button:
       slot: 11
       material: "NETHER_STAR"
@@ -72,6 +60,23 @@ selection-menu:
         - "&7expired, and active grants."
         - ""
         - "&aGrants: &6%grants_size% Grants"
+    permissions-button:
+      slot: 14
+      material: "REDSTONE"
+      data: 0
+      display-name: "&6Profile Permissions"
+      lore:
+        - "&7Below, is all the different options"
+        - "&7to view this players permissions."
+        - ""
+        - "&aProfile Permissions: &6%profile_perms% Permissions"
+        - "&aBungee Permissions: &6%bungee_perms% Permissions"
+        - "&aPlayer Permissions: &6%player_perms% Permissions"
+        - ""
+        - "&6Left-Click &7to view all profile permissions."
+        - "&6Middle-Click &7to view all bungee permissions."
+        - "&6Right-Click &7to view all player permissions."
+
 notes-menu:
   title: "%player% - Profile Notes"
   messages:

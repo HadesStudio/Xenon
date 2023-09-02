@@ -19,6 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.menu.submenus.NotesMenu;
 import dev.hely.core.bukkit.profile.menu.submenus.GrantsMenu;
+import dev.hely.core.bukkit.profile.menu.submenus.PermissionsMenu;
 import dev.hely.core.bukkit.profile.menu.submenus.SiblingsMenu;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
@@ -138,6 +139,56 @@ public class EditProfileMenu extends Menu {
         @Override
         public boolean toUpdate(Player player, int slot, ClickType clickType) {
             return clickType.isCreativeAction() || clickType.isRightClick();
+        }
+    }
+
+    @AllArgsConstructor
+    public static class ProfilePermissionsButton extends Button {
+        final Profile profile;
+
+        public Material getMaterial() {
+            if (OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.material") != null) {
+                if (Material.getMaterial(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.material")) != null) {
+                    return Material.valueOf(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.material"));
+                } else {
+                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[OxygenGlobal] &cThe material of 'profile-permissions-button' is null, using a default value."));
+                    return Material.REDSTONE;
+                }
+            } else {
+                Bukkit.getConsoleSender().sendMessage(CC.translate("&4[OxygenGlobal] &cThe material of 'profile-permissions-button' is broken, using a default value."));
+                return Material.REDSTONE;
+            }
+        }
+
+        public short getData() {
+            return (short) OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("selection-menu.buttons.permissions-button.data");
+        }
+
+
+        @Override
+        public ItemStack getItemStack(Player player) {
+            ItemMaker builder = ItemMaker.of(getMaterial());
+            builder.setData(getData());
+            builder.setDisplayName(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.display-name").replace("%player_name%", profile.getName()));
+            for (String line : OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getStringList("selection-menu.buttons.permissions-button.lore")) {
+                builder.addLore(line
+                        .replace("%profile_perms%", String.valueOf(profile.getProfilePermissions().size()))
+                        .replace("%bungee_perms%", String.valueOf(profile.getBungeePermissions().size()))
+                        .replace("%player_perms%", String.valueOf(profile.getPlayerPermissions().size()))
+                );
+            }
+            return builder.build();
+        }
+
+        @Override
+        public void onClick(Player player, int slot, ClickType clickType) {
+            if (clickType.isLeftClick()) {
+                new PermissionsMenu(profile, "profile").openMenu(player);
+            } else if (clickType.isCreativeAction()) {
+                new PermissionsMenu(profile, "bungee").openMenu(player);
+            } else {
+                new PermissionsMenu(profile, "player").openMenu(player);
+            }
         }
     }
 

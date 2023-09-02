@@ -16,16 +16,16 @@ import java.util.Collections;
  * Protect Name Oxygen
  */
 
-public class ProfileAddPermission extends SubCommand {
+public class ProfileAddPermissionCommand extends SubCommand {
 
-    public ProfileAddPermission() {
+    public ProfileAddPermissionCommand() {
         super("addperm", Collections.singletonList("addpermission"), "oxygen.profile.addpermission");
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length < 4) {
-            sender.sendMessage(CC.translate("&cUsage: /profile addperm <player> <permission> <server|global>"));
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.usage")));
             return;
         }
 
@@ -34,17 +34,23 @@ public class ProfileAddPermission extends SubCommand {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[1]));
             return;
         }
-        if (OxygenBukkit.getInstance().getServerManager().getOrSetupServer(args[3]) == null) {
-            if (!args[3].equalsIgnoreCase("Global")) {
-                sender.sendMessage(CC.translate("&cThe server with this name does not exist."));
+        for (ProfilePermission profilePermission : profile.getProfilePermissions()) {
+            if (profilePermission.getPermission().equalsIgnoreCase(args[2])) {
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.already-has").replace("%player%", profile.getName())));
                 return;
             }
         }
-        ProfilePermission permission = new ProfilePermission(args[2], args[3], false, -1);
+        if (OxygenBukkit.getInstance().getServerManager().getOrSetupServer(args[3]) == null) {
+            if (!args[3].equalsIgnoreCase("Global")) {
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.invalid-server")));
+                return;
+            }
+        }
 
+        ProfilePermission permission = new ProfilePermission(args[2], args[3], false, -1);
         profile.getProfilePermissions().add(permission);
         profile.save();
-
+        sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.added").replace("%player%", profile.getName()).replace("%permission%", args[2])));
     }
 }
 

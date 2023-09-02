@@ -58,6 +58,13 @@ public enum LogCategories {
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getStringList("categories.punishment-logs.lore"),
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.punishment-logs.data"),
             OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.punishment-logs.slot")
+    ),
+    CURRENCY_LOGS(
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.currency-logs.display-name"),
+            Material.valueOf(OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.currency-logs.material")),
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getStringList("categories.currency-logs.lore"),
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.currency-logs.data"),
+            OxygenBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.currency-logs.slot")
     );
 
     @Getter String display_name;

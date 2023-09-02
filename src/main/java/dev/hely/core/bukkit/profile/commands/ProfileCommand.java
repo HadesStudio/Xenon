@@ -1,8 +1,7 @@
 package dev.hely.core.bukkit.profile.commands;
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.profile.commands.subcommands.ProfileAddCurrencyCommand;
-import dev.hely.core.bukkit.profile.commands.subcommands.ProfileInfoCommand;
+import dev.hely.core.bukkit.profile.commands.subcommands.*;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.core.bukkit.utils.command.sub.SubCommandHandler;
 import dev.hely.lib.CC;
@@ -22,6 +21,9 @@ public class ProfileCommand extends SubCommandHandler {
 
         this.addSubCommand(new ProfileInfoCommand());
         this.addSubCommand(new ProfileAddCurrencyCommand());
+        this.addSubCommand(new ProfileAddPermissionCommand());
+        this.addSubCommand(new ProfileRemovePermissionCommand());
+        this.addSubCommand(new ProfileRemoveCurrencyCommand());
     }
 
     @Override
@@ -31,11 +33,15 @@ public class ProfileCommand extends SubCommandHandler {
             if (subCommand != null) {
                 subCommand.execute(sender, args);
             } else {
-                // ADDED USAGE
+                for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile-commands.main.usage")) {
+                    sender.sendMessage(CC.translate(message));
+                }
                 return false;
             }
         } else {
-            // ADDED USAGE
+            for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile-commands.main.usage")) {
+                sender.sendMessage(CC.translate(message));
+            }
             return false;
         }
         return false;
