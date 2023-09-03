@@ -76,7 +76,6 @@ selection-menu:
         - "&6Left-Click &7to view all profile permissions."
         - "&6Middle-Click &7to view all bungee permissions."
         - "&6Right-Click &7to view all player permissions."
-
 notes-menu:
   title: "%player% - Profile Notes"
   messages:
@@ -141,6 +140,19 @@ siblings-menu:
       lore:
         - "&7Click here to add a new profile"
         - "&7sibling to this player."
+permission-menu:
+  title: "%player% - Permissions"
+  buttons:
+    permission-button:
+      material: "NAME_TAG"
+      data: 0
+      display-name: "&6'%permission%' &7(&c%status%&7)"
+      lore:
+        - "&7"
+        - "&6Active&7: &a%status%"
+        - "&6Expiration&7: &a%expires%"
+        - "&6Server&7: &a%server%"
+        - "&6Type&7: &a%type%"
 grants-menu:
   title: "%player% - Rank Grants"
   messages:

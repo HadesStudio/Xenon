@@ -16,10 +16,9 @@ package dev.hely.core.bukkit.profile.menu.submenus;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.menu.EditProfileMenu;
-import dev.hely.core.bukkit.profile.siblings.Sibling;
+import dev.hely.core.bukkit.profile.permission.ProfilePermission;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
 import dev.hely.lib.maker.ItemMaker;
@@ -30,14 +29,12 @@ import dev.hely.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class PermissionsMenu extends PaginatedMenu {
@@ -46,20 +43,33 @@ public class PermissionsMenu extends PaginatedMenu {
 
     @Override
     public String getName() {
-        return OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.title").replace("%player%", profile.getName());
+        return OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("permission-menu.title").replace("%player%", profile.getName());
     }
 
     @Override
     public String getTitle(Player player) {
-        return OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.title").replace("%player%", profile.getName());
+        return OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("permission-menu.title").replace("%player%", profile.getName());
     }
 
     @Override
     public Map<Integer, Button> getPaginatedContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        for (Sibling siblings : profile.getSiblings()) {
-            buttons.put(buttons.size(), new Sibling_Button(profile, siblings));
+        if (viewingType.equalsIgnoreCase("bungee")) {
+            for (String permission : profile.getBungeePermissions()) {
+
+            }
+        } else if (viewingType.equalsIgnoreCase("profile")) {
+            for (ProfilePermission permission : profile.getProfilePermissions()) {
+                buttons.put(buttons.size(), new Profile_Permission_Button(profile, permission));
+            }
+        } else { // view all
+            for (ProfilePermission profilePermissions : profile.getProfilePermissions()) {
+                buttons.put(buttons.size(), new Profile_Permission_Button(profile, profilePermissions));
+            }
+            for (String bungeePermissions : profile.getBungeePermissions()) {
+
+            }
         }
 
         return buttons;
@@ -84,34 +94,48 @@ public class PermissionsMenu extends PaginatedMenu {
         menuContent.put(19, Button.getPlaceholder());
         menuContent.put(20, Button.getPlaceholder());
         menuContent.put(21, Button.getPlaceholder());
-        menuContent.put(22, new Sibling_Create_Button(profile));
+        menuContent.put(22, Button.getPlaceholder());
         menuContent.put(23, Button.getPlaceholder());
         menuContent.put(24, Button.getPlaceholder());
         menuContent.put(25, Button.getPlaceholder());
-
         menuContent.put(26, new PageButton(1, this));
-
-
         return menuContent;
     }
 
     @AllArgsConstructor
-    public static class Sibling_Button extends Button {
+    public static class Profile_Permission_Button extends Button {
         final Profile profile;
-        final Sibling sibling;
+        final ProfilePermission perm;
+
+        public Material getMaterial() {
+            if (OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("permission-menu.buttons.permission-button.material") != null) {
+                if (Material.getMaterial(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("permission-menu.buttons.permission-button.material")) != null) {
+                    return Material.valueOf(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("permission-menu.buttons.permission-button.material"));
+                } else {
+                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[OxygenGlobal] &cThe material of 'permission-view-button' is null, using a default value."));
+                    return Material.PAPER;
+                }
+            } else {
+                Bukkit.getConsoleSender().sendMessage(CC.translate("&4[OxygenGlobal] &cThe material of 'permission-view-button' is broken, using a default value."));
+                return Material.PAPER;
+            }
+        }
+
+        public short getData() {
+            return (short) OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("permission-menu.buttons.permission-button.data");
+        }
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(Material.SKULL_ITEM);
-            builder.setData((short) 3);
-            builder.setOwner(sibling.getSiblingName());
-            builder.setDisplayName(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.buttons.sibling-button.display-name").replace("%player_name%", sibling.getSiblingName()));
-            for (String line : OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getStringList("siblings-menu.buttons.sibling-button.lore")) {
+            ItemMaker builder = ItemMaker.of(getMaterial());
+            builder.setData(getData());
+            builder.setDisplayName(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("permission-menu.buttons.permission-button.display-name").replace("%permission%", perm.getPermission()).replace("%status%", String.valueOf(perm.isActive())));
+            for (String line : OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getStringList("permission-menu.buttons.permission-button.lore")) {
                 builder.addLore(line
-                        .replace("%staff_member%", sibling.getAddedBy())
-                        .replace("%sibling_name%", sibling.getSiblingName())
-                        .replace("%creation_date%", TimeUtil.formatDateDiff(sibling.getAddedAt()))
-                        .replace("%creation_server%", sibling.getAddedServer())
+                        .replace("%expires%", TimeUtil.formatSimplifiedDateDiff(perm.getDuration()))
+                        .replace("%status%", String.valueOf(perm.isActive()))
+                        .replace("%server%", perm.getServer())
+                        .replace("%type%", "Profile Permission")
                 );
             }
             return builder.build();
@@ -119,17 +143,6 @@ public class PermissionsMenu extends PaginatedMenu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            if (clickType.isLeftClick()) {
-                if (player.hasPermission("oxygen.staff.sibling.delete")) {
-                    Profile siblingsProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(sibling.getMainProfileName());
-                    siblingsProfile.getSiblings().remove(sibling);
-                    profile.getSiblings().remove(sibling);
-                    profile.save();
-                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.messages.removed-sibling").replace("%player%", profile.getName()).replace("%sibling%", sibling.getSiblingName())));
-                } else {
-                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.messages.cannot-delete")));
-                }
-            }
         }
 
         @Override
@@ -137,97 +150,4 @@ public class PermissionsMenu extends PaginatedMenu {
             return clickType.isCreativeAction() || clickType.isLeftClick() || clickType.isRightClick();
         }
     }
-
-    @AllArgsConstructor
-    public static class Sibling_Create_Button extends Button {
-        final Profile profile;
-
-        public Material getMaterial() {
-            if (OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.buttons.create-button.material") != null) {
-                if (Material.getMaterial(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.buttons.create-button.material")) != null) {
-                    return Material.valueOf(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.buttons.create-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[OxygenGlobal] &cThe material of 'siblings-create-button' is null, using a default value."));
-                    return Material.PAPER;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&4[OxygenGlobal] &cThe material of 'siblings-create-button' is broken, using a default value."));
-                return Material.PAPER;
-            }
-        }
-
-        public short getData() {
-            return (short) OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("siblings-menu.buttons.create-button.data");
-        }
-
-
-        @Override
-        public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(getMaterial());
-            builder.setData(getData());
-            builder.setDisplayName(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.buttons.create-button.display-name"));
-            for (String line : OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getStringList("siblings-menu.buttons.create-button.lore")) {
-                builder.addLore(line);
-            }
-            return builder.build();
-        }
-
-        @Override
-        public void onClick(Player player, int slot, ClickType clickType) {
-            if (clickType.isLeftClick()) {
-                if (player.hasPermission("oxygen.staff.sibling.create")) {
-                    player.closeInventory();
-                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.messages.create-promt")));
-                    ConversationFactory factory = new ConversationFactory(OxygenBukkit.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
-                        public String getPromptText(ConversationContext context) {
-                            return "";
-                        }
-
-                        @Override
-                        public Prompt acceptInput(ConversationContext cc, String s) {
-                            if (OxygenBukkit.getInstance().getProfileManager().getProfile(s) == null) {
-                                cc.getForWhom().sendRawMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", s));
-                                return END_OF_CONVERSATION;
-                            }
-                            Profile specifiedProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(s);
-                            for (Sibling siblings : profile.getSiblings()) {
-                                if (siblings.getSiblingName().equalsIgnoreCase(specifiedProfile.getName())) {
-                                    cc.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.messages.already-added")));
-                                    return END_OF_CONVERSATION;
-                                }
-                            }
-                            Sibling profileSibling = new Sibling();
-                            profileSibling.setMainProfileName(profile.getName());
-                            profileSibling.setMainProfileUUID(profile.getUniqueId());
-                            profileSibling.setSiblingName(specifiedProfile.getName());
-                            profileSibling.setSiblingUUID(specifiedProfile.getUniqueId());
-                            profileSibling.setUniqueId(UUID.randomUUID());
-                            profileSibling.setAddedAt(System.currentTimeMillis());
-                            profileSibling.setAddedBy(player.getName());
-                            profileSibling.setAddedServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
-                            profile.getSiblings().add(profileSibling);
-                            profile.save();
-                            specifiedProfile.getSiblings().add(profileSibling);
-                            specifiedProfile.save();
-
-                            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.messages.create-sibling").replace("%player%", profile.getName())));
-                            new PermissionsMenu(profile).openMenu(player);
-                            return Prompt.END_OF_CONVERSATION;
-                        }
-                    }).withLocalEcho(false).withEscapeSequence("/null").withTimeout(20).thatExcludesNonPlayersWithMessage("Go away evil console!");
-
-                    Conversation con = factory.buildConversation(player);
-                    player.beginConversation(con);
-                } else {
-                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.messages.cannot-create")));
-                }
-            }
-        }
-
-        @Override
-        public boolean toUpdate(Player player, int slot, ClickType clickType) {
-            return clickType.isCreativeAction() || clickType.isRightClick();
-        }
-    }
-
 }
