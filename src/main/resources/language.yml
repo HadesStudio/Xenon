@@ -199,6 +199,47 @@ queue-system:
   toggled:
     enabled: "&aYou have successfully &a&nenabled&a the &6%server% Queue&a."
     disabled: "&cYou have successfully &c&ndisabled&c the &6%server% Queue&c."
+heal-command:
+  usage: "&cCorrect Usage: /heal <player|all>"
+  not-online: "&cSorry, the name that you have provided is currently not connected to the server."
+  heal-self: "&6You have successfully been healed."
+  heal-other: "&6You have successfully healed &6&n%player%&6."
+feed-command:
+  usage: "&cCorrect Usage: /feed <player|all>"
+  not-online: "&cSorry, the name that you have provided is currently not connected to the server."
+  feed-self: "&6You have successfully been fed."
+  feed-other: "&6You have successfully fed &6&n%player%&6."
+frozen-command:
+  command:
+    usage: "&cCorrect Usage: /freeze <player|server>"
+    not-online: "&cSorry, the name that you have provided is currently not connected to the server."
+    server-frozen: "&6[Hely Network] &7This server has been frozen. Please stay tuned for more information."
+    server-unfrozen: "&6[Hely Network] &7This server is no longer frozen. Thank you for your patience."
+    freeze-server: "&cYou have successfully froze this server. A total of &c&l%players% players &chas been frozen."
+    unfroze-server: "&cYou have successfully unfroze this server. A total of &c&l%players% players &chas been unfrozen."
+    freeze-player: "&cYou have successfully frozen &c&l%player%&c."
+    unfroze-player: "&cYou have successfully unfrozen &c&l%player%&c."
+    frozen: "&cYou have just been frozen by &6%player%&c."
+    unfrozen: "&cYou have just been unfrozen by &6%player%&c."
+  messages:
+    freeze-chat-player-display: "&b[Frozen] &f- &7%message%"
+    freeze-chat-staff-message: "&b[Frozen] &7(%server%) &f- &c%player% &f- &7%message%"
+    currently-frozen: "&cSorry, &c&n%player%&c is currently frozen."
+    cannot-while-frozen: "&cYou cannot do this action while you are frozen."
+    join-frozen: "&cYou have joined the server, and you are frozen. This is because you logged off previously while you where frozen."
+    join-frozen-alert: "&6[Frozen] &7(%server%) &c%player% &7has just joined the server, and they are frozen!"
+    left-frozen-alert: "&6[Frozen] &7(%server%) &c%player% &7has just left the server, and they where frozen!"
+    join-while-server-frozen: "&6[Hely Network] &7Welcome! Unfortunately, this server is currently frozen. Please stay tuned for any updated."
+  settings:
+    allowed-commands:
+      - "/freeze"
+      - "/ss"
+      - "/auth"
+      - "/authenticate"
+      - "/message"
+      - "/msg"
+      - "/r"
+      - "/respond"
 playtime-command:
   view:
     global: "&6You have played a total of &6&n%time%&6 on the &bHely Network&6."

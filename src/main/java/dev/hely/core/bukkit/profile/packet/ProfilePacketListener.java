@@ -99,6 +99,15 @@ public class ProfilePacketListener implements PacketListener {
     }
 
     @IncomingPacketHandler
+    public void onStaffMessagePacket(StaffRawMessagePacket packet){
+        String server = packet.getServerName();
+        String permission = packet.getPermission();
+        String message = packet.getMessage();
+
+        Messages.sendMessage(message.replace("%server%", server), permission);
+    }
+
+    @IncomingPacketHandler
     public void onStaffMessagePacket(StaffMessagePacket packet){
         String name = packet.getPlayerName();
         String server = packet.getServerName();

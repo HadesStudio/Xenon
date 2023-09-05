@@ -88,11 +88,11 @@ public class Profile {
     private StaffProfile staffProfile = new StaffProfile();
 
     private int currency;
+    private boolean frozen;
 
     //playtime puta;
     private long playTime = 0;
     private PlaytimeUtil session;
-
     private List<String> ignoredList = new ArrayList<>();
     private long lastReceivedMessageMillis;
     private long lastSentMessageMillis;
@@ -152,6 +152,7 @@ public class Profile {
         document.put("vpnWhitelist", vpnWhitelist);
         document.put("tag", tag);
         document.put("totalkills", totalKills);
+        document.put("frozen", frozen);
         document.put("totaldeaths", totalDeaths);
         document.put("currency", currency);
         document.put("lastReceivedMessageMillis", lastReceivedMessageMillis);
@@ -206,6 +207,7 @@ public class Profile {
             currency = document.getInteger("currency");
             playTime = document.getLong("playTime");
             authPassword = document.getString("authPassword");
+            frozen = document.getBoolean("frozen");
             needsVerify = document.getBoolean("needsVerify");
             nextAuthenticationNeeded = document.getLong("nextAuthenticationNeeded");
             loginTime = document.getLong("loginTime");
