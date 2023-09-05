@@ -17,6 +17,7 @@ package dev.hely.core.bukkit.utils.command;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.chat.commands.ChatCommand;
+import dev.hely.core.bukkit.coins.coupons.commands.CouponCommand;
 import dev.hely.core.bukkit.coins.sales.commands.StoreSaleCommand;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.commands.ProfileCommand;
@@ -35,6 +36,7 @@ public class SubCommandManager implements ModuleLoader {
     private FriendsCommand friendsCommand;
     private StoreSaleCommand storeSaleCommand;
     private ChatCommand chatCommand;
+    private CouponCommand couponCommand;
 
     @Override
     public void enable() {
@@ -44,6 +46,7 @@ public class SubCommandManager implements ModuleLoader {
         this.friendsCommand = new FriendsCommand();
         this.storeSaleCommand = new StoreSaleCommand();
         this.chatCommand = new ChatCommand();
+        this.couponCommand = new CouponCommand();
 
     }
 
@@ -55,6 +58,7 @@ public class SubCommandManager implements ModuleLoader {
         this.friendsCommand.disable();
         this.storeSaleCommand.disable();
         this.chatCommand.disable();
+        this.couponCommand.disable();
     }
 
     @Override

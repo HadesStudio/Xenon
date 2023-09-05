@@ -7,6 +7,23 @@
 
 messages:
   commands:
+    coupons-command:
+      usage:
+        - "&7&l&m----------------------------------"
+        - "&6&lCoupons Commands"
+        - "&7Below, is all commands for the store coupon system."
+        - "&7"
+        - "&f* &6/coupon add <player> <amount> &7- This command will give a player a coupon."
+        - "&f* &6/coupon remove <player> <id> &7- This command will remove a players coupon with the given ID."
+        - "&f* &6/coupon list <player> &7- This command will open a list with all coupons a player has."
+        - "&7&l&m----------------------------------"
+      add:
+        invalid-amount: "&cYou have provided a invalid coupon amount. (Example: 15.99)"
+        added: "&cYou have successfully given &c&l%player% &ca &6$%amount% Coupon&c."
+        received: "&aYou have just received a &6$%amount% Coupon&a."
+      remove:
+        invalid-coupon: "&cSorry, the coupon with this ID does not exist. Please check the coupon ID again."
+        removed: "&cYou have successfully removed the coupon with this id."
     sale-command:
       usage:
         - "&7&l&m----------------------------------"

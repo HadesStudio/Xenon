@@ -6,6 +6,7 @@ import com.warrenstrange.googleauth.GoogleAuthenticator;
 import dev.hely.core.bukkit.chat.ChatModule;
 import dev.hely.core.bukkit.client.ClientModule;
 import dev.hely.core.bukkit.coins.StoreManager;
+import dev.hely.core.bukkit.coins.coupons.CouponManager;
 import dev.hely.core.bukkit.coins.sales.SaleManager;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.modules.ModuleLoader;
@@ -122,6 +123,7 @@ public class OxygenBukkit extends JavaPlugin {
     private LogManager logManager;
     private StaffManager staffManager;
     private ServerDataUpdateThread serverDataUpdateThread;
+    private CouponManager couponManager;
 
     private boolean debug_mode;
 
@@ -262,6 +264,7 @@ public class OxygenBukkit extends JavaPlugin {
 
         queueManager = new QueueManager();
         serverManager = new ServerManager();
+        couponManager = new CouponManager();
     }
 
     public void setupModules() {
@@ -285,6 +288,7 @@ public class OxygenBukkit extends JavaPlugin {
 
         this.loadModule(queueManager);
         this.loadModule(serverManager);
+        this.loadModule(couponManager);
 
         instance.getServer().getPluginManager().registerEvents(new QueueListener(), this);
     }
