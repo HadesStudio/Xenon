@@ -18,6 +18,7 @@ database:
       user: "admin"
       password: ""
   redis: # This is the configuration section for the REDIS DATABASE ONLY.
+    enabled: false # Do you want to use redis? (You need this if you have multiple servers)
     host: "127.0.0.1"
     port: 6379
     channel: "OxygenGlobal"

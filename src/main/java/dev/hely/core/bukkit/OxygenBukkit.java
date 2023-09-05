@@ -3,6 +3,7 @@ package dev.hely.core.bukkit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
+import dev.hely.core.bukkit.announcements.AnnouncementManager;
 import dev.hely.core.bukkit.chat.ChatModule;
 import dev.hely.core.bukkit.client.ClientModule;
 import dev.hely.core.bukkit.coins.StoreManager;
@@ -78,6 +79,7 @@ public class OxygenBukkit extends JavaPlugin {
     private long LAST_START_TIME;
     private List<Config> configList;
     private boolean stopping;
+    private boolean redisEnabled = OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getBoolean("database.redis.enabled");
 
     private Tasks tasks;
     private Config licenseConfig;
@@ -96,6 +98,7 @@ public class OxygenBukkit extends JavaPlugin {
     private Config serversMenuConfig;
     private Config coinShopConfig;
     private Config serverConfig;
+    private Config announcementConfig;
 
     private GoogleAuthenticator googleAuthenticator;
 
@@ -124,6 +127,7 @@ public class OxygenBukkit extends JavaPlugin {
     private StaffManager staffManager;
     private ServerDataUpdateThread serverDataUpdateThread;
     private CouponManager couponManager;
+    private AnnouncementManager announcementManager;
 
     private boolean debug_mode;
 
@@ -223,7 +227,8 @@ public class OxygenBukkit extends JavaPlugin {
             this.configList.add(serversMenuConfig);
             this.coinShopConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "coin-shop");
             this.configList.add(coinShopConfig);
-
+            this.announcementConfig = new Config(OxygenBukkit.getInstance(), "announcements");
+            this.configList.add(announcementConfig);
             Locale.load();
         } catch (IOException | InvalidConfigurationException e) {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
@@ -261,6 +266,7 @@ public class OxygenBukkit extends JavaPlugin {
         tfaManager = new TFAManager();
         logManager = new LogManager();
         staffManager = new StaffManager();
+        announcementManager = new AnnouncementManager();
 
         queueManager = new QueueManager();
         serverManager = new ServerManager();
@@ -289,6 +295,7 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(queueManager);
         this.loadModule(serverManager);
         this.loadModule(couponManager);
+        this.loadModule(announcementManager);
 
         instance.getServer().getPluginManager().registerEvents(new QueueListener(), this);
     }

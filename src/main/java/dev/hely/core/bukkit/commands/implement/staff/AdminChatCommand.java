@@ -7,6 +7,7 @@ import dev.hely.core.bukkit.profile.packet.implement.AdminChatPacket;
 import dev.hely.core.bukkit.utils.ChatUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;
+import dev.hely.lib.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -34,9 +35,16 @@ public class AdminChatCommand extends BaseCommand {
             return;
         }
 
-        OxygenBukkit.getInstance().getRedisModule().sendPacket(new AdminChatPacket(
-                player.getDisplayName(),
-                OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"),
-                ChatUtil.joinArray(args, " ", 1)));
+        if (OxygenBukkit.getInstance().isRedisEnabled()) {
+            OxygenBukkit.getInstance().getRedisModule().sendPacket(new AdminChatPacket(
+                    player.getDisplayName(),
+                    OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"),
+                    ChatUtil.joinArray(args, " ", 1)));
+        } else {
+            Messages.sendMessage(Locale.ADMIN_CHAT_FORMAT
+                    .replace("%player%", sender.getName())
+                    .replace("%server_name%", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"))
+                    .replace("%message%", ChatUtil.joinArray(args, " ", 1)), "oxygen.adminchat");
+        }
     }
 }
