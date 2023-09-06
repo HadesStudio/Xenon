@@ -651,6 +651,9 @@ staff-messages:
   connect: "&6[S] &r%player_name% &bjoined the network. &7(%server%)"
   switch: "&6[S] &r%player_name% &bjoined &f%server% &7(from %from%)"
   disconnect: "&6[S] &r%player_name% &bdisconnected from &7(%server%)"
+staff-history-command:
+  usage: "&cCorrect Usage: /staffhistory <player>"
+  scanning: "&6We are attempting to scan all punishments issued by &b%player%&6.."
 staff-chat:
   enabled: "&eStaff chat has been &aenabled&e."
   disabled: "&eStaff chat has been &cdisabled&e."

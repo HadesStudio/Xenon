@@ -123,6 +123,7 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new HealCommand());
         loadedCommands.add(new FeedCommand());
         loadedCommands.add(new FreezeCommand());
+        loadedCommands.add(new StaffHistoryCommand());
 
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));
