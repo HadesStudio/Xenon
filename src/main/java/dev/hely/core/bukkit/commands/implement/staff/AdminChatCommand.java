@@ -35,16 +35,9 @@ public class AdminChatCommand extends BaseCommand {
             return;
         }
 
-        if (OxygenBukkit.getInstance().isRedisEnabled()) {
-            OxygenBukkit.getInstance().getRedisModule().sendPacket(new AdminChatPacket(
-                    player.getDisplayName(),
-                    OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"),
-                    ChatUtil.joinArray(args, " ", 1)));
-        } else {
-            Messages.sendMessage(Locale.ADMIN_CHAT_FORMAT
-                    .replace("%player%", sender.getName())
-                    .replace("%server_name%", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"))
-                    .replace("%message%", ChatUtil.joinArray(args, " ", 1)), "oxygen.adminchat");
-        }
+        OxygenBukkit.getInstance().getRedisModule().sendPacket(new AdminChatPacket(
+                player.getDisplayName(),
+                OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"),
+                ChatUtil.joinArray(args, " ", 1)));
     }
 }

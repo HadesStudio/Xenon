@@ -48,13 +48,17 @@ public class RedisModule implements ModuleLoader {
         this.auth = this.password != null && this.password.length() > 0;
         this.channel = OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.redis.channel");
 
-        this.jedisPool = new JedisPool(new JedisPoolConfig(), host, port, 30_000);
-        if (!this.password.isEmpty()) {
-            try (Jedis jedis = this.jedisPool.getResource()){
-                jedis.auth(this.password);
-            } catch (JedisException ex) {
-                ex.printStackTrace();
+        try {
+            this.jedisPool = new JedisPool(new JedisPoolConfig(), host, port, 30_000);
+            if (!this.password.isEmpty()) {
+                try (Jedis jedis = this.jedisPool.getResource()) {
+                    jedis.auth(this.password);
+                } catch (JedisException ex) {
+                    ex.printStackTrace();
+                }
             }
+        } catch (Exception e) {
+            this.jedisPool = null;
         }
 
         this.listeners = ArrayListMultimap.create();
@@ -62,11 +66,10 @@ public class RedisModule implements ModuleLoader {
 
         ForkJoinPool.commonPool().execute(() -> {
             try (Jedis jedis = this.jedisPool.getResource()) {
-                jedis.subscribe(this.getJedisPubSub(),channel);
+                jedis.subscribe(this.getJedisPubSub(), channel);
             }
         });
 
-        System.out.print(jedisPool.getResource());
         enabled = true;
     }
 
@@ -92,6 +95,10 @@ public class RedisModule implements ModuleLoader {
     @Override
     public String getName() {
         return "Redis";
+    }
+
+    public boolean isRedisConnected() {
+        return this.jedisPool != null && !this.jedisPool.isClosed();
     }
 
     public void registerListener(PacketListener listener) {
@@ -122,12 +129,16 @@ public class RedisModule implements ModuleLoader {
         JedisPubSub jedisPubSub = new JedisPubSub() {
             @Override
             public void onMessage(String channel, String message) {
-                for (Map.Entry<Object, Method> entry : listeners.entries()) {
-                    if (Objects.equals(getChannel() + '@' + entry.getValue().getParameterTypes()[0].getSimpleName(), channel)) {
-                        try {
-                            entry.getValue().invoke(entry.getKey(), OxygenBukkit.PLAIN_GSON.fromJson(message, entry.getValue().getParameterTypes()[0]));
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
+                if (channel.equalsIgnoreCase(getChannel())) {
+                    if (isRedisConnected()) {
+                        for (Map.Entry<Object, Method> entry : listeners.entries()) {
+                            if (Objects.equals(getChannel() + '@' + entry.getValue().getParameterTypes()[0].getSimpleName(), channel)) {
+                                try {
+                                    entry.getValue().invoke(entry.getKey(), OxygenBukkit.PLAIN_GSON.fromJson(message, entry.getValue().getParameterTypes()[0]));
+                                } catch (IllegalAccessException | InvocationTargetException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
                     }
                 }

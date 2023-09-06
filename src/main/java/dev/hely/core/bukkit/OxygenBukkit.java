@@ -79,7 +79,6 @@ public class OxygenBukkit extends JavaPlugin {
     private long LAST_START_TIME;
     private List<Config> configList;
     private boolean stopping;
-    private boolean redisEnabled = OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getBoolean("database.redis.enabled");
 
     private Tasks tasks;
     private Config licenseConfig;
