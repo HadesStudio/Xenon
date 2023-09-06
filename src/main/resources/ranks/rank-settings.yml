@@ -17,6 +17,13 @@ commands:
     - "&6* &f/rank rename <rank> <new_name> &7- Rename a existing rank to a new name."
     - "&6* &f/rank bungeeperms <add|list|remove> <rank> <permission> &7- Modify a ranks bungee permissions."
     - "&6* &f/rank list &7- View a list of all created ranks."
+    - "&6* &f/rank import &7- Import all ranks from ranks.yml"
+    - "&6* &f/rank info <name> &7- View all info from a rank."
+    - "&6* &f/rank perms <add|list|remove> <rank> <permission> &7- Modify a ranks permissions."
+    - "&6* &f/rank setprefix <name> <prefix> &7- Updates a prefix for a rank."
+    - "&6* &f/rank setsuffix <name> <suffix> &7- Updates a suffix for a rank."
+    - "&6* &f/rank settype <name> <type> &7- Updates the rank type of a rank."
+    - "&6* &f/rank setweight <name> <weight> &7- Updates the rank weight of a rank."
     - "&7&l&m-----------------------------------"
   create:
     usage: "&cCorrect Usage: /rank create <name>"
@@ -28,6 +35,8 @@ commands:
   rename:
     usage: "&cCorrect Usage: /rank rename <rank> <new_name>"
     renamed: "&aYou have successfully changed the name of &6%rank% Rank &ato &6%new_name%&a."
+  import:
+    imported: "&aYou have successfully imported all ranks from &7ranks.yml&a."
   inherit:
     usage: "&cCorrect Usage: /rank inherit <add|list|remove> <rank> <inheritance>"
     already-inherit: "&cThis rank already inherits that rank."
@@ -82,6 +91,7 @@ commands:
     removed: "&cYou have successfully removed this &6Permission&c."
     not-have: "&cThis rank does not have that permission?"
   dont-exists: "&cA rank with that name doesn't exists."
+
 menu:
   rank-list:
     rank-button:
