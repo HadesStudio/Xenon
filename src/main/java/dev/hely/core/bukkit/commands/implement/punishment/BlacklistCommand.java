@@ -46,7 +46,14 @@ public class BlacklistCommand extends BaseCommand {
             sender.sendMessage(CC.translate(Locale.PUNISHMENT_BLACKLIST_ALREADY_BLACKLISTED));
             return;
         }
-
+        if (sender instanceof Player) {
+            Player senderPlayer = (Player)sender;
+            Profile senderProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(senderPlayer.getUniqueId());
+            if (!senderProfile.canInteact(profile)) {
+                senderPlayer.sendMessage(CC.translate(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("punishments.safety.cannot-punish")));
+                return;
+            }
+        }
         String reason = args.length == 1 ? Locale.PUNISHMENTS_DEFAULT_REASON : ChatUtil.joinArray(args, " ", 2);
 
         Punishment punishment = new Punishment();

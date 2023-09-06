@@ -72,6 +72,8 @@ two-factor:
       - "&7map to complete your &6Authentication&7."
       - "&7&l&m----------------------------"
 punishments:
+  safety:
+    cannot-punish: "&cYou cannot punish a player with a higher rank weight than you."
   join:
     allow-banned: false
     allow-blacklisted: false

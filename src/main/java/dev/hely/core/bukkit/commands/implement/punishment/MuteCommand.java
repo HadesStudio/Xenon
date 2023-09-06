@@ -46,7 +46,14 @@ public class MuteCommand extends BaseCommand {
             sender.sendMessage(CC.translate(Locale.PUNISHMENT_MUTE_ALREADY_MUTED));
             return;
         }
-
+        if (sender instanceof Player) {
+            Player senderPlayer = (Player)sender;
+            Profile senderProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(senderPlayer.getUniqueId());
+            if (!senderProfile.canInteact(profile)) {
+                senderPlayer.sendMessage(CC.translate(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("punishments.safety.cannot-punish")));
+                return;
+            }
+        }
 
         long duration = -1L;
 

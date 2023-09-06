@@ -40,10 +40,17 @@ public class BanCommand extends BaseCommand {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
             return;
         }
-
         if (profile.getActiveBan() != null) {
             sender.sendMessage(CC.translate(Locale.PUNISHMENT_BAN_ALREADY_BANNED));
             return;
+        }
+        if (sender instanceof Player) {
+            Player senderPlayer = (Player)sender;
+            Profile senderProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(senderPlayer.getUniqueId());
+            if (!senderProfile.canInteact(profile)) {
+                senderPlayer.sendMessage(CC.translate(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("punishments.safety.cannot-punish")));
+                return;
+            }
         }
 
         String reason = args.length == 1 ? Locale.PUNISHMENTS_DEFAULT_REASON : ChatUtil.joinArray(args, " ", 2);

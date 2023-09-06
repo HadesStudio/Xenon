@@ -285,6 +285,16 @@ public class Profile {
         this.save();
     }
 
+    public boolean canInteact(Profile profile) {
+        if (profile == null) {
+            return false;
+        }
+        int weight = this.getActiveHighestRank().getWeight();
+        int otherWeight = profile.getActiveHighestRank().getWeight();
+
+        return otherWeight < weight;
+    }
+
     public void setupPermissionAttachments(Player player) {
         for (PermissionAttachmentInfo attachmentInfo : player.getEffectivePermissions()) {
             if (attachmentInfo.getAttachment() == null) {

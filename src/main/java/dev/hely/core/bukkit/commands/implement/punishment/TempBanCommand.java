@@ -54,7 +54,14 @@ public class TempBanCommand extends BaseCommand {
             sender.sendMessage(CC.translate("&cExample Syntax: 1m2w3d4h (1 month, 2 weeks, 3 days, and 4 hours)"));
             return;
         }
-
+        if (sender instanceof Player) {
+            Player senderPlayer = (Player)sender;
+            Profile senderProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(senderPlayer.getUniqueId());
+            if (!senderProfile.canInteact(profile)) {
+                senderPlayer.sendMessage(CC.translate(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("punishments.safety.cannot-punish")));
+                return;
+            }
+        }
 
         String reason = args.length == 2 ? Locale.PUNISHMENTS_DEFAULT_REASON : ChatUtil.joinArray(args, " ", 3);
 

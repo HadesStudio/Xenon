@@ -43,7 +43,14 @@ public class KickCommand extends BaseCommand {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
             return;
         }
-
+        if (sender instanceof Player) {
+            Player senderPlayer = (Player)sender;
+            Profile senderProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(senderPlayer.getUniqueId());
+            if (!senderProfile.canInteact(profile)) {
+                senderPlayer.sendMessage(CC.translate(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("punishments.safety.cannot-punish")));
+                return;
+            }
+        }
         Player player = Bukkit.getPlayer(args[0]);
         if(!this.checkPlayer(sender, player, args[0])) return;
 
