@@ -41,6 +41,7 @@ public class RankCommand extends SubCommandHandler {
         this.addSubCommand(new RankSetWeightCommand());
         this.addSubCommand(new RankSetTypeCommand());
         this.addSubCommand(new RankImportCommand());
+        this.addSubCommand(new RankExportCommand());
     }
 
     @Override

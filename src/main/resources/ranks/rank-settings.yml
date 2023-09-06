@@ -18,6 +18,7 @@ commands:
     - "&6* &f/rank bungeeperms <add|list|remove> <rank> <permission> &7- Modify a ranks bungee permissions."
     - "&6* &f/rank list &7- View a list of all created ranks."
     - "&6* &f/rank import &7- Import all ranks from ranks.yml"
+    - "&6* &f/rank export &7- Export all ranks to ranks.yml"
     - "&6* &f/rank info <name> &7- View all info from a rank."
     - "&6* &f/rank perms <add|list|remove> <rank> <permission> &7- Modify a ranks permissions."
     - "&6* &f/rank setprefix <name> <prefix> &7- Updates a prefix for a rank."
@@ -37,6 +38,8 @@ commands:
     renamed: "&aYou have successfully changed the name of &6%rank% Rank &ato &6%new_name%&a."
   import:
     imported: "&aYou have successfully imported all ranks from &7ranks.yml&a."
+  export:
+    exported: "&aYou have successfully exported all ranks to &7ranks.yml&a."
   inherit:
     usage: "&cCorrect Usage: /rank inherit <add|list|remove> <rank> <inheritance>"
     already-inherit: "&cThis rank already inherits that rank."

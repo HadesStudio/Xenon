@@ -16,7 +16,6 @@ package dev.hely.core.bukkit.ranks.rank.commands.subcommands;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
@@ -24,7 +23,6 @@ import org.bukkit.command.CommandSender;
 import java.util.Collections;
 
 public class RankImportCommand extends SubCommand {
-
     public RankImportCommand() {
         super("import", Collections.singletonList("importyml"), "oxygen.rank.import");
     }
@@ -33,21 +31,5 @@ public class RankImportCommand extends SubCommand {
     public void execute(CommandSender sender, String[] args) {
         OxygenBukkit.getInstance().getRankManager().importRanks();
         sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.import.imported")));
-    }
-
-    public String getRankPrefix(Rank rank) {
-        if (rank.getPrefix() == null) {
-            return "Not Setup";
-        } else {
-            return rank.getPrefix();
-        }
-    }
-
-    public String getRankSuffix(Rank rank) {
-        if (rank.getSuffix() == null) {
-            return "Not Setup";
-        } else {
-            return rank.getSuffix();
-        }
     }
 }
