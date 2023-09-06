@@ -38,11 +38,12 @@ public class ProfileAddCurrencyCommand extends SubCommand {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[1]));
             return;
         }
+
         int amount;
         try {
             amount = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(CC.translate(Locale.INVALID_INTEGER));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_INVALID_NUMBER));
             return;
         }
 

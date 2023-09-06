@@ -37,11 +37,13 @@ public class ProfileRemovePermissionCommand extends SubCommand {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.remove-permission.usage")));
             return;
         }
+
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[1]);
         if (profile == null) {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[1]));
             return;
         }
+
         List<ProfilePermission> newPermList = profile.getProfilePermissions();
         for (ProfilePermission profilePermission : newPermList) {
             if (profilePermission.getPermission().equalsIgnoreCase(args[2])) {

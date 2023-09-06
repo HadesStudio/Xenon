@@ -1,4 +1,4 @@
-package dev.hely.core.bukkit.commands.implement.player;
+package dev.hely.core.bukkit.commands.implement.staff;
 
 //============================================================
 // This file was created by DevDipin!

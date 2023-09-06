@@ -676,3 +676,28 @@ requests:
     not-online: "&cThat player is not on the server.."
     broadcast: "&6[Request] &7(%server%) &a&n%player%&a has just reported &6%reported_player%&a: &7%message%"
     created: "&aYou have successfully sent a &6Staff Report Request&a."
+
+notes-command:
+  usage:
+    - "&7&l&m-----------------------------------"
+    - "&6&lNotes System Help"
+    - "&7All commands and usages are listed below."
+    - ""
+    - "&6* &f/notes check <player> &7- Check notes of player."
+    - "&6* &f/notes add <player> <note> &7- Add notes to player."
+    - "&6* &f/notes remove <player> <note> &7- Remove notes from player."
+    - "&6* &f/notes clear <player> &7- Clear player's notes."
+    - "&7&l&m-----------------------------------"
+  check:
+    message:
+      - "&eViewing notes of &4%player%&e.."
+      - "%notes%"
+    format: "&e#%id% &7- &f%reason% &7(%addedBy%&7) &7(%addedAt%&7) &7(%addedServer)"
+  add:
+    added: "&eNote with id &f#%id% &ehas been added to &f%player%&e."
+  remove:
+    removed: "&eNote with id &f#%id% &ehas been removed from &f%player%&e."
+  clear:
+    cleared: "&eYou have cleared &f%player%'s &enotes!"
+  dont-exists: "&cThis player has no saved notes."
+  invalid-id: "&cThat's not a valid note id."

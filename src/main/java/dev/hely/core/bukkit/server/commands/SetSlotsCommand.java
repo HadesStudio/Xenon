@@ -21,6 +21,7 @@ import org.bukkit.command.CommandSender;
 import java.util.Collections;
 
 public class SetSlotsCommand extends BaseCommand {
+
     public SetSlotsCommand(){
         super("slots", Collections.singletonList("setslots"), "oxygen.command.whitelist");
     }

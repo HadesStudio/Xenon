@@ -22,6 +22,7 @@ public class Locale {
     public static String COMMANDS_ARGUMENT_NOT_FOUND;
     public static String COMMANDS_PLAYER_NEVER_PLAYED;
     public static String COMMANDS_OFFLINE_PLAYER;
+    public static String COMMANDS_INVALID_NUMBER;
 
     public static List<String> TAG_USAGE;
     public static String TAG_CREATE_USAGE;
@@ -101,14 +102,28 @@ public class Locale {
     public static String REQUEST_CLOSED_BROADCAST;
     public static String EDITPROFILE_USAGE;
 
-    public static String INVALID_INTEGER;
+    public static List<String> NOTES_USAGE;
+    public static String NOTES_ADD_ADDED;
+    public static String NOTES_REMOVE_REMOVED;
+    public static String NOTES_CLEAR_CLEARED;
+    public static String NOTES_DONT_EXISTS;
+    public static String NOTES_INVALID_ID;
+    public static List<String> NOTES_CHECK_MESSAGE;
+    public static String NOTES_CHECK_FORMAT;
 
 
     public static void load(){
         Config language = OxygenBukkit.getInstance().getLanguageConfig();
         Config config = OxygenBukkit.getInstance().getConfiguration();
 
-        INVALID_INTEGER = language.getConfiguration().getString("commands.invalid-integer");
+        NOTES_CHECK_FORMAT = language.getConfiguration().getString("notes-command.check.format");
+        NOTES_CHECK_MESSAGE = language.getConfiguration().getStringList("notes-command.check.message");
+        NOTES_INVALID_ID = language.getConfiguration().getString("notes-command.invalid-id");
+        NOTES_DONT_EXISTS = language.getConfiguration().getString("notes-command.dont-exists");
+        NOTES_CLEAR_CLEARED = language.getConfiguration().getString("notes-command.clear.cleared");
+        NOTES_REMOVE_REMOVED = language.getConfiguration().getString("notes-command.remove.removed");
+        NOTES_ADD_ADDED = language.getConfiguration().getString("notes-command.add.added");
+        NOTES_USAGE = language.getConfiguration().getStringList("notes-command.usage");
 
         EDITPROFILE_USAGE = language.getConfiguration().getString("edit-profile.usage");
         REQUEST_CLOSED_BROADCAST = language.getConfiguration().getString("requests.closed-broadcast");
@@ -142,6 +157,7 @@ public class Locale {
         COMMANDS_ARGUMENT_NOT_FOUND = language.getConfiguration().getString("commands.argument-not-found");
         COMMANDS_PLAYER_NEVER_PLAYED = language.getConfiguration().getString("commands.never-played");
         COMMANDS_OFFLINE_PLAYER = language.getConfiguration().getString("commands.offline-player");
+        COMMANDS_INVALID_NUMBER = language.getConfiguration().getString("commands.invalid-integer");
 
         PUNISHMENT_BLACKLIST_USAGE = language.getConfiguration().getString("blacklist.usage");
         PUNISHMENT_BLACKLIST_ALREADY_BLACKLISTED = language.getConfiguration().getString("blacklist.already-blacklisted");

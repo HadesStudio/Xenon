@@ -16,7 +16,7 @@ package dev.hely.core.bukkit.staff.staffmode;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.commands.implement.player.HideStaffCommand;
+import dev.hely.core.bukkit.commands.implement.staff.HideStaffCommand;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.staff.staffmode.data.StaffArmor;
 import dev.hely.core.bukkit.staff.staffmode.data.StaffHotbar;

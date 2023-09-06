@@ -34,12 +34,14 @@ public class ProfileAddPermissionCommand extends SubCommand {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[1]));
             return;
         }
+
         for (ProfilePermission profilePermission : profile.getProfilePermissions()) {
             if (profilePermission.getPermission().equalsIgnoreCase(args[2])) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.already-has").replace("%player%", profile.getName())));
                 return;
             }
         }
+
         if (OxygenBukkit.getInstance().getServerManager().getOrSetupServer(args[3]) == null) {
             if (!args[3].equalsIgnoreCase("Global")) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.invalid-server")));
