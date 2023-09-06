@@ -16,15 +16,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ProfilePacketListener implements PacketListener {
 
-    @IncomingPacketHandler
-    public void onStaffJoin(StaffJoinPacket packet){
-        String name = packet.getPlayerName();
-        String server = packet.getServerName();
-
-        Messages.sendMessage("&9[S] &r%player_name% &bjoined the network &7(%server%)"
-                .replace("%player_name%", name)
-                .replace("%server%", server), "oxygen.staff.alerts");
-    }
 
     @IncomingPacketHandler
     public void onServerWhitelist(WhitelistBroadcastPacket packet){
@@ -38,28 +29,23 @@ public class ProfilePacketListener implements PacketListener {
     }
 
     @IncomingPacketHandler
-    public void onStaffLeave(StaffLeavePacket packet){
+    public void onStaffJoin(StaffJoinPacket packet){
         String name = packet.getPlayerName();
         String server = packet.getServerName();
 
-        Messages.sendMessage("&9[S] &r%player_name% &bdisconnected from &7(%server%)"
+        Messages.sendMessage(Locale.STAFF_MESSAGES_CONNECT
                 .replace("%player_name%", name)
                 .replace("%server%", server), "oxygen.staff.alerts");
     }
 
     @IncomingPacketHandler
-    public void onChatSpyMessage(StaffChatSpyMessagePacket packet){
-        String sender = packet.getSenderName();
-        String target = packet.getTargetName();
+    public void onStaffLeave(StaffLeavePacket packet){
+        String name = packet.getPlayerName();
         String server = packet.getServerName();
-        String message = packet.getMessage();
 
-        Messages.sendMessage(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("chat-spy.message")
-                .replace("%sender%", sender)
-                .replace("%target%", target)
-                .replace("%server%", server)
-                .replace("%message%", message),
-                "oxygen.staff.chatspy");
+        Messages.sendMessage(Locale.STAFF_MESSAGES_DISCONNECT
+                .replace("%player_name%", name)
+                .replace("%server%", server), "oxygen.staff.alerts");
     }
 
     @IncomingPacketHandler
@@ -68,7 +54,7 @@ public class ProfilePacketListener implements PacketListener {
         String toServer = packet.getToServer();
         String fromServer = packet.getFromServer();
 
-        Messages.sendMessage("&9[S] &r%player_name% &bjoined &f%server% &7(from %from%)"
+        Messages.sendMessage(Locale.STAFF_MESSAGES_SWITCH
                 .replace("%player_name%", name)
                 .replace("%server%", toServer)
                 .replace("%from%", fromServer), "oxygen.staff.alerts");
@@ -117,6 +103,21 @@ public class ProfilePacketListener implements PacketListener {
                 .replace("%player%", name)
                 .replace("%server%", server)
                 .replace("%message%", message), "oxygen.staff");
+    }
+
+    @IncomingPacketHandler
+    public void onChatSpyMessage(StaffChatSpyMessagePacket packet){
+        String sender = packet.getSenderName();
+        String target = packet.getTargetName();
+        String server = packet.getServerName();
+        String message = packet.getMessage();
+
+        Messages.sendMessage(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("chat-spy.message")
+                        .replace("%sender%", sender)
+                        .replace("%target%", target)
+                        .replace("%server%", server)
+                        .replace("%message%", message),
+                "oxygen.staff.chatspy");
     }
 
     @IncomingPacketHandler

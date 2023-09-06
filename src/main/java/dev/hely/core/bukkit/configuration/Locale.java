@@ -45,6 +45,9 @@ public class Locale {
     public static String STAFF_CHAT_DISABLED;
     public static String STAFF_CHAT_FORMAT;
 
+    public static String STAFF_MESSAGES_CONNECT;
+    public static String STAFF_MESSAGES_DISCONNECT;
+    public static String STAFF_MESSAGES_SWITCH;
 
     public static Map<String, PunishmentBroadcast> PUNISHMENT_BROADCAST;
     public static Map<String, String> PUNISHMENT_KICK;
@@ -212,5 +215,9 @@ public class Locale {
         STAFF_CHAT_ENABLED = language.getConfiguration().getString("staff-chat.enabled");
         STAFF_CHAT_DISABLED = language.getConfiguration().getString("staff-chat.disabled");
         STAFF_CHAT_FORMAT = language.getConfiguration().getString("staff-chat.format");
+
+        STAFF_MESSAGES_CONNECT = language.getConfiguration().getString("staff-messages.connect");
+        STAFF_MESSAGES_SWITCH = language.getConfiguration().getString("staff-messages.switch");
+        STAFF_MESSAGES_DISCONNECT = language.getConfiguration().getString("staff-messages.disconnect");
     }
 }
