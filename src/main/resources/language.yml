@@ -647,12 +647,10 @@ admin-chat:
   enabled: "&eAdmin chat has been &aenabled&e."
   disabled: "&eAdmin chat has been &cdisabled&e."
   format: "&4[Admin] &7(%server_name%) &r%player%&7: &c%message%"
-
 staff-messages:
-  connect: "&9[S] &r%player_name% &bjoined the network &7(%server%)"
-  switch: "&9[S] &r%player_name% &bjoined &f%server% &7(from %from%)"
-  disconnect: "&9[S] &r%player_name% &bdisconnected from &7(%server%)"
-
+  connect: "&6[S] &r%player_name% &bjoined the network. &7(%server%)"
+  switch: "&6[S] &r%player_name% &bjoined &f%server% &7(from %from%)"
+  disconnect: "&6[S] &r%player_name% &bdisconnected from &7(%server%)"
 staff-chat:
   enabled: "&eStaff chat has been &aenabled&e."
   disabled: "&eStaff chat has been &cdisabled&e."
