@@ -111,10 +111,17 @@ public class Locale {
     public static List<String> NOTES_CHECK_MESSAGE;
     public static String NOTES_CHECK_FORMAT;
 
+    public static String DAY_SET;
+    public static String NIGHT_SET;
+    public static String SUNSET_SET;
 
     public static void load(){
         Config language = OxygenBukkit.getInstance().getLanguageConfig();
         Config config = OxygenBukkit.getInstance().getConfiguration();
+
+        DAY_SET = language.getConfiguration().getString("day-command.set");
+        NIGHT_SET = language.getConfiguration().getString("night-command.set");
+        SUNSET_SET = language.getConfiguration().getString("sunset-command.set");
 
         NOTES_CHECK_FORMAT = language.getConfiguration().getString("notes-command.check.format");
         NOTES_CHECK_MESSAGE = language.getConfiguration().getStringList("notes-command.check.message");

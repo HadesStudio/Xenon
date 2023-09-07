@@ -3,6 +3,9 @@ package dev.hely.core.bukkit.utils.command;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.coins.commands.ShopCommand;
 import dev.hely.core.bukkit.commands.implement.player.*;
+import dev.hely.core.bukkit.commands.implement.player.time.DayCommand;
+import dev.hely.core.bukkit.commands.implement.player.time.NightCommand;
+import dev.hely.core.bukkit.commands.implement.player.time.SunSetCommand;
 import dev.hely.core.bukkit.commands.implement.player.toggle.ToggleMessagesCommand;
 import dev.hely.core.bukkit.commands.implement.player.toggle.ToggleSoundsCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.*;
@@ -79,51 +82,70 @@ public class CommandManager implements ModuleLoader {
 
     public void setupCommand() {
         loadedCommands.add(new OxygenCommand());
-        loadedCommands.add(new BlacklistCommand());
-        loadedCommands.add(new BanCommand());
-        loadedCommands.add(new TempBanCommand());
-        loadedCommands.add(new MuteCommand());
-        loadedCommands.add(new PlaytimeCommand());
-        loadedCommands.add(new KickCommand());
-        loadedCommands.add(new WarnCommand());
-        loadedCommands.add(new UnBlacklistCommand());
-        loadedCommands.add(new UnBanCommand());
-        loadedCommands.add(new UnMuteCommand());
+
         loadedCommands.add(new VPNCommand());
-        loadedCommands.add(new HistoryCommand());
-        loadedCommands.add(new GrantsCommand());
-        loadedCommands.add(new HelpopCommand());
-        loadedCommands.add(new LogsCommand());
-        loadedCommands.add(new EditProfileCommand());
-        loadedCommands.add(new ProfileCommand());
-        loadedCommands.add(new RequestsCommand());
-        loadedCommands.add(new ReportCommand());
+
         loadedCommands.add(new AdminChatCommand());
         loadedCommands.add(new StaffChatCommand());
-        loadedCommands.add(new NameMCCommand());
         loadedCommands.add(new SeenCommand());
-        loadedCommands.add(new NotificationCommand());
-        loadedCommands.add(new NotificationsCommand());
-        loadedCommands.add(new ShopCommand());
-        loadedCommands.add(new MessageCommand());
-        loadedCommands.add(new ReplyCommand());
-        loadedCommands.add(new ToggleMessagesCommand());
-        loadedCommands.add(new ToggleSoundsCommand());
+
         loadedCommands.add(new AuthCommand());
         loadedCommands.add(new RemoveAuthCommand());
-        loadedCommands.add(new JoinQueueCommand());
-        loadedCommands.add(new QueueListCommand());
-        loadedCommands.add(new LeaveQueueCommand());
-        loadedCommands.add(new AltsCommand());
+
         loadedCommands.add(new NotesCommand());
         loadedCommands.add(new HideStaffCommand());
         loadedCommands.add(new StaffBuildCommand());
         loadedCommands.add(new StaffModeCommand());
+        loadedCommands.add(new StaffHistoryCommand());
+
         loadedCommands.add(new SetSlotsCommand());
         loadedCommands.add(new HealCommand());
         loadedCommands.add(new FeedCommand());
         loadedCommands.add(new FreezeCommand());
-        loadedCommands.add(new StaffHistoryCommand());
+        loadedCommands.add(new PlaytimeCommand());
+
+        loadedCommands.add(new DayCommand());
+        loadedCommands.add(new NightCommand());
+        loadedCommands.add(new SunSetCommand());
+
+        loadedCommands.add(new MessageCommand());
+        loadedCommands.add(new ReplyCommand());
+        loadedCommands.add(new ToggleMessagesCommand());
+        loadedCommands.add(new ToggleSoundsCommand());
+
+        loadedCommands.add(new ShopCommand());
+
+        loadedCommands.add(new NotificationCommand());
+        loadedCommands.add(new NotificationsCommand());
+
+        loadedCommands.add(new ProfileCommand());
+        loadedCommands.add(new EditProfileCommand());
+        loadedCommands.add(new GrantsCommand());
+        loadedCommands.add(new HistoryCommand());
+        loadedCommands.add(new LogsCommand());
+
+        loadedCommands.add(new NameMCCommand());
+
+        loadedCommands.add(new QueueListCommand());
+        loadedCommands.add(new JoinQueueCommand());
+        loadedCommands.add(new LeaveQueueCommand());
+
+        loadedCommands.add(new BlacklistCommand());
+        loadedCommands.add(new BanCommand());
+        loadedCommands.add(new TempBanCommand());
+        loadedCommands.add(new MuteCommand());
+        loadedCommands.add(new KickCommand());
+        loadedCommands.add(new WarnCommand());
+
+        loadedCommands.add(new UnBlacklistCommand());
+        loadedCommands.add(new UnBanCommand());
+        loadedCommands.add(new UnMuteCommand());
+
+        loadedCommands.add(new AltsCommand());
+
+        loadedCommands.add(new RequestsCommand());
+        loadedCommands.add(new ReportCommand());
+        loadedCommands.add(new HelpopCommand());
 
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));

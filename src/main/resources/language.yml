@@ -13,6 +13,7 @@ commands:
   never-played: "&cThe player by the name of '&c&l%player%&c' has never connected to the server."
   offline-player: "&cThe player by the name of '&c&l%player%&c' is currently not connected to the server!"
   invalid-integer: "&cYou have provided a invalid integer in your command argument."
+
 chat:
   muted: "&cYou cannot speak in chat right now because it is currently muted!"
   only-high-rank: "&cSorry, you must purchase &6Hely Rank &cto be able to speak in chat right now!"
@@ -21,58 +22,7 @@ chat:
     - "&cPlease wait another &c&l%wait_time% &cbefore chatting again."
   filtered-message-alert: "&c[Chat Filter] &7%format%"
   blocked: "&cYour message contained blocked content. It has been blocked from sending in chat."
-hide-staff:
-  enabled: "&cYou have successfully hidden all &6Staff Members&c."
-  disabled: "&aYou can now see all &6Staff Members&a."
-vanish:
-  enabled: "&aYou have successfully enabled your &6Staff Vanish&a."
-  disabled: "&cYou have successfully disabled your &6Staff Vanish&a."
-  enable-alert: # If you want players to see the alert, they need "oxygen.staff.alerts" permission.
-    enabled: true # Do you want to send a message to staff members when someone enables vanish?
-    alert:
-      - "&6[Staff] &c%player% &ahas just enabled their &6Vanish Mode&a."
-  disable-alert: # If you want players to see the alert, they need "oxygen.staff.alerts" permission.
-    enabled: true # Do you want to send a message to staff members when someone enables vanish?
-    alert:
-      - "&6[Staff] &c%player% &ahas just disabled their &6Vanish Mode&a."
-staff-mode-system:
-  no-online-players: "&cSorry, it seems their is no online players to teleport to."
-  open-chest: "&6Opening this chest silently.."
-  open-furnace: "&6Opening this furnace silently.."
-  open-hopper: "&6Opening this hopper silently.."
-whitelist-command:
-  usage: "&cCorrect Usage: /whitelist <add|remove|on|off> <player>"
-  already-whitelisted: "&cThis server's whitelist is already enabled."
-  not-whitelisted: "&cThis server's whitelist is currently not enabled."
-  enabled-whitelist: "&aYou have successfully enabled this servers &6Whitelist&a."
-  enabled-staff-broadcast: "&6[Server Manager] &c%player% &7has just enabled the &6%server_name% &dWhitelist&7."
-  disabled-whitelist: "&cYou have successfully disabled this servers &6Whitelist&c."
-  disabled-staff-broadcast: "&6[Server Manager] &c%player% &7has just disabled the &6%server_name% &dWhitelist&7."
-  player-whitelisted: "&cSorry, this player is already whitelisted on this server."
-  player-not-whitelisted: "&cSorry, this player is not whitelist on this server."
-  added-player: "&aYou have successfully whitelisted &6%player% &aon this server."
-  removed-player: "&cYou have successfully unwhitelisted &6%player% &con this server."
-staff-build:
-  enabled: "&aYou have successfully enabled your &6Staff Build Mode&a."
-  disabled: "&cYou have successfully disabled your &6Staff Build Mode&c."
-staff-mode:
-  enabled: "&aYou have successfully enabled your &6Staff Mode&a."
-  disabled: "&cYou have successfully disabled your &6Staff Mode&c."
-  others: # If you want staff to be able to take others out of staff mode, they need "oxygen.commands.staffmode.others" permission.
-    enabled: "&aYou have successfully enabled &c%player%'s &6Staff Mode&a."
-    disabled: "&cYou have successfully disabled &4%player%'s &6Staff Mode&c."
-alts-command:
-  usage: "&cCorrect Usage: /alts <player>"
-  no-alts: "&cSorry, &6%player% &cdoes not have any alternate accounts on file."
-  first-chat-message: "&7%profile_name% (&b%alt_size%&7): "
-  hover:
-    - "&7&l&m-------------------------------------"
-    - "&6Playtime: &c%playtime%"
-    - "&6Last Seen: &c%last_seen%"
-    - "&6Banned: &c%ban_status%"
-    - "&6Blacklisted: &c%blacklist_status%"
-    - "&6Muted: &c%muted_status%"
-    - "&7&l&m-------------------------------------"
+
 chat-command:
   usage:
     - "&7&l&m-----------------------------------"
@@ -113,9 +63,122 @@ chat-command:
     slowed-chat: "&aYou have successfully set the &6Chat Slowdown &ato &6%time% seconds&a."
     broadcast:
       - "&aChat has just been put on slow mode by &6%player%&a."
+
 server-manager:
   server-offline: "&6[Server Manager] &c%server% &7has just went &4Offline&7!"
   server-online: "&6[Server Manager] &c%server% &7is now &aOnline&7!"
+
+whitelist-command:
+  usage: "&cCorrect Usage: /whitelist <add|remove|on|off> <player>"
+  already-whitelisted: "&cThis server's whitelist is already enabled."
+  not-whitelisted: "&cThis server's whitelist is currently not enabled."
+  enabled-whitelist: "&aYou have successfully enabled this servers &6Whitelist&a."
+  enabled-staff-broadcast: "&6[Server Manager] &c%player% &7has just enabled the &6%server_name% &dWhitelist&7."
+  disabled-whitelist: "&cYou have successfully disabled this servers &6Whitelist&c."
+  disabled-staff-broadcast: "&6[Server Manager] &c%player% &7has just disabled the &6%server_name% &dWhitelist&7."
+  player-whitelisted: "&cSorry, this player is already whitelisted on this server."
+  player-not-whitelisted: "&cSorry, this player is not whitelist on this server."
+  added-player: "&aYou have successfully whitelisted &6%player% &aon this server."
+  removed-player: "&cYou have successfully unwhitelisted &6%player% &con this server."
+
+hidestaff-command:
+  enabled: "&cYou have successfully hidden all &6Staff Members&c."
+  disabled: "&aYou can now see all &6Staff Members&a."
+
+vanish:
+  enabled: "&aYou have successfully enabled your &6Staff Vanish&a."
+  disabled: "&cYou have successfully disabled your &6Staff Vanish&a."
+  enable-alert: # If you want players to see the alert, they need "oxygen.staff.alerts" permission.
+    enabled: true # Do you want to send a message to staff members when someone enables vanish?
+    alert:
+      - "&6[Staff] &c%player% &ahas just enabled their &6Vanish Mode&a."
+  disable-alert: # If you want players to see the alert, they need "oxygen.staff.alerts" permission.
+    enabled: true # Do you want to send a message to staff members when someone enables vanish?
+    alert:
+      - "&6[Staff] &c%player% &ahas just disabled their &6Vanish Mode&a."
+
+staff-mode-system:
+  no-online-players: "&cSorry, it seems their is no online players to teleport to."
+  open-chest: "&6Opening this chest silently.."
+  open-furnace: "&6Opening this furnace silently.."
+  open-hopper: "&6Opening this hopper silently.."
+
+staff-build:
+  enabled: "&aYou have successfully enabled your &6Staff Build Mode&a."
+  disabled: "&cYou have successfully disabled your &6Staff Build Mode&c."
+
+staff-mode:
+  enabled: "&aYou have successfully enabled your &6Staff Mode&a."
+  disabled: "&cYou have successfully disabled your &6Staff Mode&c."
+  others: # If you want staff to be able to take others out of staff mode, they need "oxygen.commands.staffmode.others" permission.
+    enabled: "&aYou have successfully enabled &c%player%'s &6Staff Mode&a."
+    disabled: "&cYou have successfully disabled &4%player%'s &6Staff Mode&c."
+
+staff-messages:
+  connect: "&6[S] &r%player_name% &bjoined the network. &7(%server%)"
+  switch: "&6[S] &r%player_name% &bjoined &f%server% &7(from %from%)"
+  disconnect: "&6[S] &r%player_name% &bdisconnected from &7(%server%)"
+
+admin-chat:
+  enabled: "&eAdmin chat has been &aenabled&e."
+  disabled: "&eAdmin chat has been &cdisabled&e."
+  format: "&4[Admin] &7(%server_name%) &r%player%&7: &c%message%"
+
+staff-chat:
+  enabled: "&eStaff chat has been &aenabled&e."
+  disabled: "&eStaff chat has been &cdisabled&e."
+  format: "&9[Staff] &7(%server_name%) &r%player%&7: &b%message%"
+
+staff-history-command:
+  usage: "&cCorrect Usage: /staffhistory <player>"
+  scanning: "&6We are attempting to scan all punishments issued by &b%player%&6.."
+
+requests:
+  invalid-message: "&cYou must provide a valid message."
+  closed: "&cYou have successfully closed %player%'s staff request."
+  closed-player: "&aYour &6Staff Request &ahas just been closed by &c%staff_member%&a."
+  type-note: "&aPlease type the note you would like to add to this request."
+  note-added: "&aYou have successfully added a new &6Staff Note &ato this player request."
+  closed-broadcast: "&6[Requests] &6%staff_member% &7has just closed &a%player%'s &7staff request."
+  claim:
+    claimed: "&6[Requests] &7You have successfully claimed &a%player%'s &7staff request."
+    broadcast: "&6[Requests] &a%player% &7has claimed &a%creator_name% &6Staff Request&7."
+    unclaimed: "&6[Requests] &cYou have successfully unclaimed &a%player%'s &cstaff request."
+    already-claimed: "&6[Requests] &cYou cannot claim this &6Staff Request &cbecause it already has been claimed."
+  helpop:
+    usage: "&cCorrect Usage: /helpop <message>"
+    broadcast: "&6[Request] &7(%server%) &a&n%player%&a has requested staff assistance: &7%message%"
+    created: "&aYou have successfully sent a &6Staff Request&a."
+  report:
+    usage: "&cCorrect Usage: /report <player> <message>"
+    not-online: "&cThat player is not on the server.."
+    broadcast: "&6[Request] &7(%server%) &a&n%player%&a has just reported &6%reported_player%&a: &7%message%"
+    created: "&aYou have successfully sent a &6Staff Report Request&a."
+
+profile-system:
+  social-system:
+    updated-link: "&7You have successfully update your &6%type% Social Link&7!"
+    removed: "&cYou have successfully removed your &6%type% Social Link&c!"
+    setup-message: "&7Please type your &6%type% &7link in chat. You can always type 'CANCEL' to cancel this."
+    cancelled-setup: "&cYou have cancelled setting up your &6%type% Social Link&7!"
+    invalid-link: "&cYou have provided a invalid social link. Please try again."
+    setup-link: "&aYou have successfully setup your &6%type% Social Link&a!"
+  notifications:
+    join: # %notification_amount%
+      - "&7&l&m-----------------------------------"
+      - "&6&lNotifications"
+      - "&7You have &6%notification_amount% unread &7notifications!"
+      - "&7Use &6/notifications &7to view them."
+      - "&7&l&m-----------------------------------"
+    new-notification:
+      - "&7&l&m-----------------------------------"
+      - "&6&lNotifications"
+      - "&7You have just received a new &6notification&7!"
+      - "&7Use &6/notifications &7to view more information."
+      - "&7&l&m-----------------------------------"
+    read-all: "&cYou have marked all notifications as read."
+    read: "&cYou have successfully marked this notification as read."
+
 profile-commands:
   main:
     usage:
@@ -179,181 +242,20 @@ profile-commands:
       - "&cwas removed from your proflie!"
       - "&7"
       - "&cAmount: &7%banner%"
-queue-system:
-  in-queue: "&cSorry, you are already in another &6Server Queue&c."
-  not-exist: "&cSorry, the queue by the name of '&6%server%&c' could not be found."
-  offline: "&cSorry, the server '&6%server%&c' is currently &noffline&c."
-  not-in: "&cYou are currently not queueing for any servers."
-  bypassed-queue: "&aYou have bypassed the queue because of your &6Staff Permissions&a."
-  removed: "&cYou have just been removed from the &6%server% Queue&c."
-  joined:
-    - "&7&l&m--------------------------------------------"
-    - "&7You have successfully joined the &6%server% Queue&7!"
-    - "&7Your current position is &6#%position% &7out of &6%queue_size%&7 players."
-    - "&7"
-    - "&7Want to get a higher queue priority?"
-    - "&6&nstore.helydev.com"
-    - "&7&l&m--------------------------------------------"
-  cleared: "&aYou have cleared all &6%queue_size% Players &afrom the &6%server% Queue&a."
-  already-queue: "&cSorry, you are already queueing for a server. You cannot join multiple."
-  toggled:
-    enabled: "&aYou have successfully &a&nenabled&a the &6%server% Queue&a."
-    disabled: "&cYou have successfully &c&ndisabled&c the &6%server% Queue&c."
-heal-command:
-  usage: "&cCorrect Usage: /heal <player|all>"
-  not-online: "&cSorry, the name that you have provided is currently not connected to the server."
-  heal-self: "&6You have successfully been healed."
-  heal-other: "&6You have successfully healed &6&n%player%&6."
-feed-command:
-  usage: "&cCorrect Usage: /feed <player|all>"
-  not-online: "&cSorry, the name that you have provided is currently not connected to the server."
-  feed-self: "&6You have successfully been fed."
-  feed-other: "&6You have successfully fed &6&n%player%&6."
-frozen-command:
-  command:
-    usage: "&cCorrect Usage: /freeze <player|server>"
-    not-online: "&cSorry, the name that you have provided is currently not connected to the server."
-    server-frozen: "&6[Hely Network] &7This server has been frozen. Please stay tuned for more information."
-    server-unfrozen: "&6[Hely Network] &7This server is no longer frozen. Thank you for your patience."
-    freeze-server: "&cYou have successfully froze this server. A total of &c&l%players% players &chas been frozen."
-    unfroze-server: "&cYou have successfully unfroze this server. A total of &c&l%players% players &chas been unfrozen."
-    freeze-player: "&cYou have successfully frozen &c&l%player%&c."
-    unfroze-player: "&cYou have successfully unfrozen &c&l%player%&c."
-    frozen: "&cYou have just been frozen by &6%player%&c."
-    unfrozen: "&cYou have just been unfrozen by &6%player%&c."
-  messages:
-    freeze-chat-player-display: "&b[Frozen] &f- &7%message%"
-    freeze-chat-staff-message: "&b[Frozen] &7(%server%) &f- &c%player% &f- &7%message%"
-    currently-frozen: "&cSorry, &c&n%player%&c is currently frozen."
-    cannot-while-frozen: "&cYou cannot do this action while you are frozen."
-    join-frozen: "&cYou have joined the server, and you are frozen. This is because you logged off previously while you where frozen."
-    join-frozen-alert: "&6[Frozen] &7(%server%) &c%player% &7has just joined the server, and they are frozen!"
-    left-frozen-alert: "&6[Frozen] &7(%server%) &c%player% &7has just left the server, and they where frozen!"
-    join-while-server-frozen: "&6[Hely Network] &7Welcome! Unfortunately, this server is currently frozen. Please stay tuned for any updated."
-  settings:
-    allowed-commands:
-      - "/freeze"
-      - "/ss"
-      - "/auth"
-      - "/authenticate"
-      - "/message"
-      - "/msg"
-      - "/r"
-      - "/respond"
-playtime-command:
-  view:
-    global: "&6You have played a total of &6&n%time%&6 on the &bHely Network&6."
-    global-player: "&6&n%player%&6 has played for a total of &6&n%time%&6 on the &bHely Network&6."
-  top:
-    top-format:
-      - "&7&l&m---------------------------------"
-      - "&6&lPlaytime"
-      - "&7This is the players with the most playtime."
-      - "&7"
-    format: "&6#%number% %player%&7: &a%time%"
-    bottom-format:
-      - "&7"
-      - "&7&l&m---------------------------------"
-  remove:
-    usage: "&cCorrect Usage: /playtime remove <player> <amount>"
-    invalid-time: "&cYou have specified an invalid amount of time to remove from this player's playtime."
-    cannot-remove: "&cYou cannot remove this much playtime because they don't even have that much time.."
-    removed: "&6[Playtime] &fYou have successfully removed &6%time% &ffrom &c%player%&f."
-    alert: "&6[Playtime] &c%player% &fhas just removed &6%time% &ffrom your &6Playtime&f."
-  add:
-    usage: "&cCorrect Usage: /playtime add <player> <amount>"
-    invalid-time: "&cYou have specified an invalid amount of time to remove from this player's playtime."
-    added: "&6[Playtime] &fYou have successfully added &6%time% &fto &c%player%&f playtime."
-    alert: "&6[Playtime] &c%player% &fhas just added &6%time% &fto your &6Playtime&f."
-join-queue-command:
-  usage: "&cCorrect Usage: /joinqueue <server>"
-auth-command:
-  usage: "&cCorrect Usage: /auth <code>"
-  invalid-code: "&cYou have provided a invalid &6Authentication Code&c."
-  message:
-    - "&7&l&m---------------------------------------"
-    - "&7To continue, please enter the &6Secret Code &7listed below"
-    - "&7into your &6Google Authenticator App&7."
-    - "&7"
-    - "&6Secret Code: &a%secret_code%"
-    - "&7"
-    - "&7When you are finished, enter the provided code into"
-    - "&7the command using &6/auth <code>&7."
-    - "&7&l&m---------------------------------------"
-  already-auth: "&aYou have already been &6Authenticated&a."
-  success: "&aYou have successfully &6Authenticated &ayour account."
-  to-many-attempts: "&cYou have been kicked for failing your &6Staff Authentication&c."
-removeauth-command:
-  usage: "&cCorrect Usage: /removeauth <player>"
-  already-removed: "&cThis player does not have &6Two Factor Authentication&c."
-  success: "&aYou have successfully removed &c%player%'s &a2FA requirement."
-two-factor:
-  join:
-    - "&7&l&m---------------------------------------"
-    - "&7To continue, please scan the &6QR Code &7which"
-    - "&7has been provided to you in your inventory."
-    - "&7"
-    - "&7When you are finished, enter the code provided from the"
-    - "&6App &7and use &6/auth <code>&7!"
-    - "&7&l&m---------------------------------------"
-  need-authenticate:
-    - "&cYou need to &6Authenticate&c! Type &6/auth &cto begin the process."
-  next-auth-needed:
-    - "&7You will need to authenticate again in &6%time%&7."
-togglepm-command:
-  enabled: "&aYou have successfully enabled your &6Private Messages&a."
-  disabled: "&cYou have successfully disabled your &6Private Messages&c."
-togglesounds-command:
-  enabled: "&aYou have successfully enabled your &6Message Sounds&a."
-  disabled: "&cYou have successfully disabled your &6Message Sounds&c."
-chat-spy:
-  message: "&6[Chat Spy] &a%sender% &7&o-> &a%target%&7: &c%message%" # %sender%, %target%, %message%
-message-command:
-  usage: "&cCorrect Usage: /message <player> <message>"
-  messages-disabled: "&cYou cannot send &6Private Messages &cwhile you have &6Private Messages &cdisabled."
-  not-receiving: "&cSorry, &6%player% &cis currently not accepting &6Private Messages&c."
-  to-format: "&7(To %target%) &6%message%"
-  from-format: "&7(From %target%) &6%message%"
-reply-command:
-  usage: "&cCorrect Usage: /reply <message>"
-  not-receiving: "&cSorry, &6%player% &cis currently not accepting &6Private Messages&c."
-  messages-disabled: "&cYou cannot send &6Private Messages &cwhile you have &6Private Messages &cdisabled."
-  no-last-message: "&cYou have not sent a message to anyone recently."
-  conversation: "&7You are currently in a conversation with &6%player_name%&7."
-seen-command:
-  usage: "&cCorrect Usage: /seen <player>"
-  message: "&6%player% &awas last seen &6%time% ago &aon &6%server%&a."
-vpn:
-  usage: "&cCorrect Usage: /vpn <check|whitelist|unwhitelist> <player>"
-  check:
-    not-whitelist:
-      - "&7&l&m-------------------------------"
-      - "&6&n%player_name%:"
-      - ""
-      - "&6VPN Whitelist: &cNo"
-      - ""
-      - "&6Country: &a%country%"
-      - "&6ASN: &a%asn%"
-      - "&6Org: &a%org%"
-      - "&6Time Took: &a%time_took%ms"
-      - "&7&l&m-------------------------------"
-    whitelist:
-      - "&7&l&m-------------------------------"
-      - "&6&n%player_name%:"
-      - ""
-      - "&6VPN Whitelist: &aYes"
-      - ""
-      - "&6Country: &a%country%"
-      - "&6ASN: &a%asn%"
-      - "&6Org: &a%org%"
-      - "&6Time Took: &a%time_took%ms"
-      - "&7&l&m-------------------------------"
-  whitelist:
-    already-whitelist: "&cThis player already has a &6VPN Whitelist&c."
-    whitelisted: "&aYou have successfully given this player a &6VPN Whitelist&a."
-  unwhitelist:
-    not-whitelist: "&cThis player does not have a &6VPN Whitelist&c."
-    unwhitelisted: "&cYou have successfully removed this players &6VPN Whitelist&a."
+
+alts-command:
+  usage: "&cCorrect Usage: /alts <player>"
+  no-alts: "&cSorry, &6%player% &cdoes not have any alternate accounts on file."
+  first-chat-message: "&7%profile_name% (&b%alt_size%&7): "
+  hover:
+    - "&7&l&m-------------------------------------"
+    - "&6Playtime: &c%playtime%"
+    - "&6Last Seen: &c%last_seen%"
+    - "&6Banned: &c%ban_status%"
+    - "&6Blacklisted: &c%blacklist_status%"
+    - "&6Muted: &c%muted_status%"
+    - "&7&l&m-------------------------------------"
+
 punishments:
   history-menu:
     pardon:
@@ -424,7 +326,7 @@ punishments:
         enabled: true
         message:
           - "&eReason: &c%reason%"
-          - "&eDuration: &c%duration%"  
+          - "&eDuration: &c%duration%"
     unban:
       message: "&c%target% &6was just unbanned by &c%sender%&6."
       hover:
@@ -567,6 +469,193 @@ warn:
   usage: "&cUsage: /warn <player> <duration> <reason> <-s>"
 kick:
   usage: "&cUsage: /warn <player> <reason> <-s>"
+
+queue-system:
+  in-queue: "&cSorry, you are already in another &6Server Queue&c."
+  not-exist: "&cSorry, the queue by the name of '&6%server%&c' could not be found."
+  offline: "&cSorry, the server '&6%server%&c' is currently &noffline&c."
+  not-in: "&cYou are currently not queueing for any servers."
+  bypassed-queue: "&aYou have bypassed the queue because of your &6Staff Permissions&a."
+  removed: "&cYou have just been removed from the &6%server% Queue&c."
+  joined:
+    - "&7&l&m--------------------------------------------"
+    - "&7You have successfully joined the &6%server% Queue&7!"
+    - "&7Your current position is &6#%position% &7out of &6%queue_size%&7 players."
+    - "&7"
+    - "&7Want to get a higher queue priority?"
+    - "&6&nstore.helydev.com"
+    - "&7&l&m--------------------------------------------"
+  cleared: "&aYou have cleared all &6%queue_size% Players &afrom the &6%server% Queue&a."
+  already-queue: "&cSorry, you are already queueing for a server. You cannot join multiple."
+  toggled:
+    enabled: "&aYou have successfully &a&nenabled&a the &6%server% Queue&a."
+    disabled: "&cYou have successfully &c&ndisabled&c the &6%server% Queue&c."
+
+join-queue-command:
+  usage: "&cCorrect Usage: /joinqueue <server>"
+
+frozen-command:
+  command:
+    usage: "&cCorrect Usage: /freeze <player|server>"
+    not-online: "&cSorry, the name that you have provided is currently not connected to the server."
+    server-frozen: "&6[Hely Network] &7This server has been frozen. Please stay tuned for more information."
+    server-unfrozen: "&6[Hely Network] &7This server is no longer frozen. Thank you for your patience."
+    freeze-server: "&cYou have successfully froze this server. A total of &c&l%players% players &chas been frozen."
+    unfroze-server: "&cYou have successfully unfroze this server. A total of &c&l%players% players &chas been unfrozen."
+    freeze-player: "&cYou have successfully frozen &c&l%player%&c."
+    unfroze-player: "&cYou have successfully unfrozen &c&l%player%&c."
+    frozen: "&cYou have just been frozen by &6%player%&c."
+    unfrozen: "&cYou have just been unfrozen by &6%player%&c."
+  messages:
+    freeze-chat-player-display: "&b[Frozen] &f- &7%message%"
+    freeze-chat-staff-message: "&b[Frozen] &7(%server%) &f- &c%player% &f- &7%message%"
+    currently-frozen: "&cSorry, &c&n%player%&c is currently frozen."
+    cannot-while-frozen: "&cYou cannot do this action while you are frozen."
+    join-frozen: "&cYou have joined the server, and you are frozen. This is because you logged off previously while you where frozen."
+    join-frozen-alert: "&6[Frozen] &7(%server%) &c%player% &7has just joined the server, and they are frozen!"
+    left-frozen-alert: "&6[Frozen] &7(%server%) &c%player% &7has just left the server, and they where frozen!"
+    join-while-server-frozen: "&6[Hely Network] &7Welcome! Unfortunately, this server is currently frozen. Please stay tuned for any updated."
+  settings:
+    allowed-commands:
+      - "/freeze"
+      - "/ss"
+      - "/auth"
+      - "/authenticate"
+      - "/message"
+      - "/msg"
+      - "/r"
+      - "/respond"
+
+heal-command:
+  usage: "&cCorrect Usage: /heal <player|all>"
+  not-online: "&cSorry, the name that you have provided is currently not connected to the server."
+  heal-self: "&6You have successfully been healed."
+  heal-other: "&6You have successfully healed &6&n%player%&6."
+
+feed-command:
+  usage: "&cCorrect Usage: /feed <player|all>"
+  not-online: "&cSorry, the name that you have provided is currently not connected to the server."
+  feed-self: "&6You have successfully been fed."
+  feed-other: "&6You have successfully fed &6&n%player%&6."
+
+playtime-command:
+  view:
+    global: "&6You have played a total of &6&n%time%&6 on the &bHely Network&6."
+    global-player: "&6&n%player%&6 has played for a total of &6&n%time%&6 on the &bHely Network&6."
+  top:
+    top-format:
+      - "&7&l&m---------------------------------"
+      - "&6&lPlaytime"
+      - "&7This is the players with the most playtime."
+      - "&7"
+    format: "&6#%number% %player%&7: &a%time%"
+    bottom-format:
+      - "&7"
+      - "&7&l&m---------------------------------"
+  remove:
+    usage: "&cCorrect Usage: /playtime remove <player> <amount>"
+    invalid-time: "&cYou have specified an invalid amount of time to remove from this player's playtime."
+    cannot-remove: "&cYou cannot remove this much playtime because they don't even have that much time.."
+    removed: "&6[Playtime] &fYou have successfully removed &6%time% &ffrom &c%player%&f."
+    alert: "&6[Playtime] &c%player% &fhas just removed &6%time% &ffrom your &6Playtime&f."
+  add:
+    usage: "&cCorrect Usage: /playtime add <player> <amount>"
+    invalid-time: "&cYou have specified an invalid amount of time to remove from this player's playtime."
+    added: "&6[Playtime] &fYou have successfully added &6%time% &fto &c%player%&f playtime."
+    alert: "&6[Playtime] &c%player% &fhas just added &6%time% &fto your &6Playtime&f."
+
+auth-command:
+  usage: "&cCorrect Usage: /auth <code>"
+  invalid-code: "&cYou have provided a invalid &6Authentication Code&c."
+  message:
+    - "&7&l&m---------------------------------------"
+    - "&7To continue, please enter the &6Secret Code &7listed below"
+    - "&7into your &6Google Authenticator App&7."
+    - "&7"
+    - "&6Secret Code: &a%secret_code%"
+    - "&7"
+    - "&7When you are finished, enter the provided code into"
+    - "&7the command using &6/auth <code>&7."
+    - "&7&l&m---------------------------------------"
+  already-auth: "&aYou have already been &6Authenticated&a."
+  success: "&aYou have successfully &6Authenticated &ayour account."
+  to-many-attempts: "&cYou have been kicked for failing your &6Staff Authentication&c."
+removeauth-command:
+  usage: "&cCorrect Usage: /removeauth <player>"
+  already-removed: "&cThis player does not have &6Two Factor Authentication&c."
+  success: "&aYou have successfully removed &c%player%'s &a2FA requirement."
+
+two-factor:
+  join:
+    - "&7&l&m---------------------------------------"
+    - "&7To continue, please scan the &6QR Code &7which"
+    - "&7has been provided to you in your inventory."
+    - "&7"
+    - "&7When you are finished, enter the code provided from the"
+    - "&6App &7and use &6/auth <code>&7!"
+    - "&7&l&m---------------------------------------"
+  need-authenticate:
+    - "&cYou need to &6Authenticate&c! Type &6/auth &cto begin the process."
+  next-auth-needed:
+    - "&7You will need to authenticate again in &6%time%&7."
+
+togglepm-command:
+  enabled: "&aYou have successfully enabled your &6Private Messages&a."
+  disabled: "&cYou have successfully disabled your &6Private Messages&c."
+togglesounds-command:
+  enabled: "&aYou have successfully enabled your &6Message Sounds&a."
+  disabled: "&cYou have successfully disabled your &6Message Sounds&c."
+chat-spy:
+  message: "&6[Chat Spy] &a%sender% &7&o-> &a%target%&7: &c%message%" # %sender%, %target%, %message%
+message-command:
+  usage: "&cCorrect Usage: /message <player> <message>"
+  messages-disabled: "&cYou cannot send &6Private Messages &cwhile you have &6Private Messages &cdisabled."
+  not-receiving: "&cSorry, &6%player% &cis currently not accepting &6Private Messages&c."
+  to-format: "&7(To %target%) &6%message%"
+  from-format: "&7(From %target%) &6%message%"
+reply-command:
+  usage: "&cCorrect Usage: /reply <message>"
+  not-receiving: "&cSorry, &6%player% &cis currently not accepting &6Private Messages&c."
+  messages-disabled: "&cYou cannot send &6Private Messages &cwhile you have &6Private Messages &cdisabled."
+  no-last-message: "&cYou have not sent a message to anyone recently."
+  conversation: "&7You are currently in a conversation with &6%player_name%&7."
+
+seen-command:
+  usage: "&cCorrect Usage: /seen <player>"
+  message: "&6%player% &awas last seen &6%time% ago &aon &6%server%&a."
+
+vpn:
+  usage: "&cCorrect Usage: /vpn <check|whitelist|unwhitelist> <player>"
+  check:
+    not-whitelist:
+      - "&7&l&m-------------------------------"
+      - "&6&n%player_name%:"
+      - ""
+      - "&6VPN Whitelist: &cNo"
+      - ""
+      - "&6Country: &a%country%"
+      - "&6ASN: &a%asn%"
+      - "&6Org: &a%org%"
+      - "&6Time Took: &a%time_took%ms"
+      - "&7&l&m-------------------------------"
+    whitelist:
+      - "&7&l&m-------------------------------"
+      - "&6&n%player_name%:"
+      - ""
+      - "&6VPN Whitelist: &aYes"
+      - ""
+      - "&6Country: &a%country%"
+      - "&6ASN: &a%asn%"
+      - "&6Org: &a%org%"
+      - "&6Time Took: &a%time_took%ms"
+      - "&7&l&m-------------------------------"
+  whitelist:
+    already-whitelist: "&cThis player already has a &6VPN Whitelist&c."
+    whitelisted: "&aYou have successfully given this player a &6VPN Whitelist&a."
+  unwhitelist:
+    not-whitelist: "&cThis player does not have a &6VPN Whitelist&c."
+    unwhitelisted: "&cYou have successfully removed this players &6VPN Whitelist&a."
+
 tag:
   usage:
     - "&7&l&m-----------------------------------"
@@ -599,29 +688,7 @@ tag:
   import:
     imported: "&aThe tags have been imported from tags.yml!"
   dont-exists: "&cA tag with that name doesn't exists."
-profile-system:
-  social-system:
-    updated-link: "&7You have successfully update your &6%type% Social Link&7!"
-    removed: "&cYou have successfully removed your &6%type% Social Link&c!"
-    setup-message: "&7Please type your &6%type% &7link in chat. You can always type 'CANCEL' to cancel this."
-    cancelled-setup: "&cYou have cancelled setting up your &6%type% Social Link&7!"
-    invalid-link: "&cYou have provided a invalid social link. Please try again."
-    setup-link: "&aYou have successfully setup your &6%type% Social Link&a!"
-  notifications:
-    join: # %notification_amount%
-      - "&7&l&m-----------------------------------"
-      - "&6&lNotifications"
-      - "&7You have &6%notification_amount% unread &7notifications!"
-      - "&7Use &6/notifications &7to view them."
-      - "&7&l&m-----------------------------------"
-    new-notification:
-      - "&7&l&m-----------------------------------"
-      - "&6&lNotifications"
-      - "&7You have just received a new &6notification&7!"
-      - "&7Use &6/notifications &7to view more information."
-      - "&7&l&m-----------------------------------"
-    read-all: "&cYou have marked all notifications as read."
-    read: "&cYou have successfully marked this notification as read."
+
 friends:
   friend-add:
     friend-self: "&6[Friends] &cYou cannot send a friend request to yourself."
@@ -643,42 +710,6 @@ friends:
       - ""
       - "&6[Friends] &7You are now friends with &a%player%&7."
       - ""
-admin-chat:
-  enabled: "&eAdmin chat has been &aenabled&e."
-  disabled: "&eAdmin chat has been &cdisabled&e."
-  format: "&4[Admin] &7(%server_name%) &r%player%&7: &c%message%"
-staff-messages:
-  connect: "&6[S] &r%player_name% &bjoined the network. &7(%server%)"
-  switch: "&6[S] &r%player_name% &bjoined &f%server% &7(from %from%)"
-  disconnect: "&6[S] &r%player_name% &bdisconnected from &7(%server%)"
-staff-history-command:
-  usage: "&cCorrect Usage: /staffhistory <player>"
-  scanning: "&6We are attempting to scan all punishments issued by &b%player%&6.."
-staff-chat:
-  enabled: "&eStaff chat has been &aenabled&e."
-  disabled: "&eStaff chat has been &cdisabled&e."
-  format: "&9[Staff] &7(%server_name%) &r%player%&7: &b%message%"
-requests:
-  invalid-message: "&cYou must provide a valid message."
-  closed: "&cYou have successfully closed %player%'s staff request."
-  closed-player: "&aYour &6Staff Request &ahas just been closed by &c%staff_member%&a."
-  type-note: "&aPlease type the note you would like to add to this request."
-  note-added: "&aYou have successfully added a new &6Staff Note &ato this player request."
-  closed-broadcast: "&6[Requests] &6%staff_member% &7has just closed &a%player%'s &7staff request."
-  claim:
-    claimed: "&6[Requests] &7You have successfully claimed &a%player%'s &7staff request."
-    broadcast: "&6[Requests] &a%player% &7has claimed &a%creator_name% &6Staff Request&7."
-    unclaimed: "&6[Requests] &cYou have successfully unclaimed &a%player%'s &cstaff request."
-    already-claimed: "&6[Requests] &cYou cannot claim this &6Staff Request &cbecause it already has been claimed."
-  helpop:
-    usage: "&cCorrect Usage: /helpop <message>"
-    broadcast: "&6[Request] &7(%server%) &a&n%player%&a has requested staff assistance: &7%message%"
-    created: "&aYou have successfully sent a &6Staff Request&a."
-  report:
-    usage: "&cCorrect Usage: /report <player> <message>"
-    not-online: "&cThat player is not on the server.."
-    broadcast: "&6[Request] &7(%server%) &a&n%player%&a has just reported &6%reported_player%&a: &7%message%"
-    created: "&aYou have successfully sent a &6Staff Report Request&a."
 
 notes-command:
   usage:
@@ -693,7 +724,7 @@ notes-command:
     - "&7&l&m-----------------------------------"
   check:
     message:
-      - "&eViewing notes of &4%player%&e.."
+      - "&eViewing notes of: &4%player%&e..."
       - "%notes%"
     format: "&e#%id% &7- &f%reason% &7(%addedBy%&7) &7(%addedAt%&7) &7(%addedServer)"
   add:
@@ -704,3 +735,11 @@ notes-command:
     cleared: "&eYou have cleared &f%player%'s &enotes!"
   dont-exists: "&cThis player has no saved notes."
   invalid-id: "&cThat's not a valid note id."
+
+day-command:
+  set: "&eYou've set your time to &fDay&e"
+night-command:
+  set: "&eYou've set your time to &fNight&e"
+sunset-command:
+  set: "&eYou've set your time to &fNight&e"
+

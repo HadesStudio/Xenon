@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 public class HideStaffCommand extends BaseCommand {
-    public static final ArrayList<UUID> hidden = new ArrayList<>();
+    public static ArrayList<UUID> hidden = new ArrayList<>();
 
     public HideStaffCommand() {
         super("hidestaff", Collections.singletonList("hs"), "oxygen.command.hidestaff", true);
@@ -39,7 +39,7 @@ public class HideStaffCommand extends BaseCommand {
         if (hidden.contains(player.getUniqueId())) {
             hidden.remove(player.getUniqueId());
 
-            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("hide-staff.enabled")));
+            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("hidestaff-command.enabled")));
 
             for (UUID id : OxygenBukkit.getInstance().getStaffManager().getVanishedPlayers()) {
                 if (Bukkit.getPlayer(id) == null) continue;
@@ -49,7 +49,7 @@ public class HideStaffCommand extends BaseCommand {
         }
 
         hidden.add(player.getUniqueId());
-        player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("hide-staff.disabled")));
+        player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("hidestaff-command.disabled")));
 
         for (UUID id : OxygenBukkit.getInstance().getStaffManager().getVanishedPlayers()) {
             if (Bukkit.getPlayer(id) == null) continue;

@@ -212,11 +212,13 @@ public class StaffManager implements ModuleLoader {
 
     public void enabledVanish(Player player) {
         vanishedPlayers.add(player.getUniqueId());
+
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (!online.hasPermission("hcf.command.staff") || HideStaffCommand.hidden.contains(online.getUniqueId())) {
                 online.hidePlayer(player);
             }
         }
+
         player.spigot().setCollidesWithEntities(false);
 
         if (OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getBoolean("vanish.enable-alert.enabled")) {

@@ -64,6 +64,8 @@ public class Profile {
     private String currentServer = "Unknown";
     private String lastServer = "";
 
+    private String time = "";
+
     private int totalKills;
     private int totalDeaths;
 
@@ -90,9 +92,9 @@ public class Profile {
     private int currency;
     private boolean frozen;
 
-    //playtime puta;
     private long playTime = 0;
     private PlaytimeUtil session;
+
     private List<String> ignoredList = new ArrayList<>();
     private long lastReceivedMessageMillis;
     private long lastSentMessageMillis;
@@ -149,6 +151,7 @@ public class Profile {
         document.put("firstSeen", firstSeen);
         document.put("lastSeen", lastSeen);
         document.put("lastServer", lastServer);
+        document.put("time", time);
         document.put("vpnWhitelist", vpnWhitelist);
         document.put("tag", tag);
         document.put("totalkills", totalKills);
@@ -202,6 +205,7 @@ public class Profile {
             firstSeen = document.getLong("firstSeen");
             lastSeen = document.getLong("lastSeen");
             lastServer = document.getString("lastServer");
+            time = document.getString("time");
             tag = document.getString("tag");
             vpnWhitelist = document.getBoolean("vpnWhitelist");
             currency = document.getInteger("currency");
