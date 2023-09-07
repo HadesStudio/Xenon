@@ -26,6 +26,7 @@ commands:
     - "&6* &f/rank settype <name> <type> &7- Updates the rank type of a rank."
     - "&6* &f/rank setweight <name> <weight> &7- Updates the rank weight of a rank."
     - "&6* &f/rank promote <player> <reason> &7- Promotes a user up +1 rank."
+    - "&6* &f/rank demote <player> <reason> &7- Demotes a user down -1 rank."
     - "&7&l&m-----------------------------------"
   create:
     usage: "&cCorrect Usage: /rank create <name>"
@@ -37,10 +38,15 @@ commands:
   rename:
     usage: "&cCorrect Usage: /rank rename <rank> <new_name>"
     renamed: "&aYou have successfully changed the name of &6%rank% Rank &ato &6%new_name%&a."
+  demote:
+    usage: "&cCorrect Usage: /rank demote <player> <reason>"
+    invalid-rank: "&cYou cannot demote this person anymore ranks. Make sure that the weights are +1 from each other."
+    cannot-give: "&cSorry, you can only demote ranks that are below the rank of &6%rank%&c."
+    demoted: "&6You have successfully demoted &6&l%player% &6to the rank of &6&l%name%&6."
   promote:
     usage: "&cCorrect Usage: /rank promote <player> <reason>"
     invalid-rank: "&cYou cannot promote this person anymore ranks. Make sure that the weights are +1 from each other."
-    cannot-give: "&cSorry, you can only set ranks that are below the rank of &6%rank%&c."
+    cannot-give: "&cSorry, you can only promote ranks that are below the rank of &6%rank%&c."
     promoted: "&6You have successfully promoted &6&l%player% &6to the rank of &6&l%name%&6."
   import:
     imported: "&aYou have successfully imported all ranks from &7ranks.yml&a."
