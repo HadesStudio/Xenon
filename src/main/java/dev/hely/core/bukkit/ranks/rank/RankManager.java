@@ -17,6 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -157,6 +158,10 @@ public class RankManager implements ModuleLoader {
 
             this.ranks.add(rank);
         });
+    }
+
+    public Rank getByWeight(int weight) {
+        return this.ranks.stream().filter(rank -> rank.getWeight() == weight).findFirst().orElse(null);
     }
 
     public void saveRanksToConfig() {

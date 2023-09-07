@@ -51,6 +51,7 @@ public class RedisModule implements ModuleLoader {
         try {
             this.jedisPool = new JedisPool(new JedisPoolConfig(), host, port, 30_000);
             if (!this.password.isEmpty()) {
+
                 try (Jedis jedis = this.jedisPool.getResource()) {
                     jedis.auth(this.password);
                 } catch (JedisException ex) {
@@ -59,16 +60,21 @@ public class RedisModule implements ModuleLoader {
             }
         } catch (Exception e) {
             this.jedisPool = null;
+            OxygenBukkit.getInstance().debug_message("1: You do not have redis installed! Cross server synchronization will NOT work. (Message: " + e.getMessage() + ")");
         }
 
         this.listeners = ArrayListMultimap.create();
         this.channels = new HashSet<>();
 
-        ForkJoinPool.commonPool().execute(() -> {
-            try (Jedis jedis = this.jedisPool.getResource()) {
-                jedis.subscribe(this.getJedisPubSub(), channel);
-            }
-        });
+        try {
+            ForkJoinPool.commonPool().execute(() -> {
+                try (Jedis jedis = this.jedisPool.getResource()) {
+                    jedis.subscribe(this.getJedisPubSub(), channel);
+                }
+            });
+        } catch (Exception e) {
+            OxygenBukkit.getInstance().debug_message("2: You do not have redis installed! Cross server synchronization will NOT work. (Message: " + e.getMessage() + ")");
+        }
 
         enabled = true;
     }
