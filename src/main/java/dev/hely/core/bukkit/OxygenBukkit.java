@@ -98,6 +98,7 @@ public class OxygenBukkit extends JavaPlugin {
     private Config coinShopConfig;
     private Config serverConfig;
     private Config announcementConfig;
+    private Config staffHistoryConfig;
 
     private GoogleAuthenticator googleAuthenticator;
 
@@ -226,6 +227,8 @@ public class OxygenBukkit extends JavaPlugin {
             this.configList.add(serversMenuConfig);
             this.coinShopConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "coin-shop");
             this.configList.add(coinShopConfig);
+            this.staffHistoryConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "staff-history-menu");
+            this.configList.add(staffHistoryConfig);
             this.announcementConfig = new Config(OxygenBukkit.getInstance(), "announcements");
             this.configList.add(announcementConfig);
             Locale.load();
