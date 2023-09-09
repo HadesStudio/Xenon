@@ -48,7 +48,6 @@ public class ProfileManager {
 
     public Profile getProfile(UUID uuid) {
         return this.profileMap.get(uuid) == null ? new Profile(uuid, null) : this.profileMap.get(uuid);
-
     }
 
     public Profile getProfile(UUID uuid, String name) {
