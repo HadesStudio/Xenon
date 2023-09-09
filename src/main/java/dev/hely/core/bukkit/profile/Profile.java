@@ -110,6 +110,9 @@ public class Profile {
     private String tfaKey = "";
     private List<Sibling> siblings = new ArrayList<>();
 
+    private boolean discordSynced;
+    private String discordID;
+    private String discordName;
 
     public Profile(UUID uniqueId, String name) {
         this.uniqueId = uniqueId;
@@ -161,6 +164,12 @@ public class Profile {
         document.put("lastReceivedMessageMillis", lastReceivedMessageMillis);
         document.put("lastSentMessageMillis", lastSentMessageMillis);
         document.put("lastRepliedTo", lastRepliedTo);
+
+        document.put("discordID", discordID);
+        document.put("discordSynced", discordSynced);
+        document.put("discordName", discordName);
+
+
         Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
         document.put("settings", OxygenBukkit.PLAIN_GSON.toJson(this.settings, settingsType));
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
@@ -210,6 +219,11 @@ public class Profile {
             vpnWhitelist = document.getBoolean("vpnWhitelist");
             currency = document.getInteger("currency");
             playTime = document.getLong("playTime");
+
+            discordSynced = document.getBoolean("discordSynced");
+            discordID = document.getString("discordID");
+            discordName = document.getString("discordName");
+
             authPassword = document.getString("authPassword");
             frozen = document.getBoolean("frozen");
             needsVerify = document.getBoolean("needsVerify");
