@@ -450,6 +450,8 @@ public class Profile {
         return null;
     }
 
+
+
     public Punishment getActiveBan() {
         for (Punishment punishment : this.punishments) {
             if (punishment.getType() == PunishmentType.BAN && punishment.isActive()) {

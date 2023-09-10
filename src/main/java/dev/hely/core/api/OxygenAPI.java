@@ -3,6 +3,8 @@ package dev.hely.core.api;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.core.bukkit.punishment.Punishment;
+import dev.hely.core.bukkit.punishment.PunishmentType;
 import dev.hely.core.bukkit.ranks.grants.Grant;
 import dev.hely.core.bukkit.ranks.rank.Rank;
 import org.bukkit.plugin.IllegalPluginAccessException;
@@ -74,5 +76,31 @@ public class OxygenAPI {
         Profile profile = this.getProfile(uuid);
 
         return profile != null && profile.getActiveBlacklist() != null;
+    }
+
+    public List<Punishment> getActivePunishments(UUID uuid) {
+        return this.getProfile(uuid).getPunishments();
+    }
+
+    public boolean isProfileDiscordSynced(UUID uuid) {
+        Profile profile = this.getProfile(uuid);
+
+        return profile != null && profile.isDiscordSynced();
+    }
+
+    public String getProfileDiscordUserID(UUID uuid) {
+        if (this.getProfile(uuid).isDiscordSynced()) {
+            return this.getProfile(uuid).getDiscordID();
+        } else {
+            return "Unknown, the user has not linked their discord.";
+        }
+    }
+
+    public String getProfileDiscordName(UUID uuid) {
+        if (this.getProfile(uuid).isDiscordSynced()) {
+            return this.getProfile(uuid).getDiscordName();
+        } else {
+            return "Unknown, the user has not linked their discord.";
+        }
     }
 }
