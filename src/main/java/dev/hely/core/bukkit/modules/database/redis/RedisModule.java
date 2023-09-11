@@ -122,12 +122,16 @@ public class RedisModule implements ModuleLoader {
     }
 
     public void sendPacket(Packet packet) {
-        try (Jedis jedis = jedisPool.getResource()) {
-            String channel = getChannel() + '@' + packet.getClass().getSimpleName();
+        if (isRedisConnected()) {
+            try (Jedis jedis = jedisPool.getResource()) {
+                String channel = getChannel() + '@' + packet.getClass().getSimpleName();
 
-            jedis.publish(channel, OxygenBukkit.PLAIN_GSON.toJson(packet));
-        } catch (Exception ex) {
-            ex.printStackTrace();
+                jedis.publish(channel, OxygenBukkit.PLAIN_GSON.toJson(packet));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            OxygenBukkit.getInstance().debug_message("ERROR IN REDIS");
         }
     }
 
