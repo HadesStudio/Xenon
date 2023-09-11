@@ -6,12 +6,9 @@ package dev.hely.core.bukkit.punishment;
  * Protect Name OxygenGlobal
  */
 public enum PunishmentType {
-
     BLACKLIST,
     BAN,
     KICK,
     MUTE,
-    WARN;
-
-
+    WARN
 }
