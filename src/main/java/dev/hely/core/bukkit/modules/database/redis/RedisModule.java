@@ -135,15 +135,13 @@ public class RedisModule implements ModuleLoader {
         JedisPubSub jedisPubSub = new JedisPubSub() {
             @Override
             public void onMessage(String channel, String message) {
-                if (channel.equalsIgnoreCase(getChannel())) {
-                    if (isRedisConnected()) {
-                        for (Map.Entry<Object, Method> entry : listeners.entries()) {
-                            if (Objects.equals(getChannel() + '@' + entry.getValue().getParameterTypes()[0].getSimpleName(), channel)) {
-                                try {
-                                    entry.getValue().invoke(entry.getKey(), OxygenBukkit.PLAIN_GSON.fromJson(message, entry.getValue().getParameterTypes()[0]));
-                                } catch (IllegalAccessException | InvocationTargetException e) {
-                                    e.printStackTrace();
-                                }
+                if (isRedisConnected()) {
+                    for (Map.Entry<Object, Method> entry : listeners.entries()) {
+                        if (Objects.equals(getChannel() + '@' + entry.getValue().getParameterTypes()[0].getSimpleName(), channel)) {
+                            try {
+                                entry.getValue().invoke(entry.getKey(), OxygenBukkit.PLAIN_GSON.fromJson(message, entry.getValue().getParameterTypes()[0]));
+                            } catch (IllegalAccessException | InvocationTargetException e) {
+                                e.printStackTrace();
                             }
                         }
                     }
