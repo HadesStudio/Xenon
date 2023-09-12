@@ -20,6 +20,7 @@ import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
 import dev.hely.core.bukkit.profile.tfa.TFAManager;
 import dev.hely.core.bukkit.punishment.packet.PunishmentPacketListener;
 import dev.hely.core.bukkit.ranks.rank.RankManager;
+import dev.hely.core.bukkit.server.Server;
 import dev.hely.core.bukkit.server.ServerListener;
 import dev.hely.core.bukkit.server.ServerManager;
 import dev.hely.core.bukkit.server.packets.ServerMonitorStatusPacket;
@@ -30,6 +31,7 @@ import dev.hely.core.bukkit.server.queue.packets.QueuePacketListener;
 import dev.hely.core.bukkit.server.queue.runnables.MainQueueRunnable;
 import dev.hely.core.bukkit.server.queue.runnables.QueuePositionRunnable;
 import dev.hely.core.bukkit.server.queue.runnables.QueueUpdateRunnable;
+import dev.hely.core.bukkit.server.reboot.RebootManager;
 import dev.hely.core.bukkit.server.runnable.HeartBeatRunnable;
 import dev.hely.core.bukkit.server.runnable.ServerDataUpdateThread;
 import dev.hely.core.bukkit.staff.requests.RequestManager;
@@ -128,6 +130,7 @@ public class OxygenBukkit extends JavaPlugin {
     private ServerDataUpdateThread serverDataUpdateThread;
     private CouponManager couponManager;
     private AnnouncementManager announcementManager;
+    private RebootManager rebootManager;
 
     private boolean debug_mode;
 
@@ -167,9 +170,17 @@ public class OxygenBukkit extends JavaPlugin {
         logManager.registerAllLogs();
         this.redisModule.sendPacket(new ServerMonitorStatusPacket(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), true));
         this.serverDataUpdateThread.start();
+
+        // Now we want to set the server online:
+        Server server = this.getServerManager().getOrSetupServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
+        server.setStatus("Online");
     }
 
     public void onDisable() {
+        // Now we want to set the server online:
+        Server server = this.getServerManager().getOrSetupServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
+        server.setStatus("Offline");
+
         try {
             stopping = true;
             if (this.serverDataUpdateThread != null && this.serverDataUpdateThread.isAlive()) {
@@ -273,6 +284,7 @@ public class OxygenBukkit extends JavaPlugin {
         queueManager = new QueueManager();
         serverManager = new ServerManager();
         couponManager = new CouponManager();
+        rebootManager = new RebootManager();
     }
 
     public void setupModules() {

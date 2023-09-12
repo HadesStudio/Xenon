@@ -31,7 +31,7 @@ public class HeartBeatRunnable extends BukkitRunnable {
     @Override
     public void run() {
         for (Server servers : OxygenBukkit.getInstance().getServerManager().getServers()) {
-            Server server = OxygenBukkit.getInstance().getServerManager().getServer(servers.getName());
+            Server server = OxygenBukkit.getInstance().getServerManager().getOrSetupServer(servers.getName());
 
             if (server != null && (System.currentTimeMillis() - server.getLastHeartBeat()) > TimeUnit.SECONDS.toMillis(15)) {
                 if (server.getStatus().equalsIgnoreCase("Offline")) {

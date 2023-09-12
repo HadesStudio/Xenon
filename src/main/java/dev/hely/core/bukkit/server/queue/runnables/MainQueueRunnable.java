@@ -26,10 +26,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class MainQueueRunnable extends BukkitRunnable {
     @Override
     public void run() {
-        for(Queue queue : Queue.getQueues()) {
+        for (Queue queue : Queue.getQueues()) {
             Server serverData = queue.getServerData();
 
-            if(serverData == null || !queue.isEnabled() || (!(serverData.getStatus().equalsIgnoreCase("Offline")) || (serverData.getStatus().equalsIgnoreCase("Whitelisted")))) {
+            if (serverData == null || !queue.isEnabled() || (!(serverData.getStatus().equalsIgnoreCase("Offline")) || (serverData.getStatus().equalsIgnoreCase("Whitelisted")))) {
                 continue;
             }
 

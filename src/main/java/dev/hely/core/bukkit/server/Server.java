@@ -45,7 +45,7 @@ public class Server {
             jedis.hset(key,"name",this.name);
 
             jedis.hset(key,"lastTps","" + this.getLastTps());
-            jedis.hset(key,"status",this.status);
+            jedis.hset(key,"status", this.status);
             jedis.hset(key, "queue", String.valueOf(this.useQueue));
             jedis.hset(key,"onlinePlayers","" + this.onlinePlayers);
             jedis.hset(key,"maximumPlayers",""+ this.maximumPlayers);

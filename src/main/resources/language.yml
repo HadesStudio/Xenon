@@ -97,6 +97,25 @@ vanish:
     alert:
       - "&6[Staff] &c%player% &ahas just disabled their &6Vanish Mode&a."
 
+reboot:
+  rebooting:
+    - "&7&l&m-------------------------------"
+    - "&4&lServer Rebooting.."
+    - "&7"
+    - "&7This server is rebooting in &c%time%&7!"
+    - "&7&l&m-------------------------------"
+  canceled:
+    - "&7&l&m-------------------------------"
+    - "&4&lServer Rebooting.."
+    - "&7"
+    - "&7The &cServer Reboot &7has been canceled."
+    - "&7&l&m-------------------------------"
+  not-rebooting: "&cThis server does not have a reboot scheduled.."
+  started: "&6[Server Manager] &7You have started a &6Server Reboot &7in &a%time%&7."
+  staff-broadcast: "&6[Server Manager] &a%player% &7has just started a &6Server Reboot &7on &c%server% &7in &a%time%&7."
+  invalid-time: "&cYou have specified a invalid time, please follow the following format. &7(Example: 60s)"
+
+
 staff-mode-system:
   no-online-players: "&cSorry, it seems their is no online players to teleport to."
   open-chest: "&6Opening this chest silently.."
