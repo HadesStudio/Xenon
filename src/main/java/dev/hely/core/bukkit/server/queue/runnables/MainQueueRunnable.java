@@ -15,6 +15,7 @@ package dev.hely.core.bukkit.server.queue.runnables;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
+import dev.hely.core.bukkit.server.ServerState;
 import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.server.queue.QueuePlayer;
 import dev.hely.core.bukkit.server.Server;
@@ -29,7 +30,7 @@ public class MainQueueRunnable extends BukkitRunnable {
         for (Queue queue : Queue.getQueues()) {
             Server serverData = queue.getServerData();
 
-            if (serverData == null || !queue.isEnabled() || (!(serverData.getStatus().equalsIgnoreCase("Offline")) || (serverData.getStatus().equalsIgnoreCase("Whitelisted")))) {
+            if (serverData == null || !queue.isEnabled() || (!(serverData.isOnline())) || (serverData.getState() == ServerState.WHITELISTED)) {
                 continue;
             }
 

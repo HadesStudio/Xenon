@@ -16,6 +16,7 @@ package dev.hely.core.bukkit.server.queue.runnables;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.server.ServerState;
 import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.server.queue.QueuePlayer;
 import dev.hely.core.bukkit.server.Server;
@@ -31,7 +32,7 @@ public class QueueUpdateRunnable extends BukkitRunnable {
             for (Queue queue : Queue.getQueues()) {
                 Server serverData = queue.getServerData();
 
-                if (serverData == null || !queue.isEnabled() || (!(serverData.getStatus().equalsIgnoreCase("Offline"))) || (serverData.getStatus().equalsIgnoreCase("Whitelisted"))) {
+                if (serverData == null || !queue.isEnabled() || (!(serverData.getState() == ServerState.OFFLINE)) || (serverData.getState() == ServerState.WHITELISTED)) {
                     continue;
                 }
 

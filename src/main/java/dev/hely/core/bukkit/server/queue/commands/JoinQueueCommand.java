@@ -17,6 +17,7 @@ package dev.hely.core.bukkit.server.queue.commands;
 
 import com.google.gson.JsonObject;
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.server.ServerState;
 import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.server.queue.QueueRank;
 import dev.hely.core.bukkit.server.queue.packets.implement.QueueAddPlayerPacket;
@@ -51,7 +52,7 @@ public class JoinQueueCommand extends BaseCommand {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.not-exist").replace("%server%", args[0])));
             return;
         }
-        if(queue.getServerData() == null || !(queue.getServerData().getStatus().equalsIgnoreCase("Online"))) {
+        if(queue.getServerData() == null || !(queue.getServerData().getState() == ServerState.ONLINE)) {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.offline").replace("%server%", args[0])));
             return;
         }

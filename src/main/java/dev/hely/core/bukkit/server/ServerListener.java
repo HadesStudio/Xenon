@@ -19,26 +19,29 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
 
+import dev.hely.core.bukkit.profile.packet.implement.StaffRawMessagePacket;
+import dev.hely.core.bukkit.server.packets.ServerStateChangePacket;
 import dev.hely.core.bukkit.server.packets.ServerUpdatePacket;
-import dev.hely.core.bukkit.utils.TPSUtil;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
 
 @AllArgsConstructor
 public class ServerListener implements PacketListener {
     @IncomingPacketHandler
-    public void onServerUpdate(ServerUpdatePacket packet) {
+    public void onServerUpdate(ServerStateChangePacket packet) {
         Server server = OxygenBukkit.getInstance().getServerManager().getOrSetupServer(packet.getName());
+        ServerState state = packet.getState();
 
-        if (server == null) return;
+        if (server != null) {
+            server.setState(state);
+            server.setLastHeartbeat(System.currentTimeMillis());
+        }
 
-        server.setStatus(packet.getStatus());
-        server.setLastTps(TPSUtil.getRecentTps()[0]);
-        server.setOnlinePlayers(Bukkit.getOnlinePlayers().size());
-        server.setMaximumPlayers(Bukkit.getMaxPlayers());
-        server.setUseQueue(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getBoolean("use-queue-system"));
-        server.setLastHeartBeat(System.currentTimeMillis());
-        server.setStartupTime(packet.getStartupTime());
-        server.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
+        String message = OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("server-manager.state-changed").replace("%server%", server.getName()).replace("%state%", state.getDisplayName());
+        OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.staff", server.getName(), message));
+    }
+
+    @IncomingPacketHandler
+    public void onServerUpdate(ServerUpdatePacket packet) {
+        OxygenBukkit.getInstance().getServerManager().updateServer(packet.getServer());
     }
 }

@@ -23,8 +23,8 @@ import dev.hely.core.bukkit.ranks.rank.RankManager;
 import dev.hely.core.bukkit.server.Server;
 import dev.hely.core.bukkit.server.ServerListener;
 import dev.hely.core.bukkit.server.ServerManager;
-import dev.hely.core.bukkit.server.packets.ServerMonitorStatusPacket;
-import dev.hely.core.bukkit.server.packets.ServerPacketListener;
+import dev.hely.core.bukkit.server.ServerState;
+import dev.hely.core.bukkit.server.packets.ServerStateChangePacket;
 import dev.hely.core.bukkit.server.queue.QueueManager;
 import dev.hely.core.bukkit.server.queue.listener.QueueListener;
 import dev.hely.core.bukkit.server.queue.packets.QueuePacketListener;
@@ -33,7 +33,6 @@ import dev.hely.core.bukkit.server.queue.runnables.QueuePositionRunnable;
 import dev.hely.core.bukkit.server.queue.runnables.QueueUpdateRunnable;
 import dev.hely.core.bukkit.server.reboot.RebootManager;
 import dev.hely.core.bukkit.server.runnable.HeartBeatRunnable;
-import dev.hely.core.bukkit.server.runnable.ServerDataUpdateThread;
 import dev.hely.core.bukkit.staff.requests.RequestManager;
 import dev.hely.core.bukkit.staff.staffmode.StaffManager;
 import dev.hely.core.bukkit.tag.TagManager;
@@ -127,10 +126,10 @@ public class OxygenBukkit extends JavaPlugin {
     private QueueManager queueManager;
     private LogManager logManager;
     private StaffManager staffManager;
-    private ServerDataUpdateThread serverDataUpdateThread;
     private CouponManager couponManager;
     private AnnouncementManager announcementManager;
     private RebootManager rebootManager;
+    private Server serverData;
 
     private boolean debug_mode;
 
@@ -164,34 +163,22 @@ public class OxygenBukkit extends JavaPlugin {
         new QueueUpdateRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         new MainQueueRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         new HeartBeatRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-        this.serverDataUpdateThread = new ServerDataUpdateThread(this);
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
 
         logManager.registerAllLogs();
-        this.redisModule.sendPacket(new ServerMonitorStatusPacket(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), true));
-        this.serverDataUpdateThread.start();
 
-        // Now we want to set the server online:
-        Server server = this.getServerManager().getOrSetupServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
-        server.setStatus("Online");
+        this.serverData = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
+        this.getRedisModule().sendPacket(new ServerStateChangePacket(serverData.getName(), ServerState.ONLINE));
     }
 
     public void onDisable() {
-        // Now we want to set the server online:
-        Server server = this.getServerManager().getOrSetupServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
-        server.setStatus("Offline");
-
         try {
             stopping = true;
-            if (this.serverDataUpdateThread != null && this.serverDataUpdateThread.isAlive()) {
-                this.serverDataUpdateThread.stop();
-            }
-            this.redisModule.sendPacket(new ServerMonitorStatusPacket(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), false));
             for (ModuleLoader module : modules) {
                 if (module != null) {
                     module.disable();
                 }
             }
+            this.getRedisModule().sendPacket(new ServerStateChangePacket(serverData.getName(), ServerState.OFFLINE));
             try {
                 Thread.sleep(1000L);
             } catch (Exception e) {
@@ -310,8 +297,6 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(serverManager);
         this.loadModule(couponManager);
         this.loadModule(announcementManager);
-
-        instance.getServer().getPluginManager().registerEvents(new QueueListener(), this);
     }
 
     public void setupPackets() {
@@ -321,7 +306,6 @@ public class OxygenBukkit extends JavaPlugin {
 
         redisModule.registerListener(new ServerListener());
         redisModule.registerListener(new QueuePacketListener());
-        redisModule.registerListener(new ServerPacketListener());
 
         redisModule.subscribeJedis();
     }

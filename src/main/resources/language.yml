@@ -65,9 +65,7 @@ chat-command:
       - "&aChat has just been put on slow mode by &6%player%&a."
 
 server-manager:
-  server-offline: "&6[Server Manager] &c%server% &7has just went &4Offline&7!"
-  server-online: "&6[Server Manager] &c%server% &7is now &aOnline&7!"
-
+  state-changed: "&6[Server Manager] &cThe status of &6%server% &chas just changed to &a%state%&c."
 whitelist-command:
   usage: "&cCorrect Usage: /whitelist <add|remove|on|off> <player>"
   already-whitelisted: "&cThis server's whitelist is already enabled."

@@ -15,44 +15,49 @@ package dev.hely.core.bukkit.server;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
+import dev.hely.core.bukkit.OxygenBukkit;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
 public class Server {
-    @Getter private final String name;
-    private double lastTps;
-    private String status;
-    private int onlinePlayers;
-    private int maximumPlayers;
-    private boolean useQueue;
-    private long lastHeartBeat;
-    private long startupTime;
+    private String name = "";
+    private long lastHeartbeat = System.currentTimeMillis();
+    private long startTime = 0;
+    private ServerState state = ServerState.UNKNOWN;
+    private int onlinePlayers = 0;
+    private int maxPlayers = 0;
+    private double tps = 0D;
+    private double fullTick = 0D;
+    private boolean queueEnabled = false;
+    private boolean queuePaused = false;
+    private int queueRate = 0;
+    private int playersInQueue = 0;
 
-    public boolean canJoin() {
-        return this.maximumPlayers > this.onlinePlayers;
+    public Server(String name) {
+        this.name = name;
+
+        OxygenBukkit.getInstance().getServerManager().getServers().add(this);
     }
 
-    public void cache(JedisPool pool) {
-        String key = ServerManager.SERVER_CACHE_KEY + this.name;
-        try (Jedis jedis = pool.getResource()) {
+    public boolean canJoin() {
+        return this.maxPlayers > this.onlinePlayers;
+    }
 
-            jedis.hset(key,"name",this.name);
+    public int getOnlinePlayers() {
+        return isOnline() ? onlinePlayers : 0;
+    }
 
-            jedis.hset(key,"lastTps","" + this.getLastTps());
-            jedis.hset(key,"status", this.status);
-            jedis.hset(key, "queue", String.valueOf(this.useQueue));
-            jedis.hset(key,"onlinePlayers","" + this.onlinePlayers);
-            jedis.hset(key,"maximumPlayers",""+ this.maximumPlayers);
-            jedis.hset(key, "lastHeartBeat", ""+ this.lastHeartBeat);
-            jedis.hset(key, "startupTime", ""+ this.startupTime);
-
-            jedis.hset(ServerManager.SERVER_LOOKUP_KEY + "name",this.name,"" + this.name);
+    public boolean isOnline() {
+        switch (state) {
+            case ONLINE:
+            case WHITELISTED:
+                return true;
+            default:
+                return false;
         }
     }
 }

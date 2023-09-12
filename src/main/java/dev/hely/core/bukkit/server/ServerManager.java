@@ -17,7 +17,10 @@ package dev.hely.core.bukkit.server;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
+import dev.hely.core.bukkit.server.packets.ServerStateChangePacket;
+import dev.hely.core.bukkit.server.packets.ServerUpdatePacket;
 import dev.hely.core.bukkit.server.queue.Queue;
+import dev.hely.lib.Tasks;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -31,15 +34,12 @@ import java.util.Map;
 public class ServerManager implements ModuleLoader {
     private boolean enabled;
     private List<Server> servers;
-    public static String SERVER_CACHE_KEY = "oxygen:server-cache:";
-    public static String SERVER_LOOKUP_KEY = "oxygen:server-lookup:";
-    public static int REDIS_KEY = 15;
 
     @Override
     public void enable() {
         this.servers = new ArrayList<>();
 
-        this.loadServers();
+        this.startServerMonitor();
     }
 
     @Override
@@ -89,17 +89,17 @@ public class ServerManager implements ModuleLoader {
     }
 
     public void removeClosedServers() {
-        this.servers.removeIf(next -> System.currentTimeMillis() - next.getLastHeartBeat() >= 15000L);
+        this.servers.removeIf(next -> System.currentTimeMillis() - next.getLastHeartbeat() >= 15000L);
     }
 
     public List<Server> getAvailableServers() {
         List<Server> toReturn = new ArrayList<>();
         for (Server server : this.servers) {
-            if (server.getStatus().equalsIgnoreCase("Offline")) {
+            if (!server.isOnline()) {
                 OxygenBukkit.getInstance().getLogger().info(server.getName() + " is currently offline.");
                 continue;
             }
-            if (server.getOnlinePlayers() >= server.getMaximumPlayers()) {
+            if (server.getOnlinePlayers() >= server.getMaxPlayers()) {
                 continue;
             }
 
@@ -109,46 +109,35 @@ public class ServerManager implements ModuleLoader {
         return toReturn;
     }
 
+    public void startServerMonitor() {
+        Server data = OxygenBukkit.getInstance().getServerManager().getOrSetupServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
+        Queue queue = new Queue(data.getName(), data.getName());
+        queue.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
 
+        OxygenBukkit.getInstance().getTasks().runAsyncTimer(() -> {
+            getServers().stream().
+                    filter(server -> System.currentTimeMillis() - server.getLastHeartbeat() > 15_000
+                            && server.getState() != ServerState.HEARTBEAT_TIMEOUT
+                            && server.getState() != ServerState.OFFLINE).forEach(server -> {
+                        server.setState(ServerState.HEARTBEAT_TIMEOUT);
+                        OxygenBukkit.getInstance().getRedisModule().sendPacket(new ServerStateChangePacket(server.getName(), ServerState.ONLINE));
+                    });
 
+            OxygenBukkit.getInstance().getServerData().setLastHeartbeat(System.currentTimeMillis());
+            OxygenBukkit.getInstance().getServerData().setState(Bukkit.hasWhitelist() ? ServerState.WHITELISTED : ServerState.ONLINE);
+            OxygenBukkit.getInstance().getServerData().setOnlinePlayers(Bukkit.getOnlinePlayers().size());
+            OxygenBukkit.getInstance().getServerData().setMaxPlayers(Bukkit.getMaxPlayers());
+            OxygenBukkit.getInstance().getServerData().setQueueEnabled(OxygenBukkit.getInstance().getServerData().isQueueEnabled());
+            OxygenBukkit.getInstance().getServerData().setQueuePaused(false);
+            OxygenBukkit.getInstance().getServerData().setQueueRate(5);
+            OxygenBukkit.getInstance().getServerData().setPlayersInQueue(Queue.getByName(OxygenBukkit.getInstance().getServerData().getName()).getPlayers().size());
 
-    public void loadServers() {
-        try (Jedis jedis = OxygenBukkit.getInstance().getRedisModule().getJedisPool().getResource()) {
-            for (String path : jedis.keys("oxygen:server-cache:*")) {
-                OxygenBukkit.getInstance().debug_message("Loading server cache:");
-                Map<String, String> map = jedis.hgetAll(path);
+            OxygenBukkit.getInstance().getRedisModule().sendPacket(new ServerUpdatePacket(OxygenBukkit.getInstance().getServerData()));
 
-                if (map == null || map.isEmpty()) {
-                    continue;
-                }
-                Server server = this.getOrSetupServer(map.get("name"));
-                if (server == null) {
-                    this.servers.add(server = new Server(map.get("name")));
-                }
+        }, 20L, 20L);
+    }
 
-                if (map.get("lastTps") == null) {
-                    server.setLastTps(0.0);
-                } else {
-                    server.setLastTps(Double.parseDouble(map.get("lastTps")));
-                }
-                server.setStatus(map.get("status"));
-                server.setOnlinePlayers(Integer.parseInt(map.get("onlinePlayers")));
-                server.setMaximumPlayers(Integer.parseInt(map.get("maximumPlayers")));
-                server.setLastHeartBeat(Long.parseLong(map.get("lastHeartBeat")));
-                server.setUseQueue(Boolean.parseBoolean(map.get("queue")));
-                server.setLastHeartBeat(Long.parseLong(map.get("lastHeartBeat")));
-                server.setStartupTime(System.currentTimeMillis());
-
-                Queue queue = Queue.getByName(server.getName());
-                if (queue == null && server.isUseQueue()) {
-                    queue = new Queue(server.getName(), server.getName());
-                    queue.setEnabled(true);
-                }
-
-                if (!this.servers.contains(server)) {
-                    this.servers.add(server);
-                }
-            }
-        }
+    public void updateServer(Server server) {
+        OxygenBukkit.getInstance().getServerManager().getServers().add(server);
     }
 }

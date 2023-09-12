@@ -25,8 +25,6 @@ import dev.hely.core.bungee.listener.PermissionListener;
 import dev.hely.core.bungee.maintenance.MaintenanceManager;
 import dev.hely.core.bungee.packet.PermissionPacketListener;
 import dev.hely.core.bungee.databases.redis.RedisBungeeModule;
-import dev.hely.core.bungee.server.BungeeServerManager;
-import dev.hely.core.bungee.server.runnable.ServerDataUpdateThread;
 import dev.hely.core.bungee.utils.BungeeCC;
 import dev.hely.core.bungee.utils.BungeeConfig;
 import dev.hely.lib.CC;
@@ -57,8 +55,6 @@ public class OxygenBungee extends Plugin {
     private List<ModuleLoader> modules;
     private MaintenanceManager maintenanceManager;
     private MongoManager mongoManager;
-    private BungeeServerManager bungeeServerManager;
-    private ServerDataUpdateThread serverDataUpdateThread;
 
     private final Map<UUID, List<String>> playerPermissions = new HashMap<>();
     public static final Gson PLAIN_GSON = (new GsonBuilder()).serializeNulls().create();
@@ -84,8 +80,6 @@ public class OxygenBungee extends Plugin {
         setupCommands();
         setupListeners();
         setupRunnables();
-
-        this.serverDataUpdateThread = new ServerDataUpdateThread(this);
     }
 
     public void registerConfigs() {
@@ -115,9 +109,6 @@ public class OxygenBungee extends Plugin {
 
     @Override
     public void onDisable() {
-        if (this.serverDataUpdateThread != null && this.serverDataUpdateThread.isAlive()) {
-            this.serverDataUpdateThread.stop();
-        }
         try {
             Thread.sleep(1000L);
         } catch (Exception e) {
@@ -131,7 +122,6 @@ public class OxygenBungee extends Plugin {
         redisBungeeModule = new RedisBungeeModule();
         maintenanceManager = new MaintenanceManager();
         mongoManager = new MongoManager();
-        bungeeServerManager = new BungeeServerManager();
     }
 
     public void setupModules(){
@@ -139,7 +129,6 @@ public class OxygenBungee extends Plugin {
 
         this.loadModule(maintenanceManager);
         this.loadModule(mongoManager);
-        this.loadModule(bungeeServerManager);
 
         OxygenBungee.getInstance().getLogger().info(BungeeCC.translate("&6[Oxygen] &aSuccessfully registered &a&n" + modules.size() + " Modules&a."));
     }

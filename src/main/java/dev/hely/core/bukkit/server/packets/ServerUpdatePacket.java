@@ -7,8 +7,8 @@ package dev.hely.core.bukkit.server.packets;
 // If any questions, please contact on discord.
 //
 // File Information:
-//   Path: dev.hely.core.bungee.server.packets
-//   Date: Monday, August 14, 2023 - 11:59 AM
+//   Path: dev.hely.core.bukkit.server.packets
+//   Date: Tuesday, September 12, 2023 - 4:57 PM
 //
 // Contact Information:
 //   Discord: Andrew!!#4468
@@ -16,13 +16,12 @@ package dev.hely.core.bukkit.server.packets;
 //============================================================
 
 import dev.hely.core.bukkit.modules.database.redis.packet.Packet;
-import lombok.AllArgsConstructor;
+import dev.hely.core.bukkit.server.Server;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ServerUpdatePacket implements Packet {
-    @Getter private String name;
-    private String status;
-    private long startupTime;
+    private final Server server;
 }

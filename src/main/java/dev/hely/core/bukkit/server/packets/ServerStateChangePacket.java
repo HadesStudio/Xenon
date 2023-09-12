@@ -8,7 +8,7 @@ package dev.hely.core.bukkit.server.packets;
 //
 // File Information:
 //   Path: dev.hely.core.bukkit.server.packets
-//   Date: Wednesday, August 30, 2023 - 3:22 PM
+//   Date: Tuesday, September 12, 2023 - 4:42 PM
 //
 // Contact Information:
 //   Discord: Andrew!!#4468
@@ -16,12 +16,13 @@ package dev.hely.core.bukkit.server.packets;
 //============================================================
 
 import dev.hely.core.bukkit.modules.database.redis.packet.Packet;
+import dev.hely.core.bukkit.server.ServerState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ServerMonitorStatusPacket implements Packet {
-    public String server;
-    public boolean starting; // False if server is closing, true if starting idiota
+public class ServerStateChangePacket implements Packet {
+    private final String name;
+    private final ServerState state;
 }

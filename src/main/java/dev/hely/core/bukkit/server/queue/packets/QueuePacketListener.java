@@ -148,8 +148,8 @@ public class QueuePacketListener implements PacketListener {
 
         if (packet.getObject().get("global").getAsBoolean()) {
             if (OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name").equals(name)) {
-                OxygenBukkit.getInstance().getServerManager().getOrSetupServer(name).setUseQueue(!OxygenBukkit.getInstance().getServerManager().getOrSetupServer(name).isUseQueue());
-                check = OxygenBukkit.getInstance().getServerManager().getOrSetupServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name")).isUseQueue();
+                OxygenBukkit.getInstance().getServerManager().getOrSetupServer(name).setQueueEnabled(!OxygenBukkit.getInstance().getServerManager().getOrSetupServer(name).isQueueEnabled());
+                check = OxygenBukkit.getInstance().getServerManager().getOrSetupServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name")).isQueueEnabled();
             }
         } else {
             Queue queue = Queue.getByName(name);

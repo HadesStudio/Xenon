@@ -19,6 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.core.menus.OxygenMenu;
 import dev.hely.core.bukkit.core.menus.buttons.InfoButton;
 import dev.hely.core.bukkit.server.Server;
+import dev.hely.core.bukkit.server.ServerState;
 import dev.hely.core.bukkit.utils.TPSUtil;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.maker.ItemMaker;
@@ -128,9 +129,9 @@ public class ServerListMenu extends PaginatedMenu {
         Server server;
 
         public Material getMaterial() {
-            if(server.getStatus().equalsIgnoreCase("Offline")) return Material.REDSTONE_BLOCK;
-            if(server.getStatus().equalsIgnoreCase("Whitelisted")) return Material.GOLD_BLOCK;
-            if(server.getStatus().equalsIgnoreCase("Online")) return Material.EMERALD_BLOCK;
+            if(server.getState() == ServerState.OFFLINE) return Material.REDSTONE_BLOCK;
+            if(server.getState() == ServerState.WHITELISTED) return Material.GOLD_BLOCK;
+            if(server.getState() == ServerState.ONLINE) return Material.EMERALD_BLOCK;
             return null;
         }
 
@@ -138,19 +139,19 @@ public class ServerListMenu extends PaginatedMenu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData((short) 0);
-            builder.setDisplayName("&6Server - " + server.getName() + " &7(&c" + server.getStatus() + "&7)");
+            builder.setDisplayName("&6Server - " + server.getName() + " &7(&c" + server.getState().getDisplayName() + "&7)");
             builder.setLore(Arrays.asList(
                     "&7Below, is a few options you have",
                     "&7to modify and make changes to this",
                     "&7server.",
                     "&7",
                     "&6Server Information:",
-                    " &6- TPS: &c" + TPSUtil.getTPSStatus(server.getLastTps()),
-                    " &6- Players: &c" + server.getOnlinePlayers() + "&7/&c" + server.getMaximumPlayers(),
-                    " &6- Status: &c" + server.getStatus(),
-                    " &6- Start Time: &c" + TimeUtil.formatIntoCalendarString(new Date(server.getStartupTime())),
-                    " &6- Uptime: &c" + TimeUtil.formatTimeMillis(System.currentTimeMillis() - server.getStartupTime()),
-                    " &6- Last Haertbeat: &c" + TimeUtil.formatTimeMillis(System.currentTimeMillis() - server.getLastHeartBeat()),
+                    " &6- TPS: &c" + TPSUtil.getTPSStatus(server.getTps()),
+                    " &6- Players: &c" + server.getOnlinePlayers() + "&7/&c" + server.getMaxPlayers(),
+                    " &6- Status: &c" + server.getState().getDisplayName(),
+                    " &6- Start Time: &c" + TimeUtil.formatIntoCalendarString(new Date(server.getStartTime())),
+                    " &6- Uptime: &c" + TimeUtil.formatTimeMillis(System.currentTimeMillis() - server.getStartTime()),
+                    " &6- Last Haertbeat: &c" + TimeUtil.formatTimeMillis(System.currentTimeMillis() - server.getLastHeartbeat()),
                     "&7",
                     "&6Left-Click &7to view more information.",
                     "&6Middle-Click &7to connect to this server.",
