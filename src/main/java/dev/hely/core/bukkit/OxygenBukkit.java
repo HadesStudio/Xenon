@@ -157,9 +157,9 @@ public class OxygenBukkit extends JavaPlugin {
         setupPackets();
         registerTasks();
 
-        //new QueuePositionRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-        //new QueueUpdateRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-        //new MainQueueRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        new QueuePositionRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        new QueueUpdateRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
+        new MainQueueRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         new HeartBeatRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         this.serverDataUpdateThread = new ServerDataUpdateThread(this);
         this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
@@ -270,7 +270,7 @@ public class OxygenBukkit extends JavaPlugin {
         staffManager = new StaffManager();
         announcementManager = new AnnouncementManager();
 
-        //queueManager = new QueueManager();
+        queueManager = new QueueManager();
         serverManager = new ServerManager();
         couponManager = new CouponManager();
     }
@@ -294,12 +294,12 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(tfaManager);
         this.loadModule(staffManager);
 
-        //this.loadModule(queueManager);
+        this.loadModule(queueManager);
         this.loadModule(serverManager);
         this.loadModule(couponManager);
         this.loadModule(announcementManager);
 
-        //instance.getServer().getPluginManager().registerEvents(new QueueListener(), this);
+        instance.getServer().getPluginManager().registerEvents(new QueueListener(), this);
     }
 
     public void setupPackets() {
@@ -308,7 +308,7 @@ public class OxygenBukkit extends JavaPlugin {
         redisModule.registerListener(new TagPacketListener(tagManager));
 
         redisModule.registerListener(new ServerListener());
-        //redisModule.registerListener(new QueuePacketListener());
+        redisModule.registerListener(new QueuePacketListener());
         redisModule.registerListener(new ServerPacketListener());
 
         redisModule.subscribeJedis();

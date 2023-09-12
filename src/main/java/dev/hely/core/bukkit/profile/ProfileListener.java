@@ -64,6 +64,7 @@ public class ProfileListener implements Listener {
             profile.getAddresses().add(event.getAddress().getHostAddress());
         }
 
+        profile.setupAlts();
         if (profile.getAlts().size() == 0 || profile.getAlts().isEmpty()) {
             profile.setupAlts();
         }

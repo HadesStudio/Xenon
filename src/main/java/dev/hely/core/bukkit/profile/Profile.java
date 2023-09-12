@@ -57,7 +57,7 @@ public class Profile {
     private String currentAddress = "";
     private List<String> addresses = new ArrayList<>();
 
-    private List<UUID> alts;
+    private List<UUID> alts = new ArrayList<>();
 
     private Long firstSeen;
     private Long lastSeen;
