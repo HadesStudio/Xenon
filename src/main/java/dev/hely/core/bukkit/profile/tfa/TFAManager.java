@@ -82,7 +82,6 @@ public class TFAManager implements ModuleLoader {
         authData.setArmor(player.getInventory().getArmorContents());
         authData.setGameMode(player.getGameMode());
         authData.setLocation(player.getLocation());
-
         authMode.put(player.getUniqueId(), authData);
 
         player.getInventory().clear();

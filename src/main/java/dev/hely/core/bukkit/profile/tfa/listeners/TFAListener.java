@@ -17,6 +17,7 @@ package dev.hely.core.bukkit.profile.tfa.listeners;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.core.bukkit.profile.tfa.data.AuthData;
 import dev.hely.core.bukkit.profile.tfa.utils.TFAUtil;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
@@ -149,8 +150,14 @@ public class TFAListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        TFAUtil.removeQrMapFromInventory(player);
-        OxygenBukkit.getInstance().getTfaManager().giveItems(player);
+        if (OxygenBukkit.getInstance().getTfaManager().getAuthMode().get(player.getUniqueId()) != null) {
+            AuthData authData = OxygenBukkit.getInstance().getTfaManager().getAuthMode().get(player.getUniqueId());
+            player.getInventory().setContents(authData.getInvItems());
+            player.getInventory().setArmorContents(authData.getArmor());
+            player.setGameMode(authData.getGameMode());
+            player.updateInventory();
+            OxygenBukkit.getInstance().getTfaManager().getAuthMode().remove(player.getUniqueId());
+        }
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
