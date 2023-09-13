@@ -36,8 +36,8 @@ public class RebootCommand  extends BaseCommand {
             if (sender instanceof Player) { // if a player typed "reboot":
                 Player senderPlayer = (Player) sender;
                 if (senderPlayer.hasPermission("oxygen.command.reboot")) { // then we want to start a reboot
-                    sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started")));
-                    OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%player%", senderPlayer.getName()).replace("%time%", TimeUtil.getMoreDetailedTime(60))));
+                    sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%time%", TimeUtil.getMoreDetailedTime(60000))));
+                    OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.staff-broadcast").replace("%player%", senderPlayer.getName()).replace("%time%", TimeUtil.getMoreDetailedTime(60))));
                     OxygenBukkit.getInstance().getRebootManager().reboot();
                 } else {
                     if (OxygenBukkit.getInstance().getRebootManager().isRebooting()) {
@@ -50,8 +50,8 @@ public class RebootCommand  extends BaseCommand {
                     }
                 }
             } else { // if console typed "reboot":
-                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started")));
-                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%player%", sender.getName()).replace("%time%", TimeUtil.getMoreDetailedTime(60000))));
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%time%", TimeUtil.getMoreDetailedTime(60000))));
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.staff-broadcast").replace("%player%", sender.getName()).replace("%time%", TimeUtil.getMoreDetailedTime(duration))));
                 OxygenBukkit.getInstance().getRebootManager().reboot();
             }
         } else if (args[0].equalsIgnoreCase("cancel")) {

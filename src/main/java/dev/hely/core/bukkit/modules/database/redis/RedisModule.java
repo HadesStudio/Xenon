@@ -2,6 +2,8 @@ package dev.hely.core.bukkit.modules.database.redis;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
@@ -32,6 +34,9 @@ import java.util.stream.Collectors;
 public class RedisModule implements ModuleLoader {
     private boolean enabled;
 
+    private Gson gson = new GsonBuilder().create();
+    private int maxPools;
+    private int timeout;
     private boolean auth;
     private String password;
     private String channel;
@@ -42,50 +47,39 @@ public class RedisModule implements ModuleLoader {
 
     @Override
     public void enable() {
+        this.maxPools = 20;
+        this.timeout = 2000;
+        this.listeners = ArrayListMultimap.create();
+        this.channels = new HashSet<>();
+
         String host = OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.redis.host");
         int port = OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getInt("database.redis.port");
         this.password = OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.redis.auth.password");
         this.auth = this.password != null && this.password.length() > 0;
         this.channel = OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.redis.channel");
 
-        try {
-            this.jedisPool = new JedisPool(new JedisPoolConfig(), host, port, 30_000);
-            if (!this.password.isEmpty()) {
-
-                try (Jedis jedis = this.jedisPool.getResource()) {
-                    jedis.auth(this.password);
-                } catch (JedisException ex) {
-                    ex.printStackTrace();
-                }
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(maxPools);
+        jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
+        if (!this.password.isEmpty()) {
+            try (Jedis jedis = jedisPool.getResource()){
+                jedis.auth(getPassword());
+            } catch (JedisException ex) {
+                ex.printStackTrace();
             }
-        } catch (Exception e) {
-            this.jedisPool = null;
-            OxygenBukkit.getInstance().debug_message("1: You do not have redis installed! Cross server synchronization will NOT work. (Message: " + e.getMessage() + ")");
         }
-
-        this.listeners = ArrayListMultimap.create();
-        this.channels = new HashSet<>();
-
-        try {
-            ForkJoinPool.commonPool().execute(() -> {
-                try (Jedis jedis = this.jedisPool.getResource()) {
-                    jedis.subscribe(this.getJedisPubSub(), channel);
-                }
-            });
-        } catch (Exception e) {
-            OxygenBukkit.getInstance().debug_message("2: You do not have redis installed! Cross server synchronization will NOT work. (Message: " + e.getMessage() + ")");
-        }
-
-        enabled = true;
     }
 
     @Override
     public void disable() {
-        if (jedisPool != null) {
-            jedisPool.close();
-        }
-
         enabled = false;
+
+        if (isRedisConnected()) {
+            jedisPool.close();
+            jedisPool = null;
+            listeners.clear();
+            channels.clear();
+        }
     }
 
     @Override
@@ -102,6 +96,7 @@ public class RedisModule implements ModuleLoader {
     public String getName() {
         return "Redis";
     }
+
 
     public boolean isRedisConnected() {
         return this.jedisPool != null && !this.jedisPool.isClosed();

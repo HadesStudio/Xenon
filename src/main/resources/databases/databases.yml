@@ -20,4 +20,4 @@ database:
     channel: "OxygenGlobal"
     database-id: 0
     auth: # Leave password field blank for no auth.
-      password: ""
+      password: "Oxygen"
