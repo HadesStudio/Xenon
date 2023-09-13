@@ -476,6 +476,23 @@ public class Profile {
         return playTime + session.calculateDifference();
     }
 
+    public int getQueuePriority() {
+        Grant grant = null;
+
+        for (Grant current : this.getActiveGrants()) {
+            if (grant == null) {
+                grant = current;
+                continue;
+            }
+            if (current.getRank().getQueuePriority() > grant.getRank().getQueuePriority()) {
+                grant = current;
+            }
+        }
+
+        return (grant == null ? 0 : grant.getRank().getQueuePriority());
+    }
+
+
     public void setupAlts() {
         alts.clear();
 

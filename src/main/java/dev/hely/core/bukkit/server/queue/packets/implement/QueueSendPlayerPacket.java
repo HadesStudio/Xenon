@@ -8,20 +8,22 @@ package dev.hely.core.bukkit.server.queue.packets.implement;
 //
 // File Information:
 //   Path: dev.hely.core.bukkit.server.queue.packets.implement
-//   Date: Tuesday, August 15, 2023 - 8:16 PM
+//   Date: Tuesday, September 12, 2023 - 6:32 PM
 //
 // Contact Information:
 //   Discord: Andrew!!#4468
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import com.google.gson.JsonObject;
 import dev.hely.core.bukkit.modules.database.redis.packet.Packet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 @AllArgsConstructor
-public class QueueClearPacket implements Packet {
-    private JsonObject object;
+public class QueueSendPlayerPacket implements Packet {
+    private final String queueName;
+    private final UUID playerUuid;
 }

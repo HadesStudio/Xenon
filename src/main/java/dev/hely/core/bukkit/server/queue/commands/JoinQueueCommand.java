@@ -15,14 +15,12 @@ package dev.hely.core.bukkit.server.queue.commands;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import com.google.gson.JsonObject;
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.server.Server;
 import dev.hely.core.bukkit.server.ServerState;
-import dev.hely.core.bukkit.server.queue.Queue;
-import dev.hely.core.bukkit.server.queue.QueueRank;
-import dev.hely.core.bukkit.server.queue.packets.implement.QueueAddPlayerPacket;
+import dev.hely.core.bukkit.server.queue.packets.implement.QueueJoinPacket;
+import dev.hely.core.bukkit.server.queue.packets.implement.QueueSendPlayerPacket;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.core.bungee.utils.BungeeUtil;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -42,42 +40,30 @@ public class JoinQueueCommand extends BaseCommand {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("join-queue-command.usage")));
             return;
         }
-        Queue queue = Queue.getByUuid(player.getUniqueId());
-        if(queue != null) {
-            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.in-queue").replace("%server%", args[0])));
-            return;
-        }
-        queue = Queue.getByName(args[0]);
-        if(queue == null) {
+        Server server = OxygenBukkit.getInstance().getServerManager().getServer(args[0]);
+        if (server == null) {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.not-exist").replace("%server%", args[0])));
             return;
         }
-        if(queue.getServerData() == null || !(queue.getServerData().getState() == ServerState.ONLINE)) {
+        if (server.getState() == ServerState.OFFLINE) {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.offline").replace("%server%", args[0])));
             return;
         }
-        if (queue.containsPlayer(player.getUniqueId())) {
-            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.already-queue")));
+        if (!server.isQueueEnabled()) {
+            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.cannot-queue").replace("%server%", args[0])));
+            return;
         }
         if (player.hasPermission("oxygen.queue.bypass")) {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.bypassed-queue").replace("%server%", args[0])));
-            BungeeUtil.sendToServer(player, args[0]);
+            OxygenBukkit.getInstance().getRedisModule().sendPacket(new QueueSendPlayerPacket(server.getName(), player.getUniqueId()));
             return;
         }
-        QueueRank queueRank = OxygenBukkit.getInstance().getQueueManager().getPriority(player);
+        if (OxygenBukkit.getInstance().getQueueManager().isQueueingFor(player.getUniqueId(), server.getName())) {
+            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.already-queue")));
+            return;
+        }
 
-        JsonObject rankObject = new JsonObject();
-        rankObject.addProperty("rankName", queueRank.getName());
-        rankObject.addProperty("priority", queueRank.getPriority());
-
-        JsonObject playerObject = new JsonObject();
-        playerObject.addProperty("uuid", player.getUniqueId().toString());
-        playerObject.add("rank", rankObject);
-
-        JsonObject queueObject = new JsonObject();
-        queueObject.addProperty("name", queue.getName());
-        queueObject.add("player", playerObject);
-
-        OxygenBukkit.getInstance().getRedisModule().sendPacket(new QueueAddPlayerPacket(queueObject));
+        OxygenBukkit.getInstance().getRedisModule().sendPacket(new QueueJoinPacket(server.getName(), player.getUniqueId()));
+        player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.joined").replace("%server_name%", server.getName())));
     }
 }

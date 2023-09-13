@@ -28,13 +28,19 @@ import lombok.AllArgsConstructor;
 public class ServerListener implements PacketListener {
     @IncomingPacketHandler
     public void onServerUpdate(ServerStateChangePacket packet) {
-        Server server = OxygenBukkit.getInstance().getServerManager().getOrSetupServer(packet.getName());
+        Server server = OxygenBukkit.getInstance().getServerManager().getServer(packet.getName());
         ServerState state = packet.getState();
 
-        if (server != null) {
-            server.setState(state);
-            server.setLastHeartbeat(System.currentTimeMillis());
+        if (server == null) {
+            return;
         }
+        if (server.getState() == packet.getState()) { // We don't want to spam messages.. simple fix xd
+            return;
+        }
+
+        server.setState(state);
+        server.setLastHeartbeat(System.currentTimeMillis());
+
 
         String message = OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("server-manager.state-changed").replace("%server%", server.getName()).replace("%state%", state.getDisplayName());
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.staff", server.getName(), message));

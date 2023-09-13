@@ -15,24 +15,7 @@ package dev.hely.core.bukkit.server.queue.listener;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.profile.Profile;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 public class QueueListener implements Listener {
-    @EventHandler
-    public void onPlayerLeave(PlayerQuitEvent event) {
-        event.setQuitMessage(null);
-
-        Player player = event.getPlayer();
-        Profile data = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
-        if (data == null) {
-            return;
-        }
-
-        OxygenBukkit.getInstance().getTasks().runAsync(() -> OxygenBukkit.getInstance().getQueueManager().removePlayer(player.getUniqueId()));
-    }
 }

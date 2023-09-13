@@ -7,22 +7,23 @@ package dev.hely.core.bukkit.server.queue.packets.implement;
 // If any questions, please contact on discord.
 //
 // File Information:
-//   Path: dev.hely.core.bukkit.server.queue.packets
-//   Date: Tuesday, August 15, 2023 - 7:52 PM
+//   Path: dev.hely.core.bukkit.server.queue.packets.implement
+//   Date: Tuesday, September 12, 2023 - 6:36 PM
 //
 // Contact Information:
 //   Discord: Andrew!!#4468
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import com.google.gson.JsonObject;
 import dev.hely.core.bukkit.modules.database.redis.packet.Packet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 @AllArgsConstructor
-public class QueueRemovePlayerPacket implements Packet {
-    private final JsonObject object;
+public class QueueLeavePacket implements Packet {
+    private final String queueName;
+    private final UUID playerUuid;
 }
-

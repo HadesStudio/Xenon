@@ -15,7 +15,7 @@ import dev.hely.core.bukkit.commands.implement.punishment.undo.UnMuteCommand;
 import dev.hely.core.bukkit.commands.implement.staff.*;
 import dev.hely.core.bukkit.profile.note.command.NotesCommand;
 import dev.hely.core.bukkit.server.commands.SetSlotsCommand;
-import dev.hely.core.bukkit.server.queue.commands.JoinQueueCommand;
+import dev.hely.core.bukkit.server.queue.commands.*;
 import dev.hely.core.bukkit.commands.OxygenCommand;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.commands.EditProfileCommand;
@@ -25,8 +25,6 @@ import dev.hely.core.bukkit.profile.profilesystem.commands.NotificationsCommand;
 import dev.hely.core.bukkit.profile.tfa.commands.AuthCommand;
 import dev.hely.core.bukkit.profile.tfa.commands.RemoveAuthCommand;
 import dev.hely.core.bukkit.ranks.grants.command.GrantsCommand;
-import dev.hely.core.bukkit.server.queue.commands.LeaveQueueCommand;
-import dev.hely.core.bukkit.server.queue.commands.QueueListCommand;
 import dev.hely.core.bukkit.server.reboot.commands.RebootCommand;
 import dev.hely.core.bukkit.staff.requests.commands.HelpopCommand;
 import dev.hely.core.bukkit.staff.requests.commands.ReportCommand;
@@ -148,6 +146,8 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new ReportCommand());
         loadedCommands.add(new HelpopCommand());
         loadedCommands.add(new RebootCommand());
+        loadedCommands.add(new QueueToggleCommand());
+        loadedCommands.add(new QueuePauseCommand());
 
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));

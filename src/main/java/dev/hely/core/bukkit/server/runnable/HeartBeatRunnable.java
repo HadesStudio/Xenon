@@ -37,10 +37,6 @@ public class HeartBeatRunnable extends BukkitRunnable {
                 if (!server.isOnline()) {
                     return;
                 }
-                Queue queue = Queue.getByName(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
-                if (queue != null && queue.isEnabled()) {
-                    queue.getPlayers().clear();
-                }
 
                 Bukkit.getOnlinePlayers().stream().filter(player -> player.isOp()
                         && OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()) != null).forEach(player -> {

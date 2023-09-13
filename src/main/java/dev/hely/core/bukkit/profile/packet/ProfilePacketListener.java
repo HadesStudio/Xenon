@@ -5,8 +5,10 @@ import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
 import dev.hely.core.bukkit.profile.packet.implement.*;
+import dev.hely.lib.CC;
 import dev.hely.lib.Messages;
 import lombok.AllArgsConstructor;
+import org.bukkit.entity.Player;
 
 /**
  * Created By LeandroSSJ
@@ -154,6 +156,14 @@ public class ProfilePacketListener implements PacketListener {
                 .replace("%server%", server)
                 .replace("%message%", message)
                 .replace("%reported_player%", reportedPlayer), "oxygen.staff");
+    }
+
+    @IncomingPacketHandler
+    public void onProfileMessagePacket(ProfileMessagePacket packet) {
+        Player player = packet.getPlayer();
+        if (player != null && player.isOnline()) {
+            Messages.sendMessage(CC.translate(packet.getMessage()));
+        }
     }
 
     @IncomingPacketHandler

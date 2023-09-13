@@ -7,9 +7,6 @@
 
 database:
   mongo: # This is the configuration section for the MONGO DATABASE ONLY.
-    connection:
-      enabled: false
-      url: ""
     address: "127.0.0.1"
     port: 27017
     database_name: "OxygenGlobal"

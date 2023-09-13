@@ -58,7 +58,7 @@ public class RebootTask extends BukkitRunnable {
     public void run() {
         if (ANNOUNCE_TIMES.contains(timeBeforeReboot)) {
             for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("reboot.rebooting")) {
-                String formattedMessage = message.replace("%time%", TimeUtil.readableTime(timeBeforeReboot));
+                String formattedMessage = message.replace("%time%", TimeUtil.getMoreDetailedTime(timeBeforeReboot * 1000L));
                 Bukkit.broadcastMessage(CC.translate(formattedMessage));
             }
         }

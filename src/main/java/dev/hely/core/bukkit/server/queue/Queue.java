@@ -16,103 +16,150 @@ package dev.hely.core.bukkit.server.queue;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.server.Server;
+import dev.hely.core.bukkit.server.queue.packets.implement.QueueSendPlayerPacket;
+import dev.hely.core.bukkit.utils.UUIDUtil;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+@RequiredArgsConstructor
 public class Queue {
 
-    @Getter private static List<Queue> queues = new ArrayList<>();
+    public static final String WEIGHT_FORMAT = "queue:%s:weight";
+    public static final String PLAYERS_FORMAT = "queue:%s:players";
+    public static final String POSITION_FORMAT = "queue-data:%s:position";
 
-    private String name;
-    private String formattedName;
-    private PriorityQueue<QueuePlayer> players = new PriorityQueue<>(QueuePlayer::compareTo);
-    private boolean enabled;
+    @Getter
+    private final LinkedList<UUID> players = new LinkedList<>();
+    private final ConcurrentHashMap<UUID, Integer> weight = new ConcurrentHashMap<>();
+    private final OxygenBukkit oxygen;
 
-    public Queue(String name, String formattedName) {
-        this.name = name;
-        this.formattedName = formattedName;
+    public int getJoinPosition(Profile profile) {
+        if (players.isEmpty())
+            return -1;
 
-        queues.add(this);
+        int playerWeight = profile.getQueuePriority();
+        if (playerWeight == 0)
+            return -1;
+
+        for (int i = 0; i < players.size(); i++) {
+            Integer otherWeight = weight.get(players.get(i));
+            if (playerWeight >= otherWeight)
+                return playerWeight > otherWeight ? i : i + 1;
+        }
+
+        return -1;
     }
 
-    public Server getServerData() {
-        return OxygenBukkit.getInstance().getServerManager().getOrSetupServer(this.name);
+    public void addPlayer(Profile profile) {
+        if (players.contains(profile.getUniqueId()))
+            return;
+        int position = getJoinPosition(profile);
+        if (position == -1)
+            players.addLast(profile.getUniqueId());
+        else players.add(position, profile.getUniqueId());
+
+        weight.put(profile.getUniqueId(), profile.getActiveHighestRank().getWeight());
+        updatePositions();
     }
 
-    public int getPosition(UUID uuid) {
-        try {
-            if(!this.containsPlayer(uuid)) {
-                return 0;
+    public void removePlayer(Profile profile) {
+        if (!players.contains(profile.getUniqueId()))
+            return;
+
+        players.remove(profile.getUniqueId());
+        weight.remove(profile.getUniqueId());
+        updatePositions();
+        deleteQueueData(profile.getUniqueId());
+    }
+
+    public void save() {
+        OxygenBukkit.getInstance().getRedisModule().executeBackendCommand(redis -> {
+            List<String> strings = new ArrayList<>();
+            for (UUID player : players) {
+                strings.add(player.toString());
             }
-        } catch (Exception e) {
-            return 0;
-        }
 
-        PriorityQueue<QueuePlayer> queue = new PriorityQueue<>(this.players);
-        int position = 0;
+            redis.set(String.format(PLAYERS_FORMAT, OxygenBukkit.getInstance().getServerData().getName()), StringUtils.join(strings, ";"));
+            strings.clear();
+            weight.forEach((uuid, value) -> redis.hset(
+                    String.format(WEIGHT_FORMAT, OxygenBukkit.getInstance().getServerData().getName()), uuid.toString(), String.valueOf(value))
+            );
+            return null;
+        });
+    }
 
-        while (!queue.isEmpty()) {
-            QueuePlayer player = queue.poll();
-
-            if(player.getUuid().equals(uuid)) {
-                break;
+    public void load() {
+        OxygenBukkit.getInstance().getRedisModule().executeBackendCommand(redis -> {
+            players.clear();
+            if (redis.exists(String.format(PLAYERS_FORMAT, OxygenBukkit.getInstance().getServerData().getName()))) {
+                players.addAll(Arrays.stream(redis.get(String.format(PLAYERS_FORMAT, OxygenBukkit.getInstance().getServerData().getName())).split(";"))
+                        .filter(UUIDUtil::isUUID)
+                        .map(UUID::fromString)
+                        .collect(Collectors.toList()));
             }
 
-            position++;
-        }
-
-        return position + 1;
+            weight.clear();
+            redis.hgetAll(String.format(WEIGHT_FORMAT, OxygenBukkit.getInstance().getServerData().getName()))
+                    .forEach((uuid, value) -> weight.put(UUID.fromString(uuid), Integer.valueOf(value)));
+            return null;
+        });
     }
 
-    public static Queue getByName(String name) {
-        return queues.stream().filter(queue -> queue.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
-    }
+    private void updatePositions() {
+        OxygenBukkit.getInstance().getRedisModule().executeBackendCommand(redis -> {
+            for (UUID uuid : players) {
+                if (uuid == null)
+                    continue;
 
-    public static Queue getByUuid(UUID uuid) {
-        for(Queue queue : Queue.getQueues()) {
-            for(QueuePlayer queuePlayer : queue.getPlayers()) {
-                if(queuePlayer.getUuid().equals(uuid)) {
-                    return queue;
-                }
+                redis.hset(String.format(POSITION_FORMAT, uuid), OxygenBukkit.getInstance().getServerData().getName(),
+                        String.valueOf(players.indexOf(uuid)));
             }
-        }
 
-        return null;
-    }
 
-    public boolean containsPlayer(UUID uuid) {
-        for (QueuePlayer player : this.players) {
-            if (player.getUuid().equals(uuid)) {
-                return true;
+            List<String> strings = new ArrayList<>();
+            for (UUID player : players) {
+                strings.add(player.toString());
             }
-        }
 
-        return false;
+            redis.set(String.format(PLAYERS_FORMAT, OxygenBukkit.getInstance().getServerData().getName()), StringUtils.join(strings, ";"));
+            strings.clear();
+            return null;
+        });
+        save();
     }
 
-    public void cache(JedisPool pool) {
-        String key = QueueManager.QUEUE_CACHE_KEY + this.name;
+    private void deleteQueueData(UUID uuid) {
+        OxygenBukkit.getInstance().getRedisModule().executeBackendCommand(redis -> {
+            redis.hdel(String.format(POSITION_FORMAT, uuid.toString()), OxygenBukkit.getInstance().getServerData().getName());
+            return null;
+        });
+    }
 
-        try (Jedis jedis = pool.getResource()) {
-            jedis.hset(key,"name",this.name);
-            jedis.hset(key,"formatedName", this.formattedName);
-            jedis.hset(key, "enabled", String.valueOf(this.enabled));
-            jedis.hset(key, "players", OxygenBukkit.PLAIN_GSON.toJson(this.players.stream().map(QueuePlayer::toString).collect(Collectors.toList())));
+    public void sendNext() {
+        if (players.isEmpty())
+            return;
 
-            jedis.hset(QueueManager.QUEUE_LOOKUP_KEY + "name", this.name, String.valueOf(this.enabled));
-        }
+        if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers())
+            return;
+
+        UUID next = players.removeFirst();
+        if (next == null)
+            return;
+
+        OxygenBukkit.getInstance().getRedisModule().sendPacket(new QueueSendPlayerPacket(OxygenBukkit.getInstance().getServerData().getName(), next));
+        updatePositions();
+        deleteQueueData(next);
     }
 
 }
-

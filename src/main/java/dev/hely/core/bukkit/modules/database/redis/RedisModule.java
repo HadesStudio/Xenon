@@ -173,4 +173,27 @@ public class RedisModule implements ModuleLoader {
             return null;
         });
     }
+
+    public <T> T executeCommand(RedisCommand<T> command) {
+        return this.executeCommand(command, jedisPool);
+    }
+
+    public <T> T executeBackendCommand(RedisCommand<T> command) {
+        return this.executeCommand(command, jedisPool);
+    }
+
+    private <T> T executeCommand(RedisCommand<T> command, JedisPool pool) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return command.execute(jedis);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+    }
 }

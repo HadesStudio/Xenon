@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
@@ -23,6 +24,8 @@ import com.google.gson.GsonBuilder;
  */
 public class UUIDUtil {
     private static  Gson GSON = new GsonBuilder().create();
+    private static Pattern UUID_PATTERN = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0" +
+            "-9a-fA-F]{3}-[0-9a-fA-F]{12}");
 
     public static String fetchName(UUID uuid) {
         String formattedUUID = uuid.toString().replace("-", "");
@@ -41,6 +44,10 @@ public class UUIDUtil {
         } catch (Exception exception) {
             return null;
         }
+    }
+
+    public static boolean isUUID(String string) {
+        return UUID_PATTERN.matcher(string).find();
     }
 
     public static UUID fetchUUID(String name) {

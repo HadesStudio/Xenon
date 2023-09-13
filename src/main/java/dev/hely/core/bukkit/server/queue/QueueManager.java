@@ -15,75 +15,110 @@ package dev.hely.core.bukkit.server.queue;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import com.google.gson.JsonObject;
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.modules.ModuleLoader;
-import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.ranks.rank.Rank;
-import dev.hely.core.bukkit.server.queue.packets.implement.QueueRemovePlayerPacket;
-import dev.hely.lib.CC;
-import lombok.Getter;
-import lombok.Setter;
-import org.bukkit.entity.Player;
+import dev.hely.core.bukkit.server.queue.packets.QueuePositionNotificationPacket;
+import dev.hely.core.bukkit.server.queue.packets.implement.QueueLeavePacket;
+import dev.hely.core.bukkit.utils.UUIDUtil;
+import org.apache.commons.lang.StringUtils;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
-public class QueueManager implements ModuleLoader {
-    public boolean enabled;
-    @Getter private Map<Rank, QueueRank> priorities = new LinkedHashMap<>();
-    public static String QUEUE_CACHE_KEY = "oxygen:queue-cache:";
-    public static String QUEUE_LOOKUP_KEY = "oxygen:queue-lookup:";
-
-    @Getter @Setter private long interval = 20L;
-
-
-    @Override
-    public void enable() {
-        this.loadPriorities();
-        this.enabled = true;
+public class QueueManager {
+    public List<String> getQueues(UUID uuid) {
+        return new ArrayList<>(OxygenBukkit.getInstance().getRedisModule().executeBackendCommand(redis ->
+                redis.hgetAll(String.format(Queue.POSITION_FORMAT, uuid.toString())).keySet()));
     }
 
-    @Override
-    public void disable() {
-        this.enabled = false;
+    public boolean isQueueingFor(UUID uuid, String server) {
+        return getQueues(uuid).contains(server);
     }
 
-    @Override
-    public void reload() {
-
+    public int getPosition(UUID uuid, String server) {
+        return Integer.parseInt(OxygenBukkit.getInstance().getRedisModule().executeBackendCommand(redis ->
+                redis.hget(String.format(Queue.POSITION_FORMAT, uuid.toString()), server)));
     }
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
+    public String getPrimaryQueue(UUID uuid) {
+        List<String> queues = getQueues(uuid);
+        return queues.isEmpty() ? null : queues.get(0);
     }
 
-    @Override
-    public String getName() {
-        return "Queue";
+    public List<UUID> getQueueing(String server) {
+        return OxygenBukkit.getInstance().getRedisModule().executeBackendCommand(redis -> {
+            if (!redis.exists(String.format(Queue.PLAYERS_FORMAT, server)))
+                return new ArrayList<>();
+
+            if (redis.get(String.format(Queue.PLAYERS_FORMAT, server)).isEmpty())
+                return new ArrayList<>();
+
+            List<UUID> queueing = new ArrayList<>();
+            for (String s : redis.get(String.format(Queue.PLAYERS_FORMAT, server)).split(";")) {
+                if (!UUIDUtil.isUUID(s))
+                    continue;
+
+                queueing.add(UUID.fromString(s));
+            }
+
+            return queueing;
+        });
     }
 
-    public void changeInterval(long time) {
-        this.interval = time;
+    public void resetQueueData(UUID uuid) {
+        getQueues(uuid).forEach(server -> {
+            OxygenBukkit.getInstance().getRedisModule().sendPacket(new QueueLeavePacket(server, uuid));
+            OxygenBukkit.getInstance().getRedisModule().executeBackendCommand(redis -> {
+                redis.del(String.format(Queue.POSITION_FORMAT, uuid.toString()));
+                redis.hdel(String.format(Queue.WEIGHT_FORMAT, server), uuid.toString());
+
+                if (!redis.exists(String.format(Queue.PLAYERS_FORMAT, server)))
+                    return new ArrayList<>();
+
+                if (redis.get(String.format(Queue.PLAYERS_FORMAT, server)).isEmpty())
+                    return new ArrayList<>();
+
+                List<String> inQueue = new ArrayList<>();
+                for (String s : redis.get(String.format(Queue.PLAYERS_FORMAT, server)).split(";")) {
+                    if (!UUIDUtil.isUUID(s))
+                        continue;
+
+                    inQueue.add(s);
+                }
+
+                inQueue.remove(uuid.toString());
+                redis.set(String.format(Queue.PLAYERS_FORMAT, server), StringUtils.join(inQueue, ";"));
+                inQueue.clear();
+                return null;
+            });
+        });
     }
 
-    private void loadPriorities() {
-        for (Rank rank : OxygenBukkit.getInstance().getRankManager().getRanks()) {
-            this.priorities.put(rank, new QueueRank(rank.getName(), rank.getQueuePriority()));
-        }
-    }
+    public void startTask() {
+        AtomicLong lastMessage = new AtomicLong(System.currentTimeMillis());
+        OxygenBukkit.getInstance().getTasks().runAsyncTimer(() -> {
+            if (System.currentTimeMillis() >= lastMessage.get() + TimeUnit.SECONDS.toMillis(15)) {
+                AtomicInteger position = new AtomicInteger(0);
 
-    public void removePlayer(UUID uuid) {
-        JsonObject queueData = new JsonObject();
-        queueData.addProperty("uuid", uuid.toString());
-        queueData.addProperty("msg", false);
+                List<String> message = OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("queue-system.waiting");
 
-        OxygenBukkit.getInstance().getRedisModule().sendPacket(new QueueRemovePlayerPacket(queueData));
-    }
+                synchronized (OxygenBukkit.getInstance().getQueue().getPlayers()) {
+                    OxygenBukkit.getInstance().getQueue().getPlayers().forEach(player ->
+                            OxygenBukkit.getInstance().getRedisModule().sendPacket(new QueuePositionNotificationPacket(player, message, position.incrementAndGet(), OxygenBukkit.getInstance().getQueue().getPlayers().size())));
 
-    public QueueRank getPriority(Player player) {
-        return this.priorities.get(OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId()).getActiveHighestRank());
+                    lastMessage.set(System.currentTimeMillis());
+                }
+            }
+
+            if (OxygenBukkit.getInstance().getServerData().isQueuePaused()) {
+                return;
+            }
+
+            for (int i = 0; i < OxygenBukkit.getInstance().getServerData().getQueueRate(); i++)
+                OxygenBukkit.getInstance().getQueue().sendNext();
+        }, 20L, 20L);
     }
 }

@@ -25,12 +25,9 @@ import dev.hely.core.bukkit.server.ServerListener;
 import dev.hely.core.bukkit.server.ServerManager;
 import dev.hely.core.bukkit.server.ServerState;
 import dev.hely.core.bukkit.server.packets.ServerStateChangePacket;
+import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.server.queue.QueueManager;
-import dev.hely.core.bukkit.server.queue.listener.QueueListener;
 import dev.hely.core.bukkit.server.queue.packets.QueuePacketListener;
-import dev.hely.core.bukkit.server.queue.runnables.MainQueueRunnable;
-import dev.hely.core.bukkit.server.queue.runnables.QueuePositionRunnable;
-import dev.hely.core.bukkit.server.queue.runnables.QueueUpdateRunnable;
 import dev.hely.core.bukkit.server.reboot.RebootManager;
 import dev.hely.core.bukkit.server.runnable.HeartBeatRunnable;
 import dev.hely.core.bukkit.staff.requests.RequestManager;
@@ -124,6 +121,7 @@ public class OxygenBukkit extends JavaPlugin {
     private StoreManager storeManager;
     private TFAManager tfaManager;
     private QueueManager queueManager;
+    private Queue queue;
     private LogManager logManager;
     private StaffManager staffManager;
     private CouponManager couponManager;
@@ -159,14 +157,13 @@ public class OxygenBukkit extends JavaPlugin {
         setupPackets();
         registerTasks();
 
-        new QueuePositionRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-        new QueueUpdateRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
-        new MainQueueRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
         new HeartBeatRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
 
         logManager.registerAllLogs();
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
 
         this.serverData = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
+        this.serverData.setStartTime(System.currentTimeMillis());
         this.getRedisModule().sendPacket(new ServerStateChangePacket(serverData.getName(), ServerState.ONLINE));
     }
 
@@ -247,6 +244,7 @@ public class OxygenBukkit extends JavaPlugin {
     }
 
     public void initModules() {
+        this.queue = new Queue(this);
         tasks = new Tasks(OxygenBukkit.getInstance());
 
         redisModule = new RedisModule();
@@ -293,7 +291,6 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(tfaManager);
         this.loadModule(staffManager);
 
-        this.loadModule(queueManager);
         this.loadModule(serverManager);
         this.loadModule(couponManager);
         this.loadModule(announcementManager);

@@ -37,12 +37,12 @@ public class RebootCommand  extends BaseCommand {
                 Player senderPlayer = (Player) sender;
                 if (senderPlayer.hasPermission("oxygen.command.reboot")) { // then we want to start a reboot
                     sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started")));
-                    OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%player%", senderPlayer.getName()).replace("%time%", TimeUtil.readableTime(60))));
+                    OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%player%", senderPlayer.getName()).replace("%time%", TimeUtil.getMoreDetailedTime(60))));
                     OxygenBukkit.getInstance().getRebootManager().reboot();
                 } else {
                     if (OxygenBukkit.getInstance().getRebootManager().isRebooting()) {
                         for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("reboot.rebooting")) {
-                            String formattedMessage = message.replace("%time%", TimeUtil.readableTime(OxygenBukkit.getInstance().getRebootManager().getTask().getTimeBeforeReboot()));
+                            String formattedMessage = message.replace("%time%", TimeUtil.getMoreDetailedTime(OxygenBukkit.getInstance().getRebootManager().getTask().getTimeBeforeReboot()));
                             sender.sendMessage(CC.translate(formattedMessage));
                         }
                     } else {
@@ -51,7 +51,7 @@ public class RebootCommand  extends BaseCommand {
                 }
             } else { // if console typed "reboot":
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started")));
-                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%player%", sender.getName()).replace("%time%", TimeUtil.readableTime(60))));
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%player%", sender.getName()).replace("%time%", TimeUtil.getMoreDetailedTime(60000))));
                 OxygenBukkit.getInstance().getRebootManager().reboot();
             }
         } else if (args[0].equalsIgnoreCase("cancel")) {
@@ -60,7 +60,7 @@ public class RebootCommand  extends BaseCommand {
             } else {
                 if (OxygenBukkit.getInstance().getRebootManager().isRebooting()) {
                     for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("reboot.rebooting")) {
-                        String formattedMessage = message.replace("%time%", TimeUtil.readableTime(OxygenBukkit.getInstance().getRebootManager().getTask().getTimeBeforeReboot()));
+                        String formattedMessage = message.replace("%time%", TimeUtil.getMoreDetailedTime(OxygenBukkit.getInstance().getRebootManager().getTask().getTimeBeforeReboot()));
                         sender.sendMessage(CC.translate(formattedMessage));
                     }
                 } else {
@@ -75,13 +75,13 @@ public class RebootCommand  extends BaseCommand {
                     return;
                 }
 
-                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started")));
-                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%player%", sender.getName()).replace("%time%", TimeUtil.readableTime(duration))));
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%time%", TimeUtil.getMoreDetailedTime(duration))));
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.staff-broadcast").replace("%player%", sender.getName()).replace("%time%", TimeUtil.getMoreDetailedTime(duration))));
                 OxygenBukkit.getInstance().getRebootManager().reboot(duration);
             } else {
                 if (OxygenBukkit.getInstance().getRebootManager().isRebooting()) {
                     for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("reboot.rebooting")) {
-                        String formattedMessage = message.replace("%time%", TimeUtil.readableTime(OxygenBukkit.getInstance().getRebootManager().getTask().getTimeBeforeReboot()));
+                        String formattedMessage = message.replace("%time%", TimeUtil.getMoreDetailedTime(OxygenBukkit.getInstance().getRebootManager().getTask().getTimeBeforeReboot()));
                         sender.sendMessage(CC.translate(formattedMessage));
                     }
                 } else {

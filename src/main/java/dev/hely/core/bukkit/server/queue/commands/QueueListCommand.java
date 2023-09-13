@@ -15,7 +15,6 @@ package dev.hely.core.bukkit.server.queue.commands;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;
 import org.bukkit.command.CommandSender;
@@ -33,8 +32,5 @@ public class QueueListCommand extends BaseCommand {
         Player player = (Player) sender;
 
         player.sendMessage(CC.translate("&6Online Queues:"));
-        for (Queue queues : Queue.getQueues()) {
-            player.sendMessage(CC.translate("&6- &7" + queues.getName()));
-        }
     }
 }

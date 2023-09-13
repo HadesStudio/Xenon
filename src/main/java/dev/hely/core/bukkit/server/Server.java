@@ -34,7 +34,7 @@ public class Server {
     private double fullTick = 0D;
     private boolean queueEnabled = false;
     private boolean queuePaused = false;
-    private int queueRate = 0;
+    private int queueRate = 5;
     private int playersInQueue = 0;
 
     public Server(String name) {

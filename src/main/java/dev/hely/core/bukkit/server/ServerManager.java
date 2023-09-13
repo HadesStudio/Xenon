@@ -20,6 +20,7 @@ import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.server.packets.ServerStateChangePacket;
 import dev.hely.core.bukkit.server.packets.ServerUpdatePacket;
 import dev.hely.core.bukkit.server.queue.Queue;
+import dev.hely.core.bukkit.utils.TPSUtil;
 import dev.hely.lib.Tasks;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -110,10 +111,6 @@ public class ServerManager implements ModuleLoader {
     }
 
     public void startServerMonitor() {
-        Server data = OxygenBukkit.getInstance().getServerManager().getOrSetupServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
-        Queue queue = new Queue(data.getName(), data.getName());
-        queue.cache(OxygenBukkit.getInstance().getRedisModule().getJedisPool());
-
         OxygenBukkit.getInstance().getTasks().runAsyncTimer(() -> {
             getServers().stream().
                     filter(server -> System.currentTimeMillis() - server.getLastHeartbeat() > 15_000
@@ -123,14 +120,15 @@ public class ServerManager implements ModuleLoader {
                         OxygenBukkit.getInstance().getRedisModule().sendPacket(new ServerStateChangePacket(server.getName(), ServerState.ONLINE));
                     });
 
+            OxygenBukkit.getInstance().getServerData().setTps(TPSUtil.getRecentTps()[0]);
             OxygenBukkit.getInstance().getServerData().setLastHeartbeat(System.currentTimeMillis());
             OxygenBukkit.getInstance().getServerData().setState(Bukkit.hasWhitelist() ? ServerState.WHITELISTED : ServerState.ONLINE);
             OxygenBukkit.getInstance().getServerData().setOnlinePlayers(Bukkit.getOnlinePlayers().size());
             OxygenBukkit.getInstance().getServerData().setMaxPlayers(Bukkit.getMaxPlayers());
             OxygenBukkit.getInstance().getServerData().setQueueEnabled(OxygenBukkit.getInstance().getServerData().isQueueEnabled());
-            OxygenBukkit.getInstance().getServerData().setQueuePaused(false);
-            OxygenBukkit.getInstance().getServerData().setQueueRate(5);
-            OxygenBukkit.getInstance().getServerData().setPlayersInQueue(Queue.getByName(OxygenBukkit.getInstance().getServerData().getName()).getPlayers().size());
+            OxygenBukkit.getInstance().getServerData().setQueuePaused(OxygenBukkit.getInstance().getServerData().isQueuePaused());
+            OxygenBukkit.getInstance().getServerData().setQueueRate(OxygenBukkit.getInstance().getServerData().getQueueRate());
+            OxygenBukkit.getInstance().getServerData().setPlayersInQueue(OxygenBukkit.getInstance().getQueue().getPlayers().size());
 
             OxygenBukkit.getInstance().getRedisModule().sendPacket(new ServerUpdatePacket(OxygenBukkit.getInstance().getServerData()));
 

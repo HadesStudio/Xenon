@@ -130,6 +130,8 @@ public class ServerListMenu extends PaginatedMenu {
 
         public Material getMaterial() {
             if(server.getState() == ServerState.OFFLINE) return Material.REDSTONE_BLOCK;
+            if(server.getState() == ServerState.HEARTBEAT_TIMEOUT) return Material.REDSTONE_BLOCK;
+            if(server.getState() == ServerState.UNKNOWN) return Material.LAPIS_BLOCK;
             if(server.getState() == ServerState.WHITELISTED) return Material.GOLD_BLOCK;
             if(server.getState() == ServerState.ONLINE) return Material.EMERALD_BLOCK;
             return null;
