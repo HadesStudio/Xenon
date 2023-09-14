@@ -34,12 +34,10 @@ import java.util.Map;
 @Getter
 public class ServerManager implements ModuleLoader {
     private boolean enabled;
-    private List<Server> servers;
+    private final List<Server> servers = new ArrayList<>();
 
     @Override
     public void enable() {
-        this.servers = new ArrayList<>();
-
         this.startServerMonitor();
     }
 

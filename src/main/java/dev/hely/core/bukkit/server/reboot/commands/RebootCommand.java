@@ -51,7 +51,7 @@ public class RebootCommand  extends BaseCommand {
                 }
             } else { // if console typed "reboot":
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%time%", TimeUtil.getMoreDetailedTime(60000))));
-                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.staff-broadcast").replace("%player%", sender.getName()).replace("%time%", TimeUtil.getMoreDetailedTime(duration))));
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.staff-broadcast").replace("%player%", sender.getName()).replace("%time%", TimeUtil.getMoreDetailedTime(60000))));
                 OxygenBukkit.getInstance().getRebootManager().reboot();
             }
         } else if (args[0].equalsIgnoreCase("cancel")) {
