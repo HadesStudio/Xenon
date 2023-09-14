@@ -41,7 +41,6 @@ public class ListenerModule implements ModuleLoader {
                 new StaffListener(),
                 new FreezeListener(),
                 new QueueListener(),
-                new ChatListener(),
                 new NoteListener());
 
         this.enabled = true;
