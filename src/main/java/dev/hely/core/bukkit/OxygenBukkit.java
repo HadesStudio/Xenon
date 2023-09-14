@@ -29,7 +29,6 @@ import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.server.queue.QueueManager;
 import dev.hely.core.bukkit.server.queue.packets.QueuePacketListener;
 import dev.hely.core.bukkit.server.reboot.RebootManager;
-import dev.hely.core.bukkit.server.runnable.HeartBeatRunnable;
 import dev.hely.core.bukkit.staff.requests.RequestManager;
 import dev.hely.core.bukkit.staff.staffmode.StaffManager;
 import dev.hely.core.bukkit.tag.TagManager;
@@ -156,8 +155,6 @@ public class OxygenBukkit extends JavaPlugin {
         setupModules();
         setupPackets();
         registerTasks();
-
-        new HeartBeatRunnable().runTaskTimerAsynchronously(this,0L,3 * 20L);
 
         logManager.registerAllLogs();
         this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
