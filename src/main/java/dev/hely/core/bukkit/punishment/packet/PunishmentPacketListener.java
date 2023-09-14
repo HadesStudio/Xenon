@@ -62,7 +62,6 @@ public class PunishmentPacketListener implements PacketListener {
         Bukkit.getConsoleSender().sendMessage(CC.translate(broadcast));
 
         ComponentBuilder builder = (new ComponentBuilder(CC.translate(broadcast)));
-
         if (punishment.isSilent()) {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
                 if (!player.hasPermission("oxygen.punishments.silent")) continue;

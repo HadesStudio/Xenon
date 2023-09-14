@@ -16,42 +16,23 @@ package dev.hely.core.bukkit.chat.listeners;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.chat.ChatModule;
-import dev.hely.core.bukkit.chat.impl.ChatMessage;
-import dev.hely.core.bukkit.utils.TimeUtil;
+import dev.hely.core.bukkit.filter.Filter;
 import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
 
 public class ChatListener implements Listener {
-    @EventHandler(priority = EventPriority.MONITOR)
-    private void onPlayerJoin(PlayerJoinEvent event) {
-
-        if (OxygenBukkit.getInstance().getChatManager().getMutedCache().containsKey(event.getPlayer().getUniqueId())) {
-            return;
-        }
-
-        OxygenBukkit.getInstance().getChatManager().getMessageCache().put(event.getPlayer().getUniqueId(), new ArrayList<>());
-        OxygenBukkit.getInstance().getChatManager().getWarningsCache().put(event.getPlayer().getUniqueId(), new AtomicInteger(ChatModule.MAX_WARNINGS));
-    }
-
     @EventHandler(priority = EventPriority.LOWEST)
     private void onAsyncChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
-
-        if (player.hasPermission(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("chat-system.staff-bypass-permission"))) {
-            return;
-        }
 
         if (profile.getStaffProfile().isStaffChat()) {
             return;
@@ -70,46 +51,36 @@ public class ChatListener implements Listener {
         }
 
         if (OxygenBukkit.getInstance().getChatManager().getSlowTime() > 0) {
-            if (OxygenBukkit.getInstance().getChatManager().getSlowChatRemaining(player.getUniqueId()) > 0) {
+            if (OxygenBukkit.getInstance().getChatManager().getSlowChatRemaining(player.getUniqueId()) > 0 && (!player.hasPermission(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("chat-system.mute-bypass-permission")))) {
+                event.setCancelled(true);
                 for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("chat.slow-chat")) {
                     player.sendMessage(CC.translate(message).replace("%time%", String.valueOf(OxygenBukkit.getInstance().getChatManager().getSlowTime())).replace("%wait_time%", TimeUtil.formatTime((int) OxygenBukkit.getInstance().getChatManager().getSlowChatRemaining(player.getUniqueId()) / 1000)));
                 }
-                event.setCancelled(true);
                 return;
             }
 
             OxygenBukkit.getInstance().getChatManager().getSlowCache().put(player.getUniqueId(), System.currentTimeMillis());
         }
 
-        String msg = event.getMessage().toLowerCase();
+        String msg = event.getMessage();
 
-        if (OxygenBukkit.getInstance().getChatManager().isFiltered(msg)) {
-            for (Player players : OxygenBukkit.getInstance().getServer().getOnlinePlayers()) {
-                if (players.hasPermission(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("chat-system.staff-bypass-permission"))) {
-                    players.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("chat.filtered-message-alert").replace("%format%", OxygenBukkit.getInstance().getChatManager().formatChatDisplay(player, msg))));
-                }
-            }
+        Filter filter = OxygenBukkit.getInstance().getFilterManager().checkMessage(msg);
+        if (filter != null && !player.hasPermission("oxygen.admin")) {
+            filter.chat_punish(msg, profile);
 
-            player.sendMessage(OxygenBukkit.getInstance().getChatManager().formatChatDisplay(player, msg));
             event.setCancelled(true);
             return;
         }
 
-        for (Pattern pattern : OxygenBukkit.getInstance().getChatManager().getInappropriate().keySet()) {
-            if (!pattern.matcher(event.getMessage().toLowerCase()).find()) {
-                continue;
+        event.setCancelled(true);
+
+        event.getRecipients().forEach(recipient -> {
+            Profile recipientProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(recipient.getUniqueId());
+            if ((player != recipient && !player.hasPermission("oxygen.staff")) || recipientProfile.getIgnoredList().contains(player.getName())) {
+                return;
             }
 
-            String value = OxygenBukkit.getInstance().getChatManager().getInappropriate().get(pattern);
-
-            if (value != null) {
-            }
-
-            event.setCancelled(true);
-            event.getPlayer().sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("chat.blocked")));
-            break;
-        }
-
-        OxygenBukkit.getInstance().getChatManager().getMessageCache().get(player.getUniqueId()).add(new ChatMessage(System.currentTimeMillis(), event.getMessage()));
+            recipient.sendMessage(OxygenBukkit.getInstance().getChatManager().formatChatDisplay(player, msg));
+        });
     }
 }

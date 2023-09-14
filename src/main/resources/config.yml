@@ -42,20 +42,8 @@ name-mc:
     not-linked: "&cYou have not liked our server on &6NameMC &cyet, you must do that before claiming your rewards."
 chat-system:
   enabled: true # Do you want to use the built in chat system?
-  warning-system: true # Do you want to use the blocked chat message warning system?
   mute-bypass-permission: "oxygen.chat.highrank"
-  staff-bypass-permission: "oxygen.chat.bypass" # The permission that makes people exempt from chat punishments,etc.
-  warning-amount: 5 # How many warnings are they given before a mute or ban?
-  ban-command: "ban %player% 1d Spam -s"
-  mute-command: "mute %player% 15m Spam -s"
-  word-filters:
-    - "puta"
-    - "rata"
-    - "mierda"
-  link-whitelists: # These are links that ARE allowed to be put in chat.
-    - "helydev.com"
-    - "store.helydev.com"
-  chat-format: "%tags% %rank_prefix% %player%%rank_suffix%&7: &f"
+  chat-format: "%tags%%rank_prefix% %player%%rank_suffix%&7: &f"
 two-factor:
   enabled: true
   settings:

@@ -17,12 +17,14 @@ package dev.hely.core.bukkit.commands.implement.player;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
+import dev.hely.core.bukkit.filter.Filter;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.profile.conversations.Conversation;
+import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.utils.ChatUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,40 +41,99 @@ public class MessageCommand extends BaseCommand {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.usage")));
             return;
         }
+
         Player player = (Player) sender;
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
-        Profile targetProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[0]);
-        if (targetProfile == null) {
+        if (OxygenBukkit.getInstance().getProfileManager().getProfile(args[0]) == null) {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
             return;
         }
-        if (!Bukkit.getPlayer(args[0]).isOnline()) {
+        Profile targetProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[0]);
+        if (!Bukkit.getPlayer(targetProfile.getUniqueId()).isOnline()) {
             sender.sendMessage(CC.translate(Locale.COMMANDS_OFFLINE_PLAYER).replace("%player%", args[0]));
             return;
         }
         Player target = Bukkit.getPlayer(args[0]);
 
-        if (targetProfile.getConversations().canBeMessagedBy(player) && canSee(player, target)) {
-            final Conversation conversation = profile.getConversations().getOrCreateConversation(target);
-            targetProfile.getConversations().getOrCreateConversation(player);
-            if (conversation.validate()) {
-                if (!profile.getSettings().isReceivingNewConversations() || profile.getIgnoredList().contains(target.getName())) {
-                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.messages-disabled")));
-                    return;
-                }
-                conversation.sendMessage(player, target, ChatUtil.joinArray(args, " ", 2));
-            }
-            else {
-                player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.not-receiving").replace("%player%", target.getName())));
-            }
-        } else if (!canSee(player, target)) {
-            sender.sendMessage(CC.translate(Locale.COMMANDS_OFFLINE_PLAYER).replace("%player%", target.getName()));
-        } else {
-            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.not-receiving").replace("%player%", target.getName())));
-        }
+        handleMessage(player, target, ChatUtil.joinArray(args, " ", 2));
     }
 
-    public static boolean canSee(final Player sender, final Player target) {
-        return target != null && sender.canSee(target);
+    private void handleMessage(Player sender, Player targetPlayer, String message) {
+        Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(sender.getUniqueId());
+        Profile target = OxygenBukkit.getInstance().getProfileManager().getProfile(targetPlayer.getUniqueId());
+        Punishment mute = profile.getActiveMute();
+
+        if (mute != null) {
+            if (mute.isPermanent())
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.muted-permanent")));
+            else {
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.muted-temp").replace("%remaining%", mute.getRemaining())));
+            }
+
+            return;
+        }
+
+        if (!profile.getSettings().isReceivingNewConversations() && !sender.hasPermission("oxygen.staff")) {
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.messages-disabled")));
+            return;
+        }
+
+        if (!target.getSettings().isReceivingNewConversations() && !sender.hasPermission("oxygen.staff")) {
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.not-receiving").replace("%player%", target.getName())));
+            return;
+        }
+
+        if (!target.getIgnoredList().contains(sender.getName()) && !sender.hasPermission("oxygen.staff")) {
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.ignored").replace("%player%", target.getName())));
+            return;
+        }
+        if (profile.getIgnoredList().contains(target.getName()) && !sender.hasPermission("oxygen.staff")) {
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.ignoring").replace("%player%", target.getName())));
+            return;
+        }
+        if (target.getIgnoredList().contains(sender.getName()) && !sender.hasPermission("oxygen.staff")) {
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.ignored").replace("%player%", target.getName())));
+            return;
+        }
+
+        Filter filter = OxygenBukkit.getInstance().getFilterManager().checkMessage(message);
+        if (filter != null && !sender.hasPermission("oxygen.admin")) {
+            filter.punish(message, profile, target);
+
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.to-format").replace("%target%", target.getName()).replace("%message%", message)));
+            return;
+        }
+
+        sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.to-format").replace("%target%", target.getName()).replace("%message%", message)));
+        targetPlayer.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.from-format").replace("%target%", sender.getName()).replace("%message%", message)));
+
+        if (target.getSettings().isPlayingMessageSounds()) {
+            targetPlayer.playSound(targetPlayer.getLocation(), Sound.SUCCESSFUL_HIT, 1.0f, 0.1f);
+        }
+
+        profile.setLastRepliedTo(target.getName());
+        target.setLastRepliedTo(profile.getName());
+
+        profile.setLastSentMessageMillis(System.currentTimeMillis());
+        target.setLastReceivedMessageMillis(System.currentTimeMillis());
+
+        for (Player current : Bukkit.getOnlinePlayers()) {
+            if (!current.hasPermission("oxygen.socialspy")) {
+                continue;
+            }
+
+            if (current.getUniqueId().equals(profile.getUniqueId()) || current.getUniqueId().equals(target.getUniqueId())) {
+                continue;
+            }
+
+            Profile currentProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(current.getUniqueId());
+            if (currentProfile.getStaffProfile().isSocialSpy()) {
+                current.sendMessage(CC.translate(Locale.SOCIAL_SPY_FORMAT).replace("%sender%", sender.getName()).replace("%target%", targetPlayer.getName()).replace("%message%", message));
+            }
+        }
+
+        if (!profile.getSettings().isReceivingNewConversations() && sender.hasPermission("oxygen.staff")) {
+            targetPlayer.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.sent")));
+        }
     }
 }

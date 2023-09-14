@@ -125,8 +125,6 @@ public class RedisModule implements ModuleLoader {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        } else {
-            OxygenBukkit.getInstance().debug_message("ERROR IN REDIS");
         }
     }
 

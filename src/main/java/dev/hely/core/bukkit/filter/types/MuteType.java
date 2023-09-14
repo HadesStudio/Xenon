@@ -1,4 +1,4 @@
-package dev.hely.core.bukkit.chat.impl;
+package dev.hely.core.bukkit.filter.types;
 
 //============================================================
 // This file was created by DevDipin!
@@ -7,8 +7,8 @@ package dev.hely.core.bukkit.chat.impl;
 // If any questions, please contact on discord.
 //
 // File Information:
-//   Path: dev.hely.core.chat.impl
-//   Date: Sunday, July 16, 2023 - 2:13 PM
+//   Path: dev.hely.core.bukkit.filter.types
+//   Date: Thursday, September 14, 2023 - 1:01 PM
 //
 // Contact Information:
 //   Discord: Andrew!!#4468
@@ -18,11 +18,12 @@ package dev.hely.core.bukkit.chat.impl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
-public class ChatMessage {
+@AllArgsConstructor
+public enum MuteType {
+    MUTE("Mute", "Automatically mute the sender if the text matches."),
+    NONE("None", "Do not do anything if the text matches.");
 
-    private long sentDate;
-    private String message;
-
+    private final String display;
+    private final String description;
 }

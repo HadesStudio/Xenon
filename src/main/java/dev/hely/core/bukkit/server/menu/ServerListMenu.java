@@ -82,9 +82,9 @@ public class ServerListMenu extends PaginatedMenu {
     public Map<Integer, Button> getPaginatedContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        for (Server servers : OxygenBukkit.getInstance().getServerManager().getServers()) {
-            buttons.put(buttons.size(), new ServerButton(servers));
-        }
+        List<Server> servers = new ArrayList<>(OxygenBukkit.getInstance().getServerManager().getServers());
+        servers.sort(Comparator.comparing(Server::getName));
+        servers.forEach(server -> buttons.put(buttons.size(), new ServerButton(server)));
 
         return buttons;
     }

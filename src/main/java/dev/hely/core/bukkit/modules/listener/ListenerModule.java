@@ -1,6 +1,7 @@
 package dev.hely.core.bukkit.modules.listener;
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.chat.listeners.ChatListener;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.ProfileListener;
 import dev.hely.core.bukkit.profile.log.listeners.LogListeners;
@@ -40,6 +41,7 @@ public class ListenerModule implements ModuleLoader {
                 new StaffListener(),
                 new FreezeListener(),
                 new QueueListener(),
+                new ChatListener(),
                 new NoteListener());
 
         this.enabled = true;

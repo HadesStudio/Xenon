@@ -56,7 +56,11 @@ public class RebootCommand  extends BaseCommand {
             }
         } else if (args[0].equalsIgnoreCase("cancel")) {
             if (sender.hasPermission("oxygen.command.reboot")) {
-                OxygenBukkit.getInstance().getRebootManager().cancel();
+                if (OxygenBukkit.getInstance().getRebootManager().isRebooting()) {
+                    OxygenBukkit.getInstance().getRebootManager().cancel();
+                } else {
+                    sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.not-rebooting")));
+                }
             } else {
                 if (OxygenBukkit.getInstance().getRebootManager().isRebooting()) {
                     for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("reboot.rebooting")) {

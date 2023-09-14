@@ -444,7 +444,7 @@ punishments:
     ban:
       - "&cYour account has been suspended from the &6Hely Network&c."
       - "&cReason: %reason%"
-      - "&cAppeal at %teamspeak%"
+      - "&cAppeal at ts.helydev.com"
     temp-ban:
       - "&cYour account has been suspended from the &6Hely Network&c."
       - "&cReason: %reason%"
@@ -550,6 +550,10 @@ frozen-command:
       - "/r"
       - "/respond"
 
+slots-command:
+  usage: "&cCorrect Usage: /setslots <amount>"
+  updated: "&6[Server Manager] &7You have successfully updated this server's maximum slots to &6%amount% Slots&7!"
+  staff-broadcast: "&6[Server Manager] &6%user% &7has just updated the &6%server% &7slots to &c%amount% Slots&7."
 heal-command:
   usage: "&cCorrect Usage: /heal <player|all>"
   not-online: "&cSorry, the name that you have provided is currently not connected to the server."
@@ -631,12 +635,23 @@ togglesounds-command:
   disabled: "&cYou have successfully disabled your &6Message Sounds&c."
 chat-spy:
   message: "&6[Chat Spy] &a%sender% &7&o-> &a%target%&7: &c%message%" # %sender%, %target%, %message%
+filters:
+  filtered-message: "&c[Filtered] &7(%sender% to %target%) - &a%filtered_text%"
+  filter-chat-message: "&c[Filtered] &7(%sender%) - &a%filtered_text%"
+
+social-spy:
+  format: "&6[Social-Spy] &7(%sender% to %target%) - %message%"
 message-command:
   usage: "&cCorrect Usage: /message <player> <message>"
   messages-disabled: "&cYou cannot send &6Private Messages &cwhile you have &6Private Messages &cdisabled."
   not-receiving: "&cSorry, &6%player% &cis currently not accepting &6Private Messages&c."
+  ignoring: "&cYou cannot message &6%player% &cbecause they are on you're &6Ignore List&c."
+  ignored: "&cSorry, you cannot message &6%player%&c."
   to-format: "&7(To %target%) &6%message%"
   from-format: "&7(From %target%) &6%message%"
+  sent: "&cYou have sent your &6Private Message&c because you can bypass this, however they will not be able to respond to you."
+  muted-permanent: "&cSorry, you cannot send &6Private Messages &cwhile you are &4Permanently Muted&c."
+  muted-temp: "&cSorry, you cannot send &6Private Messages &cwhile you are &4Temporarily Muted&c. You're mute will expire in &6%remaining%&c."
 reply-command:
   usage: "&cCorrect Usage: /reply <message>"
   not-receiving: "&cSorry, &6%player% &cis currently not accepting &6Private Messages&c."
@@ -750,7 +765,7 @@ notes-command:
     message:
       - "&eViewing notes of: &4%player%&e..."
       - "%notes%"
-    format: "&e#%id% &7- &f%reason% &7(%addedBy%&7) &7(%addedAt%&7) &7(%addedServer)"
+    format: "&e#%id% &7- &f%reason% &7(%addedBy%&7) &7(%addedAt%&7) &7(%addedServer%)"
   add:
     added: "&eNote with id &f#%id% &ehas been added to &f%player%&e."
   remove:
@@ -759,11 +774,9 @@ notes-command:
     cleared: "&eYou have cleared &f%player%'s &enotes!"
   dont-exists: "&cThis player has no saved notes."
   invalid-id: "&cThat's not a valid note id."
-
 day-command:
   set: "&eYou've set your time to &fDay&e"
 night-command:
   set: "&eYou've set your time to &fNight&e"
 sunset-command:
   set: "&eYou've set your time to &fNight&e"
-

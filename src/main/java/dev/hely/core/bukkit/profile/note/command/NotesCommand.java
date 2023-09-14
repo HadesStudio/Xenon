@@ -91,8 +91,10 @@ public class NotesCommand extends BaseCommand {
                 return;
             }
 
-            int id = Integer.parseInt(args[2]);
-            if (id <= 0) {
+            int id;
+            try {
+                id = Integer.parseInt(args[2]);
+            } catch (NumberFormatException e) {
                 sender.sendMessage(CC.translate(Locale.COMMANDS_INVALID_NUMBER));
                 return;
             }

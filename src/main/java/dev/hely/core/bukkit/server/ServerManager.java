@@ -109,6 +109,7 @@ public class ServerManager implements ModuleLoader {
     }
 
     public void startServerMonitor() {
+        // We use this as a replacement for the HeartBeatRunnable:
         OxygenBukkit.getInstance().getTasks().runAsyncTimer(() -> {
             getServers().stream().
                     filter(server -> System.currentTimeMillis() - server.getLastHeartbeat() > 15_000
@@ -134,6 +135,9 @@ public class ServerManager implements ModuleLoader {
     }
 
     public void updateServer(Server server) {
+        if (OxygenBukkit.getInstance().getServerManager().getServers().contains(server)) {
+            return;
+        }
         OxygenBukkit.getInstance().getServerManager().getServers().add(server);
     }
 }

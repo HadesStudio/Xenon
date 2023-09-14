@@ -93,7 +93,7 @@ public class OxygenMenu extends Menu {
                     "&7Hello &6" + player.getName() + "&7,",
                     "&7Below you can find all plugin information.",
                     "&7",
-                    "&6Uptime: &7" + TimeUtil.formatDateDiff(OxygenBukkit.getInstance().getUptime()),
+                    "&6Uptime: &7" + TimeUtil.formatDateDiff(System.currentTimeMillis() - OxygenBukkit.getInstance().getUptime()),
                     "&6Debug Mode: &7" + OxygenBukkit.getInstance().displayDebugStatus()
             ));
             return builder.build();

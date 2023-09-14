@@ -115,9 +115,14 @@ public class Locale {
     public static String NIGHT_SET;
     public static String SUNSET_SET;
 
+    public static String SOCIAL_SPY_FORMAT;
+
     public static void load(){
         Config language = OxygenBukkit.getInstance().getLanguageConfig();
         Config config = OxygenBukkit.getInstance().getConfiguration();
+
+        SOCIAL_SPY_FORMAT = language.getConfiguration().getString("social-spy.format");
+
 
         DAY_SET = language.getConfiguration().getString("day-command.set");
         NIGHT_SET = language.getConfiguration().getString("night-command.set");

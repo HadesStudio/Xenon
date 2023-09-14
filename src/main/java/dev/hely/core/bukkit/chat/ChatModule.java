@@ -16,7 +16,6 @@ package dev.hely.core.bukkit.chat;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.chat.impl.ChatMessage;
 import dev.hely.core.bukkit.chat.listeners.ChatListener;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.Profile;
@@ -28,52 +27,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
 
 @Getter @Setter
 public class ChatModule implements ModuleLoader {
 
     private boolean enabled;
-
-    public static final int MAX_WARNINGS = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getInt("chat-system.warning-amount");
-    public static final long AUTO_MUTE_DURATION = 60 * 1000L;
-
     private int slowTime = 10;
     private boolean muted = false;
     private boolean allow_high_rank_talk = false;
 
     private Map<UUID, Long> slowCache = new HashMap<>();
-    private Map<UUID, Long> mutedCache = new HashMap<>();
-    private Map<UUID, AtomicInteger> warningsCache = new HashMap<>();
-    private Map<UUID, List<ChatMessage>> messageCache = new HashMap<>();
-
-    private List<String> lowFilter;
-    private List<String> linkWhitelist;
-
-    private Pattern linkFilter;
-    private Pattern ipFilter;
-
-    private Map<Pattern, String> inappropriate = new HashMap<>();
 
     @Override
     public void enable() {
-        this.inappropriate.put(Pattern.compile("n+[i1l|]+gg+[e3]+r+", Pattern.CASE_INSENSITIVE), "7d");
-        this.inappropriate.put(Pattern.compile("k+i+l+l+ *y*o*u+r+ *s+e+l+f+", Pattern.CASE_INSENSITIVE), "7d");
-        this.inappropriate.put(Pattern.compile("f+a+g+[o0]+t+", Pattern.CASE_INSENSITIVE), "7d");
-        this.inappropriate.put(Pattern.compile("\\bk+y+s+\\b", Pattern.CASE_INSENSITIVE), "7d");
-        this.inappropriate.put(Pattern.compile("b+e+a+n+e+r+", Pattern.CASE_INSENSITIVE), "7d");
-
-        this.linkFilter = Pattern.compile("^(http://www\\.|https://www\\.|http://|https://)?[a-z0-9]+([\\-.][a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$");
-        this.ipFilter = Pattern.compile("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])([.,])){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
-
-        this.lowFilter = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("chat-system.word-filters");
-        this.linkWhitelist = OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("chat-system.link-whitelists");
-
-        OxygenBukkit.getInstance().getServer().getOnlinePlayers().forEach(loopPlayer -> {
-            this.messageCache.put(loopPlayer.getUniqueId(), new ArrayList<>());
-            this.warningsCache.put(loopPlayer.getUniqueId(), new AtomicInteger(MAX_WARNINGS));
-        });
         OxygenBukkit.getInstance().getServer().getPluginManager().registerEvents(new ChatListener(), OxygenBukkit.getInstance());
 
         this.enabled = true;
@@ -104,96 +70,10 @@ public class ChatModule implements ModuleLoader {
             return 0L;
         }
 
-        return (this.slowCache.get(uuid) + (this.slowTime * 1000)) - System.currentTimeMillis();
+        return (this.slowCache.get(uuid) + (this.slowTime * 1000L)) - System.currentTimeMillis();
     }
 
-    public boolean isFiltered(String message) {
-        String msg = message.toLowerCase()
-                .replace("3", "e")
-                .replace("1", "i")
-                .replace("!", "i")
-                .replace("@", "a")
-                .replace("7", "t")
-                .replace("0", "o")
-                .replace("5", "s")
-                .replace("8", "b")
-                .replaceAll("\\p{Punct}|\\d", "").trim();
-
-        String[] words = msg.trim().split(" ");
-
-        for (String word : words) {
-            for (String filteredWord : lowFilter) {
-                if (word.contains(filteredWord)) {
-                    return true;
-                }
-            }
-        }
-
-        for (String word : message.replace("(dot)", ".").replace("[dot]", ".").trim().split(" ")) {
-            boolean continueIt = false;
-
-            for (String phrase : this.linkWhitelist) {
-                if (word.toLowerCase().contains(phrase)) {
-                    continueIt = true;
-                    break;
-                }
-            }
-
-            if (continueIt) {
-                continue;
-            }
-
-            if (ipFilter.matcher(word).matches() || linkFilter.matcher(word).matches()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String isFilteredFind(String message) {
-        String msg = message.toLowerCase()
-                .replace("3", "e")
-                .replace("1", "i")
-                .replace("!", "i")
-                .replace("@", "a")
-                .replace("7", "t")
-                .replace("0", "o")
-                .replace("5", "s")
-                .replace("8", "b")
-                .replaceAll("\\p{Punct}|\\d", "").trim();
-
-        String[] words = msg.trim().split(" ");
-
-        for (String word : words) {
-            for (String filteredWord : lowFilter) {
-                if (word.contains(filteredWord)) {
-                    return word;
-                }
-            }
-        }
-
-        for (String word : message.replace("(dot)", ".").replace("[dot]", ".").trim().split(" ")) {
-            boolean continueIt = false;
-
-            for (String phrase : this.linkWhitelist) {
-                if (word.toLowerCase().contains(phrase)) {
-                    continueIt = true;
-                    break;
-                }
-            }
-
-            if (continueIt) {
-                continue;
-            }
-
-            if (ipFilter.matcher(word).matches() || linkFilter.matcher(word).matches()) {
-                return word;
-            }
-        }
-        return null;
-    }
-
-    public String formatChatDisplay(Player player,String message) {
+    public String formatChatDisplay(Player player, String message) {
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
         String chatFormat = CC.translate(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("chat-system.chat-format")

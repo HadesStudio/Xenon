@@ -6,30 +6,28 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.profile.conversations.MessageConversations;
+import dev.hely.core.bukkit.profile.note.Note;
+import dev.hely.core.bukkit.profile.permission.ProfilePermission;
 import dev.hely.core.bukkit.profile.permission.packet.PlayerPermissionPacket;
 import dev.hely.core.bukkit.profile.profilesystem.impl.*;
-import dev.hely.core.bukkit.profile.settings.ProfileSettings;
-import dev.hely.core.bukkit.profile.staff.StaffProfile;
-import dev.hely.core.bukkit.profile.note.Note;
 import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.Statistics;
 import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.StatisticsServer;
 import dev.hely.core.bukkit.profile.profilesystem.impl.social.SocialMediaType;
+import dev.hely.core.bukkit.profile.settings.ProfileSettings;
 import dev.hely.core.bukkit.profile.siblings.Sibling;
-import dev.hely.core.bukkit.profile.tfa.TwoFactorAuth;
+import dev.hely.core.bukkit.profile.staff.StaffProfile;
 import dev.hely.core.bukkit.profile.utils.PlaytimeUtil;
+import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
 import dev.hely.core.bukkit.ranks.grants.Grant;
-import dev.hely.core.bukkit.profile.permission.ProfilePermission;
-import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.ranks.gson.GSONUtil;
 import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.ranks.rank.RankType;
-import dev.hely.core.bukkit.tag.Tag;
 import dev.hely.lib.CC;
-import lombok.*;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import org.bson.Document;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -98,9 +96,8 @@ public class Profile {
     private List<String> ignoredList = new ArrayList<>();
     private long lastReceivedMessageMillis;
     private long lastSentMessageMillis;
-    private String lastRepliedTo;
+    private String lastRepliedTo = null;
 
-    private final MessageConversations conversations;
     private ProfileSettings settings = new ProfileSettings();
 
     private boolean needsVerify;
@@ -126,7 +123,6 @@ public class Profile {
             statistics.put(value, new Statistics(value));
         }
 
-        this.conversations = new MessageConversations(this);
         this.preferences = new Preferences();
         this.session = new PlaytimeUtil(name + "-playtime-session");
 
@@ -246,6 +242,10 @@ public class Profile {
             Type grantType = new TypeToken<List<Grant>>() {}.getType();
             grants = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("grants"), grantType);
             grants.removeIf(Objects::isNull);
+
+            Type ignoreListType = new TypeToken<List<String>>() {}.getType();
+            ignoredList = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("ignoredList"), ignoreListType);
+
 
             Type profilePermissionType = new TypeToken<List<ProfilePermission>>() {}.getType();
             profilePermissions = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("profilePermissions"), profilePermissionType);

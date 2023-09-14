@@ -20,7 +20,6 @@ import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.CC;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -47,16 +46,17 @@ public class FreezeCommand extends BaseCommand {
         }
 
         if (args[0].equalsIgnoreCase("server")) {
-            if (senderPlayer.hasPermission("oxygen.freeze.server")) {
+            if (senderPlayer.hasPermission("oxygen.freeze.server") || senderPlayer.isOp()) {
+                System.out.print("have permission");
+                int playerSize = 0;
                 if (serverFrozen) { // unfreeze the server then ;p
-                    int playerSize = 0;
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
                         if (!player.isOnline() || profile == null) { // just making sure they didnt log off after check started
                             return;
                         }
                         profile.setFrozen(false);
-                        profile.save(false);
+                        profile.save();
 
                         player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.command.server-unfrozen")));
                         playerSize = playerSize + 1;
@@ -64,14 +64,13 @@ public class FreezeCommand extends BaseCommand {
                     serverFrozen = false;
                     sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.command.unfroze-server").replace("%players%", String.valueOf(playerSize))));
                 } else { // server is not frozen rn, so we want to freeze it (hopefully)
-                    int playerSize = 0;
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
                         if (!player.isOnline() || profile == null || player.hasPermission("oxygen.freeze.bypass")) { // just making sure they didnt log off after check started
                             return;
                         }
                         profile.setFrozen(true);
-                        profile.save(false);
+                        profile.save();
 
                         player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.command.server-frozen")));
                         playerSize = playerSize + 1;
@@ -92,20 +91,20 @@ public class FreezeCommand extends BaseCommand {
             if (profile.isFrozen()) { // unfreeze them
                 if (Bukkit.getPlayer(profile.getName()).isOnline()) {
                     Player player = Bukkit.getPlayer(profile.getName());
-                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.unfrozen").replace("%player%", sender.getName())));
+                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.command.unfrozen").replace("%player%", sender.getName())));
                 }
-                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.unfroze-player").replace("%player%", profile.getName())));
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.command.unfroze-player").replace("%player%", profile.getName())));
                 profile.setFrozen(false);
-                profile.save(false);
+                profile.save();
             } else { // freeze them
                 if (Bukkit.getPlayer(profile.getName()).isOnline()) {
                     Player player = Bukkit.getPlayer(profile.getName());
-                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.frozen").replace("%player%", sender.getName())));
+                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.command.frozen").replace("%player%", sender.getName())));
                 }
-                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.freeze-player").replace("%player%", profile.getName())));
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.command.freeze-player").replace("%player%", profile.getName())));
                 profile.setFrozen(true);
-                profile.save(false);
             }
+            profile.save();
         }
     }
 }

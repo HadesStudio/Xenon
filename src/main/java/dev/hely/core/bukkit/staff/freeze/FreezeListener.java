@@ -50,7 +50,7 @@ public class FreezeListener implements Listener {
             return;
         }
 
-        if (profile.isFrozen() && !FreezeCommand.serverFrozen) {
+        if (isFrozen(player, false)) {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.messages.freeze-chat-player-display").replace("%message%", event.getMessage())));
             OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.freeze", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.messages.freeze-chat-player-display").replace("%message%", event.getMessage()).replace("%player%", player.getName())));
             event.setCancelled(true);
@@ -60,10 +60,11 @@ public class FreezeListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(event.getPlayer().getUniqueId());
-        if (profile.isFrozen()) {
+        if (isFrozen(event.getPlayer(), false)) {
             if (FreezeCommand.serverFrozen) {
                 event.getPlayer().sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.messages.join-while-server-frozen")));
                 profile.setFrozen(true); // if server is frozen, we want to freeze them, so they cannot reconnect to get unfrozen
+                profile.save();
                 return;
             }
             event.getPlayer().sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.messages.join-frozen")));
@@ -77,6 +78,7 @@ public class FreezeListener implements Listener {
         if (profile.isFrozen()) {
             if (FreezeCommand.serverFrozen) {
                 profile.setFrozen(false); // we dont want them to join frozen because of server freezeeee
+                profile.save();
                 return;
             }
             OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.frozen.alert", OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.messages.left-frozen-alert").replace("%player%", event.getPlayer().getName())));

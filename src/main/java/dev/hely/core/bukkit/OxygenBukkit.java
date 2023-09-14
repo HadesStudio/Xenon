@@ -10,6 +10,7 @@ import dev.hely.core.bukkit.coins.StoreManager;
 import dev.hely.core.bukkit.coins.coupons.CouponManager;
 import dev.hely.core.bukkit.coins.sales.SaleManager;
 import dev.hely.core.bukkit.configuration.Locale;
+import dev.hely.core.bukkit.filter.FilterManager;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.modules.database.mongo.MongoModule;
 import dev.hely.core.bukkit.modules.database.redis.RedisModule;
@@ -114,7 +115,6 @@ public class OxygenBukkit extends JavaPlugin {
     private SubCommandManager subCommandManager;
     private ListenerModule listenerModule;
     private ClientModule clientManager;
-    private ChatModule chatManager;
     private RequestManager requestHandler;
     private SaleManager saleManager;
     private StoreManager storeManager;
@@ -127,6 +127,8 @@ public class OxygenBukkit extends JavaPlugin {
     private AnnouncementManager announcementManager;
     private RebootManager rebootManager;
     private Server serverData;
+    private FilterManager filterManager;
+    private ChatModule chatManager;
 
     private boolean debug_mode;
 
@@ -267,6 +269,7 @@ public class OxygenBukkit extends JavaPlugin {
         serverManager = new ServerManager();
         couponManager = new CouponManager();
         rebootManager = new RebootManager();
+        filterManager = new FilterManager();
     }
 
     public void setupModules() {
@@ -287,7 +290,7 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(storeManager);
         this.loadModule(tfaManager);
         this.loadModule(staffManager);
-
+        this.loadModule(filterManager);
         this.loadModule(serverManager);
         this.loadModule(couponManager);
         this.loadModule(announcementManager);

@@ -13,6 +13,7 @@ import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBanCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBlacklistCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnMuteCommand;
 import dev.hely.core.bukkit.commands.implement.staff.*;
+import dev.hely.core.bukkit.filter.commands.FilterCommand;
 import dev.hely.core.bukkit.profile.note.command.NotesCommand;
 import dev.hely.core.bukkit.server.commands.SetSlotsCommand;
 import dev.hely.core.bukkit.server.queue.commands.*;
@@ -124,6 +125,7 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new LogsCommand());
 
         loadedCommands.add(new NameMCCommand());
+        loadedCommands.add(new FilterCommand());
 
         loadedCommands.add(new QueueListCommand());
         loadedCommands.add(new JoinQueueCommand());
