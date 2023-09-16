@@ -20,7 +20,9 @@ import dev.hely.core.bukkit.staff.staffmode.data.StaffHotbar;
 import dev.hely.core.bukkit.staff.staffmode.menus.InventoryMenu;
 import dev.hely.core.bukkit.staff.staffmode.menus.StaffMenu;
 import dev.hely.core.bukkit.utils.BukkitUtils;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.CC;
+import dev.hely.lib.maker.ItemMaker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -44,9 +46,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class StaffListener implements Listener {
 
@@ -363,10 +367,23 @@ public class StaffListener implements Listener {
         if (player.isSneaking()) return;
 
         Furnace furnace = (Furnace) block.getState();
+        double percentage = ((furnace.getCookTime() / 20.0D)) * 100;
+        String fuelLeft = TimeUtil.formatTimeMillis(furnace.getBurnTime() / 20);
 
+        ItemStack item = ItemMaker.of(furnace.getInventory().getResult().getType())
+                .setAmount(furnace.getInventory().getResult().getAmount())
+                .setData(furnace.getInventory().getResult().getData().getData())
+                .setLore(Arrays.asList(
+                        "&6Amount Smelted&7: &b" + furnace.getInventory().getResult().getAmount(),
+                        "&6Progress&7: &b" + (percentage > 100 ? 100 : Math.round(percentage)) + "&b%",
+                        "&6Fuel Remaining&7: &b" + fuelLeft
+                ))
+                .build();
 
         Inventory inventory = Bukkit.createInventory(null, furnace.getInventory().getType(), CC.translate(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.silent_view_title")));
+        furnace.getInventory().setResult(item);
         inventory.setContents(furnace.getInventory().getContents());
+
 
         player.openInventory(inventory);
         player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("staff-mode-system.open-furnace")));

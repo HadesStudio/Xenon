@@ -194,3 +194,38 @@ grants-menu:
       lore:
         - "&7Click here to give this player a"
         - "&7new grant on their profile."
+
+grant-menu:
+  title: "%player% - Select Grant"
+  messages:
+    grant-duration: "&6Please specify in chat a duration of the grant."
+  buttons:
+    rank-button:
+      title: "%rank_name% Rank" # %rank_name%
+      material: "WOOL"
+      data:
+        ###################################################
+        #                    WARNING                      #
+        # This feature is only available if you are using #
+        #      the material value of "WHITE_WOOL".        #
+        ###################################################
+        match-display-color: true
+        ###################################################
+        #                    WARNING                      #
+        #   The data of the material will only change if  #
+        #     you have the above option set to false.     #
+        ###################################################
+        data: 0
+      lore:
+        # Available placeholders:
+        # %rank_color%, %rank_weight%, %rank_prefix%, %rank_suffix%, %%rank_inheritances%%, %rank_permissions_size%
+        - "&7&l&m-----------------------------------------"
+        - "&6Color: &f%rank_color%"
+        - "&6Weight: &f%rank_weight%"
+        - "&6Prefix: &f%rank_prefix%"
+        - "&6Suffix: &f%rank_suffix%"
+        - "&6Inheritances: &f%rank_inheritances%"
+        - "&6Permissions: &f%rank_permissions_size%"
+        - ""
+        - "&6Left-Click &7to grant this rank to this player."
+        - "&7&l&m-----------------------------------------"

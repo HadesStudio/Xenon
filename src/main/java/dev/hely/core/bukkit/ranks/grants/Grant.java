@@ -51,4 +51,9 @@ public class Grant {
         if (rankData != null) return rankData;
         return null;
     }
+
+    public int getWeight() {
+        Rank rankData = OxygenBukkit.getInstance().getRankManager().getRank(rankName);
+        return rankData.getWeight();
+    }
 }

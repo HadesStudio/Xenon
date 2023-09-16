@@ -15,6 +15,7 @@ import dev.hely.core.bukkit.commands.implement.punishment.undo.UnMuteCommand;
 import dev.hely.core.bukkit.commands.implement.staff.*;
 import dev.hely.core.bukkit.filter.commands.FilterCommand;
 import dev.hely.core.bukkit.profile.note.command.NotesCommand;
+import dev.hely.core.bukkit.ranks.grants.command.GrantCommand;
 import dev.hely.core.bukkit.server.commands.SetSlotsCommand;
 import dev.hely.core.bukkit.server.queue.commands.*;
 import dev.hely.core.bukkit.commands.OxygenCommand;
@@ -143,6 +144,7 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new UnMuteCommand());
 
         loadedCommands.add(new AltsCommand());
+        loadedCommands.add(new GrantCommand());
 
         loadedCommands.add(new RequestsCommand());
         loadedCommands.add(new ReportCommand());
