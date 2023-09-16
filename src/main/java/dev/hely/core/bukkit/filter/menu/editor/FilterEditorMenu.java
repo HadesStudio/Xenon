@@ -20,6 +20,7 @@ import dev.hely.core.bukkit.filter.Filter;
 import dev.hely.core.bukkit.filter.menu.editor.mutetype.MatchSelectionMenu;
 import dev.hely.core.bukkit.filter.menu.editor.mutetype.MuteTypeSelectionMenu;
 import dev.hely.core.bukkit.utils.TimeUtil;
+import dev.hely.lib.menu.fill.FillerTemplate;
 import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
@@ -39,8 +40,11 @@ import java.util.Map;
 @AllArgsConstructor
 public class FilterEditorMenu extends Menu {
     {
-        setPlaceholder(true);
         setClickUpdate(true);
+    }
+    @Override
+    public FillerTemplate getFillerTemplate() {
+        return FillerTemplate.FILL;
     }
 
     Filter filter;

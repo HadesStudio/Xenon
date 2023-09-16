@@ -40,6 +40,7 @@ public class ServerListener implements PacketListener {
 
         server.setState(state);
         server.setLastHeartbeat(System.currentTimeMillis());
+        server.save();
 
 
         String message = OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("server-manager.state-changed").replace("%server%", server.getName()).replace("%state%", state.getDisplayName());

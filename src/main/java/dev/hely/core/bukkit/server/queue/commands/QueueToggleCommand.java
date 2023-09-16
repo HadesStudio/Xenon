@@ -46,9 +46,11 @@ public class QueueToggleCommand extends BaseCommand {
         if (server.isQueueEnabled()) {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.toggled.disabled").replace("%server%", args[0])));
             server.setQueueEnabled(false);
+            server.save();
         } else {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.toggled.enabled").replace("%server%", args[0])));
             server.setQueueEnabled(true);
+            server.save();
         }
     }
 }

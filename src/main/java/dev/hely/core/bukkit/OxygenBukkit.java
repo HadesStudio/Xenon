@@ -163,18 +163,22 @@ public class OxygenBukkit extends JavaPlugin {
 
         this.serverData = new Server(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
         this.serverData.setStartTime(System.currentTimeMillis());
+        serverData.load();
+        serverData.save();
+
         this.getRedisModule().sendPacket(new ServerStateChangePacket(serverData.getName(), ServerState.ONLINE));
     }
 
     public void onDisable() {
         try {
             stopping = true;
+            this.getServerData().save();
+            this.getRedisModule().sendPacket(new ServerStateChangePacket(serverData.getName(), ServerState.OFFLINE));
             for (ModuleLoader module : modules) {
                 if (module != null) {
                     module.disable();
                 }
             }
-            this.getRedisModule().sendPacket(new ServerStateChangePacket(serverData.getName(), ServerState.OFFLINE));
             try {
                 Thread.sleep(1000L);
             } catch (Exception e) {

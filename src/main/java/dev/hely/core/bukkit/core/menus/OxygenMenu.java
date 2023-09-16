@@ -23,6 +23,7 @@ import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.server.menu.ServerListMenu;
 import dev.hely.lib.configuration.Config;
 import dev.hely.core.bukkit.utils.TimeUtil;
+import dev.hely.lib.menu.fill.FillerTemplate;
 import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
@@ -45,8 +46,12 @@ import java.util.Map;
 public class OxygenMenu extends Menu {
 
     {
-        setPlaceholder(true);
         setClickUpdate(true);
+    }
+
+    @Override
+    public FillerTemplate getFillerTemplate() {
+        return FillerTemplate.FILL;
     }
 
     Player player;

@@ -46,9 +46,11 @@ public class QueuePauseCommand extends BaseCommand {
         if (server.isQueuePaused()) {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.pause.disabled").replace("%server%", args[0])));
             server.setQueuePaused(false);
+            server.save();
         } else {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.pause.enabled").replace("%server%", args[0])));
             server.setQueuePaused(true);
+            server.save();
         }
     }
 }

@@ -42,7 +42,7 @@ public class ProfileAddPermissionCommand extends SubCommand {
             }
         }
 
-        if (OxygenBukkit.getInstance().getServerManager().getOrSetupServer(args[3]) == null) {
+        if (OxygenBukkit.getInstance().getServerManager().getServer(args[3]) == null) {
             if (!args[3].equalsIgnoreCase("Global")) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.invalid-server")));
                 return;

@@ -20,13 +20,16 @@ import dev.hely.core.bukkit.core.menus.OxygenMenu;
 import dev.hely.core.bukkit.core.menus.buttons.InfoButton;
 import dev.hely.core.bukkit.server.Server;
 import dev.hely.core.bukkit.server.ServerState;
+import dev.hely.core.bukkit.server.queue.packets.implement.QueueSendPlayerPacket;
 import dev.hely.core.bukkit.utils.TPSUtil;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.button.implement.PageButton;
 import dev.hely.lib.menu.implement.PaginatedMenu;
+import dev.hely.lib.util.CC;
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -82,9 +85,17 @@ public class ServerListMenu extends PaginatedMenu {
     public Map<Integer, Button> getPaginatedContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        List<Server> servers = new ArrayList<>(OxygenBukkit.getInstance().getServerManager().getServers());
-        servers.sort(Comparator.comparing(Server::getName));
-        servers.forEach(server -> buttons.put(buttons.size(), new ServerButton(server)));
+        List<Server> servers = new ArrayList<>(OxygenBukkit.getInstance().getServerManager().getServersList());
+        List<String> currentList = new ArrayList<>();
+        OxygenBukkit.getInstance().getServerManager().removeClosedServers();
+        servers.sort(Comparator.comparing(Server::getState));
+        for (Server server : servers) {
+            if (currentList.contains(server.getName())) {
+                continue;
+            }
+            currentList.add(server.getName());
+            buttons.put(buttons.size(), new ServerButton(server));
+        }
 
         return buttons;
     }
@@ -129,36 +140,142 @@ public class ServerListMenu extends PaginatedMenu {
         Server server;
 
         public Material getMaterial() {
-            if(server.getState() == ServerState.OFFLINE) return Material.REDSTONE_BLOCK;
-            if(server.getState() == ServerState.HEARTBEAT_TIMEOUT) return Material.REDSTONE_BLOCK;
-            if(server.getState() == ServerState.UNKNOWN) return Material.LAPIS_BLOCK;
-            if(server.getState() == ServerState.WHITELISTED) return Material.GOLD_BLOCK;
-            if(server.getState() == ServerState.ONLINE) return Material.EMERALD_BLOCK;
+            if(server.getState() == ServerState.OFFLINE) {
+                String material = OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.offline.material");
+                Material default_value = Material.REDSTONE_BLOCK;
+                if (material != null) {
+                    if (Material.getMaterial(material) != null) {
+                        return Material.valueOf(material);
+                    } else {
+                        Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'server-material-button' is null, using a default material."));
+                        return default_value;
+                    }
+                } else {
+                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'server-material-button' is broken, using a default material."));
+                    return default_value;
+                }
+            } else if (server.getState() == ServerState.HEARTBEAT_TIMEOUT) {
+                String material = OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.offline.material");
+                Material default_value = Material.REDSTONE_BLOCK;
+                if (material != null) {
+                    if (Material.getMaterial(material) != null) {
+                        return Material.valueOf(material);
+                    } else {
+                        Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'server-material-button' is null, using a default material."));
+                        return default_value;
+                    }
+                } else {
+                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'server-material-button' is broken, using a default material."));
+                    return default_value;
+                }
+            } else if (server.getState() == ServerState.UNKNOWN) {
+                String material = OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.offline.material");
+                Material default_value = Material.REDSTONE_BLOCK;
+                if (material != null) {
+                    if (Material.getMaterial(material) != null) {
+                        return Material.valueOf(material);
+                    } else {
+                        Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'server-material-button' is null, using a default material."));
+                        return default_value;
+                    }
+                } else {
+                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'server-material-button' is broken, using a default material."));
+                    return default_value;
+                }
+            } else if (server.getState() == ServerState.WHITELISTED) {
+                String material = OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.whitelisted.material");
+                Material default_value = Material.LAPIS_BLOCK;
+                if (material != null) {
+                    if (Material.getMaterial(material) != null) {
+                        return Material.valueOf(material);
+                    } else {
+                        Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'server-material-button' is null, using a default material."));
+                        return default_value;
+                    }
+                } else {
+                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'server-material-button' is broken, using a default material."));
+                    return default_value;
+                }
+            } else if (server.getState() == ServerState.ONLINE) {
+                String material = OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.online.material");
+                Material default_value = Material.EMERALD_BLOCK;
+                if (material != null) {
+                    if (Material.getMaterial(material) != null) {
+                        return Material.valueOf(material);
+                    } else {
+                        Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'server-material-button' is null, using a default material."));
+                        return default_value;
+                    }
+                } else {
+                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[Oxygen] &cThe material of 'server-material-button' is broken, using a default material."));
+                    return default_value;
+                }
+            }
+
             return null;
+        }
+
+        public int getData() {
+            if(server.getState() == ServerState.OFFLINE) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getInt("menu.buttons.server-button.material.offline.data");
+            } else if (server.getState() == ServerState.HEARTBEAT_TIMEOUT) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getInt("menu.buttons.server-button.material.offline.data");
+            } else if (server.getState() == ServerState.UNKNOWN) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getInt("menu.buttons.server-button.material.offline.data");
+            } else if (server.getState() == ServerState.WHITELISTED) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getInt("menu.buttons.server-button.material.whitelisted.data");
+            } else if (server.getState() == ServerState.ONLINE) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getInt("menu.buttons.server-button.material.online.data");
+            }
+            return 0;
+        }
+
+        public String getDisplayName() {
+            if(server.getState() == ServerState.OFFLINE) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.display-name.offline");
+            } else if (server.getState() == ServerState.HEARTBEAT_TIMEOUT) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.display-name.offline");
+            } else if (server.getState() == ServerState.UNKNOWN) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.display-name.offline");
+            } else if (server.getState() == ServerState.WHITELISTED) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.display-name.whitelisted");
+            } else if (server.getState() == ServerState.ONLINE) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.display-name.online");
+            }
+            return "";
+        }
+
+        public List<String> getLore() {
+            if(server.getState() == ServerState.OFFLINE) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getStringList("menu.buttons.server-button.lores.offline");
+            } else if (server.getState() == ServerState.HEARTBEAT_TIMEOUT) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getStringList("menu.buttons.server-button.lores.offline");
+            } else if (server.getState() == ServerState.UNKNOWN) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getStringList("menu.buttons.server-button.lores.offline");
+            } else if (server.getState() == ServerState.WHITELISTED) {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getStringList("menu.buttons.server-button.lores.whitelisted");
+            } else {
+                return OxygenBukkit.getInstance().getServersMenuConfig().getConfiguration().getStringList("menu.buttons.server-button.lores.online");
+            }
         }
 
         @Override
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
-            builder.setData((short) 0);
-            builder.setDisplayName("&6Server - " + server.getName() + " &7(&c" + server.getState().getDisplayName() + "&7)");
-            builder.setLore(Arrays.asList(
-                    "&7Below, is a few options you have",
-                    "&7to modify and make changes to this",
-                    "&7server.",
-                    "&7",
-                    "&6Server Information:",
-                    " &6- TPS: &c" + TPSUtil.getTPSStatus(server.getTps()),
-                    " &6- Players: &c" + server.getOnlinePlayers() + "&7/&c" + server.getMaxPlayers(),
-                    " &6- Status: &c" + server.getState().getDisplayName(),
-                    " &6- Start Time: &c" + TimeUtil.formatIntoCalendarString(new Date(server.getStartTime())),
-                    " &6- Uptime: &c" + TimeUtil.formatTimeMillis(System.currentTimeMillis() - server.getStartTime()),
-                    " &6- Last Haertbeat: &c" + TimeUtil.formatTimeMillis(System.currentTimeMillis() - server.getLastHeartbeat()),
-                    "&7",
-                    "&6Left-Click &7to view more information.",
-                    "&6Middle-Click &7to connect to this server.",
-                    "&6Right-Click &7to shutdown this server."
-            ));
+            builder.setData((short) getData());
+            builder.setDisplayName(getDisplayName().replace("%server_name%", server.getName()));
+
+            for (String lore_line : getLore()) {
+                builder.addLore(lore_line
+                        .replace("%tps_status%", TPSUtil.getTPSStatus(server.getTps()))
+                        .replace("%online%", String.valueOf(server.getOnlinePlayers()))
+                        .replace("%max%", String.valueOf(server.getMaxPlayers()))
+                        .replace("%status%", server.getState().getDisplayName())
+                        .replace("%start_time%", TimeUtil.formatIntoCalendarString(new Date(server.getStartTime())))
+                        .replace("%uptime%", TimeUtil.formatTimeMillis(System.currentTimeMillis() - server.getStartTime()))
+                        .replace("%last_heartbeat%", TimeUtil.formatTimeMillis(System.currentTimeMillis() - server.getLastHeartbeat()))
+                );
+            }
             builder.addFakeGlow();
             return builder.build();
         }
@@ -166,6 +283,7 @@ public class ServerListMenu extends PaginatedMenu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType.isLeftClick()) {
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new QueueSendPlayerPacket(server.getName(), player.getUniqueId()));
             } else if (clickType.isRightClick()) {
             }
         }

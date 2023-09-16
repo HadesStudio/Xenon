@@ -21,6 +21,7 @@ import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
 import dev.hely.lib.menu.button.Button;
+import dev.hely.lib.menu.fill.FillerTemplate;
 import lombok.AllArgsConstructor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -31,9 +32,11 @@ import java.util.*;
 
 @AllArgsConstructor
 public class LogSelectionMenu extends Menu {
-    {
-        setPlaceholder(true);
+    @Override
+    public FillerTemplate getFillerTemplate() {
+        return FillerTemplate.FILL;
     }
+
     private OfflinePlayer offlinePlayer;
 
     @Override

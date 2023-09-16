@@ -45,6 +45,7 @@ public class SetSlotsCommand extends BaseCommand {
         }
 
         OxygenBukkit.getInstance().getServerData().setMaxPlayers(amount);
+        OxygenBukkit.getInstance().getServerData().save();
         sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("slots-command.updated").replace("%amount%", String.valueOf(amount))));
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("oxygen.admin", OxygenBukkit.getInstance().getServerData().getName(), OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("slots-command.staff-broadcast").replace("%user%", sender.getName()).replace("%amount%", String.valueOf(amount))));
     }

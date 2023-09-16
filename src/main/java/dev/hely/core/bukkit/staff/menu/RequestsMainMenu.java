@@ -36,7 +36,7 @@ import java.util.Map;
 public class RequestsMainMenu extends Menu {
     @Override
     public FillerTemplate getFillerTemplate() {
-        return FillerTemplate.BORDER;
+        return FillerTemplate.FILL;
     }
 
     @Override

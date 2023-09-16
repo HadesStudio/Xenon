@@ -52,6 +52,7 @@ public class QueueRateCommand extends BaseCommand {
         }
 
         server.setQueueRate(amount);
+        server.save();
         player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("queue-system.queue-rate-updated").replace("%server%", args[0]).replace("%amount%", args[1])));
     }
 
