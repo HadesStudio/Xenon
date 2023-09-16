@@ -23,7 +23,7 @@ import dev.hely.core.bukkit.ranks.grants.Grant;
 import dev.hely.core.bukkit.ranks.gson.GSONUtil;
 import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.ranks.rank.RankType;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;

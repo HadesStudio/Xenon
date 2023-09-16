@@ -18,7 +18,7 @@ package dev.hely.core.bukkit.utils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;

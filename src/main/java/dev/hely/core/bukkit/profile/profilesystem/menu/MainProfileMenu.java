@@ -21,7 +21,7 @@ import dev.hely.core.bukkit.profile.profilesystem.menu.type.FriendRequestMenu;
 import dev.hely.core.bukkit.profile.profilesystem.menu.type.FriendsMenu;
 import dev.hely.core.bukkit.profile.profilesystem.menu.type.NotificationsMenu;
 import dev.hely.core.bukkit.profile.profilesystem.menu.type.SocialMediaMenu;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
 import dev.hely.lib.menu.button.Button;

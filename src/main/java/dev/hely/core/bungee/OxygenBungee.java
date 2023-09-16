@@ -27,7 +27,7 @@ import dev.hely.core.bungee.packet.PermissionPacketListener;
 import dev.hely.core.bungee.databases.redis.RedisBungeeModule;
 import dev.hely.core.bungee.utils.BungeeCC;
 import dev.hely.core.bungee.utils.BungeeConfig;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.json.simple.JSONObject;

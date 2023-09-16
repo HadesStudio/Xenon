@@ -21,7 +21,7 @@ import dev.hely.core.bukkit.ranks.rank.menu.RankPermissionsMenu;
 import dev.hely.core.bukkit.ranks.rank.packet.implement.RankUpdatePacket;
 import dev.hely.core.bukkit.ranks.rank.permission.PermissionData;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

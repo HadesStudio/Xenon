@@ -18,11 +18,9 @@ package dev.hely.core.bukkit.profile.tfa.listeners;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.tfa.data.AuthData;
-import dev.hely.core.bukkit.profile.tfa.utils.TFAUtil;
 import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -36,8 +34,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerCommandEvent;
-
-import java.io.IOException;
 
 @Getter
 public class TFAListener implements Listener {

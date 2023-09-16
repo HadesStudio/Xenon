@@ -19,7 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.server.Server;
 import dev.hely.core.bukkit.server.ServerState;
 import dev.hely.core.bukkit.server.packets.ServerStateChangePacket;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
 import dev.hely.lib.menu.button.Button;

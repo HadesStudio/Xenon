@@ -20,7 +20,7 @@ import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.menu.EditProfileMenu;
 import dev.hely.core.bukkit.profile.permission.ProfilePermission;
 import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.button.implement.BackButton;

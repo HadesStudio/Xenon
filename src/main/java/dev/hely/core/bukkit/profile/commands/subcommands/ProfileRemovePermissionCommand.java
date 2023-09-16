@@ -20,7 +20,7 @@ import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.permission.ProfilePermission;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

@@ -7,7 +7,7 @@ import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.server.queue.packets.implement.*;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

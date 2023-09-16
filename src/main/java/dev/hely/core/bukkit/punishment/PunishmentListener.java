@@ -2,7 +2,7 @@ package dev.hely.core.bukkit.punishment;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

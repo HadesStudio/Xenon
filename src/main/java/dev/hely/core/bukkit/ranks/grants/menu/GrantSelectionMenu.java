@@ -22,7 +22,7 @@ import dev.hely.core.bukkit.ranks.grants.Grant;
 import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.material.ColorUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.implement.PaginatedMenu;

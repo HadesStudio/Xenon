@@ -15,7 +15,7 @@ package dev.hely.core.bukkit.server;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

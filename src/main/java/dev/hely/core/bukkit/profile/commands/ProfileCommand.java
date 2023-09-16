@@ -4,7 +4,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.commands.subcommands.*;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.core.bukkit.utils.command.sub.SubCommandHandler;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

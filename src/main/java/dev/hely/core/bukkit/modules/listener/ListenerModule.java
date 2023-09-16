@@ -1,7 +1,6 @@
 package dev.hely.core.bukkit.modules.listener;
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.chat.listeners.ChatListener;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.ProfileListener;
 import dev.hely.core.bukkit.profile.log.listeners.LogListeners;

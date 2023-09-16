@@ -22,7 +22,7 @@ import dev.hely.core.bukkit.filter.types.Match;
 import dev.hely.core.bukkit.filter.types.MuteType;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.Document;

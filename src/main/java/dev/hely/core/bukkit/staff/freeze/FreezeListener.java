@@ -19,7 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.commands.implement.staff.FreezeCommand;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.packet.implement.StaffRawMessagePacket;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import org.bukkit.Location;

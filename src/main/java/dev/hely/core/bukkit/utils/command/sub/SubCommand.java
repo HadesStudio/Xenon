@@ -1,7 +1,7 @@
 package dev.hely.core.bukkit.utils.command.sub;
 
 import dev.hely.core.bukkit.configuration.Locale;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.JavaUtil;
 import lombok.Getter;
 import lombok.Setter;

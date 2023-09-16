@@ -22,7 +22,7 @@ import dev.hely.core.bukkit.ranks.events.GrantGivenEvent;
 import dev.hely.core.bukkit.ranks.grants.Grant;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.DurationWrapper;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.button.implement.BackButton;

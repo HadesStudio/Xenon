@@ -6,7 +6,7 @@ import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.ranks.gson.GSONUtil;
 import dev.hely.core.bukkit.ranks.rank.permission.PermissionData;
 import dev.hely.core.bukkit.utils.ColorUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.Getter;
 import org.bson.Document;
 import org.bukkit.Bukkit;
@@ -17,7 +17,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;

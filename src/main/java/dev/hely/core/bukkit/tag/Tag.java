@@ -3,7 +3,7 @@ package dev.hely.core.bukkit.tag;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.*;
 import org.bson.Document;
 

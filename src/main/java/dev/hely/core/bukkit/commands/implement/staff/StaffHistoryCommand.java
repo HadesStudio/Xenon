@@ -21,9 +21,8 @@ import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.menu.StaffHistoryMenu;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bson.Document;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

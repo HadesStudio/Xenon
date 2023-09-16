@@ -19,7 +19,7 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.packet.implement.StaffRequestReportPacket;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

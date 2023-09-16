@@ -2,10 +2,8 @@ package dev.hely.core.bungee.packet;
 
 import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
-import dev.hely.core.bukkit.profile.packet.implement.StaffJoinPacket;
 import dev.hely.core.bukkit.profile.permission.packet.PlayerPermissionPacket;
 import dev.hely.core.bungee.OxygenBungee;
-import dev.hely.lib.Messages;
 import lombok.AllArgsConstructor;
 
 import java.util.List;

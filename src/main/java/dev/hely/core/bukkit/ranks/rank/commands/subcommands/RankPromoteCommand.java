@@ -21,7 +21,7 @@ import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.ranks.grants.Grant;
 import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

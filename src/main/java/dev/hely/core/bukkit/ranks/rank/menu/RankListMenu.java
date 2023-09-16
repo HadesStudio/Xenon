@@ -18,7 +18,7 @@ package dev.hely.core.bukkit.ranks.rank.menu;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.utils.material.ColorUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.implement.PaginatedMenu;

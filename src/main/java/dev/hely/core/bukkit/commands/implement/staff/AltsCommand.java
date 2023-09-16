@@ -21,7 +21,7 @@ import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

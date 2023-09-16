@@ -22,7 +22,7 @@ import dev.hely.core.bukkit.profile.menu.submenus.GrantsMenu;
 import dev.hely.core.bukkit.profile.menu.submenus.PermissionsMenu;
 import dev.hely.core.bukkit.profile.menu.submenus.SiblingsMenu;
 import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
 import dev.hely.lib.menu.button.Button;

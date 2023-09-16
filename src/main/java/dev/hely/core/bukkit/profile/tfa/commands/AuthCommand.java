@@ -15,26 +15,15 @@ package dev.hely.core.bukkit.profile.tfa.commands;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import com.warrenstrange.googleauth.GoogleAuthenticator;
-import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.profile.tfa.utils.TFAQRGenerator;
 import dev.hely.core.bukkit.profile.tfa.utils.TFAUtil;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
-import dev.hely.lib.maker.ItemMaker;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.map.MapView;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
 
 public class AuthCommand extends BaseCommand {

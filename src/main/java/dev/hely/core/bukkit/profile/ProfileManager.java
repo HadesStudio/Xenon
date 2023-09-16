@@ -10,7 +10,7 @@ import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.Statistics;
 import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.StatisticsServer;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.utils.UUIDUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.Getter;
 import org.bson.Document;
 import org.bukkit.Bukkit;

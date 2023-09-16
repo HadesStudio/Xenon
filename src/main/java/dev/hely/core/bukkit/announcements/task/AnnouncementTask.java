@@ -17,7 +17,7 @@ package dev.hely.core.bukkit.announcements.task;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.announcements.AnnouncementManager;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

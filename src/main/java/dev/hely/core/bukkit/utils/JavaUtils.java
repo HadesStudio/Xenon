@@ -2,7 +2,7 @@ package dev.hely.core.bukkit.utils;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

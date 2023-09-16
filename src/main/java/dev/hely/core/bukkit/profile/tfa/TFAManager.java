@@ -23,7 +23,7 @@ import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.tfa.data.AuthData;
 import dev.hely.core.bukkit.profile.tfa.utils.TFAQRGenerator;
 import dev.hely.core.bukkit.profile.tfa.utils.TFAUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import lombok.Getter;
 import lombok.Setter;

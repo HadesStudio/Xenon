@@ -44,9 +44,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>dev.hely.lib</groupId>
-            <artifactId>Library</artifactId>
-            <version>2.3-SNAPSHOT</version>
+            <groupId>dev.hely.core.lib</groupId>
+            <artifactId>Oxygen-Library</artifactId>
+            <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

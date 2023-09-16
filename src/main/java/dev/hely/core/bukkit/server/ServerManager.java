@@ -19,17 +19,13 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.server.packets.ServerStateChangePacket;
 import dev.hely.core.bukkit.server.packets.ServerUpdatePacket;
-import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.utils.TPSUtil;
-import dev.hely.lib.Tasks;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 public class ServerManager implements ModuleLoader {

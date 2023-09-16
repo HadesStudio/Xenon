@@ -31,7 +31,7 @@ import dev.hely.core.bukkit.server.reboot.commands.RebootCommand;
 import dev.hely.core.bukkit.staff.requests.commands.HelpopCommand;
 import dev.hely.core.bukkit.staff.requests.commands.ReportCommand;
 import dev.hely.core.bukkit.staff.requests.commands.staff.RequestsCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;

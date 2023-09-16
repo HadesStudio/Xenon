@@ -22,7 +22,7 @@ import dev.hely.core.bukkit.staff.staffmode.data.StaffArmor;
 import dev.hely.core.bukkit.staff.staffmode.data.StaffHotbar;
 import dev.hely.core.bukkit.staff.staffmode.data.StaffPlayerData;
 import dev.hely.core.bukkit.staff.staffmode.events.StaffModeToggleEvent;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import lombok.Getter;
 import org.bukkit.Bukkit;

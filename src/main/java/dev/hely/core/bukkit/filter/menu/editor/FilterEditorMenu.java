@@ -16,13 +16,11 @@ package dev.hely.core.bukkit.filter.menu.editor;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.core.menus.OxygenMenu;
 import dev.hely.core.bukkit.filter.Filter;
-import dev.hely.core.bukkit.filter.menu.FiltersMenu;
 import dev.hely.core.bukkit.filter.menu.editor.mutetype.MatchSelectionMenu;
 import dev.hely.core.bukkit.filter.menu.editor.mutetype.MuteTypeSelectionMenu;
 import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
 import dev.hely.lib.menu.button.Button;

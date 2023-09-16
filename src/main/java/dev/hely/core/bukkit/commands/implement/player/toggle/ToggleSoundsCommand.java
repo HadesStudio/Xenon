@@ -18,12 +18,11 @@ package dev.hely.core.bukkit.commands.implement.player.toggle;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 public class ToggleSoundsCommand extends BaseCommand {
     public ToggleSoundsCommand(){

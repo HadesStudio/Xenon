@@ -1,6 +1,6 @@
 package dev.hely.core.bukkit.utils;
 
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 
 import java.util.Arrays;
 import java.util.List;

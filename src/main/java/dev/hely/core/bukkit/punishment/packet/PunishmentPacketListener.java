@@ -11,7 +11,7 @@ import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
 import dev.hely.core.bukkit.punishment.broadcast.PunishmentBroadcast;
 import dev.hely.core.bukkit.punishment.packet.implement.PunishmentExecutePacket;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.AllArgsConstructor;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;

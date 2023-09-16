@@ -21,10 +21,9 @@ import dev.hely.core.bukkit.staff.staffmode.menus.InventoryMenu;
 import dev.hely.core.bukkit.staff.staffmode.menus.StaffMenu;
 import dev.hely.core.bukkit.utils.BukkitUtils;
 import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -50,7 +49,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 public class StaffListener implements Listener {
 

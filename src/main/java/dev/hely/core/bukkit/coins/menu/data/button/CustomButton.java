@@ -6,7 +6,7 @@ import dev.hely.core.bukkit.coins.menu.data.action.CustomButtonAction;
 import dev.hely.core.bukkit.coins.menu.data.category.CustomCategory;
 import dev.hely.core.bukkit.coins.menu.CustomCategoryMenu;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;

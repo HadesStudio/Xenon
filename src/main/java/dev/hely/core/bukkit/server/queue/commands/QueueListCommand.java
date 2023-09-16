@@ -16,7 +16,7 @@ package dev.hely.core.bukkit.server.queue.commands;
 //============================================================
 
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

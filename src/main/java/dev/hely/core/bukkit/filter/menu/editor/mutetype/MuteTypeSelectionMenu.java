@@ -15,15 +15,10 @@ package dev.hely.core.bukkit.filter.menu.editor.mutetype;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.filter.Filter;
 import dev.hely.core.bukkit.filter.menu.editor.FilterEditorMenu;
 import dev.hely.core.bukkit.filter.types.MuteType;
-import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.profile.menu.EditProfileMenu;
-import dev.hely.core.bukkit.profile.menu.submenus.NotesMenu;
-import dev.hely.core.bukkit.profile.note.Note;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.button.implement.BackButton;
@@ -35,7 +30,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

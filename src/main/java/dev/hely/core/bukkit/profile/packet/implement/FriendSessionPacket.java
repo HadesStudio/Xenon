@@ -3,7 +3,7 @@ package dev.hely.core.bukkit.profile.packet.implement;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.modules.database.redis.packet.Packet;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.entity.Player;

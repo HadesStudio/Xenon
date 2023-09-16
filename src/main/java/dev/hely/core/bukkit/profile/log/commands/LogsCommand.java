@@ -15,24 +15,15 @@ package dev.hely.core.bukkit.profile.log.commands;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import com.google.gson.reflect.TypeToken;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
-import dev.hely.core.bukkit.profile.log.Log;
-import dev.hely.core.bukkit.profile.log.category.LogCategories;
-import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.profile.log.menus.LogSelectionMenu;
-import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
-import org.bson.Document;
+import dev.hely.lib.util.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.Type;
-import java.util.*;
 
 public class LogsCommand extends BaseCommand {
     int size = 0;

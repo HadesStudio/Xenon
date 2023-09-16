@@ -22,7 +22,7 @@ import dev.hely.core.bukkit.coins.sales.SaleManager;
 import dev.hely.core.bukkit.coins.sales.types.SaleTypes;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

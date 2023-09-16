@@ -17,7 +17,7 @@ package dev.hely.core.bukkit.server.reboot.task;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;

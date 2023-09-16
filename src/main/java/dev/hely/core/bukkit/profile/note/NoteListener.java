@@ -4,7 +4,6 @@ import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.utils.TimeUtil;
-import dev.hely.lib.CC;
 import dev.hely.lib.Messages;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

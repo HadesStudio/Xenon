@@ -22,7 +22,7 @@ import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.utils.ChatUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;

@@ -5,7 +5,7 @@ import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.tag.Tag;
 import dev.hely.core.bukkit.tag.packet.implement.TagUpdatePacket;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 
 /**

@@ -18,7 +18,7 @@ package dev.hely.core.bukkit.coins.sales;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.coins.item.type.ItemTypes;
 import dev.hely.core.bukkit.coins.sales.types.SaleTypes;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;

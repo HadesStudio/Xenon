@@ -18,7 +18,8 @@ package dev.hely.core.bukkit.staff.menu;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.staff.menu.submenus.ClosedRequestsMenu;
 import dev.hely.core.bukkit.staff.menu.submenus.ActiveRequestsMenu;
-import dev.hely.lib.CC;
+import dev.hely.lib.menu.fill.FillerTemplate;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
 import dev.hely.lib.menu.button.Button;
@@ -33,8 +34,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestsMainMenu extends Menu {
-    {
-        setPlaceholder(true);
+    @Override
+    public FillerTemplate getFillerTemplate() {
+        return FillerTemplate.BORDER;
     }
 
     @Override

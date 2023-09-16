@@ -18,7 +18,7 @@ package dev.hely.core.bukkit.core.menus.submenus;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.core.menus.OxygenMenu;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.button.implement.InformationButton;

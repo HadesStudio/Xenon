@@ -20,7 +20,7 @@ import dev.hely.core.bukkit.coins.sales.commands.subcommands.SaleEndCommand;
 import dev.hely.core.bukkit.coins.sales.commands.subcommands.SaleStartCommand;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.core.bukkit.utils.command.sub.SubCommandHandler;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

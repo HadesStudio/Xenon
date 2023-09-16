@@ -15,17 +15,12 @@ package dev.hely.core.bukkit.profile.tfa.commands;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.profile.tfa.TwoFactorAuth;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
-import org.bukkit.Sound;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Arrays;
 

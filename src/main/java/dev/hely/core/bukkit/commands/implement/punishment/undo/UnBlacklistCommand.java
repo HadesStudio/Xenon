@@ -9,7 +9,7 @@ import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.packet.implement.PunishmentRemovePacket;
 import dev.hely.core.bukkit.utils.ChatUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
-import dev.hely.lib.CC;
+import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
