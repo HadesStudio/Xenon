@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -73,6 +74,14 @@ public class ChatModule implements ModuleLoader {
         return (this.slowCache.get(uuid) + (this.slowTime * 1000L)) - System.currentTimeMillis();
     }
 
+    public String getVipFormat(Profile profile) {
+        if (profile.hasVIPStatus()) {
+            return OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("chat-system.vip-format").replace("%symbol%", ChatColor.valueOf(profile.getVipColor()) + OxygenBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.settings.vip-icon"));
+        } else {
+            return "";
+        }
+    }
+
     public String formatChatDisplay(Player player, String message) {
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
@@ -81,6 +90,7 @@ public class ChatModule implements ModuleLoader {
                 .replace("%rank_prefix%", profile.getActiveHighestRank().getPrefix())
                 .replace("%rank_suffix%", profile.getActiveHighestRank().getSuffix())
                 .replace("%player%", player.getName())
+                .replace("%vip%", getVipFormat(profile))
         );
 
         return Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null ? PlaceholderAPI.setPlaceholders(player, chatFormat) + message : chatFormat + message;

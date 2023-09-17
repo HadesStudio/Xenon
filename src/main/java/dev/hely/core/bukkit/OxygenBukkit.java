@@ -35,6 +35,7 @@ import dev.hely.core.bukkit.staff.staffmode.StaffManager;
 import dev.hely.core.bukkit.tag.TagManager;
 import dev.hely.core.bukkit.tag.packet.TagPacketListener;
 import dev.hely.core.bukkit.tasks.NameMCReminderTask;
+import dev.hely.core.bukkit.vip.VIPRewardProvider;
 import dev.hely.lib.configuration.Config;
 import dev.hely.core.bukkit.utils.command.CommandManager;
 import dev.hely.core.bukkit.utils.command.SubCommandManager;
@@ -97,6 +98,7 @@ public class OxygenBukkit extends JavaPlugin {
     private Config serverConfig;
     private Config announcementConfig;
     private Config staffHistoryConfig;
+    private Config vipMenuConfig;
 
     private GoogleAuthenticator googleAuthenticator;
 
@@ -129,6 +131,7 @@ public class OxygenBukkit extends JavaPlugin {
     private Server serverData;
     private FilterManager filterManager;
     private ChatModule chatManager;
+    private VIPRewardProvider vipRewardProvider;
 
     private boolean debug_mode;
 
@@ -229,6 +232,8 @@ public class OxygenBukkit extends JavaPlugin {
             this.configList.add(staffHistoryConfig);
             this.announcementConfig = new Config(OxygenBukkit.getInstance(), "announcements");
             this.configList.add(announcementConfig);
+            this.vipMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "vip-menu");
+            this.configList.add(vipMenuConfig);
             Locale.load();
         } catch (IOException | InvalidConfigurationException e) {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();

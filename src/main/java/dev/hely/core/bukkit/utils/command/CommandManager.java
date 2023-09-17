@@ -31,6 +31,8 @@ import dev.hely.core.bukkit.server.reboot.commands.RebootCommand;
 import dev.hely.core.bukkit.staff.requests.commands.HelpopCommand;
 import dev.hely.core.bukkit.staff.requests.commands.ReportCommand;
 import dev.hely.core.bukkit.staff.requests.commands.staff.RequestsCommand;
+import dev.hely.core.bukkit.vip.commands.VIPCommand;
+import dev.hely.core.bukkit.vip.commands.VIPResetCommand;
 import dev.hely.lib.util.CC;
 import lombok.Getter;
 import lombok.Setter;
@@ -152,6 +154,8 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new RebootCommand());
         loadedCommands.add(new QueueToggleCommand());
         loadedCommands.add(new QueuePauseCommand());
+        loadedCommands.add(new VIPCommand());
+        loadedCommands.add(new VIPResetCommand());
 
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));

@@ -35,7 +35,7 @@ public class ServerManager implements ModuleLoader {
 
     @Override
     public void enable() {
-        for (Document document : OxygenBukkit.getInstance().getMongoModule().getLogsCollection().find()) {
+        for (Document document : OxygenBukkit.getInstance().getMongoModule().getServerCollection().find()) {
             Server server = new Server(document.getString("name"));
             server.setState(ServerState.valueOf(document.getString("state")));
             server.setMaxPlayers(document.getInteger("maxPlayers"));

@@ -150,6 +150,11 @@ staff-history-command:
   usage: "&cCorrect Usage: /staffhistory <player>"
   scanning: "&6We are attempting to scan all punishments issued by &b%player%&6.."
 
+vip-reset:
+  usage: "&cCorrect Usage: /vipreset <player>"
+  reset: "&6[Hely] &7You have successfully reset &6%player%'s &7VIP Reward Status."
+  message: "&6[Hely] &7You're &6VIP Rewards &7has just been reset."
+
 requests:
   invalid-message: "&cYou must provide a valid message."
   closed: "&cYou have successfully closed %player%'s staff request."

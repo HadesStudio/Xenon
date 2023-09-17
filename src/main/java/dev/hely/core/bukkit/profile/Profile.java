@@ -111,6 +111,9 @@ public class Profile {
     private String discordID;
     private String discordName;
 
+    private String vipColor = "YELLOW";
+    private long vipCooldown = -1;
+
     public Profile(UUID uniqueId, String name) {
         this.uniqueId = uniqueId;
         this.name = name;
@@ -160,6 +163,8 @@ public class Profile {
         document.put("lastReceivedMessageMillis", lastReceivedMessageMillis);
         document.put("lastSentMessageMillis", lastSentMessageMillis);
         document.put("lastRepliedTo", lastRepliedTo);
+        document.put("vipColor", vipColor);
+        document.put("vipCooldown", vipCooldown);
 
         document.put("discordID", discordID);
         document.put("discordSynced", discordSynced);
@@ -215,7 +220,16 @@ public class Profile {
             vpnWhitelist = document.getBoolean("vpnWhitelist");
             currency = document.getInteger("currency");
             playTime = document.getLong("playTime");
-
+            if (document.getString("vipColor") == null) {
+                vipColor = "YELLOW";
+            } else {
+                vipColor = document.getString("vipColor");
+            }
+            if (document.getLong("vipCooldown") == null) {
+                vipCooldown = 0;
+            } else {
+                vipCooldown = document.getLong("vipCooldown");
+            }
             discordSynced = document.getBoolean("discordSynced");
             discordID = document.getString("discordID");
             discordName = document.getString("discordName");
@@ -489,9 +503,17 @@ public class Profile {
             }
         }
 
-        return (grant == null ? 0 : grant.getRank().getQueuePriority());
+        return (grant == null ? 0 : grant.getRank().getQueuePriority()) + (hasVIPStatus() ? OxygenBukkit.getInstance().getVipMenuConfig().getConfiguration().getInt("menu.settings.queue-priority-amount") : 0);
     }
 
+    public boolean hasVIPStatus() {
+        for (Grant grant : getActiveGrants()) {
+            if (grant.getRankName().equalsIgnoreCase(OxygenBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.settings.grant-name"))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void setupAlts() {
         alts.clear();

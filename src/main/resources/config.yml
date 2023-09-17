@@ -43,7 +43,8 @@ name-mc:
 chat-system:
   enabled: true # Do you want to use the built in chat system?
   mute-bypass-permission: "oxygen.chat.highrank"
-  chat-format: "%tags%%rank_prefix% %player%%rank_suffix%&7: &f"
+  vip-format: "&8[&7%symbol%&8]&r"
+  chat-format: "%tags%%vip%%rank_prefix% %player%%rank_suffix%&7: &f"
 two-factor:
   enabled: true
   settings:
