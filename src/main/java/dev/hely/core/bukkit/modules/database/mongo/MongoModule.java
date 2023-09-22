@@ -34,22 +34,28 @@ public class MongoModule implements ModuleLoader {
 
     @Override
     public void enable() {
-        if (OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getBoolean("database.mongo.auth.enabled")) {
-            mongoDatabase = new MongoClient(
-                    new ServerAddress(
-                            OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.address"),
-                            OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getInt("database.mongo.port")),
-                    MongoCredential.createCredential(
-                            OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.auth.user"),
-                            "admin",
-                            OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.auth.password").toCharArray()),
-                    MongoClientOptions.builder().build()
-            ).getDatabase(OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"));
+        if (!OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getBoolean("database.mongo.connection.enabled")) {
+            if (OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getBoolean("database.mongo.auth.enabled")) {
+                ServerAddress serverAddress = new ServerAddress(
+                        OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.address"),
+                        OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getInt("database.mongo.port"));
+                MongoCredential credential = MongoCredential.createCredential(OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.auth.user"),
+                        OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"),
+                        OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.auth.password").toCharArray());
+
+
+                mongoDatabase = new MongoClient(serverAddress, credential, MongoClientOptions.builder().build()).getDatabase(OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"));
+
+            } else {
+                mongoDatabase = new MongoClient(
+                        OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.address"),
+                        OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getInt("database.mongo.port")
+                ).getDatabase(OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"));
+            }
         } else {
-            mongoDatabase = new MongoClient(
-                    OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.address"),
-                    OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getInt("database.mongo.port")
-            ).getDatabase(OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"));
+            MongoClient client = new MongoClient(new MongoClientURI(OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.connection.url")));
+            mongoDatabase = client.getDatabase(OxygenBukkit.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"));
+
         }
 
         profilesCollection = mongoDatabase.getCollection("profiles");

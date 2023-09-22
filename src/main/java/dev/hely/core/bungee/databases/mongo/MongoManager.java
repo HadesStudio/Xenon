@@ -46,7 +46,7 @@ public class MongoManager implements ModuleLoader {
             } else {
                 mongoDatabase = new MongoClient(OxygenBungee.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.address"), OxygenBungee.getInstance().getDatabaseConfig().getConfiguration().getInt("database.mongo.port")).getDatabase(OxygenBungee.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"));
             }
-        }else{
+        } else {
             MongoClient client = new MongoClient(new MongoClientURI(OxygenBungee.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.connection.url")));
             mongoDatabase = client.getDatabase(OxygenBungee.getInstance().getDatabaseConfig().getConfiguration().getString("database.mongo.database_name"));
         }
