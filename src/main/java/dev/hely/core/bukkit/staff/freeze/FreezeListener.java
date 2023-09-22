@@ -21,7 +21,6 @@ import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.packet.implement.StaffRawMessagePacket;
 import dev.hely.lib.util.CC;
 import lombok.RequiredArgsConstructor;
-import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -73,7 +72,7 @@ public class FreezeListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLeave(PlayerDisconnectEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event) {
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(event.getPlayer().getUniqueId());
         if (profile.isFrozen()) {
             if (FreezeCommand.serverFrozen) {
