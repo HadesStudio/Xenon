@@ -27,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
+
     @EventHandler(priority = EventPriority.LOWEST)
     private void onAsyncChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();

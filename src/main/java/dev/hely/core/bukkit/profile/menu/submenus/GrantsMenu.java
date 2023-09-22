@@ -164,8 +164,6 @@ public class GrantsMenu extends PaginatedMenu {
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType.isLeftClick()) {
                 if (player.hasPermission("oxygen.staff.grants.remove")) {
-                    //profile.getGrants().remove(grant);
-
                     grant.setActive(false);
                     grant.setRemovedTime(System.currentTimeMillis());
                     grant.setRemover(player.getName());
