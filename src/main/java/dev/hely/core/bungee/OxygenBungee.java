@@ -27,7 +27,6 @@ import dev.hely.core.bungee.packet.PermissionPacketListener;
 import dev.hely.core.bungee.databases.redis.RedisBungeeModule;
 import dev.hely.core.bungee.utils.BungeeCC;
 import dev.hely.core.bungee.utils.BungeeConfig;
-import dev.hely.lib.util.CC;
 import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.json.simple.JSONObject;
@@ -38,7 +37,6 @@ import java.util.*;
 import java.net.*;
 import java.text.ParseException;
 import java.io.*;
-
 @Getter
 public class OxygenBungee extends Plugin {
     @Getter private static OxygenBungee instance;
@@ -178,14 +176,14 @@ public class OxygenBungee extends Plugin {
 
     public void debug_message(String message) {
         if (this.debug_mode) {
-            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(String.format("&c[Oxygen-Bungee Debug] &4%s", CC.translate(message))));
+            OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(String.format("&c[Oxygen-Bungee Debug] &4%s", BungeeCC.translate(message))));
         }
     }
 
     public void debug_message(String message, ModuleLoader module) {
         if (this.debug_mode) {
             if (module != null) {
-                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(String.format("&c[Oxygen-Bungee Debug (%s)] &4%s", module.getName(), CC.translate(message))));
+                OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(String.format("&c[Oxygen-Bungee Debug (%s)] &4%s", module.getName(), BungeeCC.translate(message))));
             } else {
                 OxygenBungee.getInstance().getLogger().info(BungeeCC.translate(message));
             }
