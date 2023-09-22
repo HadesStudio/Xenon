@@ -428,7 +428,7 @@ public class Profile {
 
     public String getTagFormated() {
         if (this.getTag() == null || this.getTag().isEmpty()) {
-            return "Empty";
+            return "";
         } else {
             return this.getTag();
         }

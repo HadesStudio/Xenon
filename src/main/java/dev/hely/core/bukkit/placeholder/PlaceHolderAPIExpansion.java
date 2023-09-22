@@ -2,6 +2,8 @@ package dev.hely.core.bukkit.placeholder;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.core.bukkit.punishment.Punishment;
+import dev.hely.core.bukkit.punishment.PunishmentType;
 import dev.hely.core.bukkit.server.Server;
 import dev.hely.core.bukkit.server.queue.Queue;
 import dev.hely.core.bukkit.utils.TimeUtil;
@@ -66,7 +68,48 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
             return profile == null ? "None" + "" : profile.getVipColor() + "";
         }
 
+        // Punishment Placeholders:
+        if (identifier.equalsIgnoreCase("punishment_ban_status")) {
+            return getBanStatus(profile);
+        }
+        if (identifier.equalsIgnoreCase("punishment_ban_duration")) {
+            if (profile.getActiveBan() != null) {
+                if (profile.getActiveBan().isPermanent()) {
+                    return "Permanent";
+                } else {
+                    return TimeUtil.getMoreDetailedTime(profile.getActiveBan().getDuration());
+                }
+            }
+        }
+        if (identifier.equalsIgnoreCase("punishment_mute_status")) {
+            return getMuteStatus(profile);
+        }
+        if (identifier.equalsIgnoreCase("punishment_mute_duration")) {
+            if (profile.getActiveMute() != null) {
+                if (profile.getActiveMute().isPermanent()) {
+                    return "Permanent";
+                } else {
+                    return TimeUtil.getMoreDetailedTime(profile.getActiveMute().getDuration());
+                }
+            }
+        }
+        if (identifier.equalsIgnoreCase("punishment_warnings_amount")) {
+            return profile == null ? 0 + "" : profile.getPunishmentCountByType(PunishmentType.MUTE) + "";
+        }
+
         // Profile Placeholders:
+        if (identifier.equalsIgnoreCase("profile_name")) {
+            return profile == null ? "Unknown?" : profile.getName();
+        }
+        if (identifier.equalsIgnoreCase("profile_currency")) {
+            return profile == null ? 0 + "" : profile.getCurrency() + "";
+        }
+        if (identifier.equalsIgnoreCase("profile_tag")) {
+            return profile == null ? "Unknown?" : profile.getTagFormated();
+        }
+        if (identifier.equalsIgnoreCase("profile_actuve_highest_grant_duration")) {
+            return profile == null ? 0 + "" : TimeUtil.getMoreDetailedTime(profile.getHighestGrant().getDuration()) + "";
+        }
         if (identifier.equalsIgnoreCase("profile_notifications")) {
             return profile == null ? 0 + "" : profile.getNotifications().size() + "";
         }
@@ -117,4 +160,40 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
         return null;
     }
 
+    public String getBanStatus(Profile profile) {
+        Punishment punishment = profile.getActiveBan();
+
+        if (punishment != null) {
+            if (punishment.isActive()) {
+                if (punishment.isPermanent()) {
+                    return "Permanent Ban";
+                } else {
+                    return "Temporary Ban";
+                }
+            } else {
+                return "Not Active";
+            }
+        } else {
+            return "N/A";
+        }
+    }
+
+
+    public String getMuteStatus(Profile profile) {
+        Punishment punishment = profile.getActiveMute();
+
+        if (punishment != null) {
+            if (punishment.isActive()) {
+                if (punishment.isPermanent()) {
+                    return "Permanent Mute";
+                } else {
+                    return "Temporary Mute";
+                }
+            } else {
+                return "Not Active";
+            }
+        } else {
+            return "N/A";
+        }
+    }
 }
