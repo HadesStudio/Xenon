@@ -24,7 +24,7 @@ public class FriendRequestSendPacket implements Packet {
             ComponentBuilder builder = (
                     new ComponentBuilder(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("friends.friend-add.added-friend-message").replace("%player%", senderName)))).
                     event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend add " + senderName)).
-                    event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("friends.friend-add.hover-message").replace("%faction%", senderName))).create()));
+                    event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("friends.friend-add.hover-message").replace("%player%", senderName))).create()));
 
             onlinePlayers.getPlayer().spigot().sendMessage(builder.create());
         }

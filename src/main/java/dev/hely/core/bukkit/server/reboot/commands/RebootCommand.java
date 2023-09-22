@@ -34,6 +34,14 @@ public class RebootCommand  extends BaseCommand {
     public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) { // if they just type "reboot" then:
             if (sender instanceof Player) { // if a player typed "reboot":
+                if (OxygenBukkit.getInstance().getRebootManager().isRebooting()) {
+                    for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("reboot.rebooting")) {
+                        String formattedMessage = message.replace("%time%", TimeUtil.getMoreDetailedTime(OxygenBukkit.getInstance().getRebootManager().getTask().getTimeBeforeReboot()));
+                        sender.sendMessage(CC.translate(formattedMessage));
+                    }
+                    return;
+                }
+
                 Player senderPlayer = (Player) sender;
                 if (senderPlayer.hasPermission("oxygen.command.reboot")) { // then we want to start a reboot
                     sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("reboot.started").replace("%time%", TimeUtil.getMoreDetailedTime(60000))));
@@ -72,6 +80,13 @@ public class RebootCommand  extends BaseCommand {
                 }
             }
         } else {
+            if (OxygenBukkit.getInstance().getRebootManager().isRebooting()) {
+                for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("reboot.rebooting")) {
+                    String formattedMessage = message.replace("%time%", TimeUtil.getMoreDetailedTime(OxygenBukkit.getInstance().getRebootManager().getTask().getTimeBeforeReboot()));
+                    sender.sendMessage(CC.translate(formattedMessage));
+                }
+                return;
+            }
             if (sender.hasPermission("oxygen.command.reboot")) {
                 long duration = TimeUtil.parseTime(args[0]);
                 if(duration == -1) {
