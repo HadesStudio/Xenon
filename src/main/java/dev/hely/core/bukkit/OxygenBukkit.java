@@ -15,6 +15,8 @@ import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.modules.database.mongo.MongoModule;
 import dev.hely.core.bukkit.modules.database.redis.RedisModule;
 import dev.hely.core.bukkit.modules.listener.ListenerModule;
+import dev.hely.core.bukkit.placeholder.PlaceHolderAPIExpansion;
+import dev.hely.core.bukkit.placeholder.PlaceholderHook;
 import dev.hely.core.bukkit.profile.ProfileManager;
 import dev.hely.core.bukkit.profile.log.LogManager;
 import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
@@ -169,10 +171,17 @@ public class OxygenBukkit extends JavaPlugin {
         serverData.load();
         serverData.save();
 
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PlaceholderHook();
+            new PlaceHolderAPIExpansion(this).register();
+        }
+
         this.getRedisModule().sendPacket(new ServerStateChangePacket(serverData.getName(), ServerState.ONLINE));
     }
 
     public void onDisable() {
+        PlaceholderHook.setENABLED(false);
+
         try {
             stopping = true;
             this.getServerData().save();
