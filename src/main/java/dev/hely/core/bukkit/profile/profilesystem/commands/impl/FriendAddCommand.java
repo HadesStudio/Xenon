@@ -37,6 +37,10 @@ public class FriendAddCommand extends SubCommand {
                 sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
                 return;
             }
+            if (profile.getName().equalsIgnoreCase(sender_player.getName())) {
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfig().getString("friends.friend-add.friend-self")));
+                return;
+            }
 
             OxygenBukkit.getInstance().getProfileManager().sendFriendRequest(sender_player, profile.getUniqueId());
         } else {
