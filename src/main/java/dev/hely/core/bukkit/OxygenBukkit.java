@@ -76,7 +76,9 @@ import java.util.List;
 
 @Getter
 public class OxygenBukkit extends JavaPlugin {
+
     @Getter private static OxygenBukkit instance;
+
     private long LAST_START_TIME;
     private List<Config> configList;
     private boolean stopping;

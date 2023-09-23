@@ -786,6 +786,7 @@ notes-command:
     cleared: "&eYou have cleared &f%player%'s &enotes!"
   dont-exists: "&cThis player has no saved notes."
   invalid-id: "&cThat's not a valid note id."
+
 day-command:
   set: "&eYou've set your time to &fDay&e"
 night-command:

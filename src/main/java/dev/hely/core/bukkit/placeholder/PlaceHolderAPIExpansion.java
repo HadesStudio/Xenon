@@ -72,6 +72,7 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
         if (identifier.equalsIgnoreCase("punishment_ban_status")) {
             return getBanStatus(profile);
         }
+
         if (identifier.equalsIgnoreCase("punishment_ban_duration")) {
             if (profile.getActiveBan() != null) {
                 if (profile.getActiveBan().isPermanent()) {
@@ -80,10 +81,13 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
                     return TimeUtil.getMoreDetailedTime(profile.getActiveBan().getDuration());
                 }
             }
+            return "N/A";
         }
+
         if (identifier.equalsIgnoreCase("punishment_mute_status")) {
             return getMuteStatus(profile);
         }
+
         if (identifier.equalsIgnoreCase("punishment_mute_duration")) {
             if (profile.getActiveMute() != null) {
                 if (profile.getActiveMute().isPermanent()) {
@@ -92,7 +96,10 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
                     return TimeUtil.getMoreDetailedTime(profile.getActiveMute().getDuration());
                 }
             }
+
+            return "N/A";
         }
+
         if (identifier.equalsIgnoreCase("punishment_warnings_amount")) {
             return profile == null ? 0 + "" : profile.getPunishmentCountByType(PunishmentType.MUTE) + "";
         }
@@ -107,9 +114,11 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
         if (identifier.equalsIgnoreCase("profile_tag")) {
             return profile == null ? "Unknown?" : profile.getTagFormated();
         }
-        if (identifier.equalsIgnoreCase("profile_actuve_highest_grant_duration")) {
+
+        if (identifier.equalsIgnoreCase("profile_active_highest_grant_duration")) {
             return profile == null ? 0 + "" : TimeUtil.getMoreDetailedTime(profile.getHighestGrant().getDuration()) + "";
         }
+
         if (identifier.equalsIgnoreCase("profile_notifications")) {
             return profile == null ? 0 + "" : profile.getNotifications().size() + "";
         }
