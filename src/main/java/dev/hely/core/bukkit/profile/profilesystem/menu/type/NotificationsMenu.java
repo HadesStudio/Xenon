@@ -17,7 +17,7 @@ package dev.hely.core.bukkit.profile.profilesystem.menu.type;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.profile.profilesystem.impl.Notification;
+import dev.hely.core.bukkit.profile.notifications.Notification;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
@@ -58,12 +58,11 @@ public class NotificationsMenu extends PaginatedMenu {
         Map<Integer, Button> buttons = new HashMap<>();
         int amount = 0;
 
-        final List<Notification> sortedNotifications = profile.getNotifications();
-        sortedNotifications.sort(Comparator.comparingLong(Notification::getSentdate).reversed());
+        final List<String> sortedNotifications = profile.getNotifications();
 
-        for (Notification notification : sortedNotifications) {
+        for (String noti : sortedNotifications) {
             amount++;
-            int finalAmount = amount;
+            Notification notification = OxygenBukkit.getInstance().getNotificationManager().getNotificationByID(noti);
             buttons.put(buttons.size(), new Notification_Button(profile, amount, notification));
         }
 
@@ -131,8 +130,8 @@ public class NotificationsMenu extends PaginatedMenu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(OxygenBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.notification.name").replace("%number%", String.valueOf(amount)).replace("%date%", TimeUtil.formatIntoCalendarString(new Date(notification.getSentdate()))));
-            for (String line : notification.getNotification()) {
+            builder.setDisplayName(OxygenBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.notification.name").replace("%number%", String.valueOf(amount)).replace("%date%", TimeUtil.formatIntoCalendarString(new Date(notification.getDate()))));
+            for (String line : notification.getMessage()) {
                 builder.addLore(line);
             }
             builder.addLore("");

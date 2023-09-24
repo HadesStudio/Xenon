@@ -95,6 +95,22 @@ vanish:
     alert:
       - "&6[Staff] &c%player% &ahas just disabled their &6Vanish Mode&a."
 
+notifications-admin:
+  usage:
+    - "&7&l&m-----------------------------------"
+    - "&6&lNotifications Admin"
+    - "&7All notification admin commands are below."
+    - "&7"
+    - "&6* /notificationsadmin menu &7- Opens a utility menu for notifications."
+    - "&6* /notificationsadmin send <player> <message> &7- Send a message to a user, multiple lines by using '\n'."
+    - "&6* /notificationsadmin sendall <message> &7- Send a message to a user, multiple lines by using '\n'."
+    - "&7&l&m-----------------------------------"
+  send:
+    usage: "&cCorrect Usage: /notificationsadmin send <player> <message>"
+    sent: "&cYou have successfully sent a new &6Notification &cto this player."
+  send-all:
+    usage: "&cCorrect Usage: /notificationsadmin sendall <message>"
+    sent: "&cYou have successfully sent a new &6Notification &cto all profiles."
 reboot:
   rebooting:
     - "&7&l&m-------------------------------"

@@ -7,9 +7,13 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.note.Note;
+import dev.hely.core.bukkit.profile.notifications.Notification;
 import dev.hely.core.bukkit.profile.permission.ProfilePermission;
 import dev.hely.core.bukkit.profile.permission.packet.PlayerPermissionPacket;
-import dev.hely.core.bukkit.profile.profilesystem.impl.*;
+import dev.hely.core.bukkit.profile.profilesystem.impl.Comment;
+import dev.hely.core.bukkit.profile.profilesystem.impl.Message;
+import dev.hely.core.bukkit.profile.profilesystem.impl.NotificationType;
+import dev.hely.core.bukkit.profile.profilesystem.impl.Preferences;
 import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.Statistics;
 import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.StatisticsServer;
 import dev.hely.core.bukkit.profile.profilesystem.impl.social.SocialMediaType;
@@ -74,7 +78,7 @@ public class Profile {
     private List<String> playerPermissions = new ArrayList<>(); // RANK PERMISSIONS
     private List<String> bungeePermissions = new ArrayList<>(); // RANK BUNGEE PERMISSIONS
     //For notifications / mail system / profile system:
-    private List<Notification> notifications = new ArrayList<>();
+    private List<String> notifications = new ArrayList<>(); // String = Notification ID puta
     private List<NotificationType> notification_settings = new ArrayList<>();
     private List<UUID> friends = new ArrayList<>();
     private List<UUID> friendRequests = new ArrayList<>();
@@ -173,6 +177,8 @@ public class Profile {
 
         Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
         document.put("settings", OxygenBukkit.PLAIN_GSON.toJson(this.settings, settingsType));
+        Type notificationsType = new TypeToken<List<String>>() {}.getType();
+        document.put("notifications", OxygenBukkit.PLAIN_GSON.toJson(this.notifications, notificationsType));
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
         document.put("staffProfile", OxygenBukkit.PLAIN_GSON.toJson(this.staffProfile, staffProfileType));
         Type ignoredListType = new TypeToken<List<String>>() {}.getType();
@@ -233,6 +239,9 @@ public class Profile {
             discordSynced = document.getBoolean("discordSynced");
             discordID = document.getString("discordID");
             discordName = document.getString("discordName");
+
+            Type notificationsType = new TypeToken<List<String>>() {}.getType();
+            notifications = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("notifications"), notificationsType);
 
             authPassword = document.getString("authPassword");
             frozen = document.getBoolean("frozen");

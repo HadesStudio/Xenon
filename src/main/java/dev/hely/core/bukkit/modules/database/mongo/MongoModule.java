@@ -31,6 +31,7 @@ public class MongoModule implements ModuleLoader {
     public MongoCollection<Document> couponsCollection;
     public MongoCollection<Document> filtersCollection;
     public MongoCollection<Document> serverCollection;
+    public MongoCollection<Document> notificationsCollection;
 
     @Override
     public void enable() {
@@ -69,6 +70,7 @@ public class MongoModule implements ModuleLoader {
         couponsCollection = mongoDatabase.getCollection("storeCoupons");
         filtersCollection = mongoDatabase.getCollection("chatFilters");
         serverCollection = mongoDatabase.getCollection("servers");
+        notificationsCollection = mongoDatabase.getCollection("notifications");
 
         enabled = true;
     }

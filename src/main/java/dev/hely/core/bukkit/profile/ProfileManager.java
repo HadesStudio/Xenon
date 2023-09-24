@@ -1,10 +1,10 @@
 package dev.hely.core.bukkit.profile;
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.profile.notifications.Notification;
 import dev.hely.core.bukkit.profile.packet.implement.FriendRequestAcceptPacket;
 import dev.hely.core.bukkit.profile.packet.implement.FriendRequestSendPacket;
 import dev.hely.core.bukkit.profile.packet.implement.NotificationSendPacket;
-import dev.hely.core.bukkit.profile.profilesystem.impl.Notification;
 import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.StatisticType;
 import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.Statistics;
 import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.StatisticsServer;
@@ -61,6 +61,10 @@ public class ProfileManager {
         return sendNotification(uuid, Arrays.asList(message));
     }
 
+    public boolean sendNotificationAll(String... message) {
+        return sendNotificationAll(Arrays.asList(message));
+    }
+
     public boolean sendNotificationAll(List<String> message) {
         for (Document document : OxygenBukkit.getInstance().getMongoModule().getProfilesCollection().find()) {
             UUID uuid = UUID.fromString(document.getString("uniqueId"));
@@ -76,7 +80,9 @@ public class ProfileManager {
 
             OxygenBukkit.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(playerProfile.getName()));
 
-            playerProfile.getNotifications().add(new Notification(uuid, java.lang.System.currentTimeMillis(), message));
+
+            Notification notification = new Notification(message);
+            playerProfile.getNotifications().add(notification.getId());
             playerProfile.save();
         }
         return true;
@@ -110,7 +116,8 @@ public class ProfileManager {
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(Bukkit.getPlayer(uuid).getName()));
 
-        playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), message));
+        Notification notification = new Notification(message);
+        playerProfile.getNotifications().add(notification.getId());
         playerProfile.save();
         return true;
     }
@@ -225,7 +232,8 @@ public class ProfileManager {
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(playerProfile.getName()));
 
-        playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), list));
+        Notification notification = new Notification(list);
+        playerProfile.getNotifications().add(notification.getId());
         playerProfile.save();
         return true;
     }
@@ -241,8 +249,8 @@ public class ProfileManager {
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(playerProfile.getName()));
 
-
-        playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), list));
+        Notification notification = new Notification(list);
+        playerProfile.getNotifications().add(notification.getId());
         playerProfile.save();
         return true;
     }
@@ -259,7 +267,8 @@ public class ProfileManager {
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(playerProfile.getName()));
 
 
-        playerProfile.getNotifications().add(new Notification(uuid, System.currentTimeMillis(), list));
+        Notification notification = new Notification(list);
+        playerProfile.getNotifications().add(notification.getId());
         playerProfile.save();
         return true;
     }

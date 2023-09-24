@@ -19,6 +19,7 @@ import dev.hely.core.bukkit.placeholder.PlaceHolderAPIExpansion;
 import dev.hely.core.bukkit.placeholder.PlaceholderHook;
 import dev.hely.core.bukkit.profile.ProfileManager;
 import dev.hely.core.bukkit.profile.log.LogManager;
+import dev.hely.core.bukkit.profile.notifications.NotificationManager;
 import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
 import dev.hely.core.bukkit.profile.tfa.TFAManager;
 import dev.hely.core.bukkit.punishment.packet.PunishmentPacketListener;
@@ -136,6 +137,7 @@ public class OxygenBukkit extends JavaPlugin {
     private FilterManager filterManager;
     private ChatModule chatManager;
     private VIPRewardProvider vipRewardProvider;
+    private NotificationManager notificationManager;
 
     private boolean debug_mode;
 
@@ -268,7 +270,6 @@ public class OxygenBukkit extends JavaPlugin {
 
         redisModule = new RedisModule();
         mongoModule = new MongoModule();
-
         googleAuthenticator = new GoogleAuthenticator();
         saleManager = new SaleManager();
         clientManager = new ClientModule();
@@ -284,6 +285,7 @@ public class OxygenBukkit extends JavaPlugin {
         logManager = new LogManager();
         staffManager = new StaffManager();
         announcementManager = new AnnouncementManager();
+        notificationManager = new NotificationManager();
 
         queueManager = new QueueManager();
         serverManager = new ServerManager();
@@ -307,6 +309,7 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(requestHandler);
         this.loadModule(rankManager);
         this.loadModule(tagManager);
+        this.loadModule(notificationManager);
         this.loadModule(storeManager);
         this.loadModule(tfaManager);
         this.loadModule(staffManager);
