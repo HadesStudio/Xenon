@@ -63,7 +63,7 @@ public class Profile {
 
     private Long firstSeen;
     private Long lastSeen;
-    private String currentServer = "Unknown";
+    private String currentServer = "None";
     private String lastServer = "";
 
     private String time = "";

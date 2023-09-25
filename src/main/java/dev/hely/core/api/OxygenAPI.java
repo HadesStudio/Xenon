@@ -103,4 +103,8 @@ public class OxygenAPI {
             return "Unknown, the user has not linked their discord.";
         }
     }
+
+    public boolean isProfileOnline(UUID uuid) {
+        return !this.getProfile(uuid).getCurrentServer().equalsIgnoreCase("None");
+    }
 }

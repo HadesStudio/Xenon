@@ -130,6 +130,7 @@ public class ProfileListener implements Listener {
             }
 
             profile.getSession().stopTimings();
+            profile.setCurrentServer("None");
 
 
             new BukkitRunnable() {
