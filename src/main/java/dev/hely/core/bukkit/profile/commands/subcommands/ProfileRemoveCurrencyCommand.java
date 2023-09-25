@@ -90,7 +90,7 @@ public class ProfileRemoveCurrencyCommand extends SubCommand {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.remove-currency.taken").replace("%amount%", String.valueOf(amount)).replace("%sender%", sender.getName())));
         } else {
             List<String> list = OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile-commands.remove-currency.notification");
-            OxygenBukkit.getInstance().getProfileManager().sendNotification(profile.getUniqueId(), list);
+            OxygenBukkit.getInstance().getProfileManager().sendNotification(profile.getUniqueId(), list, OxygenBukkit.getInstance().getNotificationManager().getRandomID());
         }
     }
 }

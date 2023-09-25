@@ -16,6 +16,7 @@ package dev.hely.core.bukkit.profile.notifications.menu.submenus;
 //============================================================
 
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.profile.notifications.Notification;
 import dev.hely.core.bukkit.profile.notifications.menu.NotificationListMenu;
 import dev.hely.lib.callback.Callback;
 import dev.hely.lib.maker.ItemMaker;
@@ -40,6 +41,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class CreationMenu extends PaginatedMenu {
     List<String> message;
+    boolean create;
 
     @Override
     public String getName() {
@@ -61,7 +63,7 @@ public class CreationMenu extends PaginatedMenu {
         Map<Integer, Button> buttons = new HashMap<>();
 
         for (String text_line : message) {
-            buttons.put(buttons.size(), new MessageLineButton(text_line, buttons.size()));
+            buttons.put(buttons.size(), new MessageLineButton(text_line, buttons.size() + 1));
         }
 
         return buttons;
@@ -126,9 +128,26 @@ public class CreationMenu extends PaginatedMenu {
         }
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            message.remove(line_text);
+            List<String> current_lines = new ArrayList<>();
+            current_lines.addAll(message);
+
+            if (current_lines.size() == 0) {
+                player.sendMessage(CC.translate("&cTheir has to be at least 1 notification line."));
+                SoundManager.INSTANCE.playSound(player, "BLAZE_HIT");
+                return;
+            }
+
+            current_lines.remove(line_text);
+
+            message = current_lines;
+
             player.sendMessage(CC.translate("&cYou have successfully deleted this notification line!"));
             SoundManager.INSTANCE.playSound(player, "BLAZE_HIT");
+        }
+
+        @Override
+        public boolean toUpdate(Player player, int slot, ClickType clickType) {
+            return clickType.isCreativeAction() || clickType.isRightClick() || clickType.isLeftClick();
         }
     }
     @AllArgsConstructor
@@ -179,8 +198,8 @@ public class CreationMenu extends PaginatedMenu {
 
                 @Override
                 public Prompt acceptInput(ConversationContext cc, String text) {
-                    callback.callback(text);
-                    new CreationMenu(message).openMenu(p);
+                    message.add(text);
+                    new CreationMenu(message, true).openMenu(p);
 
                     return Prompt.END_OF_CONVERSATION;
                 }
@@ -214,8 +233,12 @@ public class CreationMenu extends PaginatedMenu {
         }
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
+            Notification notification = new Notification(message);
+            OxygenBukkit.getInstance().getNotificationManager().getNotificationMap().put(notification.getId(), notification);
+            notification.save();
+
             player.closeInventory();
-            new SelectionMenu(message, true).openMenu(player);
+            new SelectionMenu(notification).openMenu(player);
         }
     }
 }

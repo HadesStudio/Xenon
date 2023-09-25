@@ -80,7 +80,7 @@ public class ProfileAddCurrencyCommand extends SubCommand {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-currency.received").replace("%amount%", String.valueOf(amount)).replace("%sender%", sender.getName())));
         } else {
             List<String> list = OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile-commands.add-currency.notification");
-            OxygenBukkit.getInstance().getProfileManager().sendNotification(profile.getUniqueId(), list);
+            OxygenBukkit.getInstance().getProfileManager().sendNotification(profile.getUniqueId(), list, OxygenBukkit.getInstance().getNotificationManager().getRandomID());
         }
     }
 }

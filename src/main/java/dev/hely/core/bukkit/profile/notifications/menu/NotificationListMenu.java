@@ -1,5 +1,6 @@
 package dev.hely.core.bukkit.profile.notifications.menu;
 
+import com.google.gson.reflect.TypeToken;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.notifications.Notification;
 import dev.hely.core.bukkit.profile.notifications.menu.submenus.CreationMenu;
@@ -11,15 +12,14 @@ import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.button.implement.PageButton;
 import dev.hely.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
+import org.bson.Document;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Type;
+import java.util.*;
 
 public class NotificationListMenu extends PaginatedMenu {
     @Override
@@ -95,7 +95,7 @@ public class NotificationListMenu extends PaginatedMenu {
             builder.setData(getData());
             builder.setDisplayName("&6Notification #" + notification.getId());
             builder.setLore(Arrays.asList(
-                    "&6Players w/ Notification&7: &b" + notification.getProfilesWithNotification(),
+                    "&6Players w/ Notification&7: &b" + OxygenBukkit.getInstance().getNotificationManager().getProfilesWithNotification(notification),
                     "&6Date Sent&7: &b" + TimeUtil.formatDateDiff(notification.getDate()),
                     "&6Last Update&7: &b" + TimeUtil.formatDateDiff(notification.getLast_update()),
                     "&6Message&7:"
@@ -114,10 +114,20 @@ public class NotificationListMenu extends PaginatedMenu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType.isRightClick()) {
-                new SelectionMenu(notification.getMessage(), false).openMenu(player);
+                new SelectionMenu(notification).openMenu(player);
             } else if (clickType.isCreativeAction()) {
+                for (Document document : OxygenBukkit.getInstance().getMongoModule().getProfilesCollection().find()) {
+                    Type notificationsType = new TypeToken<List<Notification>>() {}.getType();
+                    List<Notification> type = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("notifications"), notificationsType);
 
+                    if (type == null) {
+                        break;
+                    }
 
+                    type.removeIf(notification -> notification.getId().equalsIgnoreCase(this.notification.getId()));
+                    document.put("notifications", OxygenBukkit.PLAIN_GSON.toJson(type, notificationsType));
+
+                }
             } else {
                 new MessageEditorMenu(notification).openMenu(player);
             }
@@ -147,7 +157,7 @@ public class NotificationListMenu extends PaginatedMenu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             player.closeInventory();
-            new CreationMenu(Collections.singletonList("Default message.")).openMenu(player);
+            new CreationMenu(Collections.singletonList("Default message."), true).openMenu(player);
         }
     }
 }

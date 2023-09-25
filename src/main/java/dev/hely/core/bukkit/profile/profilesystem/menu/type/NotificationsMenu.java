@@ -58,12 +58,12 @@ public class NotificationsMenu extends PaginatedMenu {
         Map<Integer, Button> buttons = new HashMap<>();
         int amount = 0;
 
-        final List<String> sortedNotifications = profile.getNotifications();
+        final List<Notification> sortedNotifications = profile.getNotifications();
+        sortedNotifications.sort(Comparator.comparingLong(Notification::getDate).reversed());
 
-        for (String noti : sortedNotifications) {
+        for (Notification noti : sortedNotifications) {
             amount++;
-            Notification notification = OxygenBukkit.getInstance().getNotificationManager().getNotificationByID(noti);
-            buttons.put(buttons.size(), new Notification_Button(profile, amount, notification));
+            buttons.put(buttons.size(), new Notification_Button(profile, amount, noti));
         }
 
         return buttons;
@@ -145,6 +145,11 @@ public class NotificationsMenu extends PaginatedMenu {
             player_profile.getNotifications().remove(notification);
             player_profile.save();
         }
+
+        @Override
+        public boolean toUpdate(Player player, int slot, ClickType clickType) {
+            return clickType.isCreativeAction() || clickType.isRightClick() || clickType.isLeftClick();
+        }
     }
 
     @AllArgsConstructor
@@ -188,6 +193,11 @@ public class NotificationsMenu extends PaginatedMenu {
             player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-system.notifications.read-all")));
             player_profile.getNotifications().clear();
             player_profile.save();
+        }
+
+        @Override
+        public boolean toUpdate(Player player, int slot, ClickType clickType) {
+            return clickType.isCreativeAction() || clickType.isRightClick() || clickType.isLeftClick();
         }
     }
 }

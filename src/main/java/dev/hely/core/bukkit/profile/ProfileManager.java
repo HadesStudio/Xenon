@@ -57,15 +57,15 @@ public class ProfileManager {
         return this.profileMap.get(uuid);
     }
 
-    public boolean sendNotification(UUID uuid, String... message) {
-        return sendNotification(uuid, Arrays.asList(message));
+    public boolean sendNotification(UUID uuid, String id, String... message) {
+        return sendNotification(uuid, Arrays.asList(message), id);
     }
 
-    public boolean sendNotificationAll(String... message) {
-        return sendNotificationAll(Arrays.asList(message));
+    public boolean sendNotificationAll(String id, String... message) {
+        return sendNotificationAll(Arrays.asList(message), id);
     }
 
-    public boolean sendNotificationAll(List<String> message) {
+    public boolean sendNotificationAll(List<String> message, String id) {
         for (Document document : OxygenBukkit.getInstance().getMongoModule().getProfilesCollection().find()) {
             UUID uuid = UUID.fromString(document.getString("uniqueId"));
             Profile playerProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(uuid);
@@ -82,7 +82,8 @@ public class ProfileManager {
 
 
             Notification notification = new Notification(message);
-            playerProfile.getNotifications().add(notification.getId());
+            notification.setId(id);
+            playerProfile.getNotifications().add(notification);
             playerProfile.save();
         }
         return true;
@@ -103,7 +104,7 @@ public class ProfileManager {
         return true;
     }
 
-    public boolean sendNotification(UUID uuid, List<String> message) {
+    public boolean sendNotification(UUID uuid, List<String> message, String id) {
         Profile playerProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(uuid);
 
         if (playerProfile == null) {
@@ -117,16 +118,17 @@ public class ProfileManager {
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(Bukkit.getPlayer(uuid).getName()));
 
         Notification notification = new Notification(message);
-        playerProfile.getNotifications().add(notification.getId());
+        notification.setId(id);
+        playerProfile.getNotifications().add(notification);
         playerProfile.save();
         return true;
     }
 
     public boolean sendFriendRequest(Player sender, UUID target) {
-        /*if (sender.getUniqueId().toString().equalsIgnoreCase(target.toString())) {
-            sender.sendMessage(CC.translate(OxygenGlobal.getInstance().getLanguageConfig().getConfiguration().getString("friends.friend-add.friend-self")));
+        if (sender.getUniqueId().toString().equalsIgnoreCase(target.toString())) {
+            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("friends.friend-add.friend-self")));
             return false;
-        }*/
+        }
 
         Profile senderProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(sender.getUniqueId());
         Profile targetProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(target);
@@ -232,8 +234,7 @@ public class ProfileManager {
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(playerProfile.getName()));
 
-        Notification notification = new Notification(list);
-        playerProfile.getNotifications().add(notification.getId());
+        playerProfile.getNotifications().add(new Notification(list));
         playerProfile.save();
         return true;
     }
@@ -249,8 +250,7 @@ public class ProfileManager {
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(playerProfile.getName()));
 
-        Notification notification = new Notification(list);
-        playerProfile.getNotifications().add(notification.getId());
+        playerProfile.getNotifications().add(new Notification(list));
         playerProfile.save();
         return true;
     }
@@ -267,8 +267,7 @@ public class ProfileManager {
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new NotificationSendPacket(playerProfile.getName()));
 
 
-        Notification notification = new Notification(list);
-        playerProfile.getNotifications().add(notification.getId());
+        playerProfile.getNotifications().add(new Notification(list));
         playerProfile.save();
         return true;
     }

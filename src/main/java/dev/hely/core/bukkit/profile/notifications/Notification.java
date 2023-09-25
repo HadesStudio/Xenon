@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.log.category.LogCategories;
 import dev.hely.core.bukkit.profile.log.types.LogActionTypes;
 import dev.hely.core.bukkit.utils.TimeUtil;
@@ -43,11 +44,11 @@ public class Notification {
         Document document = new Document();
         document.put("notificationID", id);
         Type messageListType = new TypeToken<List<String>>() {}.getType();
-        document.put("message", OxygenBukkit.PLAIN_GSON.toJson(this.message, messageListType));
+        document.put("messages", OxygenBukkit.PLAIN_GSON.toJson(this.message, messageListType));
         document.put("date", date);
         document.put("last_update", last_update);
 
-        OxygenBukkit.getInstance().getMongoModule().getLogsCollection().replaceOne(Filters.eq("notificationID", id), document, new ReplaceOptions().upsert(true));
+        OxygenBukkit.getInstance().getMongoModule().getNotificationsCollection().replaceOne(Filters.eq("notificationID", id), document, new ReplaceOptions().upsert(true));
         if (leave) {
             OxygenBukkit.getInstance().getNotificationManager().getNotificationMap().remove(id);
         }
@@ -59,32 +60,12 @@ public class Notification {
         if (document != null) {
             id = document.getString("notificationID");
             Type messageListType = new TypeToken<List<String>>() {}.getType();
-            message = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("message"), messageListType);
+            message = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("messages"), messageListType);
             date = document.getLong("date");
             last_update = document.getLong("last_update");
         }
     }
 
-    public int getProfilesWithNotification() {
-        int amountType = 0;
-        for (Document document : OxygenBukkit.getInstance().getMongoModule().getProfilesCollection().find()) {
-            OxygenBukkit.getInstance().debug_message("Found profile: " + document.getString("name"));
-
-            Type notificationsType = new TypeToken<List<String>>() {}.getType();
-            List<String> type = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("notifications"), notificationsType);
-
-            if (type == null) {
-                OxygenBukkit.getInstance().debug_message("The users notification is null, wtf xD?");
-                break;
-            }
-
-            if (type.contains(this.id)) {
-                OxygenBukkit.getInstance().debug_message("The users notifications contains this notification!");
-                amountType = amountType + 1;
-            }
-        }
-        return amountType;
-    }
 
     private String getRandomID() {
         StringBuilder code = new StringBuilder();

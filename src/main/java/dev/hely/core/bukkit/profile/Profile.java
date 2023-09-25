@@ -78,7 +78,7 @@ public class Profile {
     private List<String> playerPermissions = new ArrayList<>(); // RANK PERMISSIONS
     private List<String> bungeePermissions = new ArrayList<>(); // RANK BUNGEE PERMISSIONS
     //For notifications / mail system / profile system:
-    private List<String> notifications = new ArrayList<>(); // String = Notification ID puta
+    private List<Notification> notifications = new ArrayList<>(); // String = Notification ID puta
     private List<NotificationType> notification_settings = new ArrayList<>();
     private List<UUID> friends = new ArrayList<>();
     private List<UUID> friendRequests = new ArrayList<>();
@@ -177,7 +177,7 @@ public class Profile {
 
         Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
         document.put("settings", OxygenBukkit.PLAIN_GSON.toJson(this.settings, settingsType));
-        Type notificationsType = new TypeToken<List<String>>() {}.getType();
+        Type notificationsType = new TypeToken<List<Notification>>() {}.getType();
         document.put("notifications", OxygenBukkit.PLAIN_GSON.toJson(this.notifications, notificationsType));
         Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
         document.put("staffProfile", OxygenBukkit.PLAIN_GSON.toJson(this.staffProfile, staffProfileType));
@@ -240,7 +240,7 @@ public class Profile {
             discordID = document.getString("discordID");
             discordName = document.getString("discordName");
 
-            Type notificationsType = new TypeToken<List<String>>() {}.getType();
+            Type notificationsType = new TypeToken<List<Notification>>() {}.getType();
             notifications = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("notifications"), notificationsType);
 
             authPassword = document.getString("authPassword");

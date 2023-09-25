@@ -62,7 +62,7 @@ public class MessageEditorMenu extends PaginatedMenu {
         Map<Integer, Button> buttons = new HashMap<>();
 
         for (String text_line : notification.getMessage()) {
-            buttons.put(buttons.size(), new MessageLineButton(notification, text_line, buttons.size()));
+            buttons.put(buttons.size(), new MessageLineButton(notification, text_line, buttons.size() + 1));
         }
 
         return buttons;
@@ -128,16 +128,29 @@ public class MessageEditorMenu extends PaginatedMenu {
         }
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            List<String> newMessage;
-            newMessage = notification.getMessage();
+            List<String> current_lines = new ArrayList<>();
+            current_lines.addAll(notification.getMessage());
 
-            newMessage.remove(line_text);
+            if (current_lines.size() == 0) {
+                player.sendMessage(CC.translate("&cTheir has to be at least 1 notification line."));
+                SoundManager.INSTANCE.playSound(player, "BLAZE_HIT");
+                return;
+            }
+
+            current_lines.remove(line_text);
+
+            notification.setMessage(current_lines);
+
             notification.setLast_update(System.currentTimeMillis());
             player.sendMessage(CC.translate("&cYou have successfully deleted this notification line!"));
             SoundManager.INSTANCE.playSound(player, "BLAZE_HIT");
 
-            notification.setMessage(newMessage);
             notification.save();
+        }
+
+        @Override
+        public boolean toUpdate(Player player, int slot, ClickType clickType) {
+            return clickType.isCreativeAction() || clickType.isRightClick() || clickType.isLeftClick();
         }
     }
     @AllArgsConstructor
@@ -196,7 +209,8 @@ public class MessageEditorMenu extends PaginatedMenu {
 
                 @Override
                 public Prompt acceptInput(ConversationContext cc, String text) {
-                    callback.callback(text);
+                    notification.getMessage().add(text);
+                    notification.save();
                     new MessageEditorMenu(notification).openMenu(p);
 
                     return Prompt.END_OF_CONVERSATION;

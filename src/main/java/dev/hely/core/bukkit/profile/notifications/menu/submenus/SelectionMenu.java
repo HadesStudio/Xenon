@@ -25,8 +25,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class SelectionMenu extends Menu {
-    List<String> message;
-    boolean create;
+    Notification notification;
 
     @Override
     public FillerTemplate getFillerTemplate() {
@@ -52,16 +51,15 @@ public class SelectionMenu extends Menu {
     public Map<Integer, Button> getMenuContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(12, new SendPlayerButton(message, create));
-        buttons.put(14, new SendAllButton(message, create));
+        buttons.put(12, new SendPlayerButton(notification));
+        buttons.put(14, new SendAllButton(notification));
 
         return buttons;
     }
 
     @AllArgsConstructor
     private static class SendPlayerButton extends Button {
-        private final List<String> newMessage;
-        boolean create;
+        Notification notification;
 
         @Override
         public ItemStack getItemStack(Player player) {
@@ -84,27 +82,19 @@ public class SelectionMenu extends Menu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             player.closeInventory();
-            conversationString(player, (specified) -> {
-                new ConfirmationMenu("Send notification?", (b) -> {
-                    if (b) {
-                        player.sendMessage(CC.translate(""));
-                        player.sendMessage(CC.translate("&aYou have successfully sent this notification."));
-                        player.sendMessage(CC.translate("&aPlayer: &b" + specified));
-                        player.sendMessage(CC.translate(""));
+            conversationString(player, (specified) -> new ConfirmationMenu("Send notification?", (b) -> {
+                if (b) {
+                    player.sendMessage(CC.translate(""));
+                    player.sendMessage(CC.translate("&aYou have successfully sent this notification."));
+                    player.sendMessage(CC.translate("&aPlayer: &b" + specified));
+                    player.sendMessage(CC.translate(""));
 
-                        Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(specified);
-                        OxygenBukkit.getInstance().getProfileManager().sendNotification(profile.getUniqueId(), newMessage);
-
-                        if (create) {
-                            Notification notification = new Notification(newMessage);
-                            notification.save();
-                            OxygenBukkit.getInstance().getNotificationManager().getNotificationMap().put(notification.getId(), notification);
-                        }
-                    } else {
-                        new CreationMenu(newMessage).openMenu(player);
-                    }
-                }).openMenu(player);
-            });
+                    Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(specified);
+                    OxygenBukkit.getInstance().getProfileManager().sendNotification(profile.getUniqueId(), notification.getMessage(), notification.getId());
+                } else {
+                    player.closeInventory();
+                }
+            }).openMenu(player));
         }
 
         public void conversationString(Player p, Callback<String> callback) {
@@ -119,7 +109,7 @@ public class SelectionMenu extends Menu {
                     callback.callback(text);
                     if (OxygenBukkit.getInstance().getProfileManager().getProfile(text) == null) {
                         p.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", text));
-                        new SelectionMenu(newMessage, create).openMenu(p);
+                        new SelectionMenu(notification).openMenu(p);
                     }
 
                     return Prompt.END_OF_CONVERSATION;
@@ -135,8 +125,7 @@ public class SelectionMenu extends Menu {
 
     @AllArgsConstructor
     private static class SendAllButton extends Button {
-        private final List<String> newMessage;
-        boolean create;
+        Notification notification;
 
         @Override
         public ItemStack getItemStack(Player player) {
@@ -165,15 +154,9 @@ public class SelectionMenu extends Menu {
                     player.sendMessage(CC.translate("&aYou have successfully sent this notification."));
                     player.sendMessage(CC.translate(""));
 
-                    if (create) {
-                        Notification notification = new Notification(newMessage);
-                        notification.save();
-                        OxygenBukkit.getInstance().getNotificationManager().getNotificationMap().put(notification.getId(), notification);
-                    }
-
-                    OxygenBukkit.getInstance().getProfileManager().sendNotificationAll(newMessage);
+                    OxygenBukkit.getInstance().getProfileManager().sendNotificationAll(notification.getMessage(), notification.getId());
                 } else {
-                    new CreationMenu(newMessage).openMenu(player);
+                    player.closeInventory();
                 }
             }).openMenu(player);
         }
