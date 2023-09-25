@@ -189,6 +189,7 @@ requests:
     created: "&aYou have successfully sent a &6Staff Request&a."
   report:
     usage: "&cCorrect Usage: /report <player> <message>"
+    report-self: "&cYou cannot report yourself."
     not-online: "&cThat player is not on the server.."
     broadcast: "&6[Request] &7(%server%) &a&n%player%&a has just reported &6%reported_player%&a: &7%message%"
     created: "&aYou have successfully sent a &6Staff Report Request&a."

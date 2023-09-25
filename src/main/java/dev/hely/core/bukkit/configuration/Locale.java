@@ -97,6 +97,7 @@ public class Locale {
     public static String REPORT_STAFF_ALERT;
     public static String REPORT_CREATED;
     public static String REPORT_NOT_ONLINE;
+    public static String REPORT_SELF;
     public static String REQUEST_NOTE_PROMT;
     public static String REQUEST_NOTE_ADDED;
     public static String REQUEST_CLOSED_BROADCAST;
@@ -147,6 +148,7 @@ public class Locale {
 
 
         REPORT_USAGE = language.getConfiguration().getString("requests.report.usage");
+        REPORT_SELF = language.getConfiguration().getString("requests.report.report-self");
         REPORT_STAFF_ALERT = language.getConfiguration().getString("requests.report.broadcast");
         REPORT_CREATED = language.getConfiguration().getString("requests.report.created");
         REPORT_NOT_ONLINE = language.getConfiguration().getString("requests.report.not-online");

@@ -40,6 +40,11 @@ public class ReportCommand extends BaseCommand {
         }
 
         if (!Bukkit.getPlayer(args[0]).isOnline()) {
+            player.sendMessage(CC.translate(Locale.REPORT_SELF));
+            return;
+        }
+
+        if (args[0].equalsIgnoreCase(player.getName())) {
             player.sendMessage(CC.translate(Locale.REPORT_NOT_ONLINE));
             return;
         }

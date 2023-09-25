@@ -23,6 +23,7 @@ import dev.hely.core.bukkit.profile.menu.submenus.PermissionsMenu;
 import dev.hely.core.bukkit.profile.menu.submenus.SiblingsMenu;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.menu.fill.FillerTemplate;
+import dev.hely.lib.menu.fill.MenuFiller;
 import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
@@ -45,7 +46,7 @@ public class EditProfileMenu extends Menu {
 
     @Override
     public FillerTemplate getFillerTemplate() {
-        return FillerTemplate.BORDER;
+        return FillerTemplate.FILL;
     }
 
     Profile profile;
