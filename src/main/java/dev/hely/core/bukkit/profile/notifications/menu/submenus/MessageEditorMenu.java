@@ -131,7 +131,7 @@ public class MessageEditorMenu extends PaginatedMenu {
             List<String> current_lines = new ArrayList<>();
             current_lines.addAll(notification.getMessage());
 
-            if (current_lines.size() == 0) {
+            if (notification.getMessage().size() == 0) {
                 player.sendMessage(CC.translate("&cTheir has to be at least 1 notification line."));
                 SoundManager.INSTANCE.playSound(player, "BLAZE_HIT");
                 return;

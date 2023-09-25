@@ -65,19 +65,12 @@ public class NotificationManager implements ModuleLoader {
         for (Document document : OxygenBukkit.getInstance().getMongoModule().getProfilesCollection().find()) {
             Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(document.getString("name"));
 
-            OxygenBukkit.getInstance().debug_message("Found profile: " + profile.getName());
-
             if (profile.getNotifications() == null) {
-                OxygenBukkit.getInstance().debug_message("The users notification is null, wtf xD?");
                 break;
             }
 
             for (Notification notification : profile.getNotifications()) {
-                OxygenBukkit.getInstance().debug_message("Registered a notification: #" + notification.getId());
-                OxygenBukkit.getInstance().debug_message("Searching for: #" + noti.getId());
-
                 if (notification.getId().equalsIgnoreCase(noti.getId())) {
-                    OxygenBukkit.getInstance().debug_message("Adding +1");
                     amountType = amountType + 1;
                 }
             }

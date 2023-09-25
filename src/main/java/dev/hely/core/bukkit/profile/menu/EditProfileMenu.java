@@ -72,7 +72,7 @@ public class EditProfileMenu extends Menu {
         buttons.put(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("selection-menu.buttons.details-button.slot"), new ProfileDetailsButton(profile));
         buttons.put(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("selection-menu.buttons.notes-button.slot"), new Notes_Button(profile));
         buttons.put(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("selection-menu.buttons.siblings-button.slot"), new Siblings_Button(profile));
-        buttons.put(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("selection-menu.buttons.permissions-button.slot"), new Permissions_Button(profile));
+        buttons.put(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("selection-menu.buttons.permissions-button.slot"), new ProfilePermissionsButton(profile));
         buttons.put(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("selection-menu.buttons.ranks-button.slot"), new Ranks_Button(profile));
 
         return buttons;
@@ -297,54 +297,6 @@ public class EditProfileMenu extends Menu {
         @Override
         public boolean toUpdate(Player player, int slot, ClickType clickType) {
             return clickType.isCreativeAction() || clickType.isRightClick();
-        }
-    }
-
-    @AllArgsConstructor
-    public static class Permissions_Button extends Button {
-        final Profile profile;
-
-        public Material getMaterial() {
-            if (OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.material") != null) {
-                if (Material.getMaterial(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.material")) != null) {
-                    return Material.valueOf(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&4[OxygenGlobal] &cThe material of 'profile-permissions-button' is null, using a default value."));
-                    return Material.REDSTONE;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&4[OxygenGlobal] &cThe material of 'profile-permissions-button' is broken, using a default value."));
-                return Material.REDSTONE;
-            }
-        }
-
-        public short getData() {
-            return (short) OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("selection-menu.buttons.permissions-button.data");
-        }
-
-
-        @Override
-        public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(getMaterial());
-            builder.setData(getData());
-            builder.setDisplayName(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.display-name"));
-            for (String line : OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getStringList("selection-menu.buttons.permissions-button.lore")) {
-                builder.addLore(line
-                        .replace("%profile_perm_size%", String.valueOf(profile.getProfilePermissions().size()))
-                        .replace("%player_perm_size%", String.valueOf(profile.getPlayerPermissions().size()))
-                        .replace("%bungee_perm_size%", String.valueOf(profile.getBungeePermissions().size()))
-                );
-            }
-            return builder.build();
-        }
-
-        @Override
-        public void onClick(Player player, int slot, ClickType clickType) {
-        }
-
-        @Override
-        public boolean toUpdate(Player player, int slot, ClickType clickType) {
-            return clickType.isCreativeAction() || clickType.isLeftClick() || clickType.isRightClick();
         }
     }
 
