@@ -3,6 +3,8 @@ package dev.hely.core.bukkit.server.commands;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.server.Server;
 import dev.hely.core.bukkit.server.ServerState;
+import dev.hely.core.bukkit.server.packets.ServerCommandExecutePacket;
+import dev.hely.core.bukkit.utils.ChatUtil;
 import dev.hely.core.bukkit.utils.command.BaseCommand;
 import dev.hely.lib.util.CC;
 import org.bukkit.command.CommandSender;
@@ -31,5 +33,7 @@ public class RunCommandCommand extends BaseCommand {
             return;
         }
 
+        OxygenBukkit.getInstance().getRedisModule().sendPacket(new ServerCommandExecutePacket(server.getName(), sender.getName(), ChatUtil.joinArray(args, " ", 1)));
+        sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("run-command.executed")));
     }
 }

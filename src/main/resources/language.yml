@@ -198,6 +198,8 @@ run-command:
   usage: "&cCorrect Usage: /runcmd <server> <command>"
   invalid-server: "&cYou have specified a invalid server name, please try again.."
   not-online: "&cThe server name you have specified is currently not online.."
+  broadcast: "&6[Server Manager] &c%user% &7has just executed '&c%command%&7' on &6%server%&7!"
+  executed: "&7You have successfully executed the command."
 
 profile-system:
   social-system:
