@@ -105,6 +105,8 @@ public class RankListMenu extends PaginatedMenu {
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType == ClickType.LEFT) {
                 new RankPermissionsMenu(rank).openMenu(player);
+            } else {
+                new RankInheritancesMenu(rank).openMenu(player);
             }
         }
     }

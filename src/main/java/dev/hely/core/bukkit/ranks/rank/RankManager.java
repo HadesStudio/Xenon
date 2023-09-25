@@ -122,7 +122,7 @@ public class RankManager implements ModuleLoader {
         this.ranks.clear();
         OxygenBukkit.getInstance().getRanksConfig().getConfiguration().getKeys(false).forEach(key -> {
             YamlConfiguration config = OxygenBukkit.getInstance().getRanksConfig().getConfiguration();
-            Rank rank = new Rank(OxygenBukkit.getInstance().getRanksConfig().getConfiguration().getString(key + ".name"));
+            Rank rank = new Rank(key);
 
             if (config.getString(key + ".permissions-data", null) == null) {
                 config.getStringList(key + ".permissions-data").forEach(permission -> {

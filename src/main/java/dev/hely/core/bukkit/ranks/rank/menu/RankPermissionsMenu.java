@@ -62,10 +62,10 @@ public class RankPermissionsMenu extends PaginatedMenu {
             builder.setDisplayName("&6" + permissionData.getPermission());
 
             builder.addLore("");
-            builder.addLore("&fGlobal&7: &a" + (permissionData.isGlobal() ? "&aYes" : "&cNo"));
-            builder.addLore("&fServers&7: " + (permissionData.getServers().isEmpty() ? "Global" : ""));
+            builder.addLore("&6Global&7: &a" + (permissionData.isGlobal() ? "&aYes" : "&cNo"));
+            builder.addLore("&6Servers&7: &a" + (permissionData.getServers().isEmpty() ? "Global" : ""));
             for (String server : permissionData.getServers()) {
-                builder.addLore("&7- &f" + server);
+                builder.addLore("&7- &6" + server);
             }
 
             return builder.build();
