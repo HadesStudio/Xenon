@@ -194,6 +194,11 @@ requests:
     broadcast: "&6[Request] &7(%server%) &a&n%player%&a has just reported &6%reported_player%&a: &7%message%"
     created: "&aYou have successfully sent a &6Staff Report Request&a."
 
+run-command:
+  usage: "&cCorrect Usage: /runcmd <server> <command>"
+  invalid-server: "&cYou have specified a invalid server name, please try again.."
+  not-online: "&cThe server name you have specified is currently not online.."
+
 profile-system:
   social-system:
     updated-link: "&7You have successfully update your &6%type% Social Link&7!"

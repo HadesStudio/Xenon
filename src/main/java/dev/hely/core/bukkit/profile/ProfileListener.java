@@ -7,6 +7,7 @@ import dev.hely.core.bukkit.profile.packet.implement.StaffJoinPacket;
 import dev.hely.core.bukkit.profile.packet.implement.StaffLeavePacket;
 import dev.hely.core.bukkit.profile.packet.implement.StaffSwitchPacket;
 import dev.hely.core.bukkit.punishment.Punishment;
+import dev.hely.lib.sound.SoundManager;
 import dev.hely.lib.util.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
@@ -81,6 +82,14 @@ public class ProfileListener implements Listener {
 
             if (profile.getFirstSeen() == null) {
                 profile.setFirstSeen(System.currentTimeMillis());
+            }
+
+            if (!OxygenBukkit.getInstance().isLatestVersion()) {
+                if (event.getPlayer().isOp()) {
+                    event.getPlayer().sendMessage(CC.translate("&6[Hely Development] &7Your plugin is outdated! &6Oxygen " + OxygenBukkit.getInstance().getLatestVersionText() + " &7has been released!"));
+                    event.getPlayer().sendMessage(CC.translate("&6[Hely Development] &7Please download the latest version from our discord! &6&nhttps://discord.helydev.com"));
+                    SoundManager.INSTANCE.playSound(event.getPlayer(), "ANVIL_LAND");
+                }
             }
 
             String serverName = OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name");

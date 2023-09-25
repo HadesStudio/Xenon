@@ -16,6 +16,7 @@ import dev.hely.core.bukkit.commands.implement.staff.*;
 import dev.hely.core.bukkit.filter.commands.FilterCommand;
 import dev.hely.core.bukkit.profile.note.command.NotesCommand;
 import dev.hely.core.bukkit.ranks.grants.command.GrantCommand;
+import dev.hely.core.bukkit.server.commands.RunCommandCommand;
 import dev.hely.core.bukkit.server.commands.SetSlotsCommand;
 import dev.hely.core.bukkit.server.queue.commands.*;
 import dev.hely.core.bukkit.commands.OxygenCommand;
@@ -100,6 +101,7 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new StaffBuildCommand());
         loadedCommands.add(new StaffModeCommand());
         loadedCommands.add(new StaffHistoryCommand());
+        loadedCommands.add(new RunCommandCommand());
 
         loadedCommands.add(new SetSlotsCommand());
         loadedCommands.add(new HealCommand());

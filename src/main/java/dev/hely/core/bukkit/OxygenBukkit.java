@@ -77,13 +77,13 @@ import java.util.List;
 
 @Getter
 public class OxygenBukkit extends JavaPlugin {
-
     @Getter private static OxygenBukkit instance;
+    private boolean latestVersion;
+    private String latestVersionText;
 
     private long LAST_START_TIME;
     private List<Config> configList;
     private boolean stopping;
-
     private Tasks tasks;
     private Config licenseConfig;
     private Config databaseConfig;
@@ -104,16 +104,11 @@ public class OxygenBukkit extends JavaPlugin {
     private Config announcementConfig;
     private Config staffHistoryConfig;
     private Config vipMenuConfig;
-
     private GoogleAuthenticator googleAuthenticator;
-
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
-
     private List<ModuleLoader> modules;
-
     private MongoModule mongoModule;
     private RedisModule redisModule;
-
     private ProfileManager profileManager;
     private RankManager rankManager;
     private TagManager tagManager;
@@ -138,7 +133,6 @@ public class OxygenBukkit extends JavaPlugin {
     private ChatModule chatManager;
     private VIPRewardProvider vipRewardProvider;
     private NotificationManager notificationManager;
-
     private boolean debug_mode;
 
     public void onEnable() {
@@ -146,6 +140,7 @@ public class OxygenBukkit extends JavaPlugin {
         LAST_START_TIME = System.currentTimeMillis();
         configList = new ArrayList<>();
         stopping = false;
+        latestVersion = true;
 
         try {
             this.licenseConfig = new Config(this, "license");
@@ -413,7 +408,7 @@ public class OxygenBukkit extends JavaPlugin {
 
 
 
-    public static class SkyLicense {
+    public class SkyLicense {
         private final String apiUrl;
         private final String apiKey;
         private final String license;
@@ -456,11 +451,15 @@ public class OxygenBukkit extends JavaPlugin {
                         bukkitCommandSender.sendMessage(CC.translate("&6&lOxygen Rank Core"));
                         bukkitCommandSender.sendMessage(CC.translate(""));
                         if (!version.equals(res[2])) {
+                            latestVersion = false;
+                            latestVersionText = res[2];
                             bukkitCommandSender.sendMessage(CC.translate("&cThis plugin is outdated!"));
                             bukkitCommandSender.sendMessage(CC.translate("&cPlease download the new updated version in our discord."));
                             bukkitCommandSender.sendMessage(CC.translate("&cSupport will NOT be offered on outdated versions."));
                             bukkitCommandSender.sendMessage(CC.translate(""));
                             bukkitCommandSender.sendMessage(CC.translate("&6New Version&7:&r " + res[2]));
+                        } else {
+                            latestVersion = true;
                         }
                         bukkitCommandSender.sendMessage(CC.translate("&6Debug Mode: " + instance.displayDebugStatus()));
                         bukkitCommandSender.sendMessage(CC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
