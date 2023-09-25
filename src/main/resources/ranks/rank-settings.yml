@@ -25,6 +25,7 @@ commands:
     - "&6* &f/rank setsuffix <name> <suffix> &7- Updates a suffix for a rank."
     - "&6* &f/rank settype <name> <type> &7- Updates the rank type of a rank."
     - "&6* &f/rank setweight <name> <weight> &7- Updates the rank weight of a rank."
+    - "&6* &f/rank setcolor <name> <color> &7- Changes the color of a rank."
     - "&6* &f/rank promote <player> <reason> &7- Promotes a user up +1 rank."
     - "&6* &f/rank demote <player> <reason> &7- Demotes a user down -1 rank."
     - "&7&l&m-----------------------------------"
@@ -38,6 +39,11 @@ commands:
   rename:
     usage: "&cCorrect Usage: /rank rename <rank> <new_name>"
     renamed: "&aYou have successfully changed the name of &6%rank% Rank &ato &6%new_name%&a."
+  color:
+    usage: "&cCorrect Usage: /rank setcolor <rank> <color>"
+    color-changed: "&aYou have successfully changed the color of &6%rank% Rank &ato &6%color%&a."
+    not-exist: "&cThe rank by this name does not exist, please try again."
+    invalid-color: "&cYou have specified a invalid color.. Please try again."
   demote:
     usage: "&cCorrect Usage: /rank demote <player> <reason>"
     invalid-rank: "&cYou cannot demote this person anymore ranks. Make sure that the weights are +1 from each other."
