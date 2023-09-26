@@ -238,6 +238,14 @@ profile-system:
     read-all: "&cYou have marked all notifications as read."
     read: "&cYou have successfully marked this notification as read."
 
+profile:
+  already-online:
+    - "&cIt appears you're already connected to the &6Hely Network&c."
+    - "&cPlease try again later."
+  failed-load:
+    - "&cTheir was an error loading your &6Profile&c."
+    - "&cPlease join our discord. &c&lhttps://discord.helydev.com"
+
 profile-commands:
   main:
     usage:
@@ -336,6 +344,18 @@ punishments:
   broadcast:
     blacklist:
       message: "&c%target% &6was just blacklisted by &c%sender%&6."
+      attempted-join:
+        enabled: true
+        message: "&6[Blacklist] &c%player% &7has just tried to join the server while they are blacklisted."
+        hover:
+          - "&7&l&m---------------------------------"
+          - "&6Profile Blacklisted:"
+          - "&7This user is currently blacklisted."
+          - ""
+          - "&6Ban Date&7: &a%ban_date%"
+          - "&6Banned By&7: &a%banned_by%"
+          - "&6Reason&7: &a%reason%"
+          - "&7&l&m---------------------------------"
       hover:
         enabled: true
         message:
@@ -360,6 +380,20 @@ punishments:
           - "&eReason: &c%reason%"
     ban:
       message: "&c%target% &6was just banned by &c%sender%&6."
+      attempted-join:
+        enabled: true
+        message: "&6[Ban] &c%player% &7has just tried to join the server while they are banned."
+        hover:
+          - "&7&l&m---------------------------------"
+          - "&6Profile Banned:"
+          - "&7This user is currently banned."
+          - ""
+          - "&6Ban Date&7: &a%ban_date%"
+          - "&6Banned By&7: &a%banned_by%"
+          - "&6Reason&7: &a%reason%"
+          - "&6Duration&7: &a%duration%"
+          - "&6Remaining&7: &a%remaining%"
+          - "&7&l&m---------------------------------"
       hover:
         enabled: true
         message:

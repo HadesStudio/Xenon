@@ -7,6 +7,9 @@ import dev.hely.core.bukkit.profile.packet.implement.StaffJoinPacket;
 import dev.hely.core.bukkit.profile.packet.implement.StaffLeavePacket;
 import dev.hely.core.bukkit.profile.packet.implement.StaffSwitchPacket;
 import dev.hely.core.bukkit.punishment.Punishment;
+import dev.hely.core.bukkit.punishment.PunishmentType;
+import dev.hely.core.bukkit.punishment.packet.implement.PunishmentAttemptedJoinPacket;
+import dev.hely.core.bukkit.utils.ChatUtil;
 import dev.hely.lib.sound.SoundManager;
 import dev.hely.lib.util.CC;
 import lombok.AllArgsConstructor;
@@ -39,16 +42,20 @@ public class ProfileListener implements Listener {
 
         Player player = Bukkit.getPlayer(uuid);
         if (player != null && player.isOnline()) {
+            String finalMessage = ChatUtil.buildDescription(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile.already-online"));
+
             event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-            event.setKickMessage(CC.translate("&cYou already online, this is an error? contact with administrators."));
+            event.setKickMessage(CC.translate(finalMessage));
             return;
         }
 
         Profile profile = plugin.getProfileManager().getProfile(uuid, name);
 
         if (profile == null || !profile.isLoaded()) {
+            String finalMessage = ChatUtil.buildDescription(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile.failed-load"));
+
             event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-            event.setKickMessage(CC.translate("&cFailed to load your profile"));
+            event.setKickMessage(CC.translate(finalMessage));
             return;
         }
 
@@ -155,6 +162,8 @@ public class ProfileListener implements Listener {
     private boolean onPunishmentKick(AsyncPlayerPreLoginEvent event, Profile profile, UUID uuid) {
         if (profile.getActiveBlacklist() != null) {
             if (Locale.PUNISHMENTS_JOIN_ALLOW_BLACKLISTED) return false;
+            OxygenBukkit.getInstance().getRedisModule().sendPacket(new PunishmentAttemptedJoinPacket(profile.getUniqueId(), PunishmentType.BLACKLIST));
+
             Punishment punishment = profile.getActiveBlacklist();
 
             String finalMessage = Locale.PUNISHMENT_KICK.get("blacklist");
@@ -173,6 +182,7 @@ public class ProfileListener implements Listener {
 
         if (profile.getActiveBan() != null) {
             if (Locale.PUNISHMENTS_JOIN_ALLOW_BANNED) return false;
+            OxygenBukkit.getInstance().getRedisModule().sendPacket(new PunishmentAttemptedJoinPacket(profile.getUniqueId(), PunishmentType.BAN));
             Punishment punishment = profile.getActiveBan();
 
             String finalMessage = Locale.PUNISHMENT_KICK.get("ban");
@@ -186,6 +196,9 @@ public class ProfileListener implements Listener {
             event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, CC.translate(finalMessage));
 
             plugin.getProfileManager().getProfileMap().remove(uuid);
+
+
+
             return true;
         }
 

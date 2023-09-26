@@ -6,11 +6,14 @@ import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.modules.database.redis.packet.PacketListener;
 import dev.hely.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
 import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.core.bukkit.punishment.packet.implement.PunishmentAttemptedJoinPacket;
 import dev.hely.core.bukkit.punishment.packet.implement.PunishmentRemovePacket;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
 import dev.hely.core.bukkit.punishment.broadcast.PunishmentBroadcast;
 import dev.hely.core.bukkit.punishment.packet.implement.PunishmentExecutePacket;
+import dev.hely.core.bukkit.utils.ChatUtil;
+import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.util.CC;
 import lombok.AllArgsConstructor;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -18,6 +21,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -30,6 +34,52 @@ import java.util.UUID;
 public class PunishmentPacketListener implements PacketListener {
     
     private OxygenBukkit plugin;
+
+    @IncomingPacketHandler
+    public void onPunishmentJoin(PunishmentAttemptedJoinPacket packet) {
+        UUID uniqueId = packet.getUniqueId();
+        PunishmentType type = packet.getType();
+
+        Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(uniqueId);
+
+        if (type == PunishmentType.BLACKLIST) {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                if (!player.hasPermission("oxygen.punishments.silent")) continue;
+
+                List<String> hoverMsg = OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("punishments.broadcast.blacklist.attempted-join.hover");
+                String broadcastMsg = OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("punishments.broadcast.blacklist.attempted-join.message");
+
+                String broadcast = broadcastMsg.replace("%player%", profile.getName());
+                String hover = ChatUtil.buildDescription(hoverMsg)
+                        .replace("%ban_date%", TimeUtil.formatDateDiff(profile.getActiveBlacklist().getAddedAt()))
+                        .replace("%banned_by%", profile.getActiveBlacklist().getAddedBy())
+                        .replace("%reason%", profile.getActiveBlacklist().getAddedReason());
+
+                ComponentBuilder builder = (new ComponentBuilder(CC.translate(broadcast)));
+                builder.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(CC.translate(hover)).create()));
+                player.spigot().sendMessage(builder.create());
+            }
+        } else if (type == PunishmentType.BAN) {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                if (!player.hasPermission("oxygen.punishments.silent")) continue;
+
+                List<String> hoverMsg = OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("punishments.broadcast.ban.attempted-join.hover");
+                String broadcastMsg = OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("punishments.broadcast.ban.attempted-join.message");
+
+                String broadcast = broadcastMsg.replace("%player%", profile.getName());
+                String hover = ChatUtil.buildDescription(hoverMsg)
+                        .replace("%ban_date%", TimeUtil.formatDateDiff(profile.getActiveBan().getAddedAt()))
+                        .replace("%banned_by%", profile.getActiveBan().getAddedBy())
+                        .replace("%reason%", profile.getActiveBan().getAddedReason())
+                        .replace("%remaining%", profile.getActiveBan().getRemaining())
+                        .replace("%duration%", TimeUtil.getDetailedTime(profile.getActiveBan().getDuration()));
+
+                ComponentBuilder builder = (new ComponentBuilder(CC.translate(broadcast)));
+                builder.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(CC.translate(hover)).create()));
+                player.spigot().sendMessage(builder.create());
+            }
+        }
+    }
 
     @IncomingPacketHandler
     public void onPunishmentExecute(PunishmentExecutePacket packet) {
