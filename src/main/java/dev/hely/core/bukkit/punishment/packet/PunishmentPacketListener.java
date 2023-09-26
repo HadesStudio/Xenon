@@ -52,7 +52,7 @@ public class PunishmentPacketListener implements PacketListener {
                 String broadcast = broadcastMsg.replace("%player%", profile.getName());
                 String hover = ChatUtil.buildDescription(hoverMsg)
                         .replace("%ban_date%", TimeUtil.formatDateDiff(profile.getActiveBlacklist().getAddedAt()))
-                        .replace("%banned_by%", profile.getActiveBlacklist().getAddedBy())
+                        .replace("%banned_by%", profile.getActiveBlacklist().getAddedByString())
                         .replace("%reason%", profile.getActiveBlacklist().getAddedReason());
 
                 ComponentBuilder builder = (new ComponentBuilder(CC.translate(broadcast)));
@@ -69,7 +69,7 @@ public class PunishmentPacketListener implements PacketListener {
                 String broadcast = broadcastMsg.replace("%player%", profile.getName());
                 String hover = ChatUtil.buildDescription(hoverMsg)
                         .replace("%ban_date%", TimeUtil.formatDateDiff(profile.getActiveBan().getAddedAt()))
-                        .replace("%banned_by%", profile.getActiveBan().getAddedBy())
+                        .replace("%banned_by%", profile.getActiveBan().getAddedByString())
                         .replace("%reason%", profile.getActiveBan().getAddedReason())
                         .replace("%remaining%", profile.getActiveBan().getRemaining())
                         .replace("%duration%", TimeUtil.getDetailedTime(profile.getActiveBan().getDuration()));

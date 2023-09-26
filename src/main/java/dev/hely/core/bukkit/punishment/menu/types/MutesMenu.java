@@ -141,7 +141,7 @@ public class MutesMenu extends PaginatedMenu {
                 builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.permanent.name"));
                 for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("mutes.button.permanent.lore")) {
                     builder.addLore(line
-                            .replace("%muter%", punishment.getAddedBy())
+                            .replace("%muter%", punishment.getAddedByString())
                             .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                             .replace("%reason%", punishment.getAddedReason())
                             .replace("%server%", punishment.getAddedServer())
@@ -157,7 +157,7 @@ public class MutesMenu extends PaginatedMenu {
                 builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.time-mute.name"));
                 for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("mutes.button.time-mute.lore")) {
                     builder.addLore(line
-                            .replace("%muter%", punishment.getAddedBy())
+                            .replace("%muter%", punishment.getAddedByString())
                             .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                             .replace("%reason%", punishment.getAddedReason())
                             .replace("%server%", punishment.getAddedServer())
@@ -173,12 +173,12 @@ public class MutesMenu extends PaginatedMenu {
                 builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.pardoned.name"));
                 for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("mutes.button.pardoned.lore")) {
                     builder.addLore(line
-                            .replace("%muter%", punishment.getAddedBy())
+                            .replace("%muter%", punishment.getAddedByString())
                             .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                             .replace("%reason%", punishment.getAddedReason())
                             .replace("%server%", punishment.getAddedServer())
                             .replace("%added_date%", TimeUtil.formatIntoCalendarString(new Date(punishment.getAddedAt())))
-                            .replace("%pardoner%", punishment.getRemovedBy())
+                            .replace("%pardoner%", punishment.getRemovedByString())
                             .replace("%pardoned_at%", TimeUtil.formatIntoCalendarString(new Date(punishment.getRemovedAt())))
                             .replace("%pardoned_reason%", punishment.getRemovedReason())
                     );
@@ -190,7 +190,7 @@ public class MutesMenu extends PaginatedMenu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             if (punishment.isRemoved()) { // Retarded player is trying to remove a already pardoned mute???
-                player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("punishments.history-menu.pardon.mute.already-removed").replace("%remover%", punishment.getRemovedBy())));
+                player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("punishments.history-menu.pardon.mute.already-removed").replace("%remover%", punishment.getRemovedByString())));
                 return;
             }
             if (!player.hasPermission("oxygen.pardon.mutes")) {

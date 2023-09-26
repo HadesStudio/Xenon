@@ -93,7 +93,7 @@ public class KicksMenu extends PaginatedMenu {
             builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("kicks.button.kicked.name"));
             for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("kicks.button.kicked.lore")) {
                 builder.addLore(line
-                        .replace("%kicker%", punishment.getAddedBy())
+                        .replace("%kicker%", punishment.getAddedByString())
                         .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                         .replace("%reason%", punishment.getAddedReason())
                         .replace("%added_date%", TimeUtil.formatIntoCalendarString(new Date(punishment.getAddedAt())))

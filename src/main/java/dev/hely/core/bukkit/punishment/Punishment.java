@@ -3,6 +3,8 @@ package dev.hely.core.bukkit.punishment;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.lib.util.CC;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -131,6 +133,38 @@ public class Punishment {
             toReturn = DurationFormatUtils.formatDurationWords(addedAt + duration - System.currentTimeMillis(), true, true);
         }
         return toReturn;
+    }
+
+    public String getAddedByString() {
+        String adder = CC.translate("&4Console");
+
+        if (this.addedBy != null) {
+            adder = "&c&oUnknown";
+
+            Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(this.addedBy);
+
+            if (profile != null) {
+                adder = profile.getActiveHighestRank().getDisplay_color() + profile.getName();
+            }
+        }
+
+        return (adder);
+    }
+
+    public String getRemovedByString() {
+        String remover = CC.translate("&4Console");
+
+        if (this.removedBy != null) {
+            remover = "&c&oUnknown";
+
+            Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(this.removedBy);
+
+            if (profile != null) {
+                remover = profile.getActiveHighestRank().getDisplay_color() + profile.getName();
+            }
+        }
+
+        return (remover);
     }
 
     public String getKey(boolean undo) {

@@ -169,7 +169,7 @@ public class ProfileListener implements Listener {
             String finalMessage = Locale.PUNISHMENT_KICK.get("blacklist");
 
             finalMessage = finalMessage.replace("%target%", profile.getName());
-            finalMessage = finalMessage.replace("%sender%", punishment.getAddedBy());
+            finalMessage = finalMessage.replace("%sender%", punishment.getAddedByString());
             finalMessage = finalMessage.replace("%reason%", punishment.getAddedReason());
             finalMessage = finalMessage.replace("%duration%", punishment.getRemaining());
             finalMessage = finalMessage.replace("%expire%", punishment.getRemaining());
@@ -188,7 +188,7 @@ public class ProfileListener implements Listener {
             String finalMessage = Locale.PUNISHMENT_KICK.get("ban");
 
             finalMessage = finalMessage.replace("%target%", profile.getName());
-            finalMessage = finalMessage.replace("%sender%", punishment.getAddedBy());
+            finalMessage = finalMessage.replace("%sender%", punishment.getAddedByString());
             finalMessage = finalMessage.replace("%reason%", punishment.getAddedReason());
             finalMessage = finalMessage.replace("%duration%", punishment.getRemaining());
             finalMessage = finalMessage.replace("%expire%", punishment.getRemaining());

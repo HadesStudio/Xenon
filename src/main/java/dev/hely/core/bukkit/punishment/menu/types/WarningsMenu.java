@@ -93,7 +93,7 @@ public class WarningsMenu extends PaginatedMenu {
             builder.setDisplayName(OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("warnings.button.warned.name"));
             for (String line : OxygenBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("warnings.button.warned.lore")) {
                 builder.addLore(line
-                        .replace("%warned_by%", punishment.getAddedBy())
+                        .replace("%warned_by%", punishment.getAddedByString())
                         .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                         .replace("%reason%", punishment.getAddedReason())
                         .replace("%added_date%", TimeUtil.formatIntoCalendarString(new Date(punishment.getAddedAt())))
