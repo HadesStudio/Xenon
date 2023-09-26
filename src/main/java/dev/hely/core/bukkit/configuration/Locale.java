@@ -128,9 +128,19 @@ public class Locale {
     public static String TELEPORT_POS_USAGE;
     public static String TELEPORT_POSITION;
 
+    public static String VANISH_ENABLED;
+    public static String VANISH_DISABLED;
+    public static String VANISH_ENABLED_O;
+    public static String VANISH_DISABLED_O;
+
     public static void load(){
         Config language = OxygenBukkit.getInstance().getLanguageConfig();
         Config config = OxygenBukkit.getInstance().getConfiguration();
+
+        VANISH_DISABLED_O = language.getConfiguration().getString("vanish.others.disabled");
+        VANISH_ENABLED_O = language.getConfiguration().getString("vanish.others.enabled");
+        VANISH_DISABLED = language.getConfiguration().getString("vanish.disabled");
+        VANISH_ENABLED = language.getConfiguration().getString("vanish.enabled");
 
         TELEPORT_HERE_TO = language.getConfiguration().getString("teleport.teleport-here-to");
         TELEPORT_HERE_FROM = language.getConfiguration().getString("teleport.teleport-here-from");

@@ -1,46 +1,42 @@
-package dev.hely.hcf.command.staff;
+package dev.hely.core.bukkit.commands.implement.staff;
 
-import dev.hely.hcf.Void;
-import dev.hely.hcf.configuration.Language;
-import dev.hely.hcf.command.base.BaseCommand;
-import dev.hely.hcf.library.api.CC;
+import dev.hely.core.bukkit.OxygenBukkit;
+import dev.hely.core.bukkit.configuration.Locale;
+import dev.hely.core.bukkit.utils.command.BaseCommand;
+import dev.hely.lib.util.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 
-/**
- * @author Leandro Figueroa (LeandroSSJ)
- * domingo, abril 25, 2021
- */
 public class VanishCommand extends BaseCommand {
     public VanishCommand() {
-        super("vanish", Arrays.asList("v"), "hcf.command.vanish");
+        super("vanish", Arrays.asList("v"), "oxygen.command.vanish");
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) {
             Player player = (Player) sender;
-            if (Void.getInstance().getStaffModeManager().isVanished(player)) {
-                Void.getInstance().getStaffModeManager().disabledVanish(player);
-                player.sendMessage(CC.translate(Language.VANISH_DISABLED));
+            if (OxygenBukkit.getInstance().getStaffManager().isVanished(player)) {
+                OxygenBukkit.getInstance().getStaffManager().disabledVanish(player);
+                player.sendMessage(CC.translate(Locale.VANISH_DISABLED));
             } else {
-                Void.getInstance().getStaffModeManager().enabledVanish(player);
-                player.sendMessage(CC.translate(Language.VANISH_ENABLED));
+                OxygenBukkit.getInstance().getStaffManager().enabledVanish(player);
+                player.sendMessage(CC.translate(Locale.VANISH_ENABLED));
             }
-        } else if (sender.hasPermission("hcf.command.vanish.others")) {
+        } else if (sender.hasPermission("oxygen.command.vanish.others")) {
             Player target = Bukkit.getPlayer(args[0]);
             if (!this.checkPlayer(sender, target, args[0])) return;
 
-            if (Void.getInstance().getStaffModeManager().isVanished(target.getPlayer())) {
-                Void.getInstance().getStaffModeManager().disabledVanish(target.getPlayer());
-                target.getPlayer().sendMessage(CC.translate(Language.VANISH_DISABLED_O.replace("%player%", sender.getName())));
+            if (OxygenBukkit.getInstance().getStaffManager().isVanished(target.getPlayer())) {
+                OxygenBukkit.getInstance().getStaffManager().disabledVanish(target.getPlayer());
+                target.getPlayer().sendMessage(CC.translate(Locale.VANISH_DISABLED_O.replace("%player%", sender.getName())));
             } else {
-                Void.getInstance().getStaffModeManager().enabledVanish(target.getPlayer());
+                OxygenBukkit.getInstance().getStaffManager().enabledVanish(target.getPlayer());
 
-                target.getPlayer().sendMessage(CC.translate(Language.VANISH_ENABLED_O.replace("%player%", sender.getName())));
+                target.getPlayer().sendMessage(CC.translate(Locale.VANISH_ENABLED_O.replace("%player%", sender.getName())));
             }
         }
     }

@@ -115,6 +115,7 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new TeleportAllCommand());
         loadedCommands.add(new TeleportHereCommand());
         loadedCommands.add(new TeleportPossCommand());
+        loadedCommands.add(new VanishCommand());
 
         loadedCommands.add(new SetSlotsCommand());
         loadedCommands.add(new HealCommand());

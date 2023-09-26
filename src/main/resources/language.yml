@@ -94,6 +94,9 @@ vanish:
     enabled: true # Do you want to send a message to staff members when someone enables vanish?
     alert:
       - "&6[Staff] &c%player% &ahas just disabled their &6Vanish Mode&a."
+  others:
+    enabled: "&6You're vanish has just been &aenabled&6 by &c%player%&6."
+    disabled: "&6You're vanish has just been &cdisabled&6 by &c%player%&6."
 
 notifications-admin:
   usage:
