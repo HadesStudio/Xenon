@@ -1,6 +1,6 @@
 name: Oxygen
 main: dev.hely.core.bukkit.OxygenBukkit
-version: 1.0.6-SNAPSHOT
+version: 1.0
 author: [Hely Development]
 depend: [ProtocolLib]
 softdepend:

@@ -200,7 +200,17 @@ run-command:
   not-online: "&cThe server name you have specified is currently not online.."
   broadcast: "&6[Server Manager] &c%user% &7has just executed '&c%command%&7' on &6%server%&7!"
   executed: "&7You have successfully executed the command."
-
+teleport:
+  teleport-to-usage: "&cCorrect Usage: /teleport <player>"
+  teleport-here-usage: "&cCorrect Usage: /tphere <player>"
+  teleport-position-usage: "&cCorrect Usage: /tppos <x> <y> <z>"
+  teleport-from: "&c&n%player%&6 has just teleported to your location."
+  teleport-to: "&6You have just been teleported to &c&n%player%&6."
+  teleport-here-from: "&c&n%player%&6 has been teleported to you."
+  teleport-here-to: "&6You were teleported to &c&n%player%&6."
+  teleport-all-from: "&6You were teleported to &c%player%&6."
+  teleport-all-to: "&6You have teleported all players to your location!"
+  teleport-position: "&6You have been teleported to: &c%x%&6, &c%y%&6, &c%z%&6."
 profile-system:
   social-system:
     updated-link: "&7You have successfully update your &6%type% Social Link&7!"

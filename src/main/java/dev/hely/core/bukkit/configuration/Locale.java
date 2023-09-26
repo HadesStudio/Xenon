@@ -118,17 +118,35 @@ public class Locale {
 
     public static String SOCIAL_SPY_FORMAT;
 
+    public static String TELEPORT_ALL_FROM;
+    public static String TELEPORT_ALL_TO;
+    public static String TELEPORT_TO;
+    public static String TELEPORT_HERE_FROM;
+    public static String TELEPORT_HERE_TO;
+    public static String TELEPORT_TO_USAGE;
+    public static String TELEPORT_HERE_USAGE;
+    public static String TELEPORT_POS_USAGE;
+    public static String TELEPORT_POSITION;
+
     public static void load(){
         Config language = OxygenBukkit.getInstance().getLanguageConfig();
         Config config = OxygenBukkit.getInstance().getConfiguration();
 
+        TELEPORT_HERE_TO = language.getConfiguration().getString("teleport.teleport-here-to");
+        TELEPORT_HERE_FROM = language.getConfiguration().getString("teleport.teleport-here-from");
+        TELEPORT_TO = language.getConfiguration().getString("teleport.teleport-to");
+        TELEPORT_ALL_TO = language.getConfiguration().getString("teleport.teleport-all-to");
+        TELEPORT_ALL_FROM = language.getConfiguration().getString("teleport.teleport-all-from");
+        TELEPORT_TO_USAGE = language.getConfiguration().getString("teleport.teleport-to-usage");
+        TELEPORT_HERE_USAGE = language.getConfiguration().getString("teleport.teleport-here-usage");
+        TELEPORT_POS_USAGE = language.getConfiguration().getString("teleport.teleport-position-usage");
+        TELEPORT_POSITION = language.getConfiguration().getString("teleport.teleport-position");
+
+
         SOCIAL_SPY_FORMAT = language.getConfiguration().getString("social-spy.format");
-
-
         DAY_SET = language.getConfiguration().getString("day-command.set");
         NIGHT_SET = language.getConfiguration().getString("night-command.set");
         SUNSET_SET = language.getConfiguration().getString("sunset-command.set");
-
         NOTES_CHECK_FORMAT = language.getConfiguration().getString("notes-command.check.format");
         NOTES_CHECK_MESSAGE = language.getConfiguration().getStringList("notes-command.check.message");
         NOTES_INVALID_ID = language.getConfiguration().getString("notes-command.invalid-id");

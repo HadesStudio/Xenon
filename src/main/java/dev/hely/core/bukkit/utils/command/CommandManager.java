@@ -13,6 +13,13 @@ import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBanCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnBlacklistCommand;
 import dev.hely.core.bukkit.commands.implement.punishment.undo.UnMuteCommand;
 import dev.hely.core.bukkit.commands.implement.staff.*;
+import dev.hely.core.bukkit.commands.implement.staff.gamemodes.GamemodeAdventureCommand;
+import dev.hely.core.bukkit.commands.implement.staff.gamemodes.GamemodeCreativeCommand;
+import dev.hely.core.bukkit.commands.implement.staff.gamemodes.GamemodeSurvivalCommand;
+import dev.hely.core.bukkit.commands.implement.staff.teleport.TeleportAllCommand;
+import dev.hely.core.bukkit.commands.implement.staff.teleport.TeleportCommand;
+import dev.hely.core.bukkit.commands.implement.staff.teleport.TeleportHereCommand;
+import dev.hely.core.bukkit.commands.implement.staff.teleport.TeleportPossCommand;
 import dev.hely.core.bukkit.filter.commands.FilterCommand;
 import dev.hely.core.bukkit.profile.note.command.NotesCommand;
 import dev.hely.core.bukkit.ranks.grants.command.GrantCommand;
@@ -95,13 +102,19 @@ public class CommandManager implements ModuleLoader {
 
         loadedCommands.add(new AuthCommand());
         loadedCommands.add(new RemoveAuthCommand());
-
+        loadedCommands.add(new GamemodeAdventureCommand());
+        loadedCommands.add(new GamemodeCreativeCommand());
+        loadedCommands.add(new GamemodeSurvivalCommand());
         loadedCommands.add(new NotesCommand());
         loadedCommands.add(new HideStaffCommand());
         loadedCommands.add(new StaffBuildCommand());
         loadedCommands.add(new StaffModeCommand());
         loadedCommands.add(new StaffHistoryCommand());
         loadedCommands.add(new RunCommandCommand());
+        loadedCommands.add(new TeleportCommand());
+        loadedCommands.add(new TeleportAllCommand());
+        loadedCommands.add(new TeleportHereCommand());
+        loadedCommands.add(new TeleportPossCommand());
 
         loadedCommands.add(new SetSlotsCommand());
         loadedCommands.add(new HealCommand());
