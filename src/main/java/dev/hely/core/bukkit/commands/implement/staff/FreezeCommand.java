@@ -94,6 +94,8 @@ public class FreezeCommand extends BaseCommand {
                     player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.command.unfrozen").replace("%player%", sender.getName())));
                 }
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("frozen-command.command.unfroze-player").replace("%player%", profile.getName())));
+
+
                 profile.setFrozen(false);
                 profile.save();
             } else { // freeze them
