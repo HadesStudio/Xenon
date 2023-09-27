@@ -86,7 +86,7 @@ public class ChatModule implements ModuleLoader {
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
         String chatFormat = CC.translate(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("chat-system.chat-format")
-                .replace("%tags%", profile.getTag())
+                .replace("%tags%", profile.getTagFormated())
                 .replace("%rank_prefix%", profile.getActiveHighestRank().getPrefix())
                 .replace("%rank_suffix%", profile.getActiveHighestRank().getSuffix())
                 .replace("%player%", player.getName())

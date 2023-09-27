@@ -2,6 +2,7 @@ package dev.hely.core.bukkit.tag.command;
 
 import dev.hely.core.bukkit.tag.command.subcommand.*;
 import dev.hely.core.bukkit.tag.menu.TagMenu;
+import dev.hely.core.bukkit.tag.menu.menu.CustomMenu;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.core.bukkit.utils.command.sub.SubCommandHandler;
 import org.bukkit.command.CommandSender;
@@ -33,10 +34,10 @@ public class TagCommand extends SubCommandHandler {
             if (subCommand != null) {
                 subCommand.execute(sender, args);
             } else {
-                new TagMenu().openMenu((Player) sender);
+                new CustomMenu().openMenu((Player) sender);
             }
         } else {
-            new TagMenu().openMenu((Player) sender);
+            new CustomMenu().openMenu((Player) sender);
         }
         return false;
     }

@@ -5,12 +5,97 @@
 #    If you run into any bugs, or have suggestions, let us know on our discord!   #
 ###################################################################################
 
+category-menu:
+  title: "Select Category"
+  rows: 5 # The number is automatically multiplied by 9.
+  fill:
+    enabled: true # Do you want to use the inventory filler?
+    data: 7 # This is the item data of your glass pane.
+    style: CORNERS # Available Options: FILLED, CORNERS
+    slots: [ 1, 2, 8, 9, 10, 18, 28, 36, 37, 38, 44, 45 ] # These are the slots where your panes appear. This only works if the above option is set to CORNERS.
+    glow: true # Do you want to add glow to your Glass Panes?
+  buttons:
+    countries:
+      item:
+        material: BOOK
+        data: 0
+        amount: 1
+      name: "&6Country Tags"
+      lore:
+        - "&7Click here to open this category."
+      slot: 22 # The slot the item is placed in.
+      action: OPEN_CATEGORY # Available Options: OPEN_CATEGORY, NONE
+      settings:
+        sorted:
+          category: # This is only if the action is set to 'OPEN_CATEGORY'
+            name: "countries"
+  categories:
+    countries:
+      title: "Country Tags"
+      rows: 3
+      fill:
+        enabled: true # Do you want to use the inventory filler?
+        data: 7 # This is the item data of your glass pane.
+        style: CORNERS # Available Options: FILLED, CORNERS
+        slots: [ 1, 2, 8, 9, 10, 18, 19, 20, 26, 27 ] # These are the slots where your panes appear. This only works if the above option is set to CORNERS.
+        glow: true # Do you want to add glow to your Glass Panes?
+      back:
+        enabled: true
+        item:
+          material: REDSTONE
+          data: 0
+          name: '&c&lBack'
+          lore:
+            - "&cClick here to return"
+            - "&cto the previous menu."
+        slot: 5
+      reset-tag:
+        enabled: true
+        item:
+          material: BED
+          data: 0
+          name: '&cReset Tag'
+          lore:
+          - "&7Click here to reset your current"
+          - "&7tag."
+          - "&7"
+          - "&cCurrent Tag: &6%tag_name%"
+        slot: 23
+      buttons:
+        USA:
+          item:
+            material: NAME_TAG
+            data: 0
+            amount: 1
+            name: "&b&k|&4&k|&6 &b&lUSA &4&k|&b&k|"
+            lores:
+              owns:
+                - "&7"
+                - "&6Example:"
+                - "&r%tag_format% &r%player%"
+                - "&7"
+                - "&7Click here to activate this tag."
+              no-permission:
+                - "&7"
+                - "&6Example:"
+                - "&r%tag_format% &r%player%"
+                - "&7"
+                - "&7You do not have permission to this tag!"
+                - "&7Purchase it from our store!"
+                - "&6&ostore.helydev.com"
+          slot: 12 # The slot the item is placed in.
+          tag-name: "USA" # This is the name of the tag that you want to activate.
+          actions: TOGGLE_TAG # OPEN_CATEGORY, TOGGLE_TAG, REMOVE_TAG, NONE
+          settings:
+            sub-menu: "NONE"
+
 menu:
   title: "Tag Selection"
   messages:
     reset-tag: "&cYou have successfully disabled your active chat tag."
     activated-tag: "&aYou have successfully activated this &6Chat Tag&a."
     need-reset: "&cYou must disable your current &6Chat Tag &cto be able to enable a new one."
+    no-permission: "&cYou do not have permissions to use this prefix."
   buttons:
     tag-button:
       material: "NAME_TAG"
