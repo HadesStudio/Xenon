@@ -1,8 +1,7 @@
 package dev.hely.core.bukkit.tag.command;
 
 import dev.hely.core.bukkit.tag.command.subcommand.*;
-import dev.hely.core.bukkit.tag.menu.TagMenu;
-import dev.hely.core.bukkit.tag.menu.menu.CustomMenu;
+import dev.hely.core.bukkit.tag.menu.CustomMenu;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.core.bukkit.utils.command.sub.SubCommandHandler;
 import org.bukkit.command.CommandSender;
