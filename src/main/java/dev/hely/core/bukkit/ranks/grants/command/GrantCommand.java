@@ -35,59 +35,105 @@ public class GrantCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
 
-        if (args.length == 0) {
-            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.usage")));
-            return;
-        }
-        if (args[0].equalsIgnoreCase("add")) {
-            if (args.length != 5) {
-                player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.usage")));
+            if (args.length == 0) {
+                player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.usage")));
                 return;
             }
-            Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[1]);
-            if (profile == null) {
-                sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
-                return;
-            }
-            Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[2]);
-            if (rank == null) {
-                player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.invalid-rank")));
-                return;
-            }
-            long duration = TimeUtil.parseTime(args[3]);
-            boolean permanent = args[3].equalsIgnoreCase("perm") || args[3].equalsIgnoreCase("permanent"); // By default, we set it to false, probably, their is a way better way of doing this, but hey, I will do it like this. :)
-            if (duration == -1) {
-                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.invalid-time")));
-                return;
-            }
-            String reason = args[4];
-
-            Grant grant = new Grant();
-            grant.setActive(true);
-            grant.setAdder(sender.getName());
-            grant.setDuration(duration);
-            grant.setPermanent(permanent);
-            grant.setRankName(rank.getName());
-            grant.setAddedTime(System.currentTimeMillis());
-            grant.setReason(reason);
-            profile.getGrants().add(grant);
-            profile.save();
-
-            new GrantGivenEvent(grant, profile, player);
-            sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.given").replace("%player%", profile.getName()).replace("%rank%", rank.getName()).replace("%time%", String.valueOf(duration))));
-        } else {
-            if (sender != null) {
-                Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[0]);
+            if (args[0].equalsIgnoreCase("add")) {
+                if (args.length != 5) {
+                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.usage")));
+                    return;
+                }
+                Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[1]);
                 if (profile == null) {
                     sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
                     return;
                 }
+                Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[2]);
+                if (rank == null) {
+                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.invalid-rank")));
+                    return;
+                }
+                long duration = TimeUtil.parseTime(args[3]);
+                boolean permanent = args[3].equalsIgnoreCase("perm") || args[3].equalsIgnoreCase("permanent"); // By default, we set it to false, probably, their is a way better way of doing this, but hey, I will do it like this. :)
+                if (duration == -1) {
+                    sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.invalid-time")));
+                    return;
+                }
+                String reason = args[4];
 
-                new GrantSelectionMenu(profile).openMenu(player);
+                Grant grant = new Grant();
+                grant.setActive(true);
+                grant.setAdder(sender.getName());
+                grant.setDuration(duration);
+                grant.setPermanent(permanent);
+                grant.setRankName(rank.getName());
+                grant.setAddedTime(System.currentTimeMillis());
+                grant.setReason(reason);
+                profile.getGrants().add(grant);
+                profile.save();
+
+                new GrantGivenEvent(grant, profile, player);
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.given").replace("%player%", profile.getName()).replace("%rank%", rank.getName()).replace("%time%", String.valueOf(duration))));
             } else {
-                sender.sendMessage(CC.translate(Locale.COMMANDS_ONLY_PLAYER));
+                if (sender != null) {
+                    Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[0]);
+                    if (profile == null) {
+                        sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
+                        return;
+                    }
+
+                    new GrantSelectionMenu(profile).openMenu(player);
+                } else {
+                    sender.sendMessage(CC.translate(Locale.COMMANDS_ONLY_PLAYER));
+                }
+            }
+        } else {
+            if (args.length == 0) {
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.usage")));
+                return;
+            }
+
+            if (args[0].equalsIgnoreCase("add")) {
+                if (args.length != 5) {
+                    sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.usage")));
+                    return;
+                }
+                Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[1]);
+                if (profile == null) {
+                    sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
+                    return;
+                }
+                Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(args[2]);
+                if (rank == null) {
+                    sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.invalid-rank")));
+                    return;
+                }
+                long duration = TimeUtil.parseTime(args[3]);
+                boolean permanent = args[3].equalsIgnoreCase("perm") || args[3].equalsIgnoreCase("permanent"); // By default, we set it to false, probably, their is a way better way of doing this, but hey, I will do it like this. :)
+                if (duration == -1 && !permanent) {
+                    sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.invalid-time")));
+                    return;
+                }
+                String reason = args[4];
+
+                Grant grant = new Grant();
+                grant.setActive(true);
+                grant.setAdder(sender.getName());
+                grant.setDuration(duration);
+                grant.setPermanent(permanent);
+                grant.setRankName(rank.getName());
+                grant.setAddedTime(System.currentTimeMillis());
+                grant.setReason(reason);
+                profile.getGrants().add(grant);
+                profile.save();
+
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.given").replace("%player%", profile.getName()).replace("%rank%", rank.getName()).replace("%time%", String.valueOf(duration))));
+            } else {
+                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.usage")));
             }
         }
     }
