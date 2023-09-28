@@ -69,16 +69,9 @@ public class GrantsMenu extends PaginatedMenu {
     public Map<Integer, Button> getPaginatedContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        this.profile.getGrants().stream().sorted(GRANT_COMPARATOR).forEach(grant -> {
-            buttons.put(buttons.size(), new Grants_Button(profile, grant));
-        }); // CHECK ALL GRANTS
-
-
-        /* CHECK ONLY GRANTS ACTIVES
         this.profile.getGrants().stream().sorted(GRANT_COMPARATOR).filter(grant -> !grant.isActive()).forEach(grant -> {
             buttons.put(buttons.size(), new Grants_Button(profile, grant));
         });
-         */
 
         return buttons;
     }

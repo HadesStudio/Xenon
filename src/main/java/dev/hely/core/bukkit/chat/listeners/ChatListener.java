@@ -18,6 +18,8 @@ package dev.hely.core.bukkit.chat.listeners;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.filter.Filter;
 import dev.hely.core.bukkit.profile.Profile;
+import dev.hely.core.bukkit.profile.packet.implement.AdminChatPacket;
+import dev.hely.core.bukkit.profile.packet.implement.StaffChatPacket;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.util.CC;
 import org.bukkit.entity.Player;
@@ -33,7 +35,8 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
 
-        if (profile.getStaffProfile().isStaffChat()) {
+        if (profile.getStaffProfile().isStaffChat() || profile.getStaffProfile().isAdminChat()) {
+            event.setCancelled(true);
             return;
         }
 
@@ -81,5 +84,37 @@ public class ChatListener implements Listener {
 
             recipient.sendMessage(OxygenBukkit.getInstance().getChatManager().formatChatDisplay(player, msg));
         });
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void handleStaffChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
+
+        if (profile != null) {
+            if (profile.getStaffProfile().isStaffChat()) {
+                String message = event.getMessage();
+
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffChatPacket(player.getName(), OxygenBukkit.getInstance().getServer().getServerName(), message));
+
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void handleAdminChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
+
+        if (profile != null) {
+            if (profile.getStaffProfile().isAdminChat()) {
+                String message = event.getMessage();
+
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new AdminChatPacket(player.getName(), OxygenBukkit.getInstance().getServer().getServerName(), message));
+
+                event.setCancelled(true);
+            }
+        }
     }
 }
