@@ -69,7 +69,7 @@ public class GrantsMenu extends PaginatedMenu {
     public Map<Integer, Button> getPaginatedContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        this.profile.getGrants().stream().sorted(GRANT_COMPARATOR).filter(grant -> !grant.isActive()).forEach(grant -> {
+        this.profile.getGrants().stream().sorted(GRANT_COMPARATOR).forEach(grant -> {
             buttons.put(buttons.size(), new Grants_Button(profile, grant));
         });
 
@@ -157,12 +157,16 @@ public class GrantsMenu extends PaginatedMenu {
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType.isLeftClick()) {
                 if (player.hasPermission("oxygen.staff.grants.remove")) {
-                    grant.setActive(false);
-                    grant.setRemovedTime(System.currentTimeMillis());
-                    grant.setRemover(player.getName());
+                    if (grant.isActive() || !grant.getRemaining().equalsIgnoreCase("Expired")) {
+                        grant.setActive(false);
+                        grant.setRemovedTime(System.currentTimeMillis());
+                        grant.setRemover(player.getName());
 
-                    profile.save();
-                    player.sendMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.removed-grant").replace("%player%", profile.getName())));
+                        profile.save();
+                        player.sendMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.removed-grant").replace("%player%", profile.getName())));
+                    } else {
+                        player.sendMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.already-expired").replace("%player%", profile.getName())));
+                    }
                 } else {
                     player.sendMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.cannot-delete")));
                 }
@@ -251,10 +255,12 @@ public class GrantsMenu extends PaginatedMenu {
 
             for (Grant grants : profile.getActiveGrants()) {
                 if (grants.getRankName().equalsIgnoreCase(input)) {
-                    sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
-                    conversationContext.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.already-has")));
-                    new GrantsMenu(profile, grantsMenu).openMenu(sender);
-                    return Prompt.END_OF_CONVERSATION;
+                    if (grants.isActive()) {
+                        sender.playSound(sender.getLocation(), Sound.BLAZE_HIT, 5, 5);
+                        conversationContext.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("grants-menu.messages.already-has")));
+                        new GrantsMenu(profile, grantsMenu).openMenu(sender);
+                        return Prompt.END_OF_CONVERSATION;
+                    }
                 }
             }
 

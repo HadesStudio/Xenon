@@ -166,6 +166,7 @@ grants-menu:
     invalid-rank: "&cYou have provided a invalid rank name. Please try again."
     canceled-promt: "&cYou have cancelled the promt. Please try again."
     already-has: "&cThis player already his this rank, please try again."
+    already-expired: "&cThis grant has already been removed."
   buttons:
     grants-button:
       # If you want players to be able to delete player grants,
