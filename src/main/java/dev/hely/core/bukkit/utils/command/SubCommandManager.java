@@ -17,8 +17,6 @@ package dev.hely.core.bukkit.utils.command;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.chat.commands.ChatCommand;
-import dev.hely.core.bukkit.coins.coupons.commands.CouponCommand;
-import dev.hely.core.bukkit.coins.sales.commands.StoreSaleCommand;
 import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.commands.ProfileCommand;
 import dev.hely.core.bukkit.profile.notifications.commands.NotificationsAdminSubCommand;
@@ -35,9 +33,7 @@ public class SubCommandManager implements ModuleLoader {
     private RankCommand rankCommand;
     private TagCommand tagCommand;
     private FriendsCommand friendsCommand;
-    private StoreSaleCommand storeSaleCommand;
     private ChatCommand chatCommand;
-    private CouponCommand couponCommand;
     private NotificationsAdminSubCommand notificationsAdminSubCommand;
 
     @Override
@@ -46,9 +42,7 @@ public class SubCommandManager implements ModuleLoader {
         this.rankCommand = new RankCommand();
         this.tagCommand = new TagCommand();
         this.friendsCommand = new FriendsCommand();
-        this.storeSaleCommand = new StoreSaleCommand();
         this.chatCommand = new ChatCommand();
-        this.couponCommand = new CouponCommand();
         this.notificationsAdminSubCommand = new NotificationsAdminSubCommand();
     }
 
@@ -58,9 +52,7 @@ public class SubCommandManager implements ModuleLoader {
         this.rankCommand.disable();
         this.tagCommand.disable();
         this.friendsCommand.disable();
-        this.storeSaleCommand.disable();
         this.chatCommand.disable();
-        this.couponCommand.disable();
         this.notificationsAdminSubCommand.disable();
     }
 

@@ -148,28 +148,23 @@ public class GrantSelectionMenu extends PaginatedMenu {
 
             long duration = TimeUtil.parseTime(input);
             boolean permanent = input.equalsIgnoreCase("perm") || input.equalsIgnoreCase("permanent"); // By default, we set it to false, probably, their is a way better way of doing this, but hey, I will do it like this. :)
-            if (duration == -1 && !input.equalsIgnoreCase("perm") || !input.equalsIgnoreCase("permanent")) {
-                sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.invalid-time")));
+            if (duration == -1 && !input.equalsIgnoreCase("perm") && !input.equalsIgnoreCase("permanent")) {
+                conversationContext.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.invalid-time")));
                 new GrantSelectionMenu(profile).openMenu(sender);
                 return END_OF_CONVERSATION;
             }
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Grant grant = new Grant();
-                    grant.setActive(true);
-                    grant.setAdder(sender.getName());
-                    grant.setDuration(duration);
-                    grant.setPermanent(permanent);
-                    grant.setRankName(rank.getName());
-                    grant.setAddedTime(System.currentTimeMillis());
-                    grant.setReason("Given via /grant");
-                    new GrantGivenEvent(grant, profile, sender.getPlayer());
-                    sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.given").replace("%player%", profile.getName()).replace("%rank%", rank.getName()).replace("%time%", String.valueOf(duration))));
-                    sender.playSound(sender.getLocation(), Sound.ORB_PICKUP, 5, 5);
-                }
-            }.runTask(OxygenBukkit.getInstance());
+            Grant grant = new Grant();
+            grant.setActive(true);
+            grant.setAdder(sender.getName());
+            grant.setDuration(duration);
+            grant.setPermanent(permanent);
+            grant.setRankName(rank.getName());
+            grant.setAddedTime(System.currentTimeMillis());
+            grant.setReason("Given via /grant");
+            new GrantGivenEvent(grant, profile, sender.getPlayer());
+            conversationContext.getForWhom().sendRawMessage(CC.translate(OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getString("grant.add.given").replace("%player%", profile.getName()).replace("%rank%", rank.getName()).replace("%time%", String.valueOf(duration))));
+            sender.playSound(sender.getLocation(), Sound.ORB_PICKUP, 5, 5);
 
             return Prompt.END_OF_CONVERSATION;
         }

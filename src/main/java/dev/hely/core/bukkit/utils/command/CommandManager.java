@@ -1,7 +1,6 @@
 package dev.hely.core.bukkit.utils.command;
 
 import dev.hely.core.bukkit.OxygenBukkit;
-import dev.hely.core.bukkit.coins.commands.ShopCommand;
 import dev.hely.core.bukkit.commands.implement.player.*;
 import dev.hely.core.bukkit.commands.implement.player.time.DayCommand;
 import dev.hely.core.bukkit.commands.implement.player.time.NightCommand;
@@ -131,8 +130,6 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new ReplyCommand());
         loadedCommands.add(new ToggleMessagesCommand());
         loadedCommands.add(new ToggleSoundsCommand());
-
-        loadedCommands.add(new ShopCommand());
 
         loadedCommands.add(new NotificationCommand());
         loadedCommands.add(new NotificationsCommand());

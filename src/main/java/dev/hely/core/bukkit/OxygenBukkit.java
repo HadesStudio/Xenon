@@ -6,9 +6,6 @@ import com.warrenstrange.googleauth.GoogleAuthenticator;
 import dev.hely.core.bukkit.announcements.AnnouncementManager;
 import dev.hely.core.bukkit.chat.ChatModule;
 import dev.hely.core.bukkit.client.ClientModule;
-import dev.hely.core.bukkit.coins.StoreManager;
-import dev.hely.core.bukkit.coins.coupons.CouponManager;
-import dev.hely.core.bukkit.coins.sales.SaleManager;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.filter.FilterManager;
 import dev.hely.core.bukkit.modules.ModuleLoader;
@@ -118,14 +115,11 @@ public class OxygenBukkit extends JavaPlugin {
     private ListenerModule listenerModule;
     private ClientModule clientManager;
     private RequestManager requestHandler;
-    private SaleManager saleManager;
-    private StoreManager storeManager;
     private TFAManager tfaManager;
     private QueueManager queueManager;
     private Queue queue;
     private LogManager logManager;
     private StaffManager staffManager;
-    private CouponManager couponManager;
     private AnnouncementManager announcementManager;
     private RebootManager rebootManager;
     private Server serverData;
@@ -266,7 +260,6 @@ public class OxygenBukkit extends JavaPlugin {
         redisModule = new RedisModule();
         mongoModule = new MongoModule();
         googleAuthenticator = new GoogleAuthenticator();
-        saleManager = new SaleManager();
         clientManager = new ClientModule();
         commandManager = new CommandManager();
         subCommandManager = new SubCommandManager();
@@ -275,7 +268,6 @@ public class OxygenBukkit extends JavaPlugin {
         tagManager = new TagManager();
         chatManager = new ChatModule();
         requestHandler = new RequestManager();
-        storeManager = new StoreManager();
         tfaManager = new TFAManager();
         logManager = new LogManager();
         staffManager = new StaffManager();
@@ -284,7 +276,6 @@ public class OxygenBukkit extends JavaPlugin {
 
         queueManager = new QueueManager();
         serverManager = new ServerManager();
-        couponManager = new CouponManager();
         rebootManager = new RebootManager();
         filterManager = new FilterManager();
     }
@@ -305,12 +296,10 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(rankManager);
         this.loadModule(tagManager);
         this.loadModule(notificationManager);
-        this.loadModule(storeManager);
         this.loadModule(tfaManager);
         this.loadModule(staffManager);
         this.loadModule(filterManager);
         this.loadModule(serverManager);
-        this.loadModule(couponManager);
         this.loadModule(announcementManager);
     }
 
