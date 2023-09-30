@@ -76,7 +76,7 @@ public class StaffHistoryMenu extends Menu {
             builder.setDisplayName(OxygenBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.buttons.data-button.display-name").replace("%player%", profile.getName()));
             for (String line : OxygenBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getStringList("menu.buttons.data-button.lore")) {
                 builder.addLore(line
-                        .replace("%rank%", String.valueOf(profile.getActiveHighestRank().getName()))
+                        .replace("%rank%", String.valueOf(profile.getActiveRank().getName()))
                         .replace("%playtime%", TimeUtil.getMoreDetailedTime(profile.getTotalPlayTime()))
                         .replace("%last_seen%", TimeUtil.formatSimplifiedDateDiff(profile.getLastSeen()))
                 );

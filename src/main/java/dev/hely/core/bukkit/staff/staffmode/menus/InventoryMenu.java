@@ -99,8 +99,8 @@ public class InventoryMenu extends Menu {
         Profile targetProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId());
         for (String healhLine : OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.inventory_view.buttons.player_info.item.lore")) {
             playerInfo.addLore(CC.translate(healhLine
-                    .replace("%rank_prefix%", targetProfile.getActiveHighestRank().getPrefix())
-                    .replace("%rank_name%", targetProfile.getActiveHighestRank().getName())
+                    .replace("%rank_prefix%", targetProfile.getActiveRank().getPrefix())
+                    .replace("%rank_name%", targetProfile.getActiveRank().getName())
                     .replace("%playtime%", TimeUtil.getMoreDetailedTime(targetProfile.getTotalPlayTime()))
             ));
         }

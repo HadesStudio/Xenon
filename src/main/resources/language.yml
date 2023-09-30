@@ -566,10 +566,12 @@ kick:
 grant:
   usage: "&cCorrect Usage: /grant <add|player>"
   add:
-    usage: "&cCorrect Usage: /grant add <player> <rank> <duration> <reason>"
+    usage: "&cCorrect Usage: /grant add <player> <type> <name> <duration> <reason>"
     invalid-rank: "&cYou have specified a invalid rank name, please try again."
+    invalid-tag: "&cYou have specified a invalid tag name, please try again."
     invalid-time: "&cYou have specified a invalid duration for this grant."
-    given: "&6You have successfully given &6&l%player% &6the &6&n%rank% Rank&6 for a duration of &6&l%time%&6."
+    given: "&6You have successfully given &6&l%player% &6a grant for a duration of &6&l%time%&6."
+    invalid-type: "&cYou have specified a invalid type: (Options: rank, tag, bukkitpermission, bungeepermission)"
 queue-system:
   not-exist: "&cSorry, the queue by the name of '&6%server%&c' could not be found."
   offline: "&cSorry, the server '&6%server%&c' is currently &noffline&c."

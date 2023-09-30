@@ -8,6 +8,16 @@ public class ColorUtil {
 
     public static Map<ChatColor, String> colorValues = new HashMap<>();
     private static Map<ChatColor, ColorSet<Integer, Integer, Integer>> colorMap = new HashMap<>();
+    private static final List<ChatColor> WOOL_COLORS = Arrays.asList(
+            ChatColor.WHITE, ChatColor.GOLD,
+            ChatColor.LIGHT_PURPLE, ChatColor.AQUA,
+            ChatColor.YELLOW, ChatColor.GREEN,
+            ChatColor.LIGHT_PURPLE, ChatColor.DARK_GRAY,
+            ChatColor.GRAY, ChatColor.DARK_AQUA,
+            ChatColor.DARK_PURPLE, ChatColor.BLUE,
+            ChatColor.BLACK, ChatColor.DARK_GREEN,
+            ChatColor.RED
+    );
 
     static {
         colorValues.put(ChatColor.BLACK, "BLACK");
@@ -122,5 +132,17 @@ public class ColorUtil {
             return blue;
         }
 
+    }
+
+    public static int getWoolColorFromChatColor(ChatColor color) {
+        if(color == ChatColor.DARK_RED) {
+            color = ChatColor.RED;
+        }
+
+        if(color == ChatColor.DARK_BLUE) {
+            color = ChatColor.BLUE;
+        }
+
+        return WOOL_COLORS.indexOf(color);
     }
 }

@@ -20,6 +20,7 @@ import dev.hely.core.bukkit.profile.notifications.NotificationManager;
 import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
 import dev.hely.core.bukkit.profile.tfa.TFAManager;
 import dev.hely.core.bukkit.punishment.packet.PunishmentPacketListener;
+import dev.hely.core.bukkit.ranks.newgrants.packets.listener.GrantPacketListener;
 import dev.hely.core.bukkit.ranks.rank.RankManager;
 import dev.hely.core.bukkit.server.Server;
 import dev.hely.core.bukkit.server.ServerListener;
@@ -35,6 +36,7 @@ import dev.hely.core.bukkit.staff.staffmode.StaffManager;
 import dev.hely.core.bukkit.tag.TagManager;
 import dev.hely.core.bukkit.tag.packet.TagPacketListener;
 import dev.hely.core.bukkit.tasks.NameMCReminderTask;
+import dev.hely.core.bukkit.utils.prompt.PromptManager;
 import dev.hely.core.bukkit.vip.VIPRewardProvider;
 import dev.hely.lib.configuration.Config;
 import dev.hely.core.bukkit.utils.command.CommandManager;
@@ -101,6 +103,8 @@ public class OxygenBukkit extends JavaPlugin {
     private Config announcementConfig;
     private Config staffHistoryConfig;
     private Config vipMenuConfig;
+    private Config grantMenuConfig;
+
     private GoogleAuthenticator googleAuthenticator;
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
     private List<ModuleLoader> modules;
@@ -128,6 +132,7 @@ public class OxygenBukkit extends JavaPlugin {
     private VIPRewardProvider vipRewardProvider;
     private NotificationManager notificationManager;
     private boolean debug_mode;
+    private PromptManager promptManager;
 
     public void onEnable() {
         instance = this;
@@ -236,6 +241,8 @@ public class OxygenBukkit extends JavaPlugin {
             this.configList.add(announcementConfig);
             this.vipMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "vip-menu");
             this.configList.add(vipMenuConfig);
+            this.grantMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "grant-menu");
+            this.configList.add(grantMenuConfig);
             Locale.load();
         } catch (IOException | InvalidConfigurationException e) {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
@@ -273,6 +280,7 @@ public class OxygenBukkit extends JavaPlugin {
         staffManager = new StaffManager();
         announcementManager = new AnnouncementManager();
         notificationManager = new NotificationManager();
+        promptManager = new PromptManager(this);
 
         queueManager = new QueueManager();
         serverManager = new ServerManager();
@@ -307,7 +315,7 @@ public class OxygenBukkit extends JavaPlugin {
         redisModule.registerListener(new ProfilePacketListener());
         redisModule.registerListener(new PunishmentPacketListener(this));
         redisModule.registerListener(new TagPacketListener(tagManager));
-
+        redisModule.registerListener(new GrantPacketListener());
         redisModule.registerListener(new ServerListener());
         redisModule.registerListener(new QueuePacketListener());
 

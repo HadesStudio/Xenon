@@ -17,7 +17,8 @@ package dev.hely.core.bukkit.vip.menu;
 
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.ranks.grants.Grant;
+import dev.hely.core.bukkit.ranks.newgrants.types.RankGrant;
+import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.utils.NewColorsUtil;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.maker.ItemMaker;
@@ -103,10 +104,12 @@ public class VIPMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            Optional<Grant> vip_status = Optional.empty();
-            for (Grant grant : profile.getActiveGrants()) {
-                if (grant.getRank().getName().equalsIgnoreCase(OxygenBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.settings.grant-name"))) {
-                    vip_status = Optional.of(grant);
+            boolean vip_status = false;
+            RankGrant vipGrant = null;
+            for (RankGrant grant : profile.getRankGrants()) {
+                if (grant.getRankName().equalsIgnoreCase(OxygenBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.settings.grant-name"))) {
+                    vip_status = true;
+                    vipGrant = grant;
                 }
             }
 
@@ -119,7 +122,7 @@ public class VIPMenu extends Menu {
             for (String line : OxygenBukkit.getInstance().getVipMenuConfig().getConfiguration().getStringList("menu.buttons.status-button.lore")) {
                 builder.addLore(line
                         .replace("%status%", CC.colorBoolean(profile.hasVIPStatus(), "Yes", "No"))
-                        .replace("%remaining%", vip_status.map(grant -> grant.getDuration() == -1 ? "Permanent" : grant.getRemaining()).orElse("None"))
+                        .replace("%remaining%", getDuration(vipGrant))
                 );
             }
             return builder.build();
@@ -127,6 +130,19 @@ public class VIPMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
+        }
+
+        public String getDuration(RankGrant grant) {
+            if (grant == null) {
+                return "None";
+            } else {
+                if (grant.getDuration() == -1) {
+                    return "Permanent";
+                } else {
+                    grant.getRemaining();
+                }
+            }
+            return "None";
         }
     }
 

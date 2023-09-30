@@ -18,7 +18,7 @@ package dev.hely.core.bukkit.ranks.rank.commands.subcommands;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.configuration.Locale;
 import dev.hely.core.bukkit.profile.Profile;
-import dev.hely.core.bukkit.ranks.grants.Grant;
+import dev.hely.core.bukkit.ranks.newgrants.types.RankGrant;
 import dev.hely.core.bukkit.ranks.rank.Rank;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
 import dev.hely.lib.util.CC;
@@ -26,6 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
+import java.util.UUID;
 
 public class RankPromoteCommand extends SubCommand {
     public RankPromoteCommand() {
@@ -43,7 +44,7 @@ public class RankPromoteCommand extends SubCommand {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[1]));
             return;
         }
-        Rank newGrantedRank = OxygenBukkit.getInstance().getRankManager().getByWeight(profile.getActiveHighestRank().getWeight() + 1);
+        Rank newGrantedRank = OxygenBukkit.getInstance().getRankManager().getByWeight(profile.getActiveRank().getWeight() + 1);
         if(newGrantedRank == null) {
             sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.promote.invalid-rank")));
             return;
@@ -51,23 +52,24 @@ public class RankPromoteCommand extends SubCommand {
         if(sender instanceof Player) {
             Profile senderProfile = OxygenBukkit.getInstance().getProfileManager().getProfile(args[1]);
 
-            if ((senderProfile.getActiveHighestRank().getWeight() <= newGrantedRank.getWeight())) {
+            if ((senderProfile.getActiveRank().getWeight() <= newGrantedRank.getWeight())) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.promote.cannot-give")));
                 return;
             }
         }
-        Grant oldGrant = profile.getHighestGrant();
-        Grant grant = new Grant();
-        grant.setActive(true);
-        grant.setAdder(sender.getName());
-        grant.setPermanent(true);
-        grant.setRankName(newGrantedRank.getName());
-        grant.setAddedTime(System.currentTimeMillis());
-        grant.setReason(args[2]);
+        RankGrant oldGrant = profile.getActiveRankGrant();
 
-        profile.getGrants().remove(oldGrant); // we dont want them to keep the old rank..
-        profile.getGrants().add(grant);
+        RankGrant grant = new RankGrant(UUID.randomUUID(), newGrantedRank.getName());
+        grant.setAddedReason("Grant expiration.");
+        grant.setAddedAt(System.currentTimeMillis());
+        grant.setDuration(Integer.MAX_VALUE);
+        grant.setAddedReason(args[2]);
+        grant.setAddedAt(System.currentTimeMillis());
+
+        profile.getRankGrants().remove(oldGrant);
+        profile.getRankGrants().add(grant);
         profile.save();
+        profile.updateGrants();
         sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.promote.promoted").replace("%player%", profile.getName()).replace("%name%", newGrantedRank.getName())));
     }
 }

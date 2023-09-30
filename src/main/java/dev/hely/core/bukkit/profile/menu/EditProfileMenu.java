@@ -18,12 +18,11 @@ package dev.hely.core.bukkit.profile.menu;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.profile.menu.submenus.NotesMenu;
-import dev.hely.core.bukkit.profile.menu.submenus.GrantsMenu;
 import dev.hely.core.bukkit.profile.menu.submenus.PermissionsMenu;
 import dev.hely.core.bukkit.profile.menu.submenus.SiblingsMenu;
+import dev.hely.core.bukkit.ranks.newgrants.menu.grant.GrantMenu;
 import dev.hely.core.bukkit.utils.TimeUtil;
 import dev.hely.lib.menu.fill.FillerTemplate;
-import dev.hely.lib.menu.fill.MenuFiller;
 import dev.hely.lib.util.CC;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
@@ -339,7 +338,7 @@ public class EditProfileMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            new GrantsMenu(profile, true).openMenu(player);
+            new GrantMenu(profile).openMenu(player);
         }
 
         @Override

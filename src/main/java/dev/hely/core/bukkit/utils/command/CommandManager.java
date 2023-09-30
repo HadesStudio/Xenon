@@ -21,7 +21,8 @@ import dev.hely.core.bukkit.commands.implement.staff.teleport.TeleportHereComman
 import dev.hely.core.bukkit.commands.implement.staff.teleport.TeleportPossCommand;
 import dev.hely.core.bukkit.filter.commands.FilterCommand;
 import dev.hely.core.bukkit.profile.note.command.NotesCommand;
-import dev.hely.core.bukkit.ranks.grants.command.GrantCommand;
+import dev.hely.core.bukkit.ranks.newgrants.commands.GrantCommand;
+import dev.hely.core.bukkit.ranks.newgrants.commands.GrantsCommand;
 import dev.hely.core.bukkit.server.commands.RunCommandCommand;
 import dev.hely.core.bukkit.server.commands.SetSlotsCommand;
 import dev.hely.core.bukkit.server.queue.commands.*;
@@ -33,7 +34,6 @@ import dev.hely.core.bukkit.profile.profilesystem.commands.NotificationCommand;
 import dev.hely.core.bukkit.profile.profilesystem.commands.NotificationsCommand;
 import dev.hely.core.bukkit.profile.tfa.commands.AuthCommand;
 import dev.hely.core.bukkit.profile.tfa.commands.RemoveAuthCommand;
-import dev.hely.core.bukkit.ranks.grants.command.GrantsCommand;
 import dev.hely.core.bukkit.server.reboot.commands.RebootCommand;
 import dev.hely.core.bukkit.staff.requests.commands.HelpopCommand;
 import dev.hely.core.bukkit.staff.requests.commands.ReportCommand;
@@ -136,7 +136,6 @@ public class CommandManager implements ModuleLoader {
 
         loadedCommands.add(new ProfileCommand());
         loadedCommands.add(new EditProfileCommand());
-        loadedCommands.add(new GrantsCommand());
         loadedCommands.add(new HistoryCommand());
         loadedCommands.add(new LogsCommand());
 
@@ -159,7 +158,6 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new UnMuteCommand());
 
         loadedCommands.add(new AltsCommand());
-        loadedCommands.add(new GrantCommand());
 
         loadedCommands.add(new RequestsCommand());
         loadedCommands.add(new ReportCommand());
@@ -169,6 +167,8 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new QueuePauseCommand());
         loadedCommands.add(new VIPCommand());
         loadedCommands.add(new VIPResetCommand());
+        loadedCommands.add(new GrantsCommand());
+        loadedCommands.add(new GrantCommand());
 
         loadedCommands.forEach(this::registerCommand);
         Bukkit.getConsoleSender().sendMessage(CC.translate("&aLoading " + loadedCommands.size() + " commands.."));

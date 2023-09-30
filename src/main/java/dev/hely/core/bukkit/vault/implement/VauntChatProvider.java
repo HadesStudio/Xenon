@@ -42,7 +42,7 @@ public class VauntChatProvider extends Chat {
     public String getPlayerPrefix(String world, String player) {
         Profile profile = profileManager.getProfile(player);
         if (profile != null) {
-            return profile.getActiveHighestRank().getPrefix();
+            return profile.getActiveRank().getPrefix();
         }
 
         return "";
@@ -56,7 +56,7 @@ public class VauntChatProvider extends Chat {
     public String getPlayerSuffix(String world, String player) {
         Profile profile = profileManager.getProfile(player);
         if (profile != null) {
-            return profile.getActiveHighestRank().getSuffix();
+            return profile.getActiveRank().getSuffix();
         }
 
         return "";

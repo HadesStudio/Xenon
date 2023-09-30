@@ -8,6 +8,7 @@ import dev.hely.core.bukkit.profile.note.NoteListener;
 import dev.hely.core.bukkit.profile.permission.bukkit.BukkitPermissionListener;
 import dev.hely.core.bukkit.profile.tfa.listeners.TFAListener;
 import dev.hely.core.bukkit.punishment.PunishmentListener;
+import dev.hely.core.bukkit.ranks.newgrants.listener.GrantListener;
 import dev.hely.core.bukkit.server.queue.listener.QueueListener;
 import dev.hely.core.bukkit.staff.freeze.FreezeListener;
 import dev.hely.core.bukkit.staff.staffmode.listeners.StaffListener;
@@ -40,6 +41,7 @@ public class ListenerModule implements ModuleLoader {
                 new StaffListener(),
                 new FreezeListener(),
                 new QueueListener(),
+                new GrantListener(),
                 new NoteListener());
 
         this.enabled = true;

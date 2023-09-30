@@ -63,7 +63,7 @@ public class RankInheritancesMenu extends PaginatedMenu {
             for (String server : inheritRank.getServers()) {
                 builder.addLore("&7- &f" + server);
             }
-            builder.addLore("&6Active Permissions&7: &a" + inheritRank.getActivePermissions().size() + " Permissions");
+            builder.addLore("&6Active Permissions&7: &a" + inheritRank.getPermissionsData().size() + " Permissions");
             builder.addLore("&6Bungee Permissions&7: &a" + inheritRank.getBungeePermissions().size() + " Permissions");
             builder.addLore("");
             builder.addLore("&6Left-Click &7to view this inheritances permissions.");

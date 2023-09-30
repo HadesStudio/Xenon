@@ -119,16 +119,16 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
         }
 
         if (identifier.equalsIgnoreCase("profile_active_highest_grant_duration")) {
-            return profile == null ? 0 + "" : TimeUtil.getMoreDetailedTime(profile.getHighestGrant().getDuration()) + "";
+            return profile == null ? 0 + "" : TimeUtil.getMoreDetailedTime(profile.getActiveRankGrant().getDuration()) + "";
         }
         if (identifier.equalsIgnoreCase("profile_active_highest_grant_name")) {
-            return profile == null ? "Unknown" : profile.getHighestGrant().getRankName();
+            return profile == null ? "Unknown" : profile.getActiveRankGrant().getRankName();
         }
         if (identifier.equalsIgnoreCase("profile_active_highest_grant_prefix")) {
-            return profile == null ? "Unknown" : profile.getHighestGrant().getRank().getPrefix();
+            return profile == null ? "Unknown" : profile.getActiveRank().getPrefix();
         }
         if (identifier.equalsIgnoreCase("profile_active_highest_grant_suffix")) {
-            return profile == null ? "Unknown" : profile.getHighestGrant().getRank().getSuffix();
+            return profile == null ? "Unknown" : profile.getActiveRank().getSuffix();
         }
 
         if (identifier.equalsIgnoreCase("profile_notifications")) {

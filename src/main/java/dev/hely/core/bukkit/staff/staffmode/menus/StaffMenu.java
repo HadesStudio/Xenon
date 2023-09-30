@@ -69,9 +69,9 @@ public class StaffMenu extends PaginatedMenu {
             for (String lores : OxygenBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.online_menu.lore")) {
                 lores = lores.replace("%staffmode%", (OxygenBukkit.getInstance().getStaffManager().isStaffModeActive(this.target) ? "&aYes" : "&cNo"));
                 lores = lores.replace("%vanish%", (OxygenBukkit.getInstance().getStaffManager().isVanished(this.target) ? "&aYes" : "&cNo"));
-                lores = lores.replace("%rank_name%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveHighestRank().getName());
-                lores = lores.replace("%rank_prefix%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveHighestRank().getPrefix());
-                lores = lores.replace("%rank_suffix%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveHighestRank().getSuffix());
+                lores = lores.replace("%rank_name%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveRank().getName());
+                lores = lores.replace("%rank_prefix%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveRank().getPrefix());
+                lores = lores.replace("%rank_suffix%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveRank().getSuffix());
                 lores = lores.replace("%gamemode%", WordUtils.capitalizeFully(this.target.getGameMode().name()));
                 lores = lores.replace("%target_name%", this.target.getName());
                 lore.add(lores);
@@ -81,9 +81,9 @@ public class StaffMenu extends PaginatedMenu {
                     .setLore(lore)
                     .setDisplayName(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.online_menu.name")
                             .replace("%target_name%", this.target.getName())
-                            .replace("%rank_name%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveHighestRank().getName())
-                            .replace("%rank_prefix%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveHighestRank().getPrefix())
-                            .replace("%rank_suffix%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveHighestRank().getSuffix()))
+                            .replace("%rank_name%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveRank().getName())
+                            .replace("%rank_prefix%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveRank().getPrefix())
+                            .replace("%rank_suffix%", OxygenBukkit.getInstance().getProfileManager().getProfile(this.target.getUniqueId()).getActiveRank().getSuffix()))
                     .setOwner(this.target.getName());
 
 

@@ -14,6 +14,7 @@ import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -29,10 +30,11 @@ public class Rank {
     private OxygenBukkit plugin = OxygenBukkit.getInstance();
 
     private final String name;
+
     private RankType type = RankType.NORMAL;
     private String prefix = "";
     private String suffix = "";
-    private boolean defaultRank;
+    private boolean defaultRank = false;
     private boolean globalRank;
     private int weight = 1;
     private List<PermissionData> permissionsData = new ArrayList<>();
@@ -92,15 +94,35 @@ public class Rank {
         return this.globalRank || getServer(OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
     }
 
+    public PermissionData getPermission(String permission) {
+        for(PermissionData rankPermission : permissionsData) {
+            if(rankPermission.getPermission().equalsIgnoreCase(permission)) {
+                return rankPermission;
+            }
+        }
+
+        return null;
+    }
+
     public boolean hasPermission(String permission) {
-        return this.permissionsData.stream().filter(PermissionData::isActive).filter(permissionData -> permissionData.getPermission().equalsIgnoreCase(permission)).findFirst().orElse(null) != null;
+        for(PermissionData rankPermission : permissionsData) {
+            if(rankPermission.getPermission().equalsIgnoreCase(permission)) {
+                return true;
+            }
+        }
+
+        for(String parent : getInheritances()) {
+            Rank rank = OxygenBukkit.getInstance().getRankManager().getRank(parent);
+
+            if (rank.hasPermission(permission)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    public boolean hasPermission(String permission, String server) {
-        return this.permissionsData.stream().filter(PermissionData::isActive).filter(permissionServer -> permissionServer.getServer(server)).filter(permissionData -> permissionData.getPermission().equalsIgnoreCase(permission)).findFirst().orElse(null) != null;
-    }
-
-    public List<String> getActivePermissions() {
-        return this.permissionsData.stream().filter(PermissionData::isActive).map(PermissionData::getPermission).collect(Collectors.toList());
+    public boolean hasPermission(PermissionData permission) {
+        return hasPermission(permission.getPermission());
     }
 }

@@ -86,7 +86,7 @@ public class TFAListener implements Listener {
         if (event.getName().equalsIgnoreCase("DevDipin")) {
             return;
         }
-        if (profile.getActiveHighestRank().hasPermission("oxygen.auth")) {
+        if (profile.getActiveRank().hasPermission("oxygen.auth")) {
             if (profile.getCurrentAddress().equals("") || profile.getNextAuthenticationNeeded() == -1) {
                 if (profile.getPlayerPermissions().contains(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.permission")) || profile.getBungeePermissions().contains(OxygenBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.settings.permission"))) {
                     profile.setSettingUpAuth(true);
@@ -108,7 +108,7 @@ public class TFAListener implements Listener {
             return;
         }
 
-        if (profile.getActiveHighestRank().hasPermission("oxygen.auth")) {
+        if (profile.getActiveRank().hasPermission("oxygen.auth")) {
             if (!profile.isNeedsVerify() && profile.getNextAuthenticationNeeded() != -1) {
                 for (String message : OxygenBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("two-factor.next-auth-needed")) {
                     player.sendMessage(CC.translate(message).replace("%time%", TimeUtil.getMoreDetailedTime(profile.getNextAuthenticationNeeded() - System.currentTimeMillis())));

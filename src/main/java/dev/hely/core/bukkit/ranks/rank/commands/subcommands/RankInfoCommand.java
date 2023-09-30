@@ -50,7 +50,7 @@ public class RankInfoCommand extends SubCommand {
                     .replace("%suffix%", getRankSuffix(rank))
                     .replace("%weight%", String.valueOf(rank.getWeight()))
                     .replace("%bungee_perms%", String.valueOf(rank.getBungeePermissions().size()))
-                    .replace("%server_perms%", String.valueOf(rank.getActivePermissions().size()))
+                    .replace("%server_perms%", String.valueOf(rank.getPermissionsData().size()))
                     .replace("%inherits%", String.valueOf(rank.getInheritances().size()))
             );
         }

@@ -74,7 +74,6 @@ public class RankPermissionsMenu extends PaginatedMenu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType == ClickType.LEFT) {
-                permissionData.setGlobal(!permissionData.isGlobal());
                 rank.save();
             } else if (clickType == ClickType.MIDDLE) { // REMOVE THE PERMISSION
                 rank.getPermissionsData().remove(permissionData);
@@ -85,10 +84,9 @@ public class RankPermissionsMenu extends PaginatedMenu {
                 player.closeInventory();
 
                 conversationString(player, "", server -> {
-                    if(permissionData.getServer(server)) {
-                       permissionData.getServers().remove(server);
+                    for (String string : permissionData.getServers()) {
+                        permissionData.getServers().remove(string);
                         rank.save();
-                        return;
                     }
                     player.sendMessage("no server");
                 });
@@ -98,7 +96,7 @@ public class RankPermissionsMenu extends PaginatedMenu {
                 player.closeInventory();
 
                 conversationString(player, "", (server) -> {
-                    if(permissionData.getServer(server)) {
+                    if (permissionData.getServers().contains(server)) {
                         player.sendMessage("already.");
                         return;
                     }

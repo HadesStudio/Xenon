@@ -87,7 +87,7 @@ public class RankPermissionsCommand extends SubCommand {
                 return;
             }
 
-            if (rank.getActivePermissions().size() == 0) {
+            if (rank.getPermissionsData().size() == 0) {
                 sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.permissions.no-permissions")));
                 return;
             }

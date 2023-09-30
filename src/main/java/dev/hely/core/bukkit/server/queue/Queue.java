@@ -69,7 +69,7 @@ public class Queue {
             players.addLast(profile.getUniqueId());
         else players.add(position, profile.getUniqueId());
 
-        weight.put(profile.getUniqueId(), profile.getActiveHighestRank().getWeight());
+        weight.put(profile.getUniqueId(), profile.getActiveRank().getWeight());
         updatePositions();
     }
 

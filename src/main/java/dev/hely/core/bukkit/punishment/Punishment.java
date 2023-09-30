@@ -144,7 +144,7 @@ public class Punishment {
             Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(this.addedBy);
 
             if (profile != null) {
-                adder = profile.getActiveHighestRank().getDisplay_color() + profile.getName();
+                adder = profile.getActiveRank().getDisplay_color() + profile.getName();
             }
         }
 
@@ -160,7 +160,7 @@ public class Punishment {
             Profile profile = OxygenBukkit.getInstance().getProfileManager().getProfile(this.removedBy);
 
             if (profile != null) {
-                remover = profile.getActiveHighestRank().getDisplay_color() + profile.getName();
+                remover = profile.getActiveRank().getDisplay_color() + profile.getName();
             }
         }
 

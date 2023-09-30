@@ -4,10 +4,8 @@ package dev.hely.core.api;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.punishment.Punishment;
-import dev.hely.core.bukkit.punishment.PunishmentType;
-import dev.hely.core.bukkit.ranks.grants.Grant;
+import dev.hely.core.bukkit.ranks.newgrants.Grant;
 import dev.hely.core.bukkit.ranks.rank.Rank;
-import org.bukkit.plugin.IllegalPluginAccessException;
 
 import java.util.List;
 import java.util.UUID;
@@ -49,11 +47,7 @@ public class OxygenAPI {
 
     public Rank getRank(UUID uuid) {
         if (this.getProfile(uuid) == null) return new Rank("Default");
-        return this.getProfile(uuid).getActiveHighestRank();
-    }
-
-    public List<Grant> getActiveGrants(UUID uuid) {
-        return this.getProfile(uuid).getActiveGrants();
+        return this.getProfile(uuid).getActiveRank();
     }
 
     public List<Grant> getAllGrants(UUID uuid) {

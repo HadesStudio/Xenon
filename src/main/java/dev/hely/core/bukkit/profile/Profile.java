@@ -1,6 +1,7 @@
 package dev.hely.core.bukkit.profile;
 
 
+import com.google.common.collect.Lists;
 import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
@@ -23,16 +24,24 @@ import dev.hely.core.bukkit.profile.staff.StaffProfile;
 import dev.hely.core.bukkit.profile.utils.PlaytimeUtil;
 import dev.hely.core.bukkit.punishment.Punishment;
 import dev.hely.core.bukkit.punishment.PunishmentType;
-import dev.hely.core.bukkit.ranks.grants.Grant;
 import dev.hely.core.bukkit.ranks.gson.GSONUtil;
+import dev.hely.core.bukkit.ranks.newgrants.Grant;
+import dev.hely.core.bukkit.ranks.newgrants.events.GrantExpiredEvent;
+import dev.hely.core.bukkit.ranks.newgrants.events.GrantGivenEvent;
+import dev.hely.core.bukkit.ranks.newgrants.packets.GrantUpdatePacket;
+import dev.hely.core.bukkit.ranks.newgrants.types.PermissionGrant;
+import dev.hely.core.bukkit.ranks.newgrants.types.RankGrant;
+import dev.hely.core.bukkit.ranks.newgrants.types.TagGrant;
 import dev.hely.core.bukkit.ranks.rank.Rank;
+import dev.hely.core.bukkit.ranks.rank.RankManager;
 import dev.hely.core.bukkit.ranks.rank.RankType;
 import dev.hely.core.bukkit.tag.Tag;
-import dev.hely.lib.util.CC;
+import dev.hely.core.bukkit.tag.TagManager;
+import dev.hely.core.bukkit.utils.TextUtil;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -40,7 +49,6 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created By LeandroSSJ
@@ -50,7 +58,6 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class Profile {
-
     private OxygenBukkit plugin = OxygenBukkit.getInstance();
 
     private final UUID uniqueId;
@@ -59,21 +66,15 @@ public class Profile {
 
     private String currentAddress = "";
     private List<String> addresses = new ArrayList<>();
-
     private List<UUID> alts = new ArrayList<>();
-
     private Long firstSeen;
     private Long lastSeen;
     private String currentServer = "None";
     private String lastServer = "";
-
     private String time = "";
-
     private int totalKills;
     private int totalDeaths;
-
     private List<Punishment> punishments = new ArrayList<>();
-    private List<Grant> grants = new ArrayList<>();
     private List<ProfilePermission> profilePermissions = new ArrayList<>();
     private List<Note> notes = new ArrayList<>();
     private List<String> playerPermissions = new ArrayList<>(); // RANK PERMISSIONS
@@ -91,33 +92,30 @@ public class Profile {
     private boolean vpnWhitelist = false;
     private String tag = "";
     private StaffProfile staffProfile = new StaffProfile();
-
     private int currency;
     private boolean frozen;
-
     private long playTime = 0;
     private PlaytimeUtil session;
-
     private List<String> ignoredList = new ArrayList<>();
     private long lastReceivedMessageMillis;
     private long lastSentMessageMillis;
     private String lastRepliedTo = null;
-
     private ProfileSettings settings = new ProfileSettings();
-
     private boolean needsVerify;
     private String authPassword = "";
     private long nextAuthenticationNeeded = -1, loginTime = -1;
     private boolean settingUpAuth = false;
     private String tfaKey = "";
     private List<Sibling> siblings = new ArrayList<>();
-
     private boolean discordSynced;
     private String discordID;
     private String discordName;
-
     private String vipColor = "YELLOW";
     private long vipCooldown = -1;
+
+    // New Grant System:
+    private RankGrant activeRankGrant;
+    private List<Grant> grants = new ArrayList<>();
 
     public Profile(UUID uniqueId, String name) {
         this.uniqueId = uniqueId;
@@ -209,7 +207,7 @@ public class Profile {
         if (leave) plugin.getProfileManager().getProfileMap().remove(uniqueId);
     }
 
-    private void load() {
+    public void load() {
         Document document = plugin.getMongoModule().getProfilesCollection().find(Filters.eq("uniqueId", uniqueId.toString())).first();
 
         if (document != null) {
@@ -240,10 +238,8 @@ public class Profile {
             discordSynced = document.getBoolean("discordSynced");
             discordID = document.getString("discordID");
             discordName = document.getString("discordName");
-
             Type notificationsType = new TypeToken<List<Notification>>() {}.getType();
             notifications = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("notifications"), notificationsType);
-
             authPassword = document.getString("authPassword");
             frozen = document.getBoolean("frozen");
             needsVerify = document.getBoolean("needsVerify");
@@ -266,11 +262,8 @@ public class Profile {
             Type grantType = new TypeToken<List<Grant>>() {}.getType();
             grants = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("grants"), grantType);
             grants.removeIf(Objects::isNull);
-
             Type ignoreListType = new TypeToken<List<String>>() {}.getType();
             ignoredList = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("ignoredList"), ignoreListType);
-
-
             Type profilePermissionType = new TypeToken<List<ProfilePermission>>() {}.getType();
             profilePermissions = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("profilePermissions"), profilePermissionType);
 
@@ -282,7 +275,6 @@ public class Profile {
                 Type siblingsType = new TypeToken<List<Sibling>>() {}.getType();
                 siblings = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("siblings"), siblingsType);
             }
-
             Type ignoredListType = new TypeToken<List<String>>() {}.getType();
             ignoredList = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("ignoredList"), ignoredListType);
             Type commentsType = new TypeToken<List<Comment>>() {}.getType();
@@ -307,6 +299,8 @@ public class Profile {
                     punishments.add(punishment);
                 });
             }
+
+            activateNextRankGrant();
         }
 
         loaded = true;
@@ -331,100 +325,12 @@ public class Profile {
         if (profile == null) {
             return false;
         }
-        int weight = this.getActiveHighestRank().getWeight();
-        int otherWeight = profile.getActiveHighestRank().getWeight();
+        int weight = this.getActiveRank().getWeight();
+        int otherWeight = profile.getActiveRank().getWeight();
 
         return otherWeight < weight;
     }
 
-    public void setupPermissionAttachments(Player player) {
-        for (PermissionAttachmentInfo attachmentInfo : player.getEffectivePermissions()) {
-            if (attachmentInfo.getAttachment() == null) {
-                continue;
-            }
-
-            attachmentInfo.getAttachment().getPermissions().forEach((permission, value) -> {
-                attachmentInfo.getAttachment().unsetPermission(permission);
-            });
-        }
-
-        PermissionAttachment attachment = player.addAttachment(plugin);
-        if (attachment == null) return;
-        attachment.getPermissions().keySet().forEach(attachment::unsetPermission);
-
-        List<Grant> activeGrants = new ArrayList<>(this.grants);
-        for (Grant grant : activeGrants) {
-            if (!grant.isActive()) continue;
-
-            Rank activeRank = plugin.getRankManager().getRank(grant.getRankName());
-            if (activeRank != null && activeRank.isServer()) {
-                List<String> rankActivePermissions = new ArrayList<>(activeRank.getActivePermissions());
-
-                playerPermissions.addAll(rankActivePermissions);
-                bungeePermissions.addAll(activeRank.getBungeePermissions());
-
-
-                List<String> inheritances = new ArrayList<>(activeRank.getInheritances());
-                inheritances.forEach(inheritance -> {
-                    Rank rankInheritance = plugin.getRankManager().getRank(inheritance);
-
-                    if (rankInheritance != null && rankInheritance.isServer()) {
-                        List<String> inheritanceActivePermissions = new ArrayList<>(rankInheritance.getActivePermissions());
-
-                        playerPermissions.addAll(inheritanceActivePermissions);
-                        bungeePermissions.addAll(rankInheritance.getBungeePermissions());
-                    }
-                });
-            }
-        }
-
-        this.profilePermissions.removeIf(ProfilePermission::isExpired);
-
-        List<ProfilePermission> activeProfilePermissions = new ArrayList<>(this.profilePermissions);
-        activeProfilePermissions.forEach(permission -> {
-            if (permission.isActive()) {
-                playerPermissions.add(permission.getPermission());
-            }
-        });
-
-        Rank rank = this.getActiveHighestRank();
-
-        String displayName = CC.translate(rank.getPrefix() + rank.getDisplay_color().toString() + name + rank.getSuffix());
-        if (!player.getDisplayName().equals(displayName + ChatColor.RESET)) {
-            player.setDisplayName(displayName + ChatColor.RESET);
-        }
-
-        player.recalculatePermissions();
-
-        plugin.getRedisModule().sendPacket(new PlayerPermissionPacket(player.getUniqueId(), bungeePermissions));
-    }
-
-    @NonNull
-    public Rank getActiveHighestRank() {
-        Rank defaultRank = plugin.getRankManager().getDefaultRank();
-
-        if (defaultRank == null) {
-            defaultRank = new Rank("Default");
-            defaultRank.setDefaultRank(true);
-        }
-
-        return this.getActiveGrants().stream().filter(
-                grant -> grant.getRank() != null && grant.getRank().getType() != RankType.HIDDEN)
-                .map(Grant::getRank)
-                .max(Comparator.comparingInt(Rank::getWeight))
-                .orElse(defaultRank);
-    }
-
-    public Grant getHighestGrant() {
-        return this.getActiveGrants().stream().filter(grant ->
-                grant.getRank() != null && grant.getRank().getType() != RankType.HIDDEN)
-                .max(Comparator.comparingInt(grant -> grant.getRank().getWeight()))
-                .orElse(null);
-    }
-
-    public List<Grant> getActiveGrants() {
-        return new ArrayList<>(this.grants).stream().filter(grant -> grant.isActive() && plugin.getRankManager().getRank(grant.getRankName()) != null).collect(Collectors.toList());
-    }
 
     public Punishment getActivePunishmentByType(PunishmentType type) {
         for (Punishment punishment : punishments) {
@@ -503,23 +409,13 @@ public class Profile {
     }
 
     public int getQueuePriority() {
-        Grant grant = null;
+        int queuePriority = this.getActiveRank().getQueuePriority();
 
-        for (Grant current : this.getActiveGrants()) {
-            if (grant == null) {
-                grant = current;
-                continue;
-            }
-            if (current.getRank().getQueuePriority() > grant.getRank().getQueuePriority()) {
-                grant = current;
-            }
-        }
-
-        return (grant == null ? 0 : grant.getRank().getQueuePriority()) + (hasVIPStatus() ? OxygenBukkit.getInstance().getVipMenuConfig().getConfiguration().getInt("menu.settings.queue-priority-amount") : 0);
+        return (queuePriority == 0 ? 0 : this.getActiveRank().getQueuePriority() + (hasVIPStatus() ? OxygenBukkit.getInstance().getVipMenuConfig().getConfiguration().getInt("menu.settings.queue-priority-amount") : 0));
     }
 
     public boolean hasVIPStatus() {
-        for (Grant grant : getActiveGrants()) {
+        for (RankGrant grant : this.getRankGrants()) {
             if (grant.getRankName().equalsIgnoreCase(OxygenBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.settings.grant-name"))) {
                 return true;
             }
@@ -541,5 +437,233 @@ public class Profile {
                 }
             }
         }
+    }
+
+
+    // New Grants System:
+
+    public void setupPermissionAttachments(Player player) {
+        try {
+            Set<PermissionAttachmentInfo> attachments = player.getEffectivePermissions();
+            for (PermissionAttachmentInfo attachmentInfo : attachments) {
+                if (attachmentInfo.getAttachment() == null) continue;
+
+                Iterator<String> permissions = attachmentInfo.getAttachment().getPermissions().keySet().iterator();
+
+                while (permissions.hasNext()) {
+                    String permission = permissions.next();
+                    attachmentInfo.getAttachment().unsetPermission(permission);
+                }
+            }
+
+        } catch (Exception e) { }
+
+        PermissionAttachment attachment = player.addAttachment(OxygenBukkit.getInstance());
+        if (attachment == null) return;
+
+        List<String> bungeePermissions = Lists.newArrayList();
+
+        attachment.getPermissions().keySet().forEach(attachment::unsetPermission);
+
+        // setup active rank permissions
+        RankManager rankManager = OxygenBukkit.getInstance().getRankManager();
+        if (activeRankGrant != null && rankManager.getRank(activeRankGrant.getRankName()) != null) {
+            Rank activeRank = rankManager.getRank(activeRankGrant.getRankName());
+
+            activeRank.getPermissionsData().stream().filter(perm -> !TextUtil.isNull(perm.getPermission()))
+                    .forEach(perm -> {
+                        if (perm.isGlobal()) {
+                            bungeePermissions.add(perm.getPermission());
+                        } else {
+                            attachment.setPermission(perm.getPermission(), true);
+                        }
+                    });
+        }
+
+        // setup player permissions
+        getPermissionGrants().stream().filter(grant -> !grant.isRemoved()).filter(grant -> !grant.hasExpired())
+                .filter(Grant::canActivate).forEach(perm -> {
+                    if (perm.isBungeecord()) {
+                        bungeePermissions.add(perm.getPermission());
+                    } else {
+                        attachment.setPermission(perm.getPermission(), true);
+                    }
+                });
+
+        player.recalculatePermissions();
+        player.setDisplayName(getColoredName() + ChatColor.RESET);
+
+        OxygenBukkit.getInstance().getRedisModule().sendPacket(new PlayerPermissionPacket(player.getUniqueId(), bungeePermissions));
+    }
+
+    public boolean hasPermission(String permission) {
+        if (Bukkit.getPlayer(this.getUniqueId()) != null) {
+            if (Bukkit.getPlayer(this.getUniqueId()).hasPermission(permission)) {
+                return true;
+            }
+        }
+
+        if (permission.equalsIgnoreCase("*") || permission.equalsIgnoreCase("'*'")) {
+            return true;
+        }
+
+        for (PermissionGrant permissionGrant : getPermissionGrants()) {
+            if (permissionGrant.getPermission().equalsIgnoreCase(permission)) {
+                if (!permissionGrant.isRemoved() && !permissionGrant.hasExpired() && permissionGrant.canActivate()) {
+                    return true;
+                }
+            }
+        }
+
+        Rank rank = getActiveRank();
+
+        return rank.hasPermission(permission);
+    }
+
+    public Rank getActiveRank() {
+        RankManager rankManager = OxygenBukkit.getInstance().getRankManager();
+
+        if (activeRankGrant != null) {
+            return rankManager.getRank(activeRankGrant.getRankName());
+        }
+
+        return rankManager.getDefaultRank();
+    }
+
+    public void addGrant(Grant grant) {
+        if (!grants.contains(grant)) {
+            grants.add(grant);
+
+            if (Bukkit.getPlayer(this.getUniqueId()) != null && Bukkit.getPlayer(this.getUniqueId()).isOnline()) {
+                new GrantGivenEvent(Bukkit.getPlayer(this.getUniqueId()), grant);
+
+                activateNextRankGrant();
+            }
+
+            this.save();
+
+            OxygenBukkit.getInstance().getRedisModule().sendPacket(new GrantUpdatePacket(this.getUniqueId()));
+        }
+    }
+
+    public void updateGrants() {
+        RankManager rankManager = OxygenBukkit.getInstance().getRankManager();
+
+        for (Grant grant : grants) {
+            if (grant.hasExpired() && !grant.isRemoved()) {
+                grant.setRemoved(true);
+                grant.setRemovedReason("Expired Grant.");
+                grant.setRemovedAt(System.currentTimeMillis());
+
+                if (Bukkit.getPlayer(this.getUniqueId()) != null && Bukkit.getPlayer(this.getUniqueId()).isOnline()) {
+                    new GrantExpiredEvent(Bukkit.getPlayer(this.getUniqueId()), grant);
+                }
+
+                if (grant instanceof RankGrant) {
+                    RankGrant rankGrant = (RankGrant) grant;
+
+                    if (rankManager.getRank(rankGrant.getRankName()) == null) {
+                        setActiveRankGrant(null);
+                    }
+
+                    if (grant.equals(activeRankGrant)) {
+                        setActiveRankGrant(null);
+                    }
+                }
+            }
+        }
+
+        if (activeRankGrant == null) {
+            activateNextRankGrant();
+
+            if (activeRankGrant == null) {
+                RankGrant defaultGrant = new RankGrant(UUID.randomUUID(), rankManager.getDefaultRank().getName());
+                defaultGrant.setAddedReason("Grant expiration.");
+                defaultGrant.setAddedAt(System.currentTimeMillis());
+                defaultGrant.setDuration(Integer.MAX_VALUE);
+
+                addGrant(defaultGrant);
+                setActiveRankGrant(defaultGrant);
+
+                if (Bukkit.getPlayer(this.getUniqueId()) != null && Bukkit.getPlayer(this.getUniqueId()).isOnline()) {
+                    setupPermissionAttachments(Bukkit.getPlayer(this.getUniqueId()));
+                }
+            }
+        }
+    }
+
+    public void activateNextRankGrant() {
+        RankManager rankManager = OxygenBukkit.getInstance().getRankManager();
+        List<RankGrant> rankGrants = getRankGrants();
+
+        rankGrants.sort(Comparator.comparingInt(rankGrant -> rankManager.getRank(rankGrant.getRankName()).getWeight()));
+
+        Collections.reverse(rankGrants);
+
+        for (RankGrant rankGrant : rankGrants) {
+            if (!rankGrant.hasExpired() && !rankGrant.isRemoved()) {
+
+                if (rankGrant.canActivate()) {
+
+                    Rank rank = rankManager.getRank(rankGrant.getRankName());
+                    if(rank != null) {
+                        setActiveRankGrant(rankGrant);
+
+                        if (Bukkit.getPlayer(this.getUniqueId()) != null && Bukkit.getPlayer(this.getUniqueId()).isOnline()) {
+                            setupPermissionAttachments(Bukkit.getPlayer(this.getUniqueId()));
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
+    public List<RankGrant> getRankGrants() {
+        List<RankGrant> rankGrants = new ArrayList<>();
+
+        RankManager rankManager = OxygenBukkit.getInstance().getRankManager();
+
+        OxygenBukkit.getInstance().debug_message("-------------------------------------------");
+        for (Grant grant : this.grants) {
+            OxygenBukkit.getInstance().debug_message("Grant: We found the '" + grant.getUuid().toString() + "' grant!");
+            if (grant instanceof RankGrant) {
+                OxygenBukkit.getInstance().debug_message("Grant: This rank is is a RankGrant, adding it to the storage.");
+            }
+        }
+        
+        //grants.stream().filter(grant -> grant instanceof RankGrant)
+                //.filter(grant -> rankManager.getRank(((RankGrant) grant).getRankName()) != null)
+                //.forEach(grant -> rankGrants.add((RankGrant) grant));
+
+        return rankGrants;
+    }
+
+    public List<PermissionGrant> getPermissionGrants() {
+        List<PermissionGrant> permissionGrants = new ArrayList<>();
+
+        grants.stream().filter(grant -> grant instanceof PermissionGrant)
+                .forEach(grant -> permissionGrants.add((PermissionGrant) grant));
+
+        return permissionGrants;
+    }
+
+    public List<TagGrant> getTagGrants() {
+        List<TagGrant> tagGrants = new ArrayList<>();
+
+        TagManager tagManager = OxygenBukkit.getInstance().getTagManager();
+
+        grants.stream().filter(grant -> grant instanceof TagGrant)
+                .filter(grant -> tagManager.getTag(((TagGrant) grant).getTagName()) != null)
+                .forEach(grant -> tagGrants.add((TagGrant) grant));
+
+        return tagGrants;
+    }
+
+    public String getColoredName() {
+        Rank rank = getActiveRank();
+        return (rank == null ? "" : rank.getDisplay_color()) + name;
     }
 }
