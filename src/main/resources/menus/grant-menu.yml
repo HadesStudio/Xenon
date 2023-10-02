@@ -6,6 +6,8 @@
 ###################################################################################
 
 messages:
+
+  cannot-grant: "&cSorry, you cannot do anything with this grant because its default."
   higher-priority: "&cYou cannot grant ranks to players who are a higher rank thank you.."
   applied:
     - ""
@@ -125,3 +127,130 @@ menus:
     title: "%player% &8| Ranks (%amount%)"
   permissions-menu:
     title: "%player% &8| Permissions (%amount%)"
+  rank-grant-selection:
+    title: "Select Rank"
+    buttons:
+      grant:
+        display-name: "&6%rank% &7- Rank Grant"
+        lore:
+          - "&7Below, is some useful information"
+          - "&7regarding this rank."
+          - ""
+          - "&6Rank Name&7: &c%rank_name%"
+          - "&6Prefix&7: &c%prefix%"
+          - "&6Suffix&7: &c%suffix%"
+          - "&6Weight&7: &c%weight%"
+          - "&6Queue Priority&7: &c%queue_priority%"
+          - "&6Display Color&7: &c%display_color%"
+          - ""
+          - "&6Left-Click &7to grant this rank to this player."
+  tag-grant-selection:
+    title: "Select Tag"
+    buttons:
+      grant:
+        display-name: "&6%tag% &7- Tag Grant"
+        lore:
+          - "&7Below, is some useful information"
+          - "&7regarding this chat tag."
+          - ""
+          - "&6Tag Name&7: &c%tag_name%"
+          - "&6Prefix&7: &c%prefix%"
+          - "&6Weight&7: &c%weight%"
+          - "&6Permission&7: &c%permission%"
+          - ""
+          - "&6Left-Click &7to grant this tag to this player."
+  select-server:
+    title: "Select Server Type"
+    buttons:
+      bungee-permission:
+        display-name: "&6BungeeCord Permission"
+        lore:
+          - "&7By selecting this, this permission"
+          - "&7will be categorized as a bungee"
+          - "&7permission!"
+          - ""
+          - "&6Left-Click &7to select this option."
+      bukkit-permission:
+        display-name: "&6Bukkit Permission"
+        lore:
+          - "&7By selecting this, this permission"
+          - "&7will be categorized as a bukkit"
+          - "&7permission!"
+          - ""
+          - "&6Left-Click &7to select this option."
+      global-rank:
+        display-name: "&6Global Rank"
+        lore:
+          - "&7By selecting this, players across"
+          - "&7the entire network will be able"
+          - "&7to use this grant on any server!"
+          - ""
+          - "&6Left-Click &7to select this option."
+      specific-servers:
+        display-name: "&6Specific Servers"
+        lore:
+          - "&7By selecting this, you will"
+          - "&7will have to specify which"
+          - "&7servers you want this grant on!"
+          - ""
+          - "&6Left-Click &7to select this option."
+  select-duration:
+    title: "Select Duration"
+    buttons:
+      permanent:
+        display-name: "&6Permanent Grant"
+        lore:
+          - "&7By selecting this, this permission"
+          - "&7will last forever!"
+          - ""
+          - "&6Left-Click &7to select this option."
+      temporary:
+        display-name: "&6Temporary Grant"
+        lore:
+          - "&7By selecting this, you will have"
+          - "&7to setup which servers you want"
+          - "&7your permission active on!"
+          - ""
+          - "&6Left-Click &7to select this option."
+  grant-servers:
+    title: "Grant Servers Setup"
+    buttons:
+      information:
+        display-name: "&6Continue Setup"
+        lore:
+          - "&7By clicking here, you will"
+          - "&7will continue setting up this"
+          - "&7player grant!"
+          - "&7"
+          - "&6Global Rank&7: &c%global_status%"
+          - "&6Servers&7: &c%servers_size% Servers"
+          - "&7"
+          - "&6Left-Click &7to continue your setup."
+      clear-servers:
+        display-name: "&6Continue Setup"
+        lore:
+          - "&7By clicking here, you will"
+          - "&7clear all servers that you"
+          - "&7currently have setup in this grant!"
+          - "&7"
+          - "&6Servers&7: &c%servers_size% Servers"
+          - "&7"
+          - "&6Left-Click &7to clear all servers."
+      add-server:
+        display-name: "&6Add New Server"
+        lore:
+          - "&7By clicking here, will begin"
+          - "&7the process of adding a server"
+          - "&7to this grant!"
+          - "&7"
+          - "&6Servers&7: &c%servers_size% Servers"
+          - "&7"
+          - "&6Left-Click &7to add new server."
+      server:
+        display-name: "&6Server - %name%"
+        lore:
+          - "&7By clicking here, you will"
+          - "&7delete this server from this"
+          - "&7grant!"
+          - "&7"
+          - "&6Left-Click &7to delete this server."

@@ -1,7 +1,6 @@
 package dev.hely.core.bukkit.ranks.newgrants.menu.rank;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.ranks.newgrants.Grant;
@@ -11,11 +10,14 @@ import dev.hely.core.bukkit.ranks.newgrants.menu.rank.button.RankGrantActiveButt
 import dev.hely.core.bukkit.ranks.newgrants.types.RankGrant;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.button.implement.BackButton;
+import dev.hely.lib.menu.button.implement.PageButton;
+import dev.hely.lib.menu.button.implement.PageFilterButton;
 import dev.hely.lib.menu.implement.FilterablePaginatedMenu;
 import dev.hely.lib.menu.implement.PageFilter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -30,28 +32,63 @@ public class RankGrantsMenu extends FilterablePaginatedMenu<RankGrant> {
 
     @Override
     public String getName() {
-        return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.ranks-menu.title").replace("%player%", profile.getActiveRank().getDisplay_color() + profile.getName()).replace("%amount%", String.valueOf(profile.getGrants().size()));
+        return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.ranks-menu.title").replace("%player%", profile.getActiveRank().getDisplay_color() + profile.getName()).replace("%amount%", String.valueOf(getFilteredCount()));
     }
 
+    @Override
+    public String getTitle(Player player) {
+        return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.ranks-menu.title").replace("%player%", profile.getActiveRank().getDisplay_color() + profile.getName()).replace("%amount%", String.valueOf(getFilteredCount()));
+    }
+
+    public Map<Integer, Button> getGlobalContent(Player player) {
+        Map<Integer, Button> menuContent = new HashMap<>();
+
+        menuContent.put(0, Button.getPlaceholder());
+        menuContent.put(1, Button.getPlaceholder());
+        menuContent.put(2, Button.getPlaceholder());
+
+        menuContent.put(3, Button.getPlaceholder());
+        if (profile.getActiveRankGrant() != null) {
+            menuContent.put(4, new RankGrantActiveButton(profile));
+        } else {
+            menuContent.put(4, Button.getPlaceholder());
+        }
+        menuContent.put(5, Button.getPlaceholder());
+
+        menuContent.put(6, Button.getPlaceholder());
+        menuContent.put(7, Button.getPlaceholder());
+        menuContent.put(8, Button.getPlaceholder());
+
+        menuContent.put(9, Button.getPlaceholder());
+        menuContent.put(17, Button.getPlaceholder());
+        menuContent.put(18, Button.getPlaceholder());
+        menuContent.put(26, Button.getPlaceholder());
+        menuContent.put(27, Button.getPlaceholder());
+        menuContent.put(35, Button.getPlaceholder());
+
+        menuContent.put(36, new BackButton(new GrantViewSelectMenu(profile)));
+        menuContent.put(37, new PageButton(-1, this));
+        menuContent.put(38, Button.getPlaceholder());
+
+        menuContent.put(39, Button.getPlaceholder());
+        menuContent.put(40, new PageFilterButton<>(this));
+        menuContent.put(41, Button.getPlaceholder());
+
+        menuContent.put(42, Button.getPlaceholder());
+        menuContent.put(43, new PageButton(1, this));
+        menuContent.put(44, Button.getPlaceholder());
+
+        return menuContent;
+    }
 
     @Override
     public Map<Integer, Button> getFilteredButtons(Player player) {
-        Map<Integer, Button> buttons = Maps.newHashMap();
-
-        getMenuContent().put(36, new BackButton(new GrantViewSelectMenu(profile)));
-
-        if (profile.getActiveRankGrant() != null) {
-            getMenuContent().put(4, new RankGrantActiveButton(profile));
-        }
-
+        Map<Integer, Button> buttons = new HashMap<>();
         loop:
         for (RankGrant grant : profile.getRankGrants()) {
             for (PageFilter<RankGrant> filter : getFilters()) {
                 if (filter.test(grant)) {
-                    OxygenBukkit.getInstance().debug_message("[Rank Grant List Menu] Adding " + grant.getRankName() + " to the slot: " + buttons.size());
                     buttons.put(buttons.size(), new GrantInformationButton(profile, grant));
-                    OxygenBukkit.getInstance().debug_message("[Rank Grant List Menu] Success! New slot: " + buttons.size());
-                    OxygenBukkit.getInstance().debug_message("--------------------------------------------------------");
                     continue loop;
                 }
             }
@@ -64,11 +101,11 @@ public class RankGrantsMenu extends FilterablePaginatedMenu<RankGrant> {
     public List<PageFilter<RankGrant>> generateFilters() {
         List<PageFilter<RankGrant>> filters = Lists.newArrayList();
 
-        filters.add(new PageFilter<>("Type: All", (rankGrant -> rankGrant != null), true));
-        filters.add(new PageFilter<>("Type: Temporary", (grant -> !grant.isPermanent()), true));
-        filters.add(new PageFilter<>("Type: Permanent", (Grant::isPermanent), true));
-        filters.add(new PageFilter<>("Type: Expired", (Grant::hasExpired), true));
-        filters.add(new PageFilter<>("Type: Removed", (grant -> grant.isRemoved() && !grant.hasExpired()), true));
+        filters.add(new PageFilter<>("Filter: All Ranks", (Objects::nonNull), true));
+        filters.add(new PageFilter<>("Filter: Temporary Ranks", (grant -> !grant.isPermanent()), false));
+        filters.add(new PageFilter<>("Filter: Permanent Ranks", (Grant::isPermanent), false));
+        filters.add(new PageFilter<>("Filter: Expired Ranks", (Grant::hasExpired), false));
+        filters.add(new PageFilter<>("Filter: Removed Ranks", (grant -> grant.isRemoved() && !grant.hasExpired()), false));
 
         return filters;
     }

@@ -18,6 +18,7 @@ import dev.hely.core.bukkit.tag.TagManager;
 import dev.hely.core.bukkit.utils.ColorUtil;
 import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.button.Button;
+import dev.hely.lib.util.CC;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -44,7 +45,6 @@ public class GrantInformationButton extends Button {
 
         ItemMaker itemBuilder = ItemMaker.of(Material.WOOL);
 
-        boolean canRemove = true;
         if (grant instanceof RankGrant) {
             RankManager rankManager = OxygenBukkit.getInstance().getRankManager();
 
@@ -54,8 +54,6 @@ public class GrantInformationButton extends Button {
 
             if (rank != null) {
                 itemBuilder.setDisplayName(rank.getDisplay_color() + rank.getName() + "&7 (" + rank.getName() + ")");
-
-                canRemove = !rank.isDefaultRank();
             } else {
                 itemBuilder.setDisplayName("&c" + rankGrant.getRankName());
             }
@@ -104,12 +102,10 @@ public class GrantInformationButton extends Button {
             lore.add(" &7- &6Removed Reason&7: &r" + grant.getRemovedReason());
             lore.add(" &7- &6Removed Date&7: &r" + grant.getRemovedDate());
             lore.add(" ");
-        } else {
-            if (!grant.hasExpired() && canRemove) {
-                if (player.hasPermission("oxygen.grants.admin")) {
-                    lore.add("&6Left-Click &7here to remove this grant.");
-                }
-            }
+        }
+
+        if (player.hasPermission("oxygen.grants.admin")) {
+            lore.add("&6Left-Click &7here to remove this grant.");
         }
 
         itemBuilder.setLore(lore);
@@ -120,30 +116,24 @@ public class GrantInformationButton extends Button {
     @Override
     public void onClick(Player player, int slot, ClickType clickType) {
         if (clickType.isLeftClick()) {
-            boolean canRemove = true;
             if (grant instanceof RankGrant) {
                 RankManager rankManager = OxygenBukkit.getInstance().getRankManager();
-
                 RankGrant rankGrant = (RankGrant) grant;
-
                 Rank rank = rankManager.getRank(rankGrant.getRankName());
 
                 if (rank != null) {
-                    canRemove = !rank.isDefaultRank();
-                }
-            }
-
-            if (!grant.hasExpired() && canRemove) {
-                if (player.hasPermission("oxygen.grants.admin")) {
-                    new GrantRemoveReasonPrompt(grant, profile, (ignored) -> {
-                        if (grant instanceof RankGrant) {
-                            new RankGrantsMenu(profile).openMenu(player);
-                        } else if (grant instanceof PermissionGrant) {
-                            new PermissionGrantsMenu(profile).openMenu(player);
-                        } else if (grant instanceof TagGrant) {
-                            new TagGrantsMenu(profile).openMenu(player);
+                    OxygenBukkit.getInstance().debug_message("Rank (" + rank.getName() + "): Type - " + rank.isDefaultRank());
+                    if (rank.isDefaultRank()) {
+                        player.sendMessage(CC.translate(OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("messages.cannot-grant")));
+                        return;
+                    }
+                    if (!grant.hasExpired()) {
+                        if (player.hasPermission("oxygen.grants.admin")) {
+                            new GrantRemoveReasonPrompt(grant, profile, (ignored) -> {
+                                new RankGrantsMenu(profile).openMenu(player);
+                            }).startPrompt(player);
                         }
-                    }).startPrompt(player);
+                    }
                 }
             }
         }

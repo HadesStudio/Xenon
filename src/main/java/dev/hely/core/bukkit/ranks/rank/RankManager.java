@@ -76,7 +76,7 @@ public class RankManager implements ModuleLoader {
         });
 
         if (getRanks().size() == 0) {
-            this.createRank("Default");
+            this.createRank("Default", true);
             OxygenBukkit.getInstance().debug_message("Creating the missing default rank because it is non-existent.", OxygenBukkit.getInstance().getRankManager());
         }
     }
@@ -96,14 +96,18 @@ public class RankManager implements ModuleLoader {
         return ranks.get(0);
     }
 
-    public void createRank(String name) {
+    public void createRank(String name, boolean default_rank) {
         Rank rank = new Rank(name);
-        rank.setPrefix("");
+        rank.setPrefix("&7[&6" + name + "&7] ");
         rank.setSuffix("");
-        rank.setDefaultRank(true);
-        rank.setDisplay_color(ChatColor.LIGHT_PURPLE);
+        rank.setDefaultRank(default_rank);
+        rank.setDisplay_color(ChatColor.GOLD);
         rank.setWeight(1);
-        rank.setType(RankType.DEFAULT);
+        if (default_rank) {
+            rank.setType(RankType.NORMAL);
+        } else {
+            rank.setType(RankType.NORMAL);
+        }
         rank.setQueuePriority(1);
 
         this.ranks.add(rank);
@@ -143,7 +147,7 @@ public class RankManager implements ModuleLoader {
             rank.setDefaultRank(config.getBoolean(key + ".default-rank"));
             rank.setInheritances(config.getStringList(key + ".inheritances"));
             rank.setWeight(config.getInt(key + ".weight"));
-            rank.setType(RankType.valueOf(config.getString(key + ".rank-type", "DEFAULT")));
+            rank.setType(RankType.valueOf(config.getString(key + ".rank-type", "NORMAL")));
             rank.setGlobalRank(config.getBoolean(key + ".global-rank", true));
             rank.setServers(config.getStringList(key + ".servers"));
 

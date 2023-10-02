@@ -35,7 +35,7 @@ public class GrantPermissionPrompt extends StringPrompt {
     public Prompt<?> acceptInput(Player player, String value) {
         PermissionGrant permissionGrant = new PermissionGrant(UUID.randomUUID(), value.trim().replace(" ", ""), false);
 
-        new GrantScopesMenu(new GrantViewSelectMenu(profile), profile, permissionGrant, "permission").openMenu(player);
+        new GrantScopesMenu(new GrantViewSelectMenu(profile), profile, permissionGrant).openMenu(player);
 
         return null;
     }

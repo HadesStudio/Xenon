@@ -23,12 +23,12 @@ public class TagGrantMenu extends PaginatedMenu {
 	
 	@Override
 	public String getName() {
-		return "Select Tag";
+		return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.tag-grant-selection.title");
 	}
 
 	@Override
 	public String getTitle(Player player) {
-		return "Select Tag";
+		return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.tag-grant-selection.title");
 	}
 
 	@Override

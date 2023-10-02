@@ -3,6 +3,7 @@ package dev.hely.core.bukkit.ranks.newgrants.menu.grant.tag.button;
 import java.util.List;
 import java.util.UUID;
 
+import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.ranks.newgrants.menu.GrantScopesMenu;
 import dev.hely.core.bukkit.ranks.newgrants.menu.grant.tag.TagGrantMenu;
@@ -29,15 +30,15 @@ public class TagGrantSelectButton extends Button {
 
 		ItemMaker builder = ItemMaker.of(Material.NAME_TAG);
 
-		builder.setDisplayName("&6Tag - " + tag.getName());
-
-		List<String> lore = Lists.newArrayList();
-
-		lore.add("");
-		lore.add("&6Left-Click &7to grant the tag &6" + tag.getName() + "&7 to &r" + profile.getColoredName() + "&7!");
-		lore.add("");
-
-		builder.setLore(lore);
+		builder.setDisplayName(OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.tag-grant-selection.buttons.grant.display-name").replace("%tag%", tag.getName()));
+		for (String lore : OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.tag-grant-selection.buttons.grant.lore")) {
+			builder.addLore(lore
+					.replace("%tag_name%", tag.getDisplay())
+					.replace("%prefix%", tag.getPrefix())
+					.replace("%permission%", tag.getPermission())
+					.replace("%weight%", String.valueOf(tag.getWeight()))
+			);
+		}
 
 		return builder.build();
 	}
@@ -47,7 +48,7 @@ public class TagGrantSelectButton extends Button {
 		if (clickType.isLeftClick()) {
 			TagGrant tagGrant = new TagGrant(UUID.randomUUID(), tag.getName());
 			
-			new GrantScopesMenu(new TagGrantMenu(profile), profile, tagGrant, "tag").openMenu(player);
+			new GrantScopesMenu(new TagGrantMenu(profile), profile, tagGrant).openMenu(player);
 			Sound.AFFIRMATIVE.toPlayer(player);
 		}
 	}

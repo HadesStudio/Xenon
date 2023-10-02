@@ -32,6 +32,11 @@ public class PermissionGrantsMenu extends FilterablePaginatedMenu<PermissionGran
         return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.permissions-menu.title").replace("%player%", profile.getActiveRank().getDisplay_color() + profile.getName()).replace("%amount%", String.valueOf(getFilteredCount()));
     }
 
+    @Override
+    public String getTitle(Player player) {
+        return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.permissions-menu.title").replace("%player%", profile.getActiveRank().getDisplay_color() + profile.getName()).replace("%amount%", String.valueOf(getFilteredCount()));
+    }
+
 
     @Override
     public Map<Integer, Button> getFilteredButtons(Player player) {
@@ -56,11 +61,11 @@ public class PermissionGrantsMenu extends FilterablePaginatedMenu<PermissionGran
     public List<PageFilter<PermissionGrant>> generateFilters() {
         List<PageFilter<PermissionGrant>> filters = Lists.newArrayList();
 
-        filters.add(new PageFilter<>("Type: All", (Objects::nonNull), true));
-        filters.add(new PageFilter<>("Type: Temporary", (grant -> !grant.isPermanent()), false));
-        filters.add(new PageFilter<>("Type: Permanent", (Grant::isPermanent), false));
-        filters.add(new PageFilter<>("Type: Expired", (Grant::hasExpired), false));
-        filters.add(new PageFilter<>("Type: Removed", (Grant::isRemoved), false));
+        filters.add(new PageFilter<>("Filter: All Permissions", (Objects::nonNull), true));
+        filters.add(new PageFilter<>("Filter: Temporary Permissions", (grant -> !grant.isPermanent()), false));
+        filters.add(new PageFilter<>("Filter: Permanent Permissions", (Grant::isPermanent), false));
+        filters.add(new PageFilter<>("Filter: Expired Permissions", (Grant::hasExpired), false));
+        filters.add(new PageFilter<>("Filter: Removed Permissions", (Grant::isRemoved), false));
 
         return filters;
     }

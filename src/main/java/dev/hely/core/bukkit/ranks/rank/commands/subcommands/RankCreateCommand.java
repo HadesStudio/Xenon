@@ -40,7 +40,7 @@ public class RankCreateCommand extends SubCommand {
             return;
         }
 
-        OxygenBukkit.getInstance().getRankManager().createRank(args[1]);
+        OxygenBukkit.getInstance().getRankManager().createRank(args[1], false);
         sender.sendMessage(CC.translate(OxygenBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("commands.create.created").replace("%rank_name%", args[1])));
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new RankUpdatePacket(args[1]));

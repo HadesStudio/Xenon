@@ -29,6 +29,7 @@ import dev.hely.core.bukkit.ranks.newgrants.Grant;
 import dev.hely.core.bukkit.ranks.newgrants.events.GrantExpiredEvent;
 import dev.hely.core.bukkit.ranks.newgrants.events.GrantGivenEvent;
 import dev.hely.core.bukkit.ranks.newgrants.packets.GrantUpdatePacket;
+import dev.hely.core.bukkit.ranks.newgrants.serializer.GrantSerializer;
 import dev.hely.core.bukkit.ranks.newgrants.types.PermissionGrant;
 import dev.hely.core.bukkit.ranks.newgrants.types.RankGrant;
 import dev.hely.core.bukkit.ranks.newgrants.types.TagGrant;
@@ -115,7 +116,7 @@ public class Profile {
 
     // New Grant System:
     private RankGrant activeRankGrant;
-    private List<Grant> grants = new ArrayList<>();
+    private List<Grant> grants = Lists.newArrayList();
 
     public Profile(UUID uniqueId, String name) {
         this.uniqueId = uniqueId;
@@ -190,8 +191,6 @@ public class Profile {
         document.put("friends", OxygenBukkit.PLAIN_GSON.toJson(this.friends, friendsType));
         Type friendRequestsType = new TypeToken<List<UUID>>() {}.getType();
         document.put("friendrequests", OxygenBukkit.PLAIN_GSON.toJson(this.friendRequests, friendRequestsType));
-        Type grantType = new TypeToken<List<Grant>>() {}.getType();
-        document.put("grants", OxygenBukkit.PLAIN_GSON.toJson(this.grants, grantType));
         Type profilePermissionType = new TypeToken<List<ProfilePermission>>() {}.getType();
         document.put("profilePermissions", OxygenBukkit.PLAIN_GSON.toJson(this.profilePermissions, profilePermissionType));
         Type notesType = new TypeToken<List<Note>>() {}.getType();
@@ -202,6 +201,10 @@ public class Profile {
         document.put("socialmedia", OxygenBukkit.PLAIN_GSON.toJson(this.socialMedia, socialMediaType));
         Type siblingsType = new TypeToken<List<Sibling>>() {}.getType();
         document.put("siblings", OxygenBukkit.PLAIN_GSON.toJson(this.siblings, siblingsType));
+
+        List<Document> grantDocuments = Lists.newArrayList();
+        grants.stream().forEach(grant -> grantDocuments.add(GrantSerializer.INSTANCE.toDocument(grant)));
+        document.put("grants", grantDocuments);
 
         plugin.getMongoModule().getProfilesCollection().replaceOne(Filters.eq("uniqueId", uniqueId.toString()), document, new ReplaceOptions().upsert(true));
         if (leave) plugin.getProfileManager().getProfileMap().remove(uniqueId);
@@ -258,10 +261,6 @@ public class Profile {
                 Type staffProfileType = new TypeToken<StaffProfile>() {}.getType();
                 staffProfile = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("staffProfile"), staffProfileType);
             }
-
-            Type grantType = new TypeToken<List<Grant>>() {}.getType();
-            grants = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("grants"), grantType);
-            grants.removeIf(Objects::isNull);
             Type ignoreListType = new TypeToken<List<String>>() {}.getType();
             ignoredList = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("ignoredList"), ignoreListType);
             Type profilePermissionType = new TypeToken<List<ProfilePermission>>() {}.getType();
@@ -290,6 +289,10 @@ public class Profile {
             Type socialMediaType = new TypeToken<Map<SocialMediaType, String>>() {}.getType();
             socialMedia = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("socialmedia"), socialMediaType);
 
+
+            List<Document> grantDocuments = document.getList("grants", Document.class);
+            grants.clear();
+            grantDocuments.stream().forEach(it -> grants.add(GrantSerializer.INSTANCE.fromDocument(it)));
 
             try (MongoCursor<Document> mongoCursor = plugin.getMongoModule().getPunishmentsCollection().find(Filters.eq("targetUUID", uniqueId.toString())).iterator()) {
                 mongoCursor.forEachRemaining(punishmentDocument -> {
@@ -625,18 +628,10 @@ public class Profile {
         List<RankGrant> rankGrants = new ArrayList<>();
 
         RankManager rankManager = OxygenBukkit.getInstance().getRankManager();
-
-        OxygenBukkit.getInstance().debug_message("-------------------------------------------");
-        for (Grant grant : this.grants) {
-            OxygenBukkit.getInstance().debug_message("Grant: We found the '" + grant.getUuid().toString() + "' grant!");
-            if (grant instanceof RankGrant) {
-                OxygenBukkit.getInstance().debug_message("Grant: This rank is is a RankGrant, adding it to the storage.");
-            }
-        }
         
-        //grants.stream().filter(grant -> grant instanceof RankGrant)
-                //.filter(grant -> rankManager.getRank(((RankGrant) grant).getRankName()) != null)
-                //.forEach(grant -> rankGrants.add((RankGrant) grant));
+        grants.stream().filter(grant -> grant instanceof RankGrant)
+                .filter(grant -> rankManager.getRank(((RankGrant) grant).getRankName()) != null)
+                .forEach(grant -> rankGrants.add((RankGrant) grant));
 
         return rankGrants;
     }

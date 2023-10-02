@@ -1,7 +1,6 @@
 package dev.hely.core.bukkit.ranks.newgrants.menu.grant;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import dev.hely.core.bukkit.OxygenBukkit;
 import dev.hely.core.bukkit.profile.Profile;
 import dev.hely.core.bukkit.ranks.newgrants.Grant;
 import dev.hely.core.bukkit.ranks.newgrants.menu.GrantDurationMenu;
@@ -11,6 +10,7 @@ import dev.hely.lib.maker.ItemMaker;
 import dev.hely.lib.menu.Menu;
 import dev.hely.lib.menu.button.Button;
 import dev.hely.lib.menu.button.implement.BackButton;
+import dev.hely.lib.menu.button.implement.PageButton;
 import dev.hely.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,18 +20,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
 @Getter
 public class GrantServersMenu extends PaginatedMenu {
-
     private final Menu backMenu;
     private final Profile profile;
     private final Grant grant;
     private final List<String> servers;
-    private final String type;
 
     {
         setAutoUpdate(true);
@@ -39,17 +38,54 @@ public class GrantServersMenu extends PaginatedMenu {
 
     @Override
     public String getName() {
-        return "Grant Servers";
+        return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.title");
+    }
+
+    @Override
+    public String getTitle(Player player) {
+        return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.title");
+    }
+
+    public Map<Integer, Button> getGlobalContent(Player player) {
+        Map<Integer, Button> menuContent = new HashMap<>();
+
+        menuContent.put(0, Button.getPlaceholder());
+        menuContent.put(1, Button.getPlaceholder());
+        menuContent.put(2, new GrantClearServersButton());
+
+        menuContent.put(3, Button.getPlaceholder());
+        menuContent.put(4, new AddServerButton());
+        menuContent.put(5, Button.getPlaceholder());
+
+        menuContent.put(6, new GrantInformationButton());
+        menuContent.put(7, Button.getPlaceholder());
+        menuContent.put(8, Button.getPlaceholder());
+
+        menuContent.put(9, Button.getPlaceholder());
+        menuContent.put(17, Button.getPlaceholder());
+        menuContent.put(18, Button.getPlaceholder());
+        menuContent.put(26, Button.getPlaceholder());
+        menuContent.put(27, Button.getPlaceholder());
+        menuContent.put(35, Button.getPlaceholder());
+
+        menuContent.put(36, new BackButton(backMenu));
+        menuContent.put(37, new PageButton(-1, this));
+        menuContent.put(38, Button.getPlaceholder());
+
+        menuContent.put(39, Button.getPlaceholder());
+        menuContent.put(40, Button.getPlaceholder());
+        menuContent.put(41, Button.getPlaceholder());
+
+        menuContent.put(42, Button.getPlaceholder());
+        menuContent.put(43, new PageButton(1, this));
+        menuContent.put(44, Button.getPlaceholder());
+
+        return menuContent;
     }
 
     @Override
     public Map<Integer, Button> getPaginatedContent(Player player) {
-        Map<Integer, Button> buttons = Maps.newHashMap();
-
-        getMenuContent().put(36, new BackButton(backMenu));
-        getMenuContent().put(2, new GrantClearServersButton());
-        getMenuContent().put(4, new AddServerButton());
-        getMenuContent().put(6, new GrantInformationButton());
+        Map<Integer, Button> buttons = new HashMap<>();
 
         for (String server : servers) {
             buttons.put(buttons.size(), new GrantServerButton(server));
@@ -61,29 +97,25 @@ public class GrantServersMenu extends PaginatedMenu {
     public class GrantInformationButton extends Button {
         @Override
         public ItemStack getItemStack(Player player) {
-            List<String> lore = Lists.newArrayList();
-
-            lore.add("&7Below, is all the servers that");
-            lore.add("&7this grant will be active on!");
-            lore.add("&7");
-            lore.add("&6Servers:");
-            if(servers.isEmpty()) {
-                lore.add(" &7- &6This grant is global..");
+            ItemMaker itemMaker = ItemMaker.of(Material.EMERALD_BLOCK);
+            itemMaker.setDisplayName(OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.buttons.information.display-name"));
+            for (String lore : OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.grant-servers.buttons.information.lore")) {
+                itemMaker.addLore(lore.replace("%global_status%", isGlobal()).replace("%servers_size%", String.valueOf(servers.size())));
             }
-            for(String server : servers) {
-                lore.add(" &7- &c" + server);
-            }
-
-            lore.add(" ");
-
-            return ItemMaker.of(Material.EMERALD_BLOCK).setDisplayName("&6Save Changes").setLore(lore).build();
+            return itemMaker.build();
         }
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            if(clickType.isLeftClick()) {
-                new GrantDurationMenu(backMenu, profile, grant, servers, type).openMenu(player);
-                Sound.AFFIRMATIVE.toPlayer(player);
+            new GrantDurationMenu(backMenu, profile, grant, servers).openMenu(player);
+            Sound.AFFIRMATIVE.toPlayer(player);
+        }
+
+        public String isGlobal() {
+            if (servers.isEmpty()) {
+                return "&aYes";
+            } else {
+                return "&cNo";
             }
         }
 
@@ -99,20 +131,18 @@ public class GrantServersMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker itemBuilder = ItemMaker.of(Material.NETHER_STAR);
-
-            itemBuilder.setDisplayName("&6" + server);
-            itemBuilder.setLore("", "&6Left-Click &7to remove this server.", "");
-
-            return itemBuilder.build();
+            ItemMaker itemMaker = ItemMaker.of(Material.FLINT_AND_STEEL);
+            itemMaker.setDisplayName(OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.buttons.server.display-name").replace("%name%", server));
+            for (String lore : OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.grant-servers.buttons.server.lore")) {
+                itemMaker.addLore(lore);
+            }
+            return itemMaker.build();
         }
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             if(clickType.isLeftClick()) {
-                if (servers.contains(server)) {
-                    servers.remove(server);
-                }
+                servers.remove(server);
             }
         }
 
@@ -125,7 +155,12 @@ public class GrantServersMenu extends PaginatedMenu {
     public class GrantClearServersButton extends Button {
         @Override
         public ItemStack getItemStack(Player player) {
-            return ItemMaker.of(Material.FLINT_AND_STEEL).setDisplayName("&cClear Servers?").setLore("", "&6Left-Click &7to reset this grants servers.", "").build();
+            ItemMaker itemMaker = ItemMaker.of(Material.FLINT_AND_STEEL);
+            itemMaker.setDisplayName(OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.buttons.clear-servers.display-name"));
+            for (String lore : OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.grant-servers.buttons.clear-servers.lore")) {
+                itemMaker.addLore(lore.replace("%servers_size%", String.valueOf(servers.size())));
+            }
+            return itemMaker.build();
         }
 
         @Override
@@ -143,14 +178,19 @@ public class GrantServersMenu extends PaginatedMenu {
     public class AddServerButton extends Button {
         @Override
         public ItemStack getItemStack(Player player) {
-            return ItemMaker.of(Material.ANVIL).setDisplayName("&6Add Server").setLore("", "&6Left-Click &7to add a server to this grant.", "").build();
+            ItemMaker itemMaker = ItemMaker.of(Material.ANVIL);
+            itemMaker.setDisplayName(OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.buttons.add-server.display-name"));
+            for (String lore : OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.grant-servers.buttons.add-server.lore")) {
+                itemMaker.addLore(lore.replace("%servers_size%", String.valueOf(servers.size())));
+            }
+            return itemMaker.build();
         }
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             player.closeInventory();
 
-            new GrantServerPrompt(servers, (Callback<Player>) data -> new GrantServersMenu(backMenu, profile, grant, servers, type).openMenu(player)).startPrompt(player);
+            new GrantServerPrompt(servers, (Callback<Player>) data -> new GrantServersMenu(backMenu, profile, grant, servers).openMenu(player)).startPrompt(player);
         }
 
         @Override

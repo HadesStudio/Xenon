@@ -23,12 +23,12 @@ public class RankGrantMenu extends PaginatedMenu {
 	
 	@Override
 	public String getName() {
-		return "Select Rank";
+		return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.rank-grant-selection.title");
 	}
 
 	@Override
 	public String getTitle(Player player) {
-		return "Select Rank";
+		return OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.rank-grant-selection.title");
 	}
 
 	@Override
@@ -38,12 +38,8 @@ public class RankGrantMenu extends PaginatedMenu {
 		getMenuContent().put(4, new BackButton(new GrantMenu(profile)));
 		
 		RankManager rankManager = OxygenBukkit.getInstance().getRankManager();
-		OxygenBukkit.getInstance().debug_message("--------------------------------------------------------");
 		for (Rank rank : rankManager.getRanks()) {
-			OxygenBukkit.getInstance().debug_message("[Rank Grant List Menu] Adding " + rank + " to the slot: " + buttons.size());
 			buttons.put(buttons.size(), new RankGrantSelectButton(rank, profile));
-			OxygenBukkit.getInstance().debug_message("[Rank Grant List Menu] Success! New slot: " + buttons.size());
-			OxygenBukkit.getInstance().debug_message("--------------------------------------------------------");
 		}
 		
 		return buttons;
