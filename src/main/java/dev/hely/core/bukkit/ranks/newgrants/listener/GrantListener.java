@@ -44,7 +44,7 @@ public class GrantListener implements Listener {
         }
 
         for (String message : OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("messages.applied")) {
-            player.sendMessage(CC.translate(message).replace("%type%", type).replace("%duration%", duration));
+            player.sendMessage(CC.translate(message.replace("%duration%", duration)).replace("%type%", type));
         }
     }
 

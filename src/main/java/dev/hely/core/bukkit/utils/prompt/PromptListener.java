@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class PromptListener implements Listener {
-
 	private final PromptManager promptHandler;
 	
 	@EventHandler(priority = EventPriority.MONITOR)

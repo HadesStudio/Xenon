@@ -83,6 +83,7 @@ public class ChatListener implements Listener {
             }
 
             recipient.sendMessage(OxygenBukkit.getInstance().getChatManager().formatChatDisplay(player, msg));
+            OxygenBukkit.getInstance().getServer().getConsoleSender().sendMessage(OxygenBukkit.getInstance().getChatManager().formatChatDisplay(player, msg));
         });
     }
 

@@ -18,6 +18,7 @@ import dev.hely.core.bukkit.profile.ProfileManager;
 import dev.hely.core.bukkit.profile.log.LogManager;
 import dev.hely.core.bukkit.profile.notifications.NotificationManager;
 import dev.hely.core.bukkit.profile.packet.ProfilePacketListener;
+import dev.hely.core.bukkit.profile.squads.SquadManager;
 import dev.hely.core.bukkit.profile.tfa.TFAManager;
 import dev.hely.core.bukkit.punishment.packet.PunishmentPacketListener;
 import dev.hely.core.bukkit.ranks.newgrants.packets.listener.GrantPacketListener;
@@ -104,6 +105,7 @@ public class OxygenBukkit extends JavaPlugin {
     private Config staffHistoryConfig;
     private Config vipMenuConfig;
     private Config grantMenuConfig;
+    private Config squadMenuConfig;
 
     private GoogleAuthenticator googleAuthenticator;
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
@@ -133,6 +135,7 @@ public class OxygenBukkit extends JavaPlugin {
     private NotificationManager notificationManager;
     private boolean debug_mode;
     private PromptManager promptManager;
+    private SquadManager squadManager;
 
     public void onEnable() {
         instance = this;
@@ -208,7 +211,7 @@ public class OxygenBukkit extends JavaPlugin {
             this.configuration = new Config(OxygenBukkit.getInstance(), "config");
             this.configList.add(configuration);
             this.languageConfig = new Config(OxygenBukkit.getInstance(), "language");
-            this.configList.add(licenseConfig);
+            this.configList.add(languageConfig);
             this.databaseConfig = new Config(OxygenBukkit.getInstance(), "databases" + File.separator + "databases");
             this.configList.add(databaseConfig);
             this.ranksConfig = new Config(OxygenBukkit.getInstance(), "ranks" + File.separator + "ranks");
@@ -243,6 +246,9 @@ public class OxygenBukkit extends JavaPlugin {
             this.configList.add(vipMenuConfig);
             this.grantMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "grant-menu");
             this.configList.add(grantMenuConfig);
+            this.squadMenuConfig = new Config(OxygenBukkit.getInstance(), "menus" + File.separator + "squads-menu");
+            this.configList.add(squadMenuConfig);
+
             Locale.load();
         } catch (IOException | InvalidConfigurationException e) {
             ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
@@ -286,6 +292,8 @@ public class OxygenBukkit extends JavaPlugin {
         serverManager = new ServerManager();
         rebootManager = new RebootManager();
         filterManager = new FilterManager();
+        squadManager = new SquadManager();
+
     }
 
     public void setupModules() {
@@ -309,6 +317,8 @@ public class OxygenBukkit extends JavaPlugin {
         this.loadModule(filterManager);
         this.loadModule(serverManager);
         this.loadModule(announcementManager);
+        this.loadModule(squadManager);
+
     }
 
     public void setupPackets() {

@@ -20,7 +20,6 @@ public class PromptManager {
 	public PromptManager(OxygenBukkit instance) {
 		this.promptMap = Maps.newHashMap();
 
-		instance.getServer().getPluginManager().registerEvents(new PromptListener(this), instance);
 		instance.getServer().getScheduler().runTaskTimerAsynchronously(instance, new PromptRunnable(this), 20L, 20L);
 	}
 	

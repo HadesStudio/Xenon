@@ -12,6 +12,7 @@ import dev.hely.core.bukkit.ranks.newgrants.listener.GrantListener;
 import dev.hely.core.bukkit.server.queue.listener.QueueListener;
 import dev.hely.core.bukkit.staff.freeze.FreezeListener;
 import dev.hely.core.bukkit.staff.staffmode.listeners.StaffListener;
+import dev.hely.core.bukkit.utils.prompt.PromptListener;
 import dev.hely.lib.menu.MenuListener;
 import org.bukkit.event.Listener;
 
@@ -37,6 +38,7 @@ public class ListenerModule implements ModuleLoader {
                 new PunishmentListener(),
                 new MenuListener(plugin),
                 new TFAListener(),
+                new PromptListener(OxygenBukkit.getInstance().getPromptManager()),
                 new LogListeners(),
                 new StaffListener(),
                 new FreezeListener(),

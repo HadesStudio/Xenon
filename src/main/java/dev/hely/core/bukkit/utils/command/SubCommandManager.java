@@ -21,6 +21,7 @@ import dev.hely.core.bukkit.modules.ModuleLoader;
 import dev.hely.core.bukkit.profile.commands.ProfileCommand;
 import dev.hely.core.bukkit.profile.notifications.commands.NotificationsAdminSubCommand;
 import dev.hely.core.bukkit.profile.profilesystem.commands.FriendsCommand;
+import dev.hely.core.bukkit.profile.squads.commands.SquadCommands;
 import dev.hely.core.bukkit.ranks.rank.commands.RankCommand;
 import dev.hely.core.bukkit.tag.command.TagCommand;
 import dev.hely.core.bukkit.utils.command.sub.SubCommand;
@@ -35,6 +36,7 @@ public class SubCommandManager implements ModuleLoader {
     private FriendsCommand friendsCommand;
     private ChatCommand chatCommand;
     private NotificationsAdminSubCommand notificationsAdminSubCommand;
+    private SquadCommands squadCommands;
 
     @Override
     public void enable() {
@@ -44,6 +46,7 @@ public class SubCommandManager implements ModuleLoader {
         this.friendsCommand = new FriendsCommand();
         this.chatCommand = new ChatCommand();
         this.notificationsAdminSubCommand = new NotificationsAdminSubCommand();
+        this.squadCommands = new SquadCommands();
     }
 
     @Override
@@ -54,6 +57,7 @@ public class SubCommandManager implements ModuleLoader {
         this.friendsCommand.disable();
         this.chatCommand.disable();
         this.notificationsAdminSubCommand.disable();
+        this.squadCommands.disable();
     }
 
     @Override

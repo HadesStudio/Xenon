@@ -131,7 +131,7 @@ public class GrantServersMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker itemMaker = ItemMaker.of(Material.FLINT_AND_STEEL);
+            ItemMaker itemMaker = ItemMaker.of(Material.PAPER);
             itemMaker.setDisplayName(OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.buttons.server.display-name").replace("%name%", server));
             for (String lore : OxygenBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.grant-servers.buttons.server.lore")) {
                 itemMaker.addLore(lore);

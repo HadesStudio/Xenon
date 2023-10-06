@@ -20,6 +20,7 @@ import dev.hely.core.bukkit.profile.profilesystem.impl.serverstats.StatisticsSer
 import dev.hely.core.bukkit.profile.profilesystem.impl.social.SocialMediaType;
 import dev.hely.core.bukkit.profile.settings.ProfileSettings;
 import dev.hely.core.bukkit.profile.siblings.Sibling;
+import dev.hely.core.bukkit.profile.squads.invites.SquadInvite;
 import dev.hely.core.bukkit.profile.staff.StaffProfile;
 import dev.hely.core.bukkit.profile.utils.PlaytimeUtil;
 import dev.hely.core.bukkit.punishment.Punishment;
@@ -114,6 +115,10 @@ public class Profile {
     private String vipColor = "YELLOW";
     private long vipCooldown = -1;
 
+    private String squad; // This is the name of the users squad.
+    private List<SquadInvite> squadInvites = new ArrayList<>();
+    private boolean squadChat = false;
+
     // New Grant System:
     private RankGrant activeRankGrant;
     private List<Grant> grants = Lists.newArrayList();
@@ -173,7 +178,11 @@ public class Profile {
         document.put("discordID", discordID);
         document.put("discordSynced", discordSynced);
         document.put("discordName", discordName);
+        document.put("squadChat", squadChat);
 
+        document.put("squad", squad);
+        Type squadInvitesType = new TypeToken<List<SquadInvite>>() {}.getType();
+        document.put("squadInvites", OxygenBukkit.PLAIN_GSON.toJson(this.squadInvites, squadInvitesType));
 
         Type settingsType = new TypeToken<ProfileSettings>() {}.getType();
         document.put("settings", OxygenBukkit.PLAIN_GSON.toJson(this.settings, settingsType));
@@ -238,6 +247,7 @@ public class Profile {
             } else {
                 vipCooldown = document.getLong("vipCooldown");
             }
+
             discordSynced = document.getBoolean("discordSynced");
             discordID = document.getString("discordID");
             discordName = document.getString("discordName");
@@ -245,6 +255,7 @@ public class Profile {
             notifications = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("notifications"), notificationsType);
             authPassword = document.getString("authPassword");
             frozen = document.getBoolean("frozen");
+            squadChat = document.getBoolean("squadChat");
             needsVerify = document.getBoolean("needsVerify");
             nextAuthenticationNeeded = document.getLong("nextAuthenticationNeeded");
             loginTime = document.getLong("loginTime");
@@ -289,6 +300,10 @@ public class Profile {
             Type socialMediaType = new TypeToken<Map<SocialMediaType, String>>() {}.getType();
             socialMedia = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("socialmedia"), socialMediaType);
 
+
+            squad = document.getString("squad");
+            Type squadInvitesType = new TypeToken<List<SquadInvite>>() {}.getType();
+            squadInvites = OxygenBukkit.PLAIN_GSON.fromJson(document.getString("squadInvites"), squadInvitesType);
 
             List<Document> grantDocuments = document.getList("grants", Document.class);
             grants.clear();
