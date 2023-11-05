@@ -42,7 +42,7 @@ public class HelpopCommand extends BaseCommand {
         }
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffMessagePacket(
-                player.getDisplayName(),
+                player.getName(),
                 OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"),
                 ChatUtil.joinArray(args, " ", 1)));
 

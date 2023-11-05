@@ -50,7 +50,7 @@ public class ReportCommand extends BaseCommand {
         }
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRequestReportPacket(
-                player.getDisplayName(),
+                player.getName(),
                 OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"),
                 args[1],
                 args[0]));

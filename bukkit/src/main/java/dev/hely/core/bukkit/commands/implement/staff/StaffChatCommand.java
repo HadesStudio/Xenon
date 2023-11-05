@@ -35,8 +35,8 @@ public class StaffChatCommand extends BaseCommand {
         }
 
         OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffChatPacket(
-                player.getDisplayName(),
-                OxygenBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"),
+                player.getName(),
+                profile.getCurrentServer(),
                 ChatUtil.joinArray(args, " ", 1)));
     }
 }

@@ -96,7 +96,7 @@ public class ChatListener implements Listener {
             if (profile.getStaffProfile().isStaffChat()) {
                 String message = event.getMessage();
 
-                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffChatPacket(player.getName(), OxygenBukkit.getInstance().getServer().getServerName(), message));
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffChatPacket(player.getName(), profile.getCurrentServer(), message));
 
                 event.setCancelled(true);
             }
@@ -112,7 +112,7 @@ public class ChatListener implements Listener {
             if (profile.getStaffProfile().isAdminChat()) {
                 String message = event.getMessage();
 
-                OxygenBukkit.getInstance().getRedisModule().sendPacket(new AdminChatPacket(player.getName(), OxygenBukkit.getInstance().getServer().getServerName(), message));
+                OxygenBukkit.getInstance().getRedisModule().sendPacket(new AdminChatPacket(player.getName(), profile.getCurrentServer(), message));
 
                 event.setCancelled(true);
             }

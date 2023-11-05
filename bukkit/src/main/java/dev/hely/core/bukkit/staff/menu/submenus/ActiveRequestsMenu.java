@@ -182,7 +182,7 @@ public class ActiveRequestsMenu extends PaginatedMenu {
                     request.setClaimedStaffName(player.getName());
 
                     player.sendMessage(CC.translate(Locale.REQUEST_CLAIMED).replace("%player%", request.getCreatorPlayerName()));
-                    OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRequestClaimPacket(player.getDisplayName(), request.getCreatorPlayerName()));
+                    OxygenBukkit.getInstance().getRedisModule().sendPacket(new StaffRequestClaimPacket(player.getName(), request.getCreatorPlayerName()));
                 }
             } else if (clickType.isCreativeAction()) {
                 OxygenBukkit.getInstance().getRequestHandler().closeRequest(player.getName(), request);

@@ -58,7 +58,7 @@ public class SquadInviteCommand extends SubCommand {
             return;
         }
         if (squad.getMembers().contains(target.getUniqueId())) {
-            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("commands.invite.already-in").replace("%player%", target.getDisplayName())));
+            player.sendMessage(CC.translate(OxygenBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("commands.invite.already-in").replace("%player%", target.getName())));
             return;
         }
         if (targetProfile.getSquad() != null) {

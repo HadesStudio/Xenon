@@ -41,7 +41,7 @@ public class SquadLeaveCommand extends SubCommand {
         squad.getCaptains().remove(player.getUniqueId());
         profile.setSquad(null);
 
-        squad.broadcast(CC.translate(OxygenBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("commands.leave.broadcast").replace("%player%", player.getDisplayName())));
+        squad.broadcast(CC.translate(OxygenBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("commands.leave.broadcast").replace("%player%", player.getName())));
 
         squad.broadcast(CC.translate(OxygenBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("commands.leave.send")));
 
