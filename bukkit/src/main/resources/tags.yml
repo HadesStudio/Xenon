@@ -1,15 +1,8 @@
-###################################################################################
-#                            OXYGEN ALL-IN-ONE RANK CORE                          #
-#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
-#                                                                                 #
-#    If you run into any bugs, or have suggestions, let us know on our discord!   #
-###################################################################################
-
-Oxygen:
-  name: "Oxygen"
-  prefix: "&8[&6&nOxygen&8]"
+Xenon:
+  name: "Xenon"
+  prefix: "&8[&6Xenon&8]"
   weight: 10
-Hely:
-  name: "Hely"
-  prefix: "&8[&6#Hely&8]"
+Ascend:
+  name: "Ascend"
+  prefix: "&8[&6#Ascend&8]"
   weight: 5

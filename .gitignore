@@ -11,5 +11,5 @@ dependency-reduced-pom.xml
 *.iws
 .idea/
 
-Oxygen.iml
+Xenon.iml
 *.log

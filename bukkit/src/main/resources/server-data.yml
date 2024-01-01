@@ -1,10 +1,3 @@
-###################################################################################
-#                            OXYGEN ALL-IN-ONE RANK CORE                          #
-#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
-#                                                                                 #
-#    If you run into any bugs, or have suggestions, let us know on our discord!   #
-###################################################################################
-
 server-name: "Kitmap" # This is the name of THIS server that it is running on.
 use-queue-system: true # Do you want to use the server queue system?
 use-reboot-system: true # Do you want to use the timed reboot system on this server?

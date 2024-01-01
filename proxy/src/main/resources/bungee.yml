@@ -1,4 +1,4 @@
-name: Oxygen
-main: dev.hely.core.bungee.OxygenBungee
+name: Xenon
+main: net.ascend.core.bungee.XenonBungee
 version: 1.0-SNAPSHOT
-author: [Hely Development]
+author: Ascend

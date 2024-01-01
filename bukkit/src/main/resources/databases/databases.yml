@@ -1,10 +1,3 @@
-###################################################################################
-#                            OXYGEN ALL-IN-ONE RANK CORE                          #
-#          Thank you for purchasing our new All-In-One OxygenGlobal Rank Core!          #
-#                                                                                 #
-#    If you run into any bugs, or have suggestions, let us know on our discord!   #
-###################################################################################
-
 database:
   mongo: # This is the configuration section for the MONGO DATABASE ONLY.
     connection:
@@ -12,7 +5,7 @@ database:
       url: ""
     address: "127.0.0.1"
     port: 27017
-    database_name: "OxygenGlobal"
+    database_name: "Xenon"
     auth:
       enabled: false
       user: "admin"
@@ -20,7 +13,7 @@ database:
   redis: # This is the configuration section for the REDIS DATABASE ONLY.
     host: "127.0.0.1"
     port: 6379
-    channel: "OxygenGlobal"
+    channel: "Xenon"
     database-id: 0
     auth: # Leave password field blank for no auth.
       password: ""

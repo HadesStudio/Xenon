@@ -1,7 +1,7 @@
-name: Oxygen
-main: dev.hely.core.bukkit.OxygenBukkit
-version: 1.0.8-SNAPSHOT
-author: [Hely Development]
+name: Xenon
+main: net.ascend.core.bukkit.XenonBukkit
+version: 1.0-SNAPSHOT
+author: Ascend
 depend: [ProtocolLib]
 softdepend:
   - PlaceholderAPI

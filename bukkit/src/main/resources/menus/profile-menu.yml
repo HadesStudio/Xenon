@@ -1,10 +1,3 @@
-###################################################################################
-#                            OXYGEN ALL-IN-ONE RANK CORE                          #
-#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
-#                                                                                 #
-#    If you run into any bugs, or have suggestions, let us know on our discord!   #
-###################################################################################
-
 title: "%player% - Profile" # %player%
 placeholders:
   style: "SPECIFIC" # Options: FILLED, SPECIFIC

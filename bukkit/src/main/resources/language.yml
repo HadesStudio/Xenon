@@ -1,10 +1,3 @@
-###################################################################################
-#                            OXYGEN ALL-IN-ONE RANK CORE                          #
-#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
-#                                                                                 #
-#    If you run into any bugs, or have suggestions, let us know on our discord!   #
-###################################################################################
-
 commands:
   no-permission: "&c&cYou do not have sufficient permissions to execute this command."
   argument-not-found: "&cSorry, the command argument '&f%argument%&c' could not be found."
@@ -86,11 +79,11 @@ hidestaff-command:
 vanish:
   enabled: "&aYou have successfully enabled your &6Staff Vanish&a."
   disabled: "&cYou have successfully disabled your &6Staff Vanish&a."
-  enable-alert: # If you want players to see the alert, they need "oxygen.staff.alerts" permission.
+  enable-alert: # If you want players to see the alert, they need "xenon.staff.alerts" permission.
     enabled: true # Do you want to send a message to staff members when someone enables vanish?
     alert:
       - "&6[Staff] &c%player% &ahas just enabled their &6Vanish Mode&a."
-  disable-alert: # If you want players to see the alert, they need "oxygen.staff.alerts" permission.
+  disable-alert: # If you want players to see the alert, they need "xenon.staff.alerts" permission.
     enabled: true # Do you want to send a message to staff members when someone enables vanish?
     alert:
       - "&6[Staff] &c%player% &ahas just disabled their &6Vanish Mode&a."
@@ -146,7 +139,7 @@ staff-build:
 staff-mode:
   enabled: "&aYou have successfully enabled your &6Staff Mode&a."
   disabled: "&cYou have successfully disabled your &6Staff Mode&c."
-  others: # If you want staff to be able to take others out of staff mode, they need "oxygen.commands.staffmode.others" permission.
+  others: # If you want staff to be able to take others out of staff mode, they need "xenon.commands.staffmode.others" permission.
     enabled: "&aYou have successfully enabled &c%player%'s &6Staff Mode&a."
     disabled: "&cYou have successfully disabled &4%player%'s &6Staff Mode&c."
 

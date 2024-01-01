@@ -1,10 +1,3 @@
-###################################################################################
-#                            OXYGEN ALL-IN-ONE RANK CORE                          #
-#          Thank you for purchasing our new All-In-One Oxygen Rank Core!          #
-#                                                                                 #
-#    If you run into any bugs, or have suggestions, let us know on our discord!   #
-###################################################################################
-
 selector:
   title: "&8%player_name% - History" # %player_name%
   size: 3 # NOTE: It is automatically multiplied by 9.
@@ -21,7 +14,7 @@ selector:
     settings:
       permission:
         enabled: true # Do you want staff to require a specific permission to access blacklists?
-        permission: "oxygen.history.blacklists" # The permission required to view blacklists, only if set to true.
+        permission: "xenon.history.blacklists" # The permission required to view blacklists, only if set to true.
         message: "&cYou do not have permissions to view &6Blacklists&c."
   bans:
     slot: 11 # The slot the item is in the menu.
@@ -36,7 +29,7 @@ selector:
     settings:
       permission:
         enabled: true # Do you want staff to require a specific permission to access bans?
-        permission: "oxygen.history.bans" # The permission required to view bans, only if set to true.
+        permission: "xenon.history.bans" # The permission required to view bans, only if set to true.
         message: "&cYou do not have permissions to view &6Bans&c."
   kicks:
     slot: 13 # The slot the item is in the menu.
@@ -48,7 +41,7 @@ selector:
     settings:
       permission:
         enabled: true # Do you want staff to require a specific permission to access kicks?
-        permission: "oxygen.history.kicks" # The permission required to view kicks, only if set to true.
+        permission: "xenon.history.kicks" # The permission required to view kicks, only if set to true.
         message: "&cYou do not have permissions to view &6Kicks&c."
   mutes:
     slot: 15 # The slot the item is in the menu.
@@ -63,7 +56,7 @@ selector:
     settings:
       permission:
         enabled: true # Do you want staff to require a specific permission to access mutes?
-        permission: "oxygen.history.mutes" # The permission required to view mutes, only if set to true.
+        permission: "xenon.history.mutes" # The permission required to view mutes, only if set to true.
         message: "&cYou do not have permissions to view &6Mutes&c."
   warns:
     slot: 17 # The slot the item is in the menu.
@@ -75,7 +68,7 @@ selector:
     settings:
       permission:
         enabled: true # Do you want staff to require a specific permission to access kicks?
-        permission: "oxygen.history.kicks" # The permission required to view kicks, only if set to true.
+        permission: "xenon.history.kicks" # The permission required to view kicks, only if set to true.
         message: "&cYou do not have permissions to view &dKicks&c."
 bans:
   title: "&6%player_name% - Bans"

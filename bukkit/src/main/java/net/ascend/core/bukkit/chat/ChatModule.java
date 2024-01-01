@@ -1,0 +1,88 @@
+package net.ascend.core.bukkit.chat;
+
+//============================================================
+// This file was created by DevDipin!
+// Hely Development Developer, and Management Team Member.
+//
+// If any questions, please contact on discord.
+//
+// File Information:
+//   Path: dev.hely.core.chat
+//   Date: Sunday, July 16, 2023 - 2:13 PM
+//
+// Contact Information:
+//   Discord: Andrew!!#4468
+//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
+//============================================================
+
+import net.ascend.core.bukkit.XenonBukkit;
+import net.ascend.core.bukkit.chat.listeners.ChatListener;
+import net.ascend.core.bukkit.modules.ModuleLoader;
+import net.ascend.core.bukkit.profile.Profile;
+import net.ascend.lib.CC;
+import lombok.Getter;
+import lombok.Setter;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+import java.util.*;
+
+@Getter @Setter
+public class ChatModule implements ModuleLoader {
+
+    private boolean enabled;
+    private int slowTime = 10;
+    private boolean muted = false;
+    private boolean allow_high_rank_talk = false;
+
+    private Map<UUID, Long> slowCache = new HashMap<>();
+
+    @Override
+    public void onEnable() {
+        XenonBukkit.getInstance().getServer().getPluginManager().registerEvents(new ChatListener(), XenonBukkit.getInstance());
+
+        this.enabled = true;
+    }
+
+
+    @Override
+    public void onDisable() {
+        this.enabled = false;
+    }
+
+    @Override
+    public void onReload() {
+    }
+
+    public long getSlowChatRemaining(UUID uuid) {
+        if (!this.slowCache.containsKey(uuid)) {
+            return 0L;
+        }
+
+        return (this.slowCache.get(uuid) + (this.slowTime * 1000L)) - System.currentTimeMillis();
+    }
+
+    public String getVipFormat(Profile profile) {
+        if (profile.hasVIPStatus()) {
+            return XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("chat-system.vip-format").replace("%symbol%", ChatColor.valueOf(profile.getVipColor()) + XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.settings.vip-icon"));
+        } else {
+            return "";
+        }
+    }
+
+    public String formatChatDisplay(Player player, String message) {
+        Profile profile = XenonBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
+
+        String chatFormat = CC.translate(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("chat-system.chat-format")
+                .replace("%tags%", profile.getTagFormated())
+                .replace("%rank_prefix%", profile.getActiveRank().getPrefix())
+                .replace("%rank_suffix%", profile.getActiveRank().getSuffix())
+                .replace("%player%", player.getName())
+                .replace("%vip%", getVipFormat(profile))
+        );
+
+        return Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null ? PlaceholderAPI.setPlaceholders(player, chatFormat) + message : chatFormat + message;
+    }
+}
