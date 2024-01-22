@@ -47,6 +47,10 @@ commands:
     invalid-rank: "&cYou cannot promote this person anymore ranks. Make sure that the weights are +1 from each other."
     cannot-give: "&cSorry, you can only promote ranks that are below the rank of &6%rank%&c."
     promoted: "&6You have successfully promoted &6&l%player% &6to the rank of &6&l%name%&6."
+  perks:
+    usage: "&cCorrect Usage: /rank perks <rank>"
+  edit-perks:
+    usage: "&cCorrect Usage: /rank editperks <rank>"
   import:
     imported: "&aYou have successfully imported all ranks from &7ranks.yml&a."
   export:
@@ -138,4 +142,14 @@ menu:
         - "&6Left-Click &7to view full permissions of this rank."
         - "&6Right-Click &7to view this ranks inheritances."
         - "&7&l&m-----------------------------------------"
+  perk-editor:
+    new-perk:
+      material: "ANVIL"
+      data: 0
+      display-name: "&6New Perk"
+      lore:
+        - "&7Want to put a new perk in the display"
+        - "&7menu?"
+        - ""
+        - "&6Left-Click &7to add a new perk."
 

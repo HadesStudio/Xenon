@@ -1,13 +1,13 @@
 package net.ascend.core.bukkit.rank.rank;
 
 import com.mongodb.client.model.Filters;
+import lombok.Getter;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.modules.ModuleLoader;
 import net.ascend.core.bukkit.rank.gson.GSONUtil;
 import net.ascend.core.bukkit.rank.rank.permission.PermissionData;
 import net.ascend.core.bukkit.util.ColorUtil;
 import net.ascend.lib.CC;
-import lombok.Getter;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -126,6 +126,7 @@ public class RankManager implements ModuleLoader {
                     rank.getPermissionsData().add(new PermissionData(permission, true, new ArrayList<>()));
                 });
             }
+            rank.setPerks(XenonBukkit.PLAIN_GSON.fromJson(config.getString(key + ".perks"), GSONUtil.RANK_PERKS_DATA));
             rank.setBungeePermissions(config.getStringList(key + ".bungee-permissions"));
             rank.setPrefix(config.getString(key + ".prefix"));
             rank.setSuffix(config.getString(key + ".suffix"));
@@ -171,7 +172,7 @@ public class RankManager implements ModuleLoader {
             file.set(rankData.getName() + ".bungee-permissions", XenonBukkit.PLAIN_GSON.toJson(rankData.getBungeePermissions(), GSONUtil.LIST_STRING_TYPE));
             file.set(rankData.getName() + ".inheritances", XenonBukkit.PLAIN_GSON.toJson(rankData.getInheritances(), GSONUtil.LIST_STRING_TYPE));
             file.set(rankData.getName() + ".servers", XenonBukkit.PLAIN_GSON.toJson(rankData.getServers(), GSONUtil.LIST_STRING_TYPE));
-
+            file.set(rankData.getName() + ".perks", XenonBukkit.PLAIN_GSON.toJson(rankData.getPerks(), GSONUtil.RANK_PERKS_DATA));
         });
         try {
             XenonBukkit.getInstance().getRanksConfig().save();

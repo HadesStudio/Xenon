@@ -45,6 +45,9 @@ public class RankCommand extends SubCommandHandler {
         this.addSubCommand(new RankPromoteCommand());
         this.addSubCommand(new RankDemoteCommand());
         this.addSubCommand(new RankSetColorCommand());
+        this.addSubCommand(new RankPerksCommand());
+        this.addSubCommand(new RankEditPerksCommand());
+
     }
 
     @Override

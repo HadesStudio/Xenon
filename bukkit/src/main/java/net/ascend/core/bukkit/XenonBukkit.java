@@ -3,6 +3,7 @@ package net.ascend.core.bukkit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
+import lombok.Getter;
 import net.ascend.core.bukkit.announcements.AnnouncementManager;
 import net.ascend.core.bukkit.chat.ChatModule;
 import net.ascend.core.bukkit.client.ClientModule;
@@ -37,18 +38,17 @@ import net.ascend.core.bukkit.staff.staffmode.StaffManager;
 import net.ascend.core.bukkit.tag.TagManager;
 import net.ascend.core.bukkit.tag.packet.TagPacketListener;
 import net.ascend.core.bukkit.task.NameMCReminderTask;
-import net.ascend.core.bukkit.util.prompt.PromptManager;
-import net.ascend.lib.configuration.Config;
 import net.ascend.core.bukkit.util.command.CommandManager;
 import net.ascend.core.bukkit.util.command.SubCommandManager;
+import net.ascend.core.bukkit.util.prompt.PromptManager;
 import net.ascend.lib.CC;
 import net.ascend.lib.TaskUtil;
 import net.ascend.lib.adapter.BlockVectorAdapter;
 import net.ascend.lib.adapter.LocationAdapter;
 import net.ascend.lib.adapter.PotionEffectAdapter;
 import net.ascend.lib.adapter.VectorAdapter;
+import net.ascend.lib.configuration.Config;
 import net.ascend.lib.menu.MenuManager;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.ConsoleCommandSender;
@@ -67,7 +67,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created By LeandroSSJ
@@ -405,7 +404,7 @@ public class XenonBukkit extends JavaPlugin {
                             bukkitCommandSender.sendMessage(CC.translate("&6New Version&7:&r " + res[2]));
                         }
 
-                        bukkitCommandSender.sendMessage(CC.translate("&6Author&7:&r Joako, LeandroSSJ"));
+                        bukkitCommandSender.sendMessage(CC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
                         bukkitCommandSender.sendMessage(CC.translate("&6Current Version&7:&r " + instance.getDescription().getVersion()));
                         bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
                         return new Object[]{"V", true};
