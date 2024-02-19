@@ -17,10 +17,9 @@ package net.ascend.core.bukkit.staff.staffmode.menus;
 
 import com.google.common.collect.Lists;
 import net.ascend.core.bukkit.XenonBukkit;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -77,7 +76,7 @@ public class StaffMenu extends PaginatedMenu {
                 lore.add(lores);
             }
 
-            ItemMaker itemMaker = ItemMaker.of(MaterialUtil.HUMAN_SKULL.getMaterial(), 1, 3)
+            ItemMaker itemMaker = ItemMaker.of("SKULL_ITEM")
                     .setLore(lore)
                     .setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.online_menu.name")
                             .replace("%target_name%", this.target.getName())

@@ -3,8 +3,8 @@ package net.ascend.core.bukkit.rank.grant.promts;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.util.prompt.Prompt;
 import net.ascend.core.bukkit.util.prompt.defaults.StringPrompt;
-import net.ascend.lib.callback.Callback;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.callback.Callback;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 

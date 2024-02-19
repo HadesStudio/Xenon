@@ -8,7 +8,7 @@ import net.ascend.core.bukkit.rank.grant.events.GrantGivenEvent;
 import net.ascend.core.bukkit.rank.grant.types.PermissionGrant;
 import net.ascend.core.bukkit.rank.grant.types.RankGrant;
 import net.ascend.core.bukkit.rank.grant.types.TagGrant;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

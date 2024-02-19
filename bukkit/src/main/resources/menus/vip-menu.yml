@@ -6,15 +6,15 @@ menu:
     vip-icon: "✪" # This is the icon that will be displayed.
     day-cooldown: 7 # This is how long the cooldown delay is in DAYS.
   messages:
-    cooldown: "&6[Hely] &7You can claim you're rewards again in &c%time%&7."
-    no-rewards: "&6[Hely] &7Sorry, the &6VIP Rank &7does not have any rewards right now! Please try again later."
-    updated-color: "&6[Hely] &7You have updated your &6VIP Icon&7! It will now look like '&c%example%&7'."
-    no-vip-status: "&6[Hely] &7Sorry, you do not have a &6VIP Status&7! You can purchase &6VIP Status &7from our store!"
+    cooldown: "&6[Xenon] &7You can claim you're rewards again in &c%time%&7."
+    no-rewards: "&6[Xenon] &7Sorry, the &6VIP Rank &7does not have any rewards right now! Please try again later."
+    updated-color: "&6[Xenon] &7You have updated your &6VIP Icon&7! It will now look like '&c%example%&7'."
+    no-vip-status: "&6[Xenon] &7Sorry, you do not have a &6VIP Status&7! You can purchase &6VIP Status &7from our store!"
     broadcast:
       - "&7&l&m-------------------------------------------"
       - "&6%player% &7has just reclaimed their &6VIP Rewards&7!"
       - "&7You can purchase &6VIP Status &7from our store!"
-      - "&6&nstore.helydev.com"
+      - "&6&nascendproyect.org/store"
       - "&7&l&m-------------------------------------------"
   size: 3 # The number is automatically multiplied by 9.
   title: "VIP Status"
@@ -49,7 +49,7 @@ menu:
         - "&7"
         - "&7&oYou can renew your &6&oVIP Status &7&oby"
         - "&7&ovisiting our store!"
-        - "&6&ostore.helydev.com"
+        - "&6&oascendproyect.org/store"
     color-button:
       slot: 16
       selected-color-data: true # Do you want to set hte ink sac to match the color of the player's VIP status?

@@ -3,9 +3,9 @@ package net.ascend.core.bukkit.rank.grant.menu.buttons.servers;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.Grant;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ public class GrantClearServersButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        ItemMaker itemMaker = ItemMaker.of(Material.FLINT_AND_STEEL);
+        ItemMaker itemMaker = ItemMaker.of("FLINT_AND_STEEL");
         itemMaker.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.buttons.clear-servers.display-name"));
         for (String lore : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.grant-servers.buttons.clear-servers.lore")) {
             itemMaker.addLore(lore.replace("%servers_size%", String.valueOf(servers.size())));

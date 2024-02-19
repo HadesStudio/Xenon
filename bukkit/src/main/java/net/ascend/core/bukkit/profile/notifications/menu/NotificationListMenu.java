@@ -7,10 +7,10 @@ import net.ascend.core.bukkit.profile.notifications.menu.submenus.CreationMenu;
 import net.ascend.core.bukkit.profile.notifications.menu.submenus.MessageEditorMenu;
 import net.ascend.core.bukkit.profile.notifications.menu.submenus.SelectionMenu;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bson.Document;
 import org.bukkit.Material;
@@ -80,8 +80,8 @@ public class NotificationListMenu extends PaginatedMenu {
     private static class NotificationButton extends Button {
         Notification notification;
 
-        public Material getMaterial() {
-            return Material.NAME_TAG;
+        public String getMaterial() {
+            return "NAME_TAG";
         }
 
         public short getData() {
@@ -136,8 +136,8 @@ public class NotificationListMenu extends PaginatedMenu {
 
     @AllArgsConstructor
     private static class NewNotificationButton extends Button {
-        public Material getMaterial() {
-            return Material.EMERALD_BLOCK;
+        public String getMaterial() {
+            return "EMERALD_BLOCK";
         }
 
         public short getData() {

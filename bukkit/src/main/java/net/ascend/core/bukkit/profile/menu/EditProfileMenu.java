@@ -22,15 +22,12 @@ import net.ascend.core.bukkit.profile.menu.submenus.PermissionsMenu;
 import net.ascend.core.bukkit.profile.menu.submenus.SiblingsMenu;
 import net.ascend.core.bukkit.rank.grant.menu.grant.GrantMenu;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.menu.fill.FillerTemplate;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -83,18 +80,8 @@ public class EditProfileMenu extends Menu {
     public static class ProfileDetailsButton extends Button {
         final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.details-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.details-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.details-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-details-button' is null, using a default value."));
-                    return MaterialUtil.HUMAN_SKULL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-details-button' is broken, using a default value."));
-                return MaterialUtil.HUMAN_SKULL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.details-button.material");
         }
 
         public short getData() {
@@ -152,18 +139,8 @@ public class EditProfileMenu extends Menu {
     public static class ProfilePermissionsButton extends Button {
         final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-permissions-button' is null, using a default value."));
-                    return Material.REDSTONE;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-permissions-button' is broken, using a default value."));
-                return Material.REDSTONE;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.permissions-button.material");
         }
 
         public short getData() {
@@ -203,18 +180,8 @@ public class EditProfileMenu extends Menu {
     public static class Notes_Button extends Button {
         final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.notes-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.notes-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.notes-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-notes-button' is null, using a default value."));
-                    return Material.NAME_TAG;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-notes-button' is broken, using a default value."));
-                return Material.NAME_TAG;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.notes-button.material");
         }
 
         public short getData() {
@@ -254,18 +221,8 @@ public class EditProfileMenu extends Menu {
     public static class Siblings_Button extends Button {
         final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.siblings-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.siblings-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.siblings-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-siblings-button' is null, using a default value."));
-                    return Material.ENCHANTED_BOOK;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-siblings-button' is broken, using a default value."));
-                return Material.ENCHANTED_BOOK;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.siblings-button.material");
         }
 
         public short getData() {
@@ -305,24 +262,13 @@ public class EditProfileMenu extends Menu {
     public static class Ranks_Button extends Button {
         final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.ranks-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.ranks-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.ranks-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-ranks-button' is null, using a default value."));
-                    return Material.NETHER_STAR;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-ranks-button' is broken, using a default value."));
-                return Material.NETHER_STAR;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("selection-menu.buttons.ranks-button.material");
         }
 
         public short getData() {
             return (short) XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getInt("selection-menu.buttons.ranks-button.data");
         }
-
 
         @Override
         public ItemStack getItemStack(Player player) {

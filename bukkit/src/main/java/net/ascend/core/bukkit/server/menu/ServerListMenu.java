@@ -16,22 +16,18 @@ package net.ascend.core.bukkit.server.menu;
 //============================================================
 
 import net.ascend.core.bukkit.XenonBukkit;
-import net.ascend.core.bukkit.core.menus.OxygenMenu;
-import net.ascend.core.bukkit.core.menus.buttons.InfoButton;
+import net.ascend.core.bukkit.core.OxygenMenu;
+import net.ascend.core.bukkit.core.buttons.InfoButton;
 import net.ascend.core.bukkit.server.Server;
 import net.ascend.core.bukkit.server.ServerState;
 import net.ascend.core.bukkit.server.queue.packet.implement.QueueSendPlayerPacket;
 import net.ascend.core.bukkit.util.TPSUtil;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -105,7 +101,7 @@ public class ServerListMenu extends PaginatedMenu {
     public static class Placeholder_Button extends Button {
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(MaterialUtil.STAINED_GLASS_PANE.getMaterial());
+            ItemMaker builder = ItemMaker.of("STAINED_GLASS_PANE");
             builder.setData((short) 1);
             builder.setDisplayName("&7");
             builder.addFakeGlow();
@@ -121,7 +117,7 @@ public class ServerListMenu extends PaginatedMenu {
     public static class Back_Button extends Button {
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(MaterialUtil.BED.getMaterial());
+            ItemMaker builder = ItemMaker.of("BED");
             builder.setData((short) 0);
             builder.setDisplayName("&cBack");
             builder.setLore(Collections.singletonList(
@@ -140,80 +136,20 @@ public class ServerListMenu extends PaginatedMenu {
     public static class ServerButton extends Button {
         Server server;
 
-        public Material getMaterial() {
+        public String getMaterial() {
             if(server.getState() == ServerState.OFFLINE) {
-                String material = XenonBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.offline.material");
-                Material default_value = Material.REDSTONE_BLOCK;
-                if (material != null) {
-                    if (Material.getMaterial(material) != null) {
-                        return Material.valueOf(material);
-                    } else {
-                        Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'server-material-button' is null, using a default material."));
-                        return default_value;
-                    }
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'server-material-button' is broken, using a default material."));
-                    return default_value;
-                }
+                return XenonBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.offline.material");
             } else if (server.getState() == ServerState.HEARTBEAT_TIMEOUT) {
-                String material = XenonBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.offline.material");
-                Material default_value = Material.REDSTONE_BLOCK;
-                if (material != null) {
-                    if (Material.getMaterial(material) != null) {
-                        return Material.valueOf(material);
-                    } else {
-                        Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'server-material-button' is null, using a default material."));
-                        return default_value;
-                    }
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'server-material-button' is broken, using a default material."));
-                    return default_value;
-                }
+                return XenonBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.offline.material");
             } else if (server.getState() == ServerState.UNKNOWN) {
-                String material = XenonBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.offline.material");
-                Material default_value = Material.REDSTONE_BLOCK;
-                if (material != null) {
-                    if (Material.getMaterial(material) != null) {
-                        return Material.valueOf(material);
-                    } else {
-                        Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'server-material-button' is null, using a default material."));
-                        return default_value;
-                    }
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'server-material-button' is broken, using a default material."));
-                    return default_value;
-                }
+                return XenonBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.offline.material");
             } else if (server.getState() == ServerState.WHITELISTED) {
-                String material = XenonBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.whitelisted.material");
-                Material default_value = Material.LAPIS_BLOCK;
-                if (material != null) {
-                    if (Material.getMaterial(material) != null) {
-                        return Material.valueOf(material);
-                    } else {
-                        Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'server-material-button' is null, using a default material."));
-                        return default_value;
-                    }
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'server-material-button' is broken, using a default material."));
-                    return default_value;
-                }
+                return XenonBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.whitelisted.material");
             } else if (server.getState() == ServerState.ONLINE) {
-                String material = XenonBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.online.material");
-                Material default_value = Material.EMERALD_BLOCK;
-                if (material != null) {
-                    if (Material.getMaterial(material) != null) {
-                        return Material.valueOf(material);
-                    } else {
-                        Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'server-material-button' is null, using a default material."));
-                        return default_value;
-                    }
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'server-material-button' is broken, using a default material."));
-                    return default_value;
-                }
+                return XenonBukkit.getInstance().getServersMenuConfig().getConfiguration().getString("menu.buttons.server-button.material.online.material");
             }
 
-            return null;
+            return "AIR";
         }
 
         public int getData() {

@@ -1,6 +1,6 @@
 package net.ascend.core.bukkit.util;
 
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 
 import java.util.Arrays;
 import java.util.List;

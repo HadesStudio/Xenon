@@ -24,9 +24,9 @@ import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.menu.perks.RankPerkEditMenu;
 import net.ascend.core.bukkit.rank.rank.menu.perks.impl.RankPerkEditSubMenu;
 import net.ascend.core.bukkit.rank.rank.perk.Perk;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.conversations.ConversationContext;
@@ -109,7 +109,7 @@ public class PerkEditorItemStackButton extends Button {
             }
 
             rank.getPerks().remove(perk);
-            rank.getPerks().add(new Perk(perk.getName(), materialInHand, perk.getMaterialData(), displayName, lore, perk.getClickMessage()));
+            rank.getPerks().add(new Perk(perk.getName(), materialInHand.name(), perk.getMaterialData(), displayName, lore, perk.getClickMessage()));
             rank.save();
 
             new RankPerkEditSubMenu(rank, perk).openMenu(sender.getPlayer());

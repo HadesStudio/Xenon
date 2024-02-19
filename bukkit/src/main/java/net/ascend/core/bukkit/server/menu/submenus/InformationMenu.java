@@ -19,11 +19,11 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.server.Server;
 import net.ascend.core.bukkit.server.ServerState;
 import net.ascend.core.bukkit.server.packet.ServerStateChangePacket;
-import net.ascend.lib.menu.fill.FillerTemplate;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -72,10 +72,10 @@ public class InformationMenu extends Menu {
     public static class Restart_Button extends Button {
         Server server;
 
-        public Material getMaterial() {
-            if(server.getState() == ServerState.OFFLINE) return Material.REDSTONE_BLOCK;
-            if(server.getState() == ServerState.WHITELISTED) return Material.GOLD_BLOCK;
-            if(server.getState() == ServerState.ONLINE) return Material.EMERALD_BLOCK;
+        public String getMaterial() {
+            if(server.getState() == ServerState.OFFLINE) return "REDSTONE_BLOCK";
+            if(server.getState() == ServerState.WHITELISTED) return "GOLD_BLOCK";
+            if(server.getState() == ServerState.ONLINE) return "EMERALD_BLOCK";
             return null;
         }
         public String getDisplayName() {

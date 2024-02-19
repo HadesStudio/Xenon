@@ -5,7 +5,7 @@ import net.ascend.core.bukkit.modules.ModuleLoader;
 import net.ascend.core.bukkit.tag.menu.data.action.CustomButtonAction;
 import net.ascend.core.bukkit.tag.menu.data.button.CustomButton;
 import net.ascend.core.bukkit.tag.menu.data.category.CustomCategory;
-import net.ascend.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -88,12 +88,7 @@ public class TagManager implements ModuleLoader {
         FileConfiguration file = XenonBukkit.getInstance().getTagsMenuConfig().getConfiguration();
 
         for (String key : file.getConfigurationSection("category-menu.buttons").getKeys(false)) {
-            Material material = Material.BOOK;
-            try {
-                material = Material.valueOf(file.getString("category-menu.buttons." + key + ".item.material"));
-            } catch (Exception e) {
-                XenonBukkit.getInstance().sendMessage("&c[Xenon] The material of '&b" + key + "&c' is invalid.");
-            }
+            String material = file.getString("category-menu.buttons." + key + ".item.material");
 
             int data = file.getInt("category-menu.buttons." + key + ".item.data");
             int amounts = file.getInt("category-menu.buttons." + key + ".item.amount");
@@ -163,12 +158,8 @@ public class TagManager implements ModuleLoader {
             ConfigurationSection section = XenonBukkit.getInstance().getTagsMenuConfig().getConfiguration().getConfigurationSection("category-menu.categories." + category.getName() + ".buttons");
 
             section.getKeys(false).forEach(key -> {
-                Material material = Material.BOOK;
-                try {
-                    material = Material.valueOf(section.getString(key + ".item.material"));
-                } catch (Exception e) {
-                    XenonBukkit.getInstance().sendMessage("&c[Xenon] The material of '&l" + category.getName() + "-" + key + "&c' is invalid.");
-                }
+                String material = section.getString(key + ".item.material");
+
                 int data = section.getInt(key + ".item.data");
                 int amounts = section.getInt(key + ".item.amount");
                 String name = section.getString(key + ".item.name");

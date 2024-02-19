@@ -19,13 +19,11 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.util.PlayerUtil;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -59,7 +57,7 @@ public class InventoryMenu extends Menu {
             }
         }
 
-        ItemMaker health = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.health.item.material")));
+        ItemMaker health = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.health.item.material"));
         health.setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.health.item.data"));
         health.setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.health.item.name"));
         for (String healhLine : XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.inventory_view.buttons.health.item.lore")) {
@@ -69,7 +67,7 @@ public class InventoryMenu extends Menu {
         buttons.put(XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.health.slot") - 1, new ButtonBuilder(health.build()));
 
 
-        ItemMaker food = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.food.item.material")));
+        ItemMaker food = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.food.item.material"));
         food.setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.food.item.data"));
         food.setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.food.item.name"));
         for (String healhLine : XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.inventory_view.buttons.food.item.lore")) {
@@ -81,7 +79,7 @@ public class InventoryMenu extends Menu {
         buttons.put(XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.food.slot") - 1, new ButtonBuilder(food.build()));
 
 
-        ItemMaker effects = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.active_effects.item.material")));
+        ItemMaker effects = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.active_effects.item.material"));
         effects.setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.active_effects.item.data"));
         effects.setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.active_effects.item.name"));
         target.getActivePotionEffects().forEach(effect ->
@@ -93,7 +91,7 @@ public class InventoryMenu extends Menu {
         buttons.put(XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.buttons.active_effects.slot") - 1, new ButtonBuilder(effects.build()));
 
 
-        ItemMaker playerInfo = ItemMaker.of(MaterialUtil.HUMAN_SKULL.getMaterial(), 1, 3);
+        ItemMaker playerInfo = ItemMaker.of("SKULL_ITEM");
         playerInfo.setOwner(this.target.getName());
         playerInfo.setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.inventory_view.buttons.player_info.item.name"));
 
@@ -134,7 +132,7 @@ public class InventoryMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            return ItemMaker.of(Material.valueOf("STAINED_GLASS_PANE")).setDisplayName("&8")
+            return ItemMaker.of("STAINED_GLASS_PANE").setDisplayName("&8")
                     .setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.inventory_view.fill.data")).build();
         }
     }

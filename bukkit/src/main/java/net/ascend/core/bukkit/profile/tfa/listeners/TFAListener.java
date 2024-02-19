@@ -19,7 +19,7 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.tfa.data.AuthData;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Sound;

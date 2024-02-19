@@ -22,8 +22,8 @@ import net.ascend.core.bukkit.staff.staffmode.data.StaffArmor;
 import net.ascend.core.bukkit.staff.staffmode.data.StaffHotbar;
 import net.ascend.core.bukkit.staff.staffmode.data.StaffPlayerData;
 import net.ascend.core.bukkit.staff.staffmode.event.StaffModeToggleEvent;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -73,7 +73,7 @@ public class StaffManager implements ModuleLoader {
         boolean enabled;
 
         enabled = XenonBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.teleportation.enabled");
-        item = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfig().getString("staff_mode.hotbar.teleportation.item.material")))
+        item = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfig().getString("staff_mode.hotbar.teleportation.item.material"))
                 .setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.teleportation.item.data"))
                 .setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.teleportation.item.name"))
                 .setLore(XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.teleportation.item.lore"))
@@ -83,7 +83,7 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = XenonBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.inspection.enabled");
-        item = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.inspection.item.material")))
+        item = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.inspection.item.material"))
                 .setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.inspection.item.data"))
                 .setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.inspection.item.name"))
                 .setLore(XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.inspection.item.lore"))
@@ -93,7 +93,7 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = XenonBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.freeze_player.enabled");
-        item = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.freeze_player.item.material")))
+        item = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.freeze_player.item.material"))
                 .setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.freeze_player.item.data"))
                 .setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.freeze_player.item.name"))
                 .setLore(XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.freeze_player.item.lore"))
@@ -103,7 +103,7 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = XenonBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.worldedit_wand.enabled");
-        item = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.worldedit_wand.item.material")))
+        item = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.worldedit_wand.item.material"))
                 .setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.worldedit_wand.item.data"))
                 .setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.worldedit_wand.item.name"))
                 .setLore(XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.worldedit_wand.item.lore"))
@@ -113,7 +113,7 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = XenonBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.random_teleportation.enabled");
-        item = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.random_teleportation.item.material")))
+        item = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.random_teleportation.item.material"))
                 .setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.random_teleportation.item.data"))
                 .setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.random_teleportation.item.name"))
                 .setLore(XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.random_teleportation.item.lore"))
@@ -123,7 +123,7 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = XenonBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.online_staff.enabled");
-        item = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.online_staff.item.material")))
+        item = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.online_staff.item.material"))
                 .setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.online_staff.item.data"))
                 .setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.online_staff.item.name"))
                 .setLore(XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.online_staff.item.lore"))
@@ -133,7 +133,7 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = XenonBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.vanish.enabled_button.enabled");
-        item = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.enabled_button.item.material")))
+        item = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.enabled_button.item.material"))
                 .setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.vanish.enabled_button.item.data"))
                 .setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.enabled_button.item.name"))
                 .setLore(XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.vanish.enabled_button.item.lore"))
@@ -143,7 +143,7 @@ public class StaffManager implements ModuleLoader {
         hotbarData.add(new StaffHotbar(item, slot, enabled));
 
         enabled = XenonBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("staff_mode.hotbar.vanish.disabled_button.enabled");
-        item = ItemMaker.of(Material.getMaterial(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.disabled_button.item.material")))
+        item = ItemMaker.of(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.disabled_button.item.material"))
                 .setData((short) XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("staff_mode.hotbar.vanish.disabled_button.item.data"))
                 .setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("staff_mode.hotbar.vanish.disabled_button.item.name"))
                 .setLore(XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("staff_mode.hotbar.vanish.disabled_button.item.lore"))

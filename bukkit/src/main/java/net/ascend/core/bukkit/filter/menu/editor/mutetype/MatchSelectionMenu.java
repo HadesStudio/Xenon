@@ -18,12 +18,12 @@ package net.ascend.core.bukkit.filter.menu.editor.mutetype;
 import net.ascend.core.bukkit.filter.Filter;
 import net.ascend.core.bukkit.filter.menu.editor.FilterEditorMenu;
 import net.ascend.core.bukkit.filter.types.Match;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -95,7 +95,7 @@ public class MatchSelectionMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(Material.PAPER);
+            ItemMaker builder = ItemMaker.of("PAPER");
             builder.setData((short) 0);
             builder.setDisplayName("&6" + match.getDisplay());
             builder.setLore("&7" + match.getDescription());

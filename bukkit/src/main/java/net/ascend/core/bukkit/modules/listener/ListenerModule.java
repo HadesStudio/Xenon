@@ -13,7 +13,7 @@ import net.ascend.core.bukkit.server.queue.listener.QueueListener;
 import net.ascend.core.bukkit.staff.freeze.FreezeListener;
 import net.ascend.core.bukkit.staff.staffmode.listener.StaffListener;
 import net.ascend.core.bukkit.util.prompt.PromptListener;
-import net.ascend.lib.menu.MenuListener;
+import net.ascend.core.bukkit.lib.menu.MenuListener;
 import org.bukkit.event.Listener;
 
 import java.util.stream.Stream;

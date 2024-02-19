@@ -18,11 +18,11 @@ package net.ascend.core.bukkit.staff.menu;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.staff.menu.submenus.ClosedRequestsMenu;
 import net.ascend.core.bukkit.staff.menu.submenus.ActiveRequestsMenu;
-import net.ascend.lib.menu.fill.FillerTemplate;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -66,18 +66,8 @@ public class RequestsMainMenu extends Menu {
 
     @AllArgsConstructor
     public static class Requests_Button extends Button {
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("main-menu.buttons.requests.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("main-menu.buttons.requests.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("main-menu.buttons.requests.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'requests-button' is null, using a default material."));
-                    return Material.NETHER_STAR;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'requests-button' is broken, using a default material."));
-                return Material.NETHER_STAR;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("main-menu.buttons.requests.material");
         }
 
         public short getData() {
@@ -107,24 +97,13 @@ public class RequestsMainMenu extends Menu {
 
     @AllArgsConstructor
     public static class Closed_Button extends Button {
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("main-menu.buttons.closed.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("main-menu.buttons.closed.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("main-menu.buttons.closed.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'closed-button' is null, using a default material."));
-                    return Material.REDSTONE_BLOCK;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'closed-button' is broken, using a default material."));
-                return Material.REDSTONE_BLOCK;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("main-menu.buttons.closed.material");
         }
 
         public short getData() {
             return (short) XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getInt("main-menu.buttons.closed.data");
         }
-
 
         @Override
         public ItemStack getItemStack(Player player) {

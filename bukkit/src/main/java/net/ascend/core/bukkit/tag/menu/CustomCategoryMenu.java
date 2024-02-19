@@ -5,10 +5,10 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.tag.Tag;
 import net.ascend.core.bukkit.tag.menu.data.button.CustomButton;
 import net.ascend.core.bukkit.tag.menu.data.category.CustomCategory;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -85,7 +85,7 @@ public class CustomCategoryMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker itemMaker = ItemMaker.of(Material.valueOf(customCategory.getBack_material()))
+            ItemMaker itemMaker = ItemMaker.of(customCategory.getBack_material())
                     .setDisplayName(customCategory.getBack_name())
                     .setData((short) customCategory.getBack_data());
 
@@ -111,7 +111,7 @@ public class CustomCategoryMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker itemMaker = ItemMaker.of(Material.valueOf(customCategory.getReset_tag_material()))
+            ItemMaker itemMaker = ItemMaker.of(customCategory.getReset_tag_material())
                     .setDisplayName(customCategory.getReset_tag_name())
                     .setData((short) customCategory.getReset_tag_data());
 
@@ -146,7 +146,8 @@ public class CustomCategoryMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker itemMaker = ItemMaker.of(Material.valueOf("STAINED_GLASS_PANE")).setDisplayName("&8")
+            ItemMaker itemMaker = ItemMaker.of("STAINED_GLASS_PANE")
+                    .setDisplayName("&8")
                     .setData((short) customCategory.getFill_data());
 
             if (customCategory.isFill_glow()) {
@@ -169,7 +170,7 @@ public class CustomCategoryMenu extends Menu {
         @Override
         public ItemStack getItemStack(Player player) {
             Profile profile = XenonBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());
-            ItemMaker builder = ItemMaker.of(customButton.getButton().getType());
+            ItemMaker builder = ItemMaker.of(customButton.getButton().getType().name());
 
             builder.setDisplayName(customButton.getButton().getItemMeta().getDisplayName());
             builder.setData(customButton.getButton().getDurability());

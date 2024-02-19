@@ -18,14 +18,13 @@ package net.ascend.core.bukkit.vip.menu;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.util.NewColorsUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.core.bukkit.util.sound.SoundUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.fill.FillerTemplate;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
+import net.ascend.core.bukkit.lib.sound.SoundManager;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -86,7 +85,7 @@ public class VIPColorMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            return ItemMaker.of(MaterialUtil.INK_SACK.getMaterial())
+            return ItemMaker.of("INK_SACK")
                     .setData(NewColorsUtil.COLOR_MAP.get(color).getDyeData())
                     .setDisplayName(color + WordUtils.capitalizeFully(color.name().toLowerCase()))
                     .setLore(
@@ -104,7 +103,8 @@ public class VIPColorMenu extends Menu {
             profile.save();
             player.closeInventory();
 
-            SoundUtil.LEVEL_UP.play(player, 1, 1);
+            SoundManager.INSTANCE.playSound(player, "LEVEL_UP");
+
             player.sendMessage(CC.translate(XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.messages.updated-color").replace("%example%", color + XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.settings.vip-icon"))));
         }
     }

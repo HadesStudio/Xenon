@@ -3,7 +3,7 @@ package net.ascend.core.bukkit.profile.notifications.commands.impl;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.notifications.menu.NotificationListMenu;
 import net.ascend.core.bukkit.util.command.sub.SubCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

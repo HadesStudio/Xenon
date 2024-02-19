@@ -3,10 +3,10 @@ package net.ascend.core.bukkit.rank.rank.menu;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.permission.PermissionData;
-import net.ascend.lib.callback.Callback;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.callback.Callback;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
@@ -58,7 +58,7 @@ public class RankPermissionsMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(permissionData.isGlobal() ? Material.ENCHANTED_BOOK : Material.BOOK);
+            ItemMaker builder = ItemMaker.of(permissionData.isGlobal() ? "ENCHANTED_BOOK" : "BOOK");
             builder.setDisplayName("&6" + permissionData.getPermission());
 
             builder.addLore("");

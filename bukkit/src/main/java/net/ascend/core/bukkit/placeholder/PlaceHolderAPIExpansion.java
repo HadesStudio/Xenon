@@ -7,7 +7,7 @@ import net.ascend.core.bukkit.punishment.PunishmentType;
 import net.ascend.core.bukkit.server.Server;
 import net.ascend.core.bukkit.server.queue.Queue;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.entity.Player;

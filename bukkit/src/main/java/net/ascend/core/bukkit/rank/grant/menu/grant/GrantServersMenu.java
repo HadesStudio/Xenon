@@ -5,13 +5,13 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.Grant;
 import net.ascend.core.bukkit.rank.grant.menu.GrantDurationMenu;
 import net.ascend.core.bukkit.rank.grant.promts.GrantServerPrompt;
-import net.ascend.lib.callback.Callback;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.callback.Callback;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -97,7 +97,7 @@ public class GrantServersMenu extends PaginatedMenu {
     public class GrantInformationButton extends Button {
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker itemMaker = ItemMaker.of(Material.EMERALD_BLOCK);
+            ItemMaker itemMaker = ItemMaker.of("EMERALD_BLOCK");
             itemMaker.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.buttons.information.display-name"));
             for (String lore : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.grant-servers.buttons.information.lore")) {
                 itemMaker.addLore(lore.replace("%global_status%", isGlobal()).replace("%servers_size%", String.valueOf(servers.size())));
@@ -131,7 +131,7 @@ public class GrantServersMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker itemMaker = ItemMaker.of(Material.PAPER);
+            ItemMaker itemMaker = ItemMaker.of("PAPER");
             itemMaker.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.buttons.server.display-name").replace("%name%", server));
             for (String lore : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.grant-servers.buttons.server.lore")) {
                 itemMaker.addLore(lore);
@@ -155,7 +155,7 @@ public class GrantServersMenu extends PaginatedMenu {
     public class GrantClearServersButton extends Button {
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker itemMaker = ItemMaker.of(Material.FLINT_AND_STEEL);
+            ItemMaker itemMaker = ItemMaker.of("FLINT_AND_STEEL");
             itemMaker.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.buttons.clear-servers.display-name"));
             for (String lore : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.grant-servers.buttons.clear-servers.lore")) {
                 itemMaker.addLore(lore.replace("%servers_size%", String.valueOf(servers.size())));
@@ -178,7 +178,7 @@ public class GrantServersMenu extends PaginatedMenu {
     public class AddServerButton extends Button {
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker itemMaker = ItemMaker.of(Material.ANVIL);
+            ItemMaker itemMaker = ItemMaker.of("ANVIL");
             itemMaker.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.grant-servers.buttons.add-server.display-name"));
             for (String lore : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.grant-servers.buttons.add-server.lore")) {
                 itemMaker.addLore(lore.replace("%servers_size%", String.valueOf(servers.size())));

@@ -18,12 +18,11 @@ package net.ascend.core.bukkit.profile.profilesystem.menu.type;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.profilesystem.menu.MainProfileMenu;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.InformationButton;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.InformationButton;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -101,7 +100,7 @@ public class FriendRequestMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(MaterialUtil.HUMAN_SKULL.getMaterial());
+            ItemMaker builder = ItemMaker.of("SKULL_ITEM");
             builder.setData((short)3);
             builder.setOwner(target_profile.getName());
             builder.setDisplayName(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("friends.friends-request-menu.button.name").replace("%player_name%", target_profile.getName()));

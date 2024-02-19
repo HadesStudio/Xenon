@@ -3,7 +3,7 @@ package net.ascend.core.bukkit.profile.packet.implement;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.modules.database.redis.packet.Packet;
 import net.ascend.core.bukkit.profile.Profile;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.entity.Player;

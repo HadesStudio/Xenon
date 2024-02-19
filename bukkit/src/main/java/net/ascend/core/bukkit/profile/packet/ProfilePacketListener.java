@@ -5,8 +5,8 @@ import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.modules.database.redis.packet.PacketListener;
 import net.ascend.core.bukkit.modules.database.redis.packet.annotation.IncomingPacketHandler;
 import net.ascend.core.bukkit.profile.packet.implement.*;
-import net.ascend.lib.CC;
-import net.ascend.lib.Messages;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.Messages;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 

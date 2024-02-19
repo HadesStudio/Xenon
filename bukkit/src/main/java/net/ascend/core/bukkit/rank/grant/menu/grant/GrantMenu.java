@@ -4,14 +4,10 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.menu.grant.rank.RankGrantMenu;
 import net.ascend.core.bukkit.rank.grant.promts.GrantPermissionPrompt;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -53,18 +49,8 @@ public class GrantMenu extends Menu {
     public static class RankGrantsButton extends Button {
         Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.rank-grant.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.rank-grant.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.rank-grant.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'grantselect-menu-rank-grant-button' is null, using a default material."));
-                    return MaterialUtil.WOOL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'grantselect-menu-rank-grant-button' is null, using a default material."));
-                return MaterialUtil.WOOL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.rank-grant.material");
         }
 
         public short getData() {
@@ -94,18 +80,8 @@ public class GrantMenu extends Menu {
     public static class PermissionGrantsButton extends Button {
         Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.permission-grant.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.permission-grant.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.permission-grant.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'grantselect-menu-permission-grant-button' is null, using a default material."));
-                    return Material.PAPER;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'grantselect-menu-permission-grant-button' is null, using a default material."));
-                return Material.PAPER;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.permission-grant.material");
         }
 
         public short getData() {
@@ -136,18 +112,8 @@ public class GrantMenu extends Menu {
     public static class TagGrantsMenu extends Button {
         Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.tag-grant.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.tag-grant.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.tag-grant.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'grantselect-menu-tag-grant-button' is null, using a default material."));
-                    return Material.NAME_TAG;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'grantselect-menu-tag-grant-button' is null, using a default material."));
-                return Material.NAME_TAG;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.tag-grant.material");
         }
 
         public short getData() {

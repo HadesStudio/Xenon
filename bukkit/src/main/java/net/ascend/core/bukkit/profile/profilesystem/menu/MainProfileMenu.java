@@ -21,14 +21,10 @@ import net.ascend.core.bukkit.profile.profilesystem.menu.type.FriendRequestMenu;
 import net.ascend.core.bukkit.profile.profilesystem.menu.type.FriendsMenu;
 import net.ascend.core.bukkit.profile.profilesystem.menu.type.NotificationsMenu;
 import net.ascend.core.bukkit.profile.profilesystem.menu.type.SocialMediaMenu;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -83,18 +79,8 @@ public class MainProfileMenu extends Menu {
     public static class Statistics_Button extends Button {
         private final Profile player_profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("statistics-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("statistics-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("statistics-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'statistics-button' is null, using a default value."));
-                    return Material.PAPER;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'statistics-button' is broken, using a default value."));
-                return Material.PAPER;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("statistics-button.material");
         }
 
         public short getData() {
@@ -126,18 +112,8 @@ public class MainProfileMenu extends Menu {
     public static class Social_Button extends Button {
         private final Profile player_profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'social-button' is null, using a default value."));
-                    return Material.PAINTING;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'social-button' is broken, using a default value."));
-                return Material.PAINTING;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-button.material");
         }
 
         public short getData() {
@@ -167,24 +143,15 @@ public class MainProfileMenu extends Menu {
 
     @AllArgsConstructor
     public static class Profile_Button extends Button {
+
         private final Profile player_profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("profile-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("profile-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("profile-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-button' is null, using a default value."));
-                    return MaterialUtil.SIGN.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-button' is broken, using a default value."));
-                return MaterialUtil.SIGN.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("profile-button.material");
         }
 
         public short getData() {
-            if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("profile-button.material")) == MaterialUtil.HUMAN_SKULL.getMaterial()) {
+            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("profile-button.material").equalsIgnoreCase("SKULL_ITEM")) {
                 return (short) 3;
             } else {
                 return (short) XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getInt("profile-button.data");
@@ -197,7 +164,7 @@ public class MainProfileMenu extends Menu {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
             builder.setDisplayName(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("profile-button.title"));
-            if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("profile-button.material")) == MaterialUtil.HUMAN_SKULL.getMaterial()) {
+            if (getMaterial().equalsIgnoreCase("SKULL_ITEM")) {
                 builder.setOwner(player.getName());
             }
             return builder.build();
@@ -212,18 +179,8 @@ public class MainProfileMenu extends Menu {
     public static class Friends_Button extends Button {
         private final Profile player_profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("friends-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("friends-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("friends-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'friends-button' is null, using a default value."));
-                    return MaterialUtil.EYE_OF_ENDER.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'friends-button' is broken, using a default value."));
-                return MaterialUtil.EYE_OF_ENDER.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("friends-button.material");
         }
 
         public short getData() {
@@ -259,18 +216,8 @@ public class MainProfileMenu extends Menu {
     public static class Notifications_Button extends Button {
         private final Profile player_profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'notifications-button' is null, using a default value."));
-                    return MaterialUtil.WATCH.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'notifications-button' is broken, using a default value."));
-                return MaterialUtil.WATCH.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications-button.material");
         }
 
         public short getData() {

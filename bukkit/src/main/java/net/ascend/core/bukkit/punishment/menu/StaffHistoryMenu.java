@@ -21,14 +21,10 @@ import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.punishment.PunishmentType;
 import net.ascend.core.bukkit.punishment.menu.submenu.StaffHistoryViewingMenu;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -71,7 +67,7 @@ public class StaffHistoryMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(MaterialUtil.HUMAN_SKULL.getMaterial());
+            ItemMaker builder = ItemMaker.of("SKULL_ITEM");
             builder.setData((short)3);
             builder.setOwner(profile.getName());
             builder.setDisplayName(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.buttons.data-button.display-name").replace("%player%", profile.getName()));
@@ -107,18 +103,8 @@ public class StaffHistoryMenu extends Menu {
         final Profile profile;
         final Map<UUID, Punishment> executedPunishments;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.bans-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.bans-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.bans-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'staff-history-bans-material' is null, using a default value."));
-                    return Material.BOOK;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'staff-history-bans-material' is broken, using a default value."));
-                return Material.BOOK;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.bans-button.material");
         }
 
         public short getData() {
@@ -170,18 +156,8 @@ public class StaffHistoryMenu extends Menu {
         final Profile profile;
         final Map<UUID, Punishment> executedPunishments;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.warns-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.warns-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.warns-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'staff-history-warns-material' is null, using a default value."));
-                    return Material.BOOK;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'staff-history-warns-material' is broken, using a default value."));
-                return Material.BOOK;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.warns-button.material");
         }
 
         public short getData() {
@@ -233,18 +209,8 @@ public class StaffHistoryMenu extends Menu {
         final Profile profile;
         final Map<UUID, Punishment> executedPunishments;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.mutes-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.mutes-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.mutes-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'staff-history-mutes-material' is null, using a default value."));
-                    return Material.BOOK;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'staff-history-mutes-material' is broken, using a default value."));
-                return Material.BOOK;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.mutes-button.material");
         }
 
         public short getData() {
@@ -296,18 +262,8 @@ public class StaffHistoryMenu extends Menu {
         final Profile profile;
         final Map<UUID, Punishment> executedPunishments;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.pardons-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.pardons-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.pardons-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'staff-history-pardons-material' is null, using a default value."));
-                    return Material.BOOK;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'staff-history-pardons-material' is broken, using a default value."));
-                return Material.BOOK;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.pardons-button.material");
         }
 
         public short getData() {
@@ -359,18 +315,8 @@ public class StaffHistoryMenu extends Menu {
         final Profile profile;
         final Map<UUID, Punishment> executedPunishments;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.all-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.all-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.all-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'staff-history-all-material' is null, using a default value."));
-                    return Material.BOOK;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'staff-history-all-material' is broken, using a default value."));
-                return Material.BOOK;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.all-button.material");
         }
 
         public short getData() {

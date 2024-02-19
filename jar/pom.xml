@@ -26,13 +26,6 @@
     <dependencies>
         <dependency>
             <groupId>net.ascend.core</groupId>
-            <artifactId>library</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>net.ascend.core</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
@@ -44,17 +37,12 @@
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>net.ascend.core</groupId>
-            <artifactId>nms</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
 
     <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -80,6 +68,10 @@
                                 <relocation>
                                     <pattern>com.cryptomorin.xseries</pattern>
                                     <shadedPattern>net.ascend.core.bukkit.library.xseries</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.mojang</pattern>
+                                    <shadedPattern>net.ascend.core.bukkit.library.mojang</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.warrenstrange.googleauth</pattern>

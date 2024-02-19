@@ -1,7 +1,7 @@
 package net.ascend.core.bukkit.util.prompt.defaults;
 
 import net.ascend.core.bukkit.util.prompt.Prompt;
-import net.ascend.lib.JavaUtil;
+import net.ascend.core.bukkit.lib.JavaUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

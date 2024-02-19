@@ -2,6 +2,9 @@ name: Xenon
 main: net.ascend.core.bukkit.XenonBukkit
 version: 1.0-SNAPSHOT
 author: Ascend
+api-version: 1.13
 depend: [ProtocolLib]
+loadbefore:
+  - Neon
 softdepend:
   - PlaceholderAPI

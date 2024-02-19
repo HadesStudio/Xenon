@@ -7,7 +7,7 @@ import net.ascend.core.bukkit.modules.ModuleLoader;
 import net.ascend.core.bukkit.rank.gson.GSONUtil;
 import net.ascend.core.bukkit.rank.rank.permission.PermissionData;
 import net.ascend.core.bukkit.util.ColorUtil;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -19,7 +19,7 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.modules.ModuleLoader;
 import net.ascend.core.bukkit.profile.packet.implement.StaffRequestClaimPacket;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

@@ -4,9 +4,8 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.Grant;
 import net.ascend.core.bukkit.rank.grant.promts.GrantReasonPrompt;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -22,7 +21,7 @@ public class PermanentDurationButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return ItemMaker.of(MaterialUtil.WATCH.getMaterial()).setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.select-duration.buttons.permanent.display-name")).setLore(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.select-duration.buttons.permanent.lore")).build();
+        return ItemMaker.of("WATCH").setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.select-duration.buttons.permanent.display-name")).setLore(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.select-duration.buttons.permanent.lore")).build();
     }
 
     @Override

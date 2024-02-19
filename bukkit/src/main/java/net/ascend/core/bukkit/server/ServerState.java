@@ -15,7 +15,7 @@ package net.ascend.core.bukkit.server;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -17,11 +17,11 @@ package net.ascend.core.bukkit.vip.menu;
 
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -108,6 +108,7 @@ public class VIPRewardsMenu extends PaginatedMenu {
 
     @AllArgsConstructor
     public static class Reward_Button extends Button {
+
         Profile profile;
         String material;
         int material_data;
@@ -115,23 +116,10 @@ public class VIPRewardsMenu extends PaginatedMenu {
         String display_name;
         String key;
 
-        public Material getMaterial() {
-            if (material != null) {
-                if (Material.getMaterial(material) != null) {
-                    return Material.valueOf(material);
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of '" + key + " -material-reward' is null, using a default material."));
-                    return Material.DIAMOND_BLOCK;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of '" + key + " -material-reward' is null, using a default material."));
-                return Material.DIAMOND_BLOCK;
-            }
-        }
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(getMaterial());
+            ItemMaker builder = ItemMaker.of(material);
             builder.setData((short) material_data);
             builder.setDisplayName(display_name);
             builder.setLore(lore);

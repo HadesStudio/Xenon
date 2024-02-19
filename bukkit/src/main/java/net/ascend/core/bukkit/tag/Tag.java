@@ -3,7 +3,7 @@ package net.ascend.core.bukkit.tag;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import net.ascend.core.bukkit.XenonBukkit;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.*;
 import org.bson.Document;
 

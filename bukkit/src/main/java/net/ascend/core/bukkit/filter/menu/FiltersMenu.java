@@ -20,11 +20,11 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.filter.Filter;
 import net.ascend.core.bukkit.filter.menu.editor.FilterEditorMenu;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
@@ -92,7 +92,7 @@ public class FiltersMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(Material.PAPER);
+            ItemMaker builder = ItemMaker.of("PAPER");
             builder.setData((short) 0);
             builder.setDisplayName("&6" + filter.getName() + " - Messsage Filter");
             builder.setLore(Arrays.asList(
@@ -150,7 +150,7 @@ public class FiltersMenu extends PaginatedMenu {
     public static class New_Filter extends Button {
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(Material.EMERALD);
+            ItemMaker builder = ItemMaker.of("EMERALD");
             builder.setData((short) 0);
             builder.setDisplayName("&6New Message Filter");
             builder.setLore(Arrays.asList(

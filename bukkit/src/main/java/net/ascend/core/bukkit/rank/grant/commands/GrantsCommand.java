@@ -5,7 +5,7 @@ import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.menu.GrantViewSelectMenu;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

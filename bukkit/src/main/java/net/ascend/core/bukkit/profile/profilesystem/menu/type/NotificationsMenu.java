@@ -19,12 +19,12 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.notifications.Notification;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.InformationButton;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.InformationButton;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -108,18 +108,8 @@ public class NotificationsMenu extends PaginatedMenu {
         private final int amount;
         private final Notification notification;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.notification.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.notification.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.notification.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'notification-button' is null, using a default value."));
-                    return Material.PAPER;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'notification-button' is broken, using a default value."));
-                return Material.PAPER;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.notification.material");
         }
 
         public short getData() {
@@ -156,18 +146,8 @@ public class NotificationsMenu extends PaginatedMenu {
     public static class Read_All_Button extends Button {
         private final Profile player_profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.read-all.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.read-all.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.read-all.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'read-all-button' is null, using a default value."));
-                    return Material.NETHER_STAR;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'read-all-button' is broken, using a default value."));
-                return Material.NETHER_STAR;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("notifications.notification-menu.read-all.material");
         }
 
         public short getData() {

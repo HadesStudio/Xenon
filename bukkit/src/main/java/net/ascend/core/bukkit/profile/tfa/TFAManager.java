@@ -23,14 +23,12 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.tfa.data.AuthData;
 import net.ascend.core.bukkit.profile.tfa.utils.TFAQRGenerator;
 import net.ascend.core.bukkit.profile.tfa.utils.TFAUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
@@ -105,10 +103,10 @@ public class TFAManager implements ModuleLoader {
     }
 
     public ItemStack placeholder() {
-        ItemStack itemStack = new ItemStack(MaterialUtil.STAINED_GLASS_PANE.getMaterial());
-        itemStack.getItemMeta().setDisplayName(CC.translate("&7"));
-        itemStack.setDurability((short)7);
-        return itemStack;
+        ItemMaker itemStack = ItemMaker.of("STAINED_GLASS_PANE");
+        itemStack.setDisplayName(CC.translate("&7"));
+        itemStack.setData((short)7);
+        return itemStack.build();
     }
 
     public void giveQRMap(Player player) {
@@ -121,7 +119,7 @@ public class TFAManager implements ModuleLoader {
             URL url = new URL(TFAUtil.getQrImageURL(key.getKey(), "Xenon"));
             BufferedImage image = ImageIO.read(url);
 
-            ItemMaker item = ItemMaker.of(Material.MAP);
+            ItemMaker item = ItemMaker.of("MAP");
             item.setDisplayName(XenonBukkit.getInstance().getConfiguration().getConfiguration().getString("two-factor.qr-code-map.name"));
             for (String lore_line : XenonBukkit.getInstance().getConfiguration().getConfiguration().getStringList("two-factor.qr-code-map.lore")) {
                 item.addLore(CC.translate(lore_line));

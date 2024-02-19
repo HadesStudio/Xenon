@@ -21,8 +21,8 @@ import net.ascend.core.bukkit.staff.staffmode.menus.InventoryMenu;
 import net.ascend.core.bukkit.staff.staffmode.menus.StaffMenu;
 import net.ascend.core.bukkit.util.PlayerUtil;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -356,7 +356,7 @@ public class StaffListener implements Listener {
         double percentage = ((furnace.getCookTime() / 20.0D)) * 100;
         String fuelLeft = TimeUtil.formatTimeMillis(furnace.getBurnTime() / 20);
 
-        ItemStack item = ItemMaker.of(furnace.getInventory().getResult().getType())
+        ItemStack item = ItemMaker.of(furnace.getInventory().getResult().getType().name())
                 .setAmount(furnace.getInventory().getResult().getAmount())
                 .setData(furnace.getInventory().getResult().getData().getData())
                 .setLore(Arrays.asList(

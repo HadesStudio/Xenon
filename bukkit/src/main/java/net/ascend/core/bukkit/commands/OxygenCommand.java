@@ -15,7 +15,7 @@ package net.ascend.core.bukkit.commands;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import net.ascend.core.bukkit.core.menus.OxygenMenu;
+import net.ascend.core.bukkit.core.OxygenMenu;
 import net.ascend.core.bukkit.util.command.BaseCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

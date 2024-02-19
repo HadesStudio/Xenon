@@ -15,7 +15,7 @@ package net.ascend.core.bukkit.util;
 //   Hely Development Discord: https://discord.gg/J9XMt8FCxN
 //============================================================
 
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 
@@ -25,7 +25,6 @@ import java.text.DecimalFormat;
 public class TPSUtil {
     private static Object minecraftServer;
     private static Field recentTps;
-    private static DecimalFormat SECONDS_FORMAT = new DecimalFormat("#0.0");
 
     private static double[] getTps() {
         try {
@@ -45,11 +44,6 @@ public class TPSUtil {
         return new double[]{-1, -1, -1};
     }
 
-    private static String formatSeconds(long time) {
-        return SECONDS_FORMAT.format(time / 1000.0F);
-    }
-
-
     public static double[] getRecentTps() {
         double[] tps = getTps();
         if (tps[0] >= 20.0) tps[0] = 20.0;
@@ -59,13 +53,6 @@ public class TPSUtil {
         return new double[]{Math.round(tps[0]), Math.round(tps[1]), Math.round(tps[2])};
     }
 
-    public static String getNiceTPS(double tps) {
-        if (tps >= 20.0) return CC.translate("&a*" + tps);
-        if (tps < 20.0 && tps > 18.0) return CC.translate("&a" + tps);
-        if (tps < 18.0 && tps > 10.0) return CC.translate("&e" + tps);
-        if (tps < 10.0 && tps > 5.0) return CC.translate("&c" + tps);
-        return CC.translate("&4" + tps);
-    }
 
     public static String getTPSStatus(double tps) {
         if (tps >= 20.0) return CC.translate("&a&oVery High");

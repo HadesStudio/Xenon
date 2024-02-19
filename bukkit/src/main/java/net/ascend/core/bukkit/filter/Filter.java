@@ -22,7 +22,7 @@ import net.ascend.core.bukkit.filter.types.Match;
 import net.ascend.core.bukkit.filter.types.MuteType;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.Document;

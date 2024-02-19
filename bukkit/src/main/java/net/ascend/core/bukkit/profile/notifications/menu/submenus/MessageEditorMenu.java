@@ -18,14 +18,14 @@ package net.ascend.core.bukkit.profile.notifications.menu.submenus;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.notifications.Notification;
 import net.ascend.core.bukkit.profile.notifications.menu.NotificationListMenu;
-import net.ascend.lib.callback.Callback;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
-import net.ascend.lib.sound.SoundManager;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.callback.Callback;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.sound.SoundManager;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
@@ -106,7 +106,7 @@ public class MessageEditorMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            Material material = Material.PAPER;
+            String material = "PAPER";
             int data = 0;
             String display_name = "&6#" + position + " Notification Line";
 
@@ -159,7 +159,7 @@ public class MessageEditorMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            Material material = Material.NAME_TAG;
+            String material = "NAME_TAG";
             int data = 0;
             String display_name = "&6New Notification Line";
 

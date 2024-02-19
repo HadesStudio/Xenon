@@ -19,7 +19,7 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.packet.implement.StaffRawMessagePacket;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

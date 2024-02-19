@@ -13,7 +13,7 @@ import net.ascend.core.bukkit.tag.Tag;
 import net.ascend.core.bukkit.tag.TagManager;
 import net.ascend.core.bukkit.util.TimeUtil;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

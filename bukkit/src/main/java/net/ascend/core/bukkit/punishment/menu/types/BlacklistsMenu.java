@@ -21,15 +21,12 @@ import net.ascend.core.bukkit.punishment.packet.implement.PunishmentRemovePacket
 import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.punishment.PunishmentType;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.callback.Callback;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.callback.Callback;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -71,32 +68,12 @@ public class BlacklistsMenu extends PaginatedMenu {
     private static class BlacklistButton extends Button {
         private final Punishment punishment;
 
-        public Material getBlacklistedMaterial() {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.permanent.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.permanent.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.permanent.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'blacklists-menu-blacklisted-material' is null, using a default value."));
-                    return MaterialUtil.WOOL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'blacklists-menu-blacklisted-material' is broken, using a default value."));
-                return MaterialUtil.WOOL.getMaterial();
-            }
+        public String getBlacklistedMaterial() {
+            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.permanent.material");
         }
 
-        public Material getPardonedMaterial() {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.pardoned.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.pardoned.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.pardoned.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'blacklists-menu-pardoned-material' is null, using a default value."));
-                    return MaterialUtil.WOOL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'blacklists-menu-pardoned-material' is broken, using a default value."));
-                return MaterialUtil.WOOL.getMaterial();
-            }
+        public String getPardonedMaterial() {
+            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.pardoned.material");
         }
 
         public short getData() {

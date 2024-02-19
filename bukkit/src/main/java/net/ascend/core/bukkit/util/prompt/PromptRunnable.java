@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

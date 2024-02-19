@@ -2,7 +2,7 @@ package net.ascend.core.bukkit.commands.implement.staff.teleport;
 
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

@@ -22,10 +22,9 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.menu.perks.impl.RankPerkEditSubMenu;
 import net.ascend.core.bukkit.rank.rank.perk.Perk;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationFactory;
@@ -44,7 +43,7 @@ public class PerkEditorNameButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return ItemMaker.of(MaterialUtil.SIGN.getMaterial()).setDisplayName("&6Edit Name").setLore(Arrays.asList("&7This is the identifier of the", "&7perk.", "&6Current Name&7: &f" + perk.getName(), "", "&6Left-Click &7to edit the identifier.")).build();
+        return ItemMaker.of("SIGN").setDisplayName("&6Edit Name").setLore(Arrays.asList("&7This is the identifier of the", "&7perk.", "&6Current Name&7: &f" + perk.getName(), "", "&6Left-Click &7to edit the identifier.")).build();
     }
 
     @Override

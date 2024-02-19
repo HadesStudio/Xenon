@@ -5,14 +5,11 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.punishment.PunishmentType;
 import net.ascend.core.bukkit.punishment.menu.types.*;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -60,18 +57,8 @@ public class HistoryMenu extends Menu {
     }
 
     private class BlacklistButton extends Button {
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.blacklist.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.blacklist.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.blacklist.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'blacklist-material' is null, using a default value."));
-                    return MaterialUtil.WOOL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'blacklist-material' is broken, using a default value."));
-                return MaterialUtil.WOOL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.blacklist.material");
         }
 
         public short getData() {
@@ -108,18 +95,8 @@ public class HistoryMenu extends Menu {
 
 
     private class BanButton extends Button {
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.bans.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.bans.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.bans.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'bans-material' is null, using a default value."));
-                    return MaterialUtil.WOOL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'bans-material' is broken, using a default value."));
-                return MaterialUtil.WOOL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.bans.material");
         }
 
         public short getData() {
@@ -155,18 +132,8 @@ public class HistoryMenu extends Menu {
     }
 
     private class KickButton extends Button {
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.kicks.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.kicks.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.kicks.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'kicks-material' is null, using a default value."));
-                    return MaterialUtil.WOOL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'kicks-material' is broken, using a default value."));
-                return MaterialUtil.WOOL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.kicks.material");
         }
 
         public short getData() {
@@ -201,18 +168,9 @@ public class HistoryMenu extends Menu {
     }
 
     private class MuteButton extends Button {
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.mutes.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.mutes.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.mutes.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'mutes-material' is null, using a default value."));
-                    return MaterialUtil.WOOL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'mutes-material' is broken, using a default value."));
-                return MaterialUtil.WOOL.getMaterial();
-            }
+
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.mutes.material");
         }
 
         public short getData() {
@@ -246,18 +204,8 @@ public class HistoryMenu extends Menu {
     }
 
     private class WarnButton extends Button {
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.warns.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.warns.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.warns.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'warns-material' is null, using a default value."));
-                    return MaterialUtil.WOOL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'warns-material' is broken, using a default value."));
-                return MaterialUtil.WOOL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.warns.material");
         }
 
         public short getData() {

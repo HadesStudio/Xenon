@@ -4,16 +4,14 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.squads.Squad;
 import net.ascend.core.bukkit.profile.squads.members.SquadMemberType;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.fill.FillerTemplate;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -67,18 +65,8 @@ public class SquadMemberEditorMenu extends Menu {
         final Squad squad;
         final Profile targetProfile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.kick-member.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.kick-member.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.kick-member.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'kick-member-button' is null, using a default value."));
-                    return MaterialUtil.IRON_FENCE.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'kick-member-button' is broken, using a default value."));
-                return MaterialUtil.IRON_FENCE.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.kick-member.material");
         }
 
         public List<String> getLore() {
@@ -141,18 +129,8 @@ public class SquadMemberEditorMenu extends Menu {
         final Squad squad;
         final Profile targetProfile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.promote-member.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.promote-member.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.promote-member.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'promote-member-button' is null, using a default value."));
-                    return Material.NETHER_STAR;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'promote-member-button' is broken, using a default value."));
-                return Material.NETHER_STAR;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.promote-member.material");
         }
 
         public List<String> getLore() {
@@ -217,18 +195,8 @@ public class SquadMemberEditorMenu extends Menu {
         final Squad squad;
         final Profile targetProfile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.demote-member.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.demote-member.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.demote-member.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'demote-member-button' is null, using a default value."));
-                    return Material.NETHER_STAR;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'demote-member-button' is broken, using a default value."));
-                return Material.NETHER_STAR;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.member-editor.buttons.demote-member.material");
         }
 
         public List<String> getLore() {

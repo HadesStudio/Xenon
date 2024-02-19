@@ -8,8 +8,8 @@ import net.ascend.core.bukkit.rank.grant.menu.GrantDurationMenu;
 import net.ascend.core.bukkit.rank.grant.menu.GrantScopesMenu;
 import net.ascend.core.bukkit.rank.grant.menu.grant.GrantMenu;
 import net.ascend.core.bukkit.rank.grant.types.PermissionGrant;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ public class BukkitPermissionButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return ItemMaker.of(Material.GOLD_INGOT).setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.select-server.buttons.bukkit-permission.display-name")).setLore(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.select-server.buttons.bukkit-permission.lore")).build();
+        return ItemMaker.of("GOLD_INGOT").setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.select-server.buttons.bukkit-permission.display-name")).setLore(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.select-server.buttons.bukkit-permission.lore")).build();
     }
 
     @Override

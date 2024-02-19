@@ -17,7 +17,7 @@ package net.ascend.core.bukkit.announcements.task;
 
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.announcements.AnnouncementManager;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

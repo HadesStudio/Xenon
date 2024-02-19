@@ -5,15 +5,11 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.squads.Squad;
 import net.ascend.core.bukkit.profile.squads.commands.prompts.NewSquadPrompt;
 import net.ascend.core.bukkit.profile.squads.commands.prompts.SearchSquadPrompt;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.fill.FillerTemplate;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -74,18 +70,8 @@ public class SquadMainMenu extends Menu {
     public static class NewSquadButton extends Button {
         final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.create-squad.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.create-squad.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.create-squad.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'new-squad-button' is null, using a default value."));
-                    return Material.NAME_TAG;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'profile-details-button' is broken, using a default value."));
-                return Material.NAME_TAG;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.create-squad.material");
         }
 
         public short getData() {
@@ -115,18 +101,8 @@ public class SquadMainMenu extends Menu {
     public static class SquadInvitesButton extends Button {
         final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.squad-invites.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.squad-invites.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.squad-invites.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'squad-invites-button' is null, using a default value."));
-                    return MaterialUtil.SIGN.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'squad-invites-button' is broken, using a default value."));
-                return MaterialUtil.SIGN.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.squad-invites.material");
         }
 
         public short getData() {
@@ -154,24 +130,13 @@ public class SquadMainMenu extends Menu {
     public static class FindSquadButton extends Button {
         final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.find-squad.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.find-squad.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.find-squad.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'find-squad-button' is null, using a default value."));
-                    return Material.BOOK;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'find-squad-button' is broken, using a default value."));
-                return Material.BOOK;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.main-menu.buttons.find-squad.material");
         }
 
         public short getData() {
             return (short) XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getInt("menus.main-menu.buttons.find-squad.data");
         }
-
 
         @Override
         public ItemStack getItemStack(Player player) {

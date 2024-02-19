@@ -6,8 +6,8 @@ import net.ascend.core.bukkit.rank.grant.Grant;
 import net.ascend.core.bukkit.rank.grant.packets.GrantUpdatePacket;
 import net.ascend.core.bukkit.util.prompt.Prompt;
 import net.ascend.core.bukkit.util.prompt.defaults.StringPrompt;
-import net.ascend.lib.menu.implement.ConfirmationMenu;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.menu.implement.ConfirmationMenu;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 

@@ -20,12 +20,12 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.menu.EditProfileMenu;
 import net.ascend.core.bukkit.profile.permission.ProfilePermission;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -107,18 +107,8 @@ public class PermissionsMenu extends PaginatedMenu {
         final Profile profile;
         final ProfilePermission perm;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("permission-menu.buttons.permission-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("permission-menu.buttons.permission-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("permission-menu.buttons.permission-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'permission-view-button' is null, using a default value."));
-                    return Material.PAPER;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'permission-view-button' is broken, using a default value."));
-                return Material.PAPER;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("permission-menu.buttons.permission-button.material");
         }
 
         public short getData() {

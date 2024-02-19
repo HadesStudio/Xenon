@@ -22,10 +22,9 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.menu.perks.impl.RankPerkEditSubMenu;
 import net.ascend.core.bukkit.rank.rank.perk.Perk;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationFactory;
@@ -44,7 +43,9 @@ public class PerkEditorDisplayNameButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return ItemMaker.of(MaterialUtil.BOOK_AND_QUILL.getMaterial()).setDisplayName("&6Edit Display Name").setLore(Arrays.asList("&7This is the display name of the", "&7perk and appears above the lore.", "&6Current Display Name&7: &f" + perk.getDisplayName(), "", "&6Left-Click &7to edit the display name.")).build();
+        return ItemMaker.of("BOOK_AND_QUILL")
+                .setDisplayName("&6Edit Display Name")
+                .setLore(Arrays.asList("&7This is the display name of the", "&7perk and appears above the lore.", "&6Current Display Name&7: &f" + perk.getDisplayName(), "", "&6Left-Click &7to edit the display name.")).build();
     }
 
     @Override

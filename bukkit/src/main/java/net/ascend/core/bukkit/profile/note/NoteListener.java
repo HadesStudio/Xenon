@@ -4,7 +4,7 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.Messages;
+import net.ascend.core.bukkit.lib.Messages;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

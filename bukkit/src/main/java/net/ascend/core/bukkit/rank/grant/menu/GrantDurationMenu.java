@@ -6,10 +6,10 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.Grant;
 import net.ascend.core.bukkit.rank.grant.menu.buttons.scopes.PermanentDurationButton;
 import net.ascend.core.bukkit.rank.grant.menu.buttons.scopes.TemporaryDurationButton;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 

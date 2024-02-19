@@ -9,10 +9,9 @@ import net.ascend.core.bukkit.rank.grant.menu.grant.rank.RankGrantMenu;
 import net.ascend.core.bukkit.rank.grant.types.RankGrant;
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.util.ColorUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -26,12 +25,9 @@ public class RankGrantSelectButton extends Button {
 	
 	@Override
 	public ItemStack getItemStack(Player player) {
-
-		ItemMaker builder = ItemMaker.of(MaterialUtil.WOOL.getMaterial());
-
+		ItemMaker builder = ItemMaker.of("WOOL");
 		builder.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.rank-grant-selection.buttons.grant.display-name").replace("%rank%", rank.getName()));
 		builder.setData((short)ColorUtil.getWoolColorFromChatColor(rank.getDisplay_color()));
-
 
 		for (String lore : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.rank-grant-selection.buttons.grant.lore")) {
 			builder.addLore(lore

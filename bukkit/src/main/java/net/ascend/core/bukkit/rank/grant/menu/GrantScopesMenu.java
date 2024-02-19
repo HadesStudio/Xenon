@@ -9,10 +9,10 @@ import net.ascend.core.bukkit.rank.grant.menu.buttons.scopes.BungeePermissionBut
 import net.ascend.core.bukkit.rank.grant.menu.buttons.scopes.GlobalRankButton;
 import net.ascend.core.bukkit.rank.grant.menu.buttons.scopes.SpecifyServersButton;
 import net.ascend.core.bukkit.rank.grant.types.PermissionGrant;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 

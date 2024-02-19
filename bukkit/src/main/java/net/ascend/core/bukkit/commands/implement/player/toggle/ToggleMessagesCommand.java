@@ -18,7 +18,7 @@ package net.ascend.core.bukkit.commands.implement.player.toggle;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

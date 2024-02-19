@@ -6,7 +6,7 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.packet.implement.StaffChatPacket;
 import net.ascend.core.bukkit.util.ChatUtil;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

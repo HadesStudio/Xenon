@@ -10,7 +10,7 @@ import net.ascend.core.bukkit.server.queue.packet.implement.QueueJoinPacket;
 import net.ascend.core.bukkit.server.queue.packet.implement.QueueLeavePacket;
 import net.ascend.core.bukkit.server.queue.packet.implement.QueuePlayerLeavePacket;
 import net.ascend.core.bukkit.server.queue.packet.implement.QueueSendPlayerPacket;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

@@ -2,9 +2,9 @@ package net.ascend.core.bukkit.rank.rank.menu;
 
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.rank.rank.Rank;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -51,7 +51,7 @@ public class RankInheritancesMenu extends PaginatedMenu {
         public ItemStack getItemStack(Player player) {
             Rank inheritRank = XenonBukkit.getInstance().getRankManager().getRank(inheritanceRank);
 
-            ItemMaker builder = ItemMaker.of(inheritRank.isGlobalRank() ? Material.ENCHANTED_BOOK : Material.BOOK);
+            ItemMaker builder = ItemMaker.of(inheritRank.isGlobalRank() ? "ENCHANTED_BOOK" : "BOOK");
             builder.setDisplayName(inheritRank.getDisplay_color() + inheritRank.getName());
 
             builder.addLore("");

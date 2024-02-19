@@ -5,7 +5,7 @@ import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.RankType;
 import net.ascend.core.bukkit.rank.rank.packet.implement.RankUpdatePacket;
 import net.ascend.core.bukkit.util.command.sub.SubCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

@@ -22,8 +22,8 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.util.ChatUtil;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.core.bukkit.util.sound.SoundUtil;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.sound.SoundManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -108,7 +108,7 @@ public class MessageCommand extends BaseCommand {
         targetPlayer.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("message-command.from-format").replace("%target%", sender.getName()).replace("%message%", message)));
 
         if (target.getSettings().isPlayingMessageSounds()) {
-            SoundUtil.SUCCESSFUL_HIT.play(targetPlayer, 1.0f, 1.0f);
+            SoundManager.INSTANCE.playSound(targetPlayer, "SUCCESSFUL_HIT");
         }
 
         profile.setLastRepliedTo(target.getName());

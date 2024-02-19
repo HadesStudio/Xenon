@@ -21,9 +21,9 @@ import lombok.AllArgsConstructor;
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.menu.perks.impl.buttons.*;
 import net.ascend.core.bukkit.rank.rank.perk.Perk;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

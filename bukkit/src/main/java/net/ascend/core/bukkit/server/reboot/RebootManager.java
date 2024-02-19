@@ -17,7 +17,7 @@ package net.ascend.core.bukkit.server.reboot;
 
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.server.reboot.task.RebootTask;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 

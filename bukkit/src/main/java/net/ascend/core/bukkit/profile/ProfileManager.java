@@ -10,7 +10,7 @@ import net.ascend.core.bukkit.profile.profilesystem.impl.serverstats.Statistics;
 import net.ascend.core.bukkit.profile.profilesystem.impl.serverstats.StatisticsServer;
 import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.util.UUIDUtil;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.Getter;
 import org.bson.Document;
 import org.bukkit.Bukkit;

@@ -40,7 +40,7 @@ import net.ascend.core.bukkit.staff.requests.commands.ReportCommand;
 import net.ascend.core.bukkit.staff.requests.commands.staff.RequestsCommand;
 import net.ascend.core.bukkit.vip.commands.VIPCommand;
 import net.ascend.core.bukkit.vip.commands.VIPResetCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;

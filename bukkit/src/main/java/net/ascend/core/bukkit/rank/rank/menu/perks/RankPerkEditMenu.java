@@ -22,12 +22,11 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.menu.perks.impl.RankPerkEditSubMenu;
 import net.ascend.core.bukkit.rank.rank.perk.Perk;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -136,18 +135,8 @@ public class RankPerkEditMenu extends PaginatedMenu {
     public static class NewPerkButton extends Button {
         private final Rank rank;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("menu.perk-editor.new-perk.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("menu.perk-editor.new-perk.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("menu.perk-editor.new-perk.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'perk-editor-button' is null, using a default material."));
-                    return MaterialUtil.ANVIL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'perk-editor-button' is broken, using a default material."));
-                return MaterialUtil.ANVIL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getRankSettingsConfig().getConfiguration().getString("menu.perk-editor.new-perk.material");
         }
 
         public short getData() {
@@ -208,7 +197,7 @@ public class RankPerkEditMenu extends PaginatedMenu {
             }
 
             Bukkit.getLogger().severe("Saving for rank: " + rank.getName());
-            rank.getPerks().add(new Perk("Perk" + rank.getPerks().size(), itemStack.getType(), itemStack.getType().getId(), itemStack.getItemMeta().getDisplayName(), itemStack.getItemMeta().getLore(), Arrays.asList("&7You can purchase this from our store!", "&6&ostore.ascendproyect.org")));
+            rank.getPerks().add(new Perk("Perk" + rank.getPerks().size(), itemStack.getType().name(), itemStack.getType().getId(), itemStack.getItemMeta().getDisplayName(), itemStack.getItemMeta().getLore(), Arrays.asList("&7You can purchase this from our store!", "&6&ostore.ascendproyect.org")));
             rank.save();
 
             new RankPerkEditMenu(rank).openMenu(sender.getPlayer());

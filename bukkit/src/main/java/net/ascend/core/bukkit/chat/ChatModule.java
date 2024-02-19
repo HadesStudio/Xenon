@@ -19,7 +19,7 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.chat.listeners.ChatListener;
 import net.ascend.core.bukkit.modules.ModuleLoader;
 import net.ascend.core.bukkit.profile.Profile;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;

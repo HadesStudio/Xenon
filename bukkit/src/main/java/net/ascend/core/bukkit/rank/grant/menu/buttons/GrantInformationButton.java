@@ -14,10 +14,9 @@ import net.ascend.core.bukkit.rank.rank.RankManager;
 import net.ascend.core.bukkit.tag.Tag;
 import net.ascend.core.bukkit.tag.TagManager;
 import net.ascend.core.bukkit.util.ColorUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -41,7 +40,7 @@ public class GrantInformationButton extends Button {
             durability = ColorUtil.getWoolColorFromChatColor(ChatColor.RED);
         }
 
-        ItemMaker itemBuilder = ItemMaker.of(MaterialUtil.WOOL.getMaterial());
+        ItemMaker itemBuilder = ItemMaker.of("WOOL");
 
         if (grant instanceof RankGrant) {
             RankManager rankManager = XenonBukkit.getInstance().getRankManager();

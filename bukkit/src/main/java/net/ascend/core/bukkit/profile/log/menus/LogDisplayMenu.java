@@ -18,13 +18,11 @@ package net.ascend.core.bukkit.profile.log.menus;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.log.Log;
 import net.ascend.core.bukkit.profile.log.category.LogCategories;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -112,7 +110,7 @@ public class LogDisplayMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(Material.PAPER);
+            ItemMaker builder = ItemMaker.of("PAPER");
             builder.setData((short) 0);
             builder.setDisplayName("&6Log - " + log.getLogType().getDisplay_name());
             builder.setLore(getLore());
@@ -132,7 +130,7 @@ public class LogDisplayMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(MaterialUtil.BED.getMaterial());
+            ItemMaker builder = ItemMaker.of("BED");
             builder.setData((short) 0);
             builder.setDisplayName("&cBack");
             builder.setLore(Collections.singletonList(

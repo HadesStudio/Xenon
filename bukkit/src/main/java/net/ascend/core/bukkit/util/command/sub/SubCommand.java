@@ -1,8 +1,8 @@
 package net.ascend.core.bukkit.util.command.sub;
 
 import net.ascend.core.bukkit.configuration.Locale;
-import net.ascend.lib.CC;
-import net.ascend.lib.JavaUtil;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.JavaUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.OfflinePlayer;

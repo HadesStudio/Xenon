@@ -10,9 +10,8 @@ import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.punishment.PunishmentType;
 import net.ascend.core.bukkit.punishment.packet.implement.PunishmentAttemptedJoinPacket;
 import net.ascend.core.bukkit.util.ChatUtil;
-import net.ascend.core.bukkit.util.sound.SoundUtil;
-import net.ascend.lib.sound.SoundManager;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.sound.SoundManager;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -107,7 +106,8 @@ public class ProfileListener implements Listener {
                         return;
                     }
 
-                    SoundUtil.NOTE_PLING.play(player, 1, 1);
+                    SoundManager.INSTANCE.playSound(player, "NOTE_PLING");
+
                     for (String message : XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile-system.notifications.join")) {
                         player.sendMessage(CC.translate(message.replace("%notification_amount%", String.valueOf(profile.getNotifications().size()))));
                     }

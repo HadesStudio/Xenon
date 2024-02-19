@@ -21,7 +21,7 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.types.RankGrant;
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.util.command.sub.SubCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

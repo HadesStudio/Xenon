@@ -30,35 +30,35 @@ messages:
       started: "&aYou have successfully started a &6%type% Sale &afor &6%time%&a."
       broadcast:
         - "&7&l&m----------------------------------"
-        - "&6&lHely Development Store &7➥ &6%type% Sale &7has just"
+        - "&6&lAscend LLC &7➥ &6%type% Sale &7has just"
         - "&7started for &6%time%&7!"
         - "&7&l&m----------------------------------"
   purchase:
     broadcast: # %price%, %item%, %player%
       - "&7&l&m------------------------------------"
-      - "&6&lHely Development Store &7➥ &6%player% &7has just purchased"
+      - "&6&lAscend LLC &7➥ &6%player% &7has just purchased"
       - "&6%item% &7from the shop!"
       - "&7&l&m------------------------------------"
   sales:
     item-sale: # Item Sale (AKA. BUY 1 GET ONE)
       - "&7&l&m--------------------------------------------"
-      - "&6&lHely Development Store &7➥ &6%player_name% &fhas just"
+      - "&6&lAscend LLC &7➥ &6%player_name% &fhas just"
       - "&freceived &a%amount%x %item% &fthanks to our &6Item Sale&f!"
       - "&7&l&m--------------------------------------------"
     rank-sale: # Rank Sale (AKA. BUY 1 RANK GET 1 RANK FOR FRIEND)
       broadcast:
         - "&7&l&m--------------------------------------------"
-        - "&6&lHely Development Store &7➥ &6%player_name% &fhas just"
+        - "&6&lAscend LLC &7➥ &6%player_name% &fhas just"
         - "&fpurchased &a%item%&f!"
         - "&7"
         - "&fBecause of our &6Rank Sale&f, they have received"
         - "&6%item%&f!"
         - "&7&l&m--------------------------------------------"
       type-name:
-        - "&6&lHely Development Store &7➥ &fBecause of the &6Rank Sale&f, you have received &62x Ranks&f! Please type the name in chat who you want to give the rank to."
+        - "&6&lAscend LLC &7➥ &fBecause of the &6Rank Sale&f, you have received &62x Ranks&f! Please type the name in chat who you want to give the rank to."
     percent-sale: # Normal Sale (Percentage (%) off)
       - "&7&l&m--------------------------------------------"
-      - "&6&lHely Development Store &7➥ &6%player_name% &fhas just"
+      - "&6&lAscend LLC &7➥ &6%player_name% &fhas just"
       - "&fpurchased &a%item% &fand saved &6%amount%% &fbecause of our &6Store Sale&f!"
       - "&7&l&m--------------------------------------------"
 placeholders:
@@ -92,13 +92,13 @@ menu:
           type: "NONE" # Available Options: ITEM, RANK, RANK_UPGRADE, PERMISSION, OTHER, NONE
         rank-upgrade: # This is only if the action is set to 'RANK_UPGRADE'
           before-rank: "Default" # The old rank name that the user must have to purchase the new rank.
-          new-rank: "Hely" # The new rank name they will be getting.
+          new-rank: "Ascend" # The new rank name they will be getting.
         buy-rank: # This is only if the action is set to 'BUY_RANK'
-          rank-name: "Hely" # This is the name of the rank they are purchasing.
+          rank-name: "Ascend" # This is the name of the rank they are purchasing.
         category: # This is only if the action is set to 'OPEN_CATEGORY'
           name: "ranks"
       commands: # These commands are executed when item is bought
-        - "broadcast %player% is a cool guy wow, they purchased hely rank"
+        - "broadcast %player% is a cool guy wow, they purchased Xenon rank"
 categories:
   ranks:
     title: "&6Ranks"
@@ -121,15 +121,15 @@ categories:
           - "&cto the previous menu."
       slot: 41
     buttons:
-      HelyRank:
+      XenonRank:
         item:
           material: NETHER_STAR
           data: 0
           amount: 16
-          name: "&6Hely Rank"
+          name: "&6Xenon Rank"
           lore:
             - "&7&m--------------------------------"
-            - "&6Hely Rank"
+            - "&6Xenon Rank"
             - "&7This is the highest tier rank!"
             - ""
             - "&6* &bAccess to /craft"
@@ -148,10 +148,10 @@ categories:
             type: "ITEM" # Available Options: ITEM, RANK, RANK_UPGRADE, PERMISSION, OTHER
           rank-upgrade: # This is only if the action is set to 'RANK_UPGRADE'
             before-rank: "Default" # The old rank name that the user must have to purchase the new rank.
-            new-rank: "Hely" # The new rank name they will be getting.
+            new-rank: "Xenon" # The new rank name they will be getting.
           buy-rank: # This is only if the action is set to 'BUY_RANK'
-            rank-name: "Hely" # This is the name of the rank they are purchasing.
+            rank-name: "Xenon" # This is the name of the rank they are purchasing.
           category: # This is only if the action is set to 'OPEN_CATEGORY'
             name: ranks
         commands: # These commands are executed when item is bought
-          - "broadcast %player% is a cool guy wow, they purchased hely rank"
+          - "broadcast %player% is a cool guy wow, they purchased Xenon rank"

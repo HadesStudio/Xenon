@@ -8,8 +8,8 @@ import net.ascend.core.bukkit.rank.grant.menu.GrantScopesMenu;
 import net.ascend.core.bukkit.rank.grant.menu.grant.tag.TagGrantMenu;
 import net.ascend.core.bukkit.rank.grant.types.TagGrant;
 import net.ascend.core.bukkit.tag.Tag;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -25,7 +25,7 @@ public class TagGrantSelectButton extends Button {
 	@Override
 	public ItemStack getItemStack(Player player) {
 
-		ItemMaker builder = ItemMaker.of(Material.NAME_TAG);
+		ItemMaker builder = ItemMaker.of("NAME_TAG");
 
 		builder.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.tag-grant-selection.buttons.grant.display-name").replace("%tag%", tag.getName()));
 		for (String lore : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.tag-grant-selection.buttons.grant.lore")) {

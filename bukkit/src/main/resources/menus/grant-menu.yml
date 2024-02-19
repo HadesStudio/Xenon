@@ -1,5 +1,4 @@
 messages:
-
   cannot-grant: "&cSorry, you cannot do anything with this grant because its default."
   higher-priority: "&cYou cannot grant ranks to players who are a higher rank thank you.."
   applied:

@@ -2,7 +2,7 @@ package net.ascend.core.bukkit.task;
 
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.util.NameMCUtils;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 

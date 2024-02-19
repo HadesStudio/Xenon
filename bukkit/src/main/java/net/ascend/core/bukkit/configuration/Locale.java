@@ -1,7 +1,7 @@
 package net.ascend.core.bukkit.configuration;
 
 import net.ascend.core.bukkit.XenonBukkit;
-import net.ascend.lib.configuration.Config;
+import net.ascend.core.bukkit.lib.configuration.Config;
 import net.ascend.core.bukkit.punishment.broadcast.PunishmentBroadcast;
 import net.ascend.core.bukkit.util.ChatUtil;
 

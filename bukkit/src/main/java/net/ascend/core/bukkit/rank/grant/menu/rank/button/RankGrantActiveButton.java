@@ -7,9 +7,8 @@ import net.ascend.core.bukkit.rank.grant.types.RankGrant;
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.RankManager;
 import net.ascend.core.bukkit.util.ColorUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +21,7 @@ public class RankGrantActiveButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        ItemMaker itemBuilder = ItemMaker.of(MaterialUtil.WOOL.getMaterial());
+        ItemMaker itemBuilder = ItemMaker.of("WOOL");
 
         itemBuilder.setDisplayName("&6Currently Active Grant");
 

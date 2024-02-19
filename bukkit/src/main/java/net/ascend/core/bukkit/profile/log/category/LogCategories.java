@@ -26,49 +26,49 @@ import java.util.List;
 public enum LogCategories {
     ALL(
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.all-logs.display-name"),
-            Material.valueOf(XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.all-logs.material")),
+            XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.all-logs.material"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getStringList("categories.all-logs.lore"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.all-logs.data"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.all-logs.slot")
     ),
     COMMAND_LOGS(
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.command-logs.display-name"),
-            Material.valueOf(XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.command-logs.material")),
+            XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.command-logs.material"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getStringList("categories.command-logs.lore"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.command-logs.data"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.command-logs.slot")
     ),
     CONNECTION_LOGS(
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.connection-logs.display-name"),
-            Material.valueOf(XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.connection-logs.material")),
+            XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.connection-logs.material"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getStringList("categories.connection-logs.lore"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.connection-logs.data"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.connection-logs.slot")
     ),
     RANK_LOGS(
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.rank-logs.display-name"),
-            Material.valueOf(XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.rank-logs.material")),
+            XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.rank-logs.material"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getStringList("categories.rank-logs.lore"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.rank-logs.data"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.rank-logs.slot")
     ),
     PUNISHMENT_LOGS(
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.punishment-logs.display-name"),
-            Material.valueOf(XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.punishment-logs.material")),
+            XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.punishment-logs.material"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getStringList("categories.punishment-logs.lore"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.punishment-logs.data"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.punishment-logs.slot")
     ),
     CURRENCY_LOGS(
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.currency-logs.display-name"),
-            Material.valueOf(XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.currency-logs.material")),
+            XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.currency-logs.material"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getStringList("categories.currency-logs.lore"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.currency-logs.data"),
             XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.currency-logs.slot")
     );
 
     @Getter String display_name;
-    @Getter Material material;
+    @Getter String material;
     @Getter List<String> lore;
     @Getter int material_data;
     @Getter int slot;

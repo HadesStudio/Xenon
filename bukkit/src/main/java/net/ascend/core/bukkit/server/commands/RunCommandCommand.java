@@ -6,7 +6,7 @@ import net.ascend.core.bukkit.server.ServerState;
 import net.ascend.core.bukkit.server.packet.ServerCommandExecutePacket;
 import net.ascend.core.bukkit.util.ChatUtil;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

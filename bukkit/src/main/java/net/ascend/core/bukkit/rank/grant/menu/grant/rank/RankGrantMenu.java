@@ -8,9 +8,9 @@ import net.ascend.core.bukkit.rank.grant.menu.grant.GrantMenu;
 import net.ascend.core.bukkit.rank.grant.menu.grant.rank.button.RankGrantSelectButton;
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.RankManager;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.Maps;

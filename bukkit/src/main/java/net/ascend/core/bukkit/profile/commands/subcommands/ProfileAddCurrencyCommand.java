@@ -6,7 +6,7 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.log.category.LogCategories;
 import net.ascend.core.bukkit.profile.log.types.LogActionTypes;
 import net.ascend.core.bukkit.util.command.sub.SubCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

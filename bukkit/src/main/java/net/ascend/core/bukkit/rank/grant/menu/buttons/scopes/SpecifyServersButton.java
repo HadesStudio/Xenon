@@ -7,9 +7,8 @@ import net.ascend.core.bukkit.rank.grant.Grant;
 import net.ascend.core.bukkit.rank.grant.menu.GrantScopesMenu;
 import net.ascend.core.bukkit.rank.grant.menu.grant.GrantMenu;
 import net.ascend.core.bukkit.rank.grant.menu.grant.GrantServersMenu;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -22,7 +21,7 @@ public class SpecifyServersButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return ItemMaker.of(MaterialUtil.SIGN.getMaterial()).setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.select-server.buttons.specific-servers.display-name")).setLore(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.select-server.buttons.specific-servers.lore")).build();
+        return ItemMaker.of("SIGN").setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.select-server.buttons.specific-servers.display-name")).setLore(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.select-server.buttons.specific-servers.lore")).build();
     }
 
     @Override

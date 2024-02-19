@@ -5,7 +5,7 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.Grant;
 import net.ascend.core.bukkit.util.prompt.Prompt;
 import net.ascend.core.bukkit.util.prompt.defaults.DurationPrompt;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 

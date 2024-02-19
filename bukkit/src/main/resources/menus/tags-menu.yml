@@ -75,7 +75,7 @@ category-menu:
                 - "&7"
                 - "&7You do not have permission to this tag!"
                 - "&7Purchase it from our store!"
-                - "&6&ostore.helydev.com"
+                - "&6&oascendproyect.org/store"
           slot: 12 # The slot the item is placed in.
           tag-name: "USA" # This is the name of the tag that you want to activate.
           actions: TOGGLE_TAG # OPEN_CATEGORY, TOGGLE_TAG, REMOVE_TAG, NONE
@@ -106,7 +106,7 @@ menu:
           - "&cYou do not have permission to"
           - "&cactivate this chat tag."
           - "&7"
-          - "&cPurchase it from &c&nstore.helydev.com"
+          - "&cPurchase it from &c&nascendproyect.org/store"
     reset-button:
       material: "BED"
       data: 0

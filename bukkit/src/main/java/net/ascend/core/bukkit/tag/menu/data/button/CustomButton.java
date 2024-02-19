@@ -7,7 +7,7 @@ import net.ascend.core.bukkit.tag.menu.CustomCategoryMenu;
 import net.ascend.core.bukkit.tag.menu.data.action.CustomButtonAction;
 import net.ascend.core.bukkit.tag.menu.data.category.CustomCategory;
 import net.ascend.core.bukkit.tag.packet.implement.TagUpdatePacket;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;

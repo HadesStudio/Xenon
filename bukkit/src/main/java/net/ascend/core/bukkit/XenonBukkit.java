@@ -41,14 +41,13 @@ import net.ascend.core.bukkit.task.NameMCReminderTask;
 import net.ascend.core.bukkit.util.command.CommandManager;
 import net.ascend.core.bukkit.util.command.SubCommandManager;
 import net.ascend.core.bukkit.util.prompt.PromptManager;
-import net.ascend.lib.CC;
-import net.ascend.lib.TaskUtil;
-import net.ascend.lib.adapter.BlockVectorAdapter;
-import net.ascend.lib.adapter.LocationAdapter;
-import net.ascend.lib.adapter.PotionEffectAdapter;
-import net.ascend.lib.adapter.VectorAdapter;
-import net.ascend.lib.configuration.Config;
-import net.ascend.lib.menu.MenuManager;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.TaskUtil;
+import net.ascend.core.bukkit.lib.adapter.BlockVectorAdapter;
+import net.ascend.core.bukkit.lib.adapter.LocationAdapter;
+import net.ascend.core.bukkit.lib.adapter.VectorAdapter;
+import net.ascend.core.bukkit.lib.configuration.Config;
+import net.ascend.core.bukkit.lib.menu.MenuManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.ConsoleCommandSender;
@@ -135,7 +134,7 @@ public class XenonBukkit extends JavaPlugin {
     private PromptManager promptManager;
     private SquadManager squadManager;
 
-    public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(PotionEffect.class, new PotionEffectAdapter()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
+    public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
     public void onEnable() {
         instance = this;
@@ -159,7 +158,6 @@ public class XenonBukkit extends JavaPlugin {
             Bukkit.getScheduler().cancelTasks(this);
             return;
         }
-
 
         setupConfig();
         initModules();

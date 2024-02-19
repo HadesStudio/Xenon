@@ -21,16 +21,13 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.menu.EditProfileMenu;
 import net.ascend.core.bukkit.profile.siblings.Sibling;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -102,7 +99,7 @@ public class SiblingsMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(MaterialUtil.HUMAN_SKULL.getMaterial());
+            ItemMaker builder = ItemMaker.of("SKULL_ITEM");
             builder.setData((short) 3);
             builder.setOwner(sibling.getSiblingName());
             builder.setDisplayName(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.buttons.sibling-button.display-name").replace("%player_name%", sibling.getSiblingName()));
@@ -142,18 +139,8 @@ public class SiblingsMenu extends PaginatedMenu {
     public static class Sibling_Create_Button extends Button {
         final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.buttons.create-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.buttons.create-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.buttons.create-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'siblings-create-button' is null, using a default value."));
-                    return Material.PAPER;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'siblings-create-button' is broken, using a default value."));
-                return Material.PAPER;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("siblings-menu.buttons.create-button.material");
         }
 
         public short getData() {

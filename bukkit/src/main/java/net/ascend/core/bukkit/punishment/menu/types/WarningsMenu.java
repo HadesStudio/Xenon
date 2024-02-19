@@ -20,14 +20,10 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.punishment.PunishmentType;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -68,18 +64,8 @@ public class WarningsMenu extends PaginatedMenu {
     private static class WarningsButton extends Button {
         private final Punishment punishment;
 
-        public Material getWarningMaterial() {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("warnings.button.warned.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("warnings.button.warned.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("warnings.button.warned.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'warnings-menu-warned-material' is null, using a default value."));
-                    return MaterialUtil.WOOL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'warnings-menu-warned-material' is broken, using a default value."));
-                return MaterialUtil.WOOL.getMaterial();
-            }
+        public String getWarningMaterial() {
+            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("warnings.button.warned.material");
         }
 
         public short getData() {

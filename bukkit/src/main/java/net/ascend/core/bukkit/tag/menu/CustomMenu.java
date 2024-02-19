@@ -2,9 +2,9 @@ package net.ascend.core.bukkit.tag.menu;
 
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.tag.menu.data.button.CustomButton;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -61,7 +61,8 @@ public class CustomMenu extends Menu {
     private static class SeparatorButton extends Button {
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker itemMaker = ItemMaker.of(Material.valueOf("STAINED_GLASS_PANE")).setDisplayName("&8")
+            ItemMaker itemMaker = ItemMaker.of("STAINED_GLASS_PANE")
+                    .setDisplayName("&8")
                     .setData((short) XenonBukkit.getInstance().getTagsMenuConfig().getConfiguration().getInt("category-menu.fill.data"));
 
             if (XenonBukkit.getInstance().getTagsMenuConfig().getConfiguration().getBoolean("category-menu.fill.glow")) {

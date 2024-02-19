@@ -17,7 +17,6 @@
 
     <name>Xenon Plugin</name>
 
-
     <repositories>
         <repository>
             <id>placeholderapi</id>
@@ -42,9 +41,10 @@
         </dependency>
 
         <dependency>
-            <groupId>net.ascend.core</groupId>
-            <artifactId>library</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-chat</artifactId>
+            <version>1.16-R0.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -98,42 +98,17 @@
         </dependency>
 
         <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>1.5.21</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>4.9.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <directory>../target</directory> <!-- Build it one level up, because it is the one we care about -->
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <finalName>Xenon-Core</finalName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

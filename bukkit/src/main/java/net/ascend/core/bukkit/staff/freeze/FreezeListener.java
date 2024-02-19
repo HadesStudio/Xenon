@@ -19,7 +19,7 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.commands.implement.staff.FreezeCommand;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.packet.implement.StaffRawMessagePacket;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

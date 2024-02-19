@@ -21,7 +21,7 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.packet.implement.AdminChatPacket;
 import net.ascend.core.bukkit.profile.packet.implement.StaffChatPacket;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

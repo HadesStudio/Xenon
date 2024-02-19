@@ -17,7 +17,7 @@ package net.ascend.core.bukkit.profile.profilesystem.commands;
 
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 
 public class NotificationCommand extends BaseCommand {

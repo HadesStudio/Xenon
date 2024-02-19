@@ -20,7 +20,7 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.tfa.utils.TFAUtil;
 import net.ascend.core.bukkit.util.TimeUtil;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

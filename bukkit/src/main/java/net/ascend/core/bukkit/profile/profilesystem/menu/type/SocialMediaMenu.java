@@ -18,14 +18,10 @@ package net.ascend.core.bukkit.profile.profilesystem.menu.type;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.profilesystem.impl.social.SocialMediaType;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -71,18 +67,8 @@ public class SocialMediaMenu extends Menu {
         private final Profile player_profile;
         private final SocialMediaType social_type;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.discord.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.discord.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.discord.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'discord-button' is null, using a default value."));
-                    return MaterialUtil.HUMAN_SKULL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'discord-button' is broken, using a default value."));
-                return MaterialUtil.HUMAN_SKULL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.discord.material");
         }
 
         public short getData() {
@@ -90,7 +76,7 @@ public class SocialMediaMenu extends Menu {
         }
 
         public String getSkullOwner() {
-            if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.discord.material")) == MaterialUtil.HUMAN_SKULL.getMaterial()) {
+            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.discord.material").equalsIgnoreCase("SKULL_ITEM")) {
                 return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.discord.data.skull-owner");
             } else {
                 return "";
@@ -154,18 +140,8 @@ public class SocialMediaMenu extends Menu {
         private final Profile player_profile;
         private final SocialMediaType social_type;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitter.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitter.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitter.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'twitter-button' is null, using a default value."));
-                    return MaterialUtil.HUMAN_SKULL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'twitter-button' is broken, using a default value."));
-                return MaterialUtil.HUMAN_SKULL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitter.material");
         }
 
         public short getData() {
@@ -173,7 +149,7 @@ public class SocialMediaMenu extends Menu {
         }
 
         public String getSkullOwner() {
-            if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitter.material")) == MaterialUtil.HUMAN_SKULL.getMaterial()) {
+            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitter.material").equalsIgnoreCase("SKULL_ITEM")) {
                 return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitter.data.skull-owner");
             } else {
                 return "";
@@ -243,18 +219,8 @@ public class SocialMediaMenu extends Menu {
         private final Profile player_profile;
         private final SocialMediaType social_type;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.youtube.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.youtube.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.youtube.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'youtube-button' is null, using a default value."));
-                    return MaterialUtil.HUMAN_SKULL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'youtube-button' is broken, using a default value."));
-                return MaterialUtil.HUMAN_SKULL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.youtube.material");
         }
 
         public short getData() {
@@ -262,7 +228,7 @@ public class SocialMediaMenu extends Menu {
         }
 
         public String getSkullOwner() {
-            if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.youtube.material")) == MaterialUtil.HUMAN_SKULL.getMaterial()) {
+            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.youtube.material").equalsIgnoreCase("SKULL_ITEM")) {
                 return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.youtube.data.skull-owner");
             } else {
                 return "";
@@ -333,18 +299,8 @@ public class SocialMediaMenu extends Menu {
         private final Profile player_profile;
         private final SocialMediaType social_type;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitch.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitch.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitch.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'twitch-button' is null, using a default value."));
-                    return MaterialUtil.HUMAN_SKULL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'twitch-button' is broken, using a default value."));
-                return MaterialUtil.HUMAN_SKULL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitch.material");
         }
 
         public short getData() {
@@ -352,7 +308,7 @@ public class SocialMediaMenu extends Menu {
         }
 
         public String getSkullOwner() {
-            if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitch.material")) == MaterialUtil.HUMAN_SKULL.getMaterial()) {
+            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitch.material").equalsIgnoreCase("SKULL_ITEM")) {
                 return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.twitch.data.skull-owner");
             } else {
                 return "";
@@ -422,18 +378,8 @@ public class SocialMediaMenu extends Menu {
         private final Profile player_profile;
         private final SocialMediaType social_type;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.instagram.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.instagram.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.instagram.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'instagram-button' is null, using a default value."));
-                    return MaterialUtil.HUMAN_SKULL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'instagram-button' is broken, using a default value."));
-                return MaterialUtil.HUMAN_SKULL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.instagram.material");
         }
 
         public short getData() {
@@ -441,7 +387,7 @@ public class SocialMediaMenu extends Menu {
         }
 
         public String getSkullOwner() {
-            if (Material.getMaterial(XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.instagram.material")) == MaterialUtil.HUMAN_SKULL.getMaterial()) {
+            if (XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.instagram.material").equalsIgnoreCase("SKULL_ITEM")) {
                 return XenonBukkit.getInstance().getProfileMenuConfig().getConfiguration().getString("social-media-menu.instagram.data.skull-owner");
             } else {
                 return "";

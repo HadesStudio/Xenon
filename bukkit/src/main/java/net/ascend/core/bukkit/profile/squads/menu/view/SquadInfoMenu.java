@@ -8,15 +8,12 @@ import net.ascend.core.bukkit.profile.squads.commands.prompts.InvitePlayerPrompt
 import net.ascend.core.bukkit.profile.squads.commands.prompts.JoinPasswordPrompt;
 import net.ascend.core.bukkit.profile.squads.invites.SquadInvite;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -101,7 +98,7 @@ public class SquadInfoMenu extends PaginatedMenu {
         @Override
         public ItemStack getItemStack(Player player) {
             OfflinePlayer offlinePlayer = XenonBukkit.getInstance().getServer().getOfflinePlayer(uuid);
-            ItemMaker builder = ItemMaker.of(MaterialUtil.HUMAN_SKULL.getMaterial());
+            ItemMaker builder = ItemMaker.of("SKULL_ITEM");
             builder.setData((short) 3);
             builder.setOwner(offlinePlayer.getName());
             builder.setDisplayName(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.member-button.display-name")
@@ -155,18 +152,8 @@ public class SquadInfoMenu extends PaginatedMenu {
             }
         }
         
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-discord.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-discord.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-discord.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'squad-discord-button' is null, using a default value."));
-                    return Material.PAINTING;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'squad-discord-button' is broken, using a default value."));
-                return Material.PAINTING;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-discord.material");
         }
 
         public short getData() {
@@ -213,18 +200,8 @@ public class SquadInfoMenu extends PaginatedMenu {
         final Profile profile;
         final Squad squad;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-info.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-info.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-info.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'squad-info-button' is null, using a default value."));
-                    return Material.NAME_TAG;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'squad-info-button' is broken, using a default value."));
-                return Material.NAME_TAG;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-info.material");
         }
 
         public short getData() {
@@ -263,18 +240,8 @@ public class SquadInfoMenu extends PaginatedMenu {
         final Profile profile;
         final Squad squad;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-invite.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-invite.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-invite.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'squad-invite-button' is null, using a default value."));
-                    return MaterialUtil.BOOK_AND_QUILL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'squad-invite-button' is broken, using a default value."));
-                return MaterialUtil.BOOK_AND_QUILL.getMaterial();
-            }
+        public String getMaterial() {
+             return XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-invite.material");
         }
 
         public short getData() {
@@ -310,18 +277,8 @@ public class SquadInfoMenu extends PaginatedMenu {
         final Profile profile;
         final Squad squad;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-join.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-join.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-join.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'squad-join-button' is null, using a default value."));
-                    return MaterialUtil.BOOK_AND_QUILL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'squad-join-button' is broken, using a default value."));
-                return MaterialUtil.BOOK_AND_QUILL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getSquadMenuConfig().getConfiguration().getString("menus.info-menu.buttons.squad-join.material");
         }
 
         public short getData() {

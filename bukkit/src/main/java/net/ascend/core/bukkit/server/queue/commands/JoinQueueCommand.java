@@ -21,7 +21,7 @@ import net.ascend.core.bukkit.server.ServerState;
 import net.ascend.core.bukkit.server.queue.packet.implement.QueueJoinPacket;
 import net.ascend.core.bukkit.server.queue.packet.implement.QueueSendPlayerPacket;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

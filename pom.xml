@@ -19,10 +19,8 @@
     </properties>
 
     <modules>
-        <module>library</module>
         <module>bukkit</module>
         <module>proxy</module>
-        <module>nms</module>
         <module>jar</module>
     </modules>
 

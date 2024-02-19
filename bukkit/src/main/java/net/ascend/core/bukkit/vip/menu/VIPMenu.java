@@ -20,16 +20,14 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.types.RankGrant;
 import net.ascend.core.bukkit.util.NewColorsUtil;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.fill.FillerTemplate;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -78,18 +76,8 @@ public class VIPMenu extends Menu {
     public static class Status_Button extends Button {
         private final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.status-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.status-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.status-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'vip-status-button' is null, using a default material."));
-                    return MaterialUtil.HUMAN_SKULL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'vip-status-button' is broken, using a default material."));
-                return MaterialUtil.HUMAN_SKULL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.status-button.material");
         }
 
         public short getData() {
@@ -149,18 +137,8 @@ public class VIPMenu extends Menu {
     public static class Color_Button extends Button {
         private final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.color-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.color-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.color-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'vip-color-button' is null, using a default material."));
-                    return MaterialUtil.WOOL.getMaterial();
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'vip-color-button' is broken, using a default material."));
-                return MaterialUtil.WOOL.getMaterial();
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.color-button.material");
         }
 
         public short getData() {
@@ -202,29 +180,17 @@ public class VIPMenu extends Menu {
     public static class Rewards_Button extends Button {
         private final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.rewards-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.rewards-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.rewards-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'vip-rewards-button' is null, using a default material."));
-                    return Material.TRIPWIRE_HOOK;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'vip-rewards-button' is broken, using a default material."));
-                return Material.TRIPWIRE_HOOK;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getString("menu.buttons.rewards-button.material");
         }
 
         public short getData() {
             return (short) XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getInt("menu.buttons.rewards-button.data");
         }
 
-
         public int getVipRewardsAmount() {
             return XenonBukkit.getInstance().getVipMenuConfig().getConfiguration().getConfigurationSection("rewards").getKeys(false).size();
         }
-
 
         @Override
         public ItemStack getItemStack(Player player) {

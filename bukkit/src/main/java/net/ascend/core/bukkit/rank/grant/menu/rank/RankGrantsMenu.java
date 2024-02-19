@@ -8,12 +8,12 @@ import net.ascend.core.bukkit.rank.grant.menu.GrantViewSelectMenu;
 import net.ascend.core.bukkit.rank.grant.menu.buttons.GrantInformationButton;
 import net.ascend.core.bukkit.rank.grant.menu.rank.button.RankGrantActiveButton;
 import net.ascend.core.bukkit.rank.grant.types.RankGrant;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.button.implement.PageFilterButton;
-import net.ascend.lib.menu.implement.FilterablePaginatedMenu;
-import net.ascend.lib.menu.implement.PageFilter;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageFilterButton;
+import net.ascend.core.bukkit.lib.menu.implement.FilterablePaginatedMenu;
+import net.ascend.core.bukkit.lib.menu.implement.PageFilter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 

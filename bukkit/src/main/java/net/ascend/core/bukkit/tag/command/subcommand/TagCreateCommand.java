@@ -5,7 +5,7 @@ import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.tag.Tag;
 import net.ascend.core.bukkit.tag.packet.implement.TagUpdatePacket;
 import net.ascend.core.bukkit.util.command.sub.SubCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

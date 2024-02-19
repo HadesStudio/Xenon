@@ -3,7 +3,7 @@ package net.ascend.core.bukkit.commands.implement.staff;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

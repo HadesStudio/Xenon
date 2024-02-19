@@ -28,8 +28,9 @@ import java.util.List;
 @Getter
 @Setter
 public class Perk {
+
     private String name;
-    private Material material;
+    private String material;
     private Integer materialData;
     private String displayName;
     private List<String> lore;

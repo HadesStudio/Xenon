@@ -7,7 +7,7 @@ import net.ascend.core.bukkit.rank.grant.menu.GrantViewSelectMenu;
 import net.ascend.core.bukkit.rank.grant.types.PermissionGrant;
 import net.ascend.core.bukkit.util.prompt.Prompt;
 import net.ascend.core.bukkit.util.prompt.defaults.StringPrompt;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 

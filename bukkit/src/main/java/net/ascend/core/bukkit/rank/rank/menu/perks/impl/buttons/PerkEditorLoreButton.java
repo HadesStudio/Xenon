@@ -23,11 +23,10 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.menu.perks.impl.RankPerkEditSubMenu;
 import net.ascend.core.bukkit.rank.rank.perk.Perk;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.callback.Callback;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.callback.Callback;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationFactory;
@@ -48,7 +47,9 @@ public class PerkEditorLoreButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return ItemMaker.of(MaterialUtil.ENDER_PORTAL_FRAME.getMaterial()).setDisplayName("&6Edit Lore").setLore(getLore()).build();
+        return ItemMaker.of("ENDER_PORTAL_FRAME")
+                .setDisplayName("&6Edit Lore")
+                .setLore(getLore()).build();
     }
 
     public List<String> getLore() {

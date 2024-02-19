@@ -14,7 +14,7 @@ import net.ascend.core.bukkit.punishment.broadcast.PunishmentBroadcast;
 import net.ascend.core.bukkit.punishment.packet.implement.PunishmentExecutePacket;
 import net.ascend.core.bukkit.util.ChatUtil;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;

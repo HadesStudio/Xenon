@@ -4,13 +4,13 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.notifications.Notification;
-import net.ascend.lib.callback.Callback;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.fill.FillerTemplate;
-import net.ascend.lib.menu.implement.ConfirmationMenu;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.callback.Callback;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.menu.implement.ConfirmationMenu;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
@@ -63,7 +63,7 @@ public class SelectionMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            Material material = Material.LAPIS_BLOCK;
+            String material = "LAPIS_BLOCK";
             int data = 0;
             String display_name = "&6Send Notification to Player";
 
@@ -129,7 +129,7 @@ public class SelectionMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            Material material = Material.LAPIS_BLOCK;
+            String material = "LAPIS_BLOCK";
             int data = 0;
             String display_name = "&6Send Notification to Everyone";
 

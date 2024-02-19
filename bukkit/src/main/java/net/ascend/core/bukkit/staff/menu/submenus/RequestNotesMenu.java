@@ -18,11 +18,11 @@ package net.ascend.core.bukkit.staff.menu.submenus;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.staff.requests.Request;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -106,18 +106,8 @@ public class RequestNotesMenu extends PaginatedMenu {
         String message;
         Request request;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.notes.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.notes.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.notes.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'active-notes-button' is null, using a default material."));
-                    return Material.PAPER;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'active-notes-button' is broken, using a default material."));
-                return Material.PAPER;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.notes.material");
         }
 
         public List<String> getLore() {
@@ -155,18 +145,8 @@ public class RequestNotesMenu extends PaginatedMenu {
     public static class Note_Create_Button extends Button {
         Request request;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.new-note.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.new-note.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.new-note.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'new-notes-button' is null, using a default material."));
-                    return Material.NAME_TAG;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'new-notes-button' is broken, using a default material."));
-                return Material.NAME_TAG;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getRequestsMenuConfig().getConfiguration().getString("active-requests.buttons.new-note.material");
         }
 
         public List<String> getLore() {

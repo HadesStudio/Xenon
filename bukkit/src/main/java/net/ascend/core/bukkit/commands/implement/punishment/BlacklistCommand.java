@@ -10,7 +10,7 @@ import net.ascend.core.bukkit.punishment.PunishmentType;
 import net.ascend.core.bukkit.punishment.packet.implement.PunishmentExecutePacket;
 import net.ascend.core.bukkit.util.ChatUtil;
 import net.ascend.core.bukkit.util.command.BaseCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

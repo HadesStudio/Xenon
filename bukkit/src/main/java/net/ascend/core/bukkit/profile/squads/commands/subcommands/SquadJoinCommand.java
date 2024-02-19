@@ -6,7 +6,7 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.squads.Squad;
 import net.ascend.core.bukkit.profile.squads.invites.SquadInvite;
 import net.ascend.core.bukkit.util.command.sub.SubCommand;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

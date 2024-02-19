@@ -7,7 +7,7 @@ import net.ascend.core.bukkit.profile.squads.menu.SquadMainMenu;
 import net.ascend.core.bukkit.profile.squads.menu.view.SquadInfoMenu;
 import net.ascend.core.bukkit.util.prompt.Prompt;
 import net.ascend.core.bukkit.util.prompt.defaults.StringPrompt;
-import net.ascend.lib.CC;
+import net.ascend.core.bukkit.lib.CC;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 

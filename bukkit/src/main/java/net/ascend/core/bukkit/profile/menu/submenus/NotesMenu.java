@@ -20,12 +20,12 @@ import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.menu.EditProfileMenu;
 import net.ascend.core.bukkit.profile.note.Note;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.button.Button;
-import net.ascend.lib.menu.button.implement.BackButton;
-import net.ascend.lib.menu.button.implement.PageButton;
-import net.ascend.lib.menu.implement.PaginatedMenu;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
+import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -98,18 +98,8 @@ public class NotesMenu extends PaginatedMenu {
         final Profile profile;
         final Note note;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("notes-menu.buttons.note-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("notes-menu.buttons.note-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("notes-menu.buttons.note-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'note-button' is null, using a default value."));
-                    return Material.PAPER;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'note-button' is broken, using a default value."));
-                return Material.PAPER;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("notes-menu.buttons.note-button.material");
         }
 
         public short getData() {
@@ -156,18 +146,8 @@ public class NotesMenu extends PaginatedMenu {
     public static class Note_Create_Button extends Button {
         final Profile profile;
 
-        public Material getMaterial() {
-            if (XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("notes-menu.buttons.create-button.material") != null) {
-                if (Material.getMaterial(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("notes-menu.buttons.create-button.material")) != null) {
-                    return Material.valueOf(XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("notes-menu.buttons.create-button.material"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'create-button' is null, using a default value."));
-                    return Material.PAPER;
-                }
-            } else {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&c[Xenon] The material of 'create-button' is broken, using a default value."));
-                return Material.PAPER;
-            }
+        public String getMaterial() {
+            return XenonBukkit.getInstance().getEditProfileMenuConfig().getConfiguration().getString("notes-menu.buttons.create-button.material");
         }
 
         public short getData() {

@@ -20,15 +20,13 @@ import net.ascend.core.bukkit.filter.Filter;
 import net.ascend.core.bukkit.filter.menu.editor.mutetype.MatchSelectionMenu;
 import net.ascend.core.bukkit.filter.menu.editor.mutetype.MuteTypeSelectionMenu;
 import net.ascend.core.bukkit.util.TimeUtil;
-import net.ascend.core.bukkit.util.material.MaterialUtil;
-import net.ascend.lib.menu.fill.FillerTemplate;
-import net.ascend.lib.CC;
-import net.ascend.lib.maker.ItemMaker;
-import net.ascend.lib.menu.Menu;
-import net.ascend.lib.menu.button.Button;
+import net.ascend.core.bukkit.lib.menu.fill.FillerTemplate;
+import net.ascend.core.bukkit.lib.CC;
+import net.ascend.core.bukkit.lib.maker.ItemMaker;
+import net.ascend.core.bukkit.lib.menu.Menu;
+import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -86,7 +84,7 @@ public class FilterEditorMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(Material.ANVIL);
+            ItemMaker builder = ItemMaker.of("ANVIL");
             builder.setData((short) 0);
             builder.setDisplayName("&6Rename Filter");
             builder.setLore(Arrays.asList(
@@ -129,7 +127,7 @@ public class FilterEditorMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(MaterialUtil.SIGN.getMaterial());
+            ItemMaker builder = ItemMaker.of("SIGN");
             builder.setData((short) 0);
             builder.setDisplayName("&6Change Filtered Text");
             builder.setLore(Arrays.asList(
@@ -172,7 +170,7 @@ public class FilterEditorMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(Material.FISHING_ROD);
+            ItemMaker builder = ItemMaker.of("FISHING_ROD");
             builder.setData((short) 0);
             builder.setDisplayName("&6Match Type Editor");
             builder.setLore(Arrays.asList(
@@ -196,7 +194,7 @@ public class FilterEditorMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(Material.PAPER);
+            ItemMaker builder = ItemMaker.of("PAPER");
             builder.setData((short) 0);
             builder.setDisplayName("&6Change Mute Mode");
             builder.setLore(Arrays.asList(
@@ -220,7 +218,7 @@ public class FilterEditorMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(MaterialUtil.EMPTY_MAP.getMaterial());
+            ItemMaker builder = ItemMaker.of("EMPTY_MAP");
             builder.setData((short) 0);
             builder.setDisplayName("&6Change Duration");
             builder.setLore(Arrays.asList(
@@ -278,7 +276,7 @@ public class FilterEditorMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(MaterialUtil.INK_SACK.getMaterial());
+            ItemMaker builder = ItemMaker.of("INK_SACK");
             builder.setData((short) getData());
             builder.setDisplayName("&6Change Case Sensitive");
             builder.setLore(Arrays.asList(
@@ -333,7 +331,7 @@ public class FilterEditorMenu extends Menu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(MaterialUtil.INK_SACK.getMaterial());
+            ItemMaker builder = ItemMaker.of("INK_SACK");
             builder.setData((short) getData());
             builder.setDisplayName("&6Filter Enabled");
             builder.setLore(Arrays.asList(
