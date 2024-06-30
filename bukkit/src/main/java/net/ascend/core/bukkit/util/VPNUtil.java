@@ -1,20 +1,5 @@
 package net.ascend.core.bukkit.util;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.utils
-//   Date: Wednesday, August 02, 2023 - 7:28 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

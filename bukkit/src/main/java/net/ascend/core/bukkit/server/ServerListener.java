@@ -67,7 +67,6 @@ public class ServerListener implements PacketListener {
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 
-
         String message = XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("run-command.broadcast").replace("%server%", server.getName()).replace("%command%", command).replace("%user%", executor);
         XenonBukkit.getInstance().getRedisModule().sendPacket(new StaffRawMessagePacket("xenon.admin", server.getName(), message));
     }

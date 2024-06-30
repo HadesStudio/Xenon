@@ -21,7 +21,7 @@ import com.google.gson.GsonBuilder;
  * Protect Name Xenon
  */
 public class UUIDUtil {
-    private static  Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new GsonBuilder().create();
     private static Pattern UUID_PATTERN = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0" +
             "-9a-fA-F]{3}-[0-9a-fA-F]{12}");
 

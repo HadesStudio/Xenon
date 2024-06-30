@@ -47,10 +47,10 @@ public class XenonBungee extends Plugin {
 
         this.registerConfigs();
 
-        initModules();
-        setupPackets();
-        setupCommands();
-        setupListeners();
+        this.setupModules();
+        this.setupPackets();
+        this.setupCommands();
+        this.setupListeners();
 
         this.fullyEnabled = true;
     }
@@ -68,8 +68,7 @@ public class XenonBungee extends Plugin {
         redisBungeeModule.disable();
     }
 
-
-    public void initModules(){
+    public void setupModules(){
         redisBungeeModule = new RedisBungeeModule();
     }
 

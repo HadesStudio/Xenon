@@ -394,7 +394,7 @@ public class XenonBukkit extends JavaPlugin {
                         bukkitCommandSender.sendMessage(CC.translate("&6&lXenon (Rank Core)"));
                         bukkitCommandSender.sendMessage(CC.translate(""));
 
-                        if (!version.equals(res[2])) {
+                        if (res.length >= 3 && !version.equals(res[2])) {
                             bukkitCommandSender.sendMessage(CC.translate("&cThis plugin is outdated!"));
                             bukkitCommandSender.sendMessage(CC.translate("&cPlease download the new updated version in our discord."));
                             bukkitCommandSender.sendMessage(CC.translate("&cSupport will NOT be offered on outdated versions."));
