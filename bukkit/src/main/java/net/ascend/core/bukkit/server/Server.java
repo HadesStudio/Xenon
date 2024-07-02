@@ -36,10 +36,6 @@ public class Server {
     private int maxPlayers = 25;
     private double tps = 0D;
     private double fullTick = 0D;
-    private boolean queueEnabled = false;
-    private boolean queuePaused = false;
-    private int queueRate = 5;
-    private int playersInQueue = 0;
 
     public Server(String name) {
         this.name = name;
@@ -50,9 +46,6 @@ public class Server {
         document.put("name", name);
         document.put("state", state.toString());
         document.put("maxPlayers", maxPlayers);
-        document.put("queueRate", queueRate);
-        document.put("queuePaused", queuePaused);
-        document.put("queueEnabled", queueEnabled);
 
         XenonBukkit.getInstance().getMongoModule().getServerCollection().replaceOne(Filters.eq("name", name), document, new ReplaceOptions().upsert(true));
     }
@@ -64,9 +57,6 @@ public class Server {
             name = document.getString("name");
             state = ServerState.valueOf(document.getString("state"));
             maxPlayers = document.getInteger("maxPlayers");
-            queueRate = document.getInteger("queueRate");
-            queuePaused = document.getBoolean("queuePaused");
-            queueEnabled = document.getBoolean("queueEnabled");
         }
     }
 

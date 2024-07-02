@@ -39,13 +39,8 @@ public class ProfileAddCurrencyCommand extends SubCommand {
             return;
         }
 
-        int amount;
-        try {
-            amount = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e) {
-            sender.sendMessage(CC.translate(Locale.COMMANDS_INVALID_NUMBER));
-            return;
-        }
+        if (!this.checkNumber(sender, args[2])) return;
+        int amount = Math.abs(Integer.parseInt(args[2]));
 
         profile.setCurrency(profile.getCurrency() + amount);
         profile.save();

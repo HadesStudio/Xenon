@@ -20,7 +20,6 @@ import net.ascend.core.bukkit.core.OxygenMenu;
 import net.ascend.core.bukkit.core.buttons.InfoButton;
 import net.ascend.core.bukkit.server.Server;
 import net.ascend.core.bukkit.server.ServerState;
-import net.ascend.core.bukkit.server.queue.packet.implement.QueueSendPlayerPacket;
 import net.ascend.core.bukkit.util.TPSUtil;
 import net.ascend.core.bukkit.util.TimeUtil;
 import net.ascend.core.bukkit.lib.maker.ItemMaker;
@@ -220,7 +219,6 @@ public class ServerListMenu extends PaginatedMenu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType.isLeftClick()) {
-                XenonBukkit.getInstance().getRedisModule().sendPacket(new QueueSendPlayerPacket(server.getName(), player.getUniqueId()));
             } else if (clickType.isRightClick()) {
             }
         }

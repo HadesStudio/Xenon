@@ -36,13 +36,8 @@ public class SetSlotsCommand extends BaseCommand {
             return;
         }
 
-        int amount;
-        try {
-            amount = Integer.parseInt(args[0]);
-        } catch (NumberFormatException e) {
-            sender.sendMessage(CC.translate(Locale.COMMANDS_INVALID_NUMBER));
-            return;
-        }
+        if (!this.checkNumber(sender, args[0])) return;
+        int amount = Math.abs(Integer.parseInt(args[0]));
 
         XenonBukkit.getInstance().getServerData().setMaxPlayers(amount);
         XenonBukkit.getInstance().getServerData().save();

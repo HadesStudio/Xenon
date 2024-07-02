@@ -38,9 +38,6 @@ public class ServerManager implements ModuleLoader {
             Server server = new Server(document.getString("name"));
             server.setState(ServerState.valueOf(document.getString("state")));
             server.setMaxPlayers(document.getInteger("maxPlayers"));
-            server.setQueueRate(document.getInteger("queueRate"));
-            server.setQueuePaused(document.getBoolean("queuePaused"));
-            server.setQueueEnabled(document.getBoolean("queueEnabled"));
 
             servers.put(server.getName(), server);
         }
@@ -101,7 +98,6 @@ public class ServerManager implements ModuleLoader {
     }
 
     public void startServerMonitor() {
-        // We use this as a replacement for the HeartBeatRunnable:
         XenonBukkit.getInstance().getTaskUtil().runAsyncTimer(() -> {
             for (Server server : getServersList()) {
                 if (System.currentTimeMillis() - server.getLastHeartbeat() > 15_000) {
@@ -120,10 +116,6 @@ public class ServerManager implements ModuleLoader {
             XenonBukkit.getInstance().getServerData().setState(Bukkit.hasWhitelist() ? ServerState.WHITELISTED : ServerState.ONLINE);
             XenonBukkit.getInstance().getServerData().setOnlinePlayers(Bukkit.getOnlinePlayers().size());
             XenonBukkit.getInstance().getServerData().setMaxPlayers(Bukkit.getMaxPlayers());
-            XenonBukkit.getInstance().getServerData().setQueueEnabled(XenonBukkit.getInstance().getServerData().isQueueEnabled());
-            XenonBukkit.getInstance().getServerData().setQueuePaused(XenonBukkit.getInstance().getServerData().isQueuePaused());
-            XenonBukkit.getInstance().getServerData().setQueueRate(XenonBukkit.getInstance().getServerData().getQueueRate());
-            XenonBukkit.getInstance().getServerData().setPlayersInQueue(XenonBukkit.getInstance().getQueue().getPlayers().size());
 
             XenonBukkit.getInstance().getRedisModule().sendPacket(new ServerUpdatePacket(XenonBukkit.getInstance().getServerData()));
         }, 40L, 40L);

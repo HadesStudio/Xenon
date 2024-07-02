@@ -118,7 +118,6 @@ public class Profile {
     private List<SquadInvite> squadInvites = new ArrayList<>();
     private boolean squadChat = false;
 
-    // New Grant System:
     private RankGrant activeRankGrant;
     private List<Grant> grants = Lists.newArrayList();
 

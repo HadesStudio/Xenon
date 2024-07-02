@@ -1,4 +1,4 @@
-package net.ascend.core.bukkit.placeholder;
+package net.ascend.core.bukkit.hook.placeholder;
 
 import lombok.Setter;
 import org.bukkit.Bukkit;

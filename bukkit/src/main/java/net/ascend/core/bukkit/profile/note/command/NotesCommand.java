@@ -91,13 +91,8 @@ public class NotesCommand extends BaseCommand {
                 return;
             }
 
-            int id;
-            try {
-                id = Integer.parseInt(args[2]);
-            } catch (NumberFormatException e) {
-                sender.sendMessage(CC.translate(Locale.COMMANDS_INVALID_NUMBER));
-                return;
-            }
+            if (!this.checkNumber(sender, args[2])) return;
+            int id = Math.abs(Integer.parseInt(args[2]));
 
             if (id > profile.getNotes().size()) {
                 sender.sendMessage(CC.translate(Locale.NOTES_INVALID_ID));

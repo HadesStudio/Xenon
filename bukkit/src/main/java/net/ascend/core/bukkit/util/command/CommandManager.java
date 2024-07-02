@@ -33,7 +33,6 @@ import net.ascend.core.bukkit.profile.profilesystem.commands.NotificationCommand
 import net.ascend.core.bukkit.profile.profilesystem.commands.NotificationsCommand;
 import net.ascend.core.bukkit.profile.tfa.commands.AuthCommand;
 import net.ascend.core.bukkit.profile.tfa.commands.RemoveAuthCommand;
-import net.ascend.core.bukkit.server.queue.commands.*;
 import net.ascend.core.bukkit.server.reboot.commands.RebootCommand;
 import net.ascend.core.bukkit.staff.requests.commands.HelpopCommand;
 import net.ascend.core.bukkit.staff.requests.commands.ReportCommand;
@@ -135,10 +134,6 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new NameMCCommand());
         loadedCommands.add(new FilterCommand());
 
-        loadedCommands.add(new QueueListCommand());
-        loadedCommands.add(new JoinQueueCommand());
-        loadedCommands.add(new LeaveQueueCommand());
-
         loadedCommands.add(new BlacklistCommand());
         loadedCommands.add(new BanCommand());
         loadedCommands.add(new TempBanCommand());
@@ -156,8 +151,7 @@ public class CommandManager implements ModuleLoader {
         loadedCommands.add(new ReportCommand());
         loadedCommands.add(new HelpopCommand());
         loadedCommands.add(new RebootCommand());
-        loadedCommands.add(new QueueToggleCommand());
-        loadedCommands.add(new QueuePauseCommand());
+
         loadedCommands.add(new VIPCommand());
         loadedCommands.add(new VIPResetCommand());
         loadedCommands.add(new GrantsCommand());

@@ -137,6 +137,15 @@ public class Locale {
         Config language = XenonBukkit.getInstance().getLanguageConfig();
         Config config = XenonBukkit.getInstance().getConfiguration();
 
+        COMMANDS_NO_PERMISSION = language.getConfiguration().getString("commands.no_permission");
+        COMMANDS_ONLY_PLAYER = language.getConfiguration().getString("commands.only_player");
+        COMMANDS_ONLY_CONSOLE = language.getConfiguration().getString("commands.only_console");
+        COMMANDS_ARGUMENT_NOT_FOUND = language.getConfiguration().getString("commands.argument_not_found");
+        COMMANDS_PLAYER_NEVER_PLAYED = language.getConfiguration().getString("commands.never_played");
+        COMMANDS_OFFLINE_PLAYER = language.getConfiguration().getString("commands.offline_player");
+        COMMANDS_INVALID_NUMBER = language.getConfiguration().getString("commands.not_valid_number");
+
+
         VANISH_DISABLED_O = language.getConfiguration().getString("vanish.others.disabled");
         VANISH_ENABLED_O = language.getConfiguration().getString("vanish.others.enabled");
         VANISH_DISABLED = language.getConfiguration().getString("vanish.disabled");
@@ -192,14 +201,6 @@ public class Locale {
 
 
         HISTORY_USAGE = language.getConfiguration().getString("history.usage");
-
-        COMMANDS_NO_PERMISSION = language.getConfiguration().getString("commands.no-permission");
-        COMMANDS_ONLY_PLAYER = language.getConfiguration().getString("commands.only-player");
-        COMMANDS_ONLY_CONSOLE = language.getConfiguration().getString("commands.only-console");
-        COMMANDS_ARGUMENT_NOT_FOUND = language.getConfiguration().getString("commands.argument-not-found");
-        COMMANDS_PLAYER_NEVER_PLAYED = language.getConfiguration().getString("commands.never-played");
-        COMMANDS_OFFLINE_PLAYER = language.getConfiguration().getString("commands.offline-player");
-        COMMANDS_INVALID_NUMBER = language.getConfiguration().getString("commands.invalid-integer");
 
         PUNISHMENT_BLACKLIST_USAGE = language.getConfiguration().getString("blacklist.usage");
         PUNISHMENT_BLACKLIST_ALREADY_BLACKLISTED = language.getConfiguration().getString("blacklist.already-blacklisted");

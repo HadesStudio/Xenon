@@ -4,17 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import lombok.Getter;
-import net.ascend.core.bukkit.announcements.AnnouncementManager;
 import net.ascend.core.bukkit.chat.ChatModule;
-import net.ascend.core.bukkit.client.ClientModule;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.filter.FilterManager;
 import net.ascend.core.bukkit.modules.ModuleLoader;
 import net.ascend.core.bukkit.modules.database.mongo.MongoModule;
 import net.ascend.core.bukkit.modules.database.redis.RedisModule;
 import net.ascend.core.bukkit.modules.listener.ListenerModule;
-import net.ascend.core.bukkit.placeholder.PlaceHolderAPIExpansion;
-import net.ascend.core.bukkit.placeholder.PlaceholderHook;
+import net.ascend.core.bukkit.hook.placeholder.PlaceHolderAPIExpansion;
+import net.ascend.core.bukkit.hook.placeholder.PlaceholderHook;
 import net.ascend.core.bukkit.profile.ProfileManager;
 import net.ascend.core.bukkit.profile.log.LogManager;
 import net.ascend.core.bukkit.profile.notifications.NotificationManager;
@@ -29,9 +27,6 @@ import net.ascend.core.bukkit.server.ServerListener;
 import net.ascend.core.bukkit.server.ServerManager;
 import net.ascend.core.bukkit.server.ServerState;
 import net.ascend.core.bukkit.server.packet.ServerStateChangePacket;
-import net.ascend.core.bukkit.server.queue.Queue;
-import net.ascend.core.bukkit.server.queue.QueueManager;
-import net.ascend.core.bukkit.server.queue.packet.QueuePacketListener;
 import net.ascend.core.bukkit.server.reboot.RebootManager;
 import net.ascend.core.bukkit.staff.requests.RequestManager;
 import net.ascend.core.bukkit.staff.staffmode.StaffManager;
@@ -53,7 +48,6 @@ import org.bukkit.Location;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 import org.json.simple.JSONObject;
@@ -99,7 +93,6 @@ public class XenonBukkit extends JavaPlugin {
     private Config serversMenuConfig;
     private Config coinShopConfig;
     private Config serverConfig;
-    private Config announcementConfig;
     private Config staffHistoryConfig;
     private Config vipMenuConfig;
     private Config grantMenuConfig;
@@ -118,14 +111,10 @@ public class XenonBukkit extends JavaPlugin {
     private CommandManager commandManager;
     private SubCommandManager subCommandManager;
     private ListenerModule listenerModule;
-    private ClientModule clientManager;
     private RequestManager requestHandler;
     private TFAManager tfaManager;
-    private QueueManager queueManager;
-    private Queue queue;
     private LogManager logManager;
     private StaffManager staffManager;
-    private AnnouncementManager announcementManager;
     private RebootManager rebootManager;
     private Server serverData;
     private FilterManager filterManager;
@@ -137,8 +126,7 @@ public class XenonBukkit extends JavaPlugin {
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
     public void onEnable() {
-        instance = this;
-        LAST_START_TIME = System.currentTimeMillis();
+        this.instance = this;
 
         try {
             this.licenseConfig = new Config(this, "license");
@@ -179,6 +167,8 @@ public class XenonBukkit extends JavaPlugin {
         }
 
         this.getRedisModule().sendPacket(new ServerStateChangePacket(serverData.getName(), ServerState.ONLINE));
+
+        LAST_START_TIME = System.currentTimeMillis();
 
         this.fullyEnabled = true;
     }
@@ -244,8 +234,6 @@ public class XenonBukkit extends JavaPlugin {
             this.configList.add(coinShopConfig);
             this.staffHistoryConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "staff-history-menu");
             this.configList.add(staffHistoryConfig);
-            this.announcementConfig = new Config(XenonBukkit.getInstance(), "announcements");
-            this.configList.add(announcementConfig);
             this.vipMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "vip-menu");
             this.configList.add(vipMenuConfig);
             this.grantMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "grant-menu");
@@ -271,46 +259,47 @@ public class XenonBukkit extends JavaPlugin {
     }
 
     public void initModules() {
-        this.queue = new Queue(this);
-        taskUtil = new TaskUtil(XenonBukkit.getInstance());
+        this.taskUtil = new TaskUtil(XenonBukkit.getInstance());
 
-        redisModule = new RedisModule();
-        mongoModule = new MongoModule();
-        googleAuthenticator = new GoogleAuthenticator();
-        clientManager = new ClientModule();
-        commandManager = new CommandManager();
-        subCommandManager = new SubCommandManager();
-        listenerModule = new ListenerModule();
-        rankManager = new RankManager();
-        tagManager = new TagManager();
-        chatManager = new ChatModule();
-        requestHandler = new RequestManager();
-        tfaManager = new TFAManager();
-        logManager = new LogManager();
-        staffManager = new StaffManager();
-        announcementManager = new AnnouncementManager();
-        notificationManager = new NotificationManager();
-        promptManager = new PromptManager(this);
+        this.redisModule = new RedisModule();
+        this.mongoModule = new MongoModule();
 
-        queueManager = new QueueManager();
-        serverManager = new ServerManager();
-        rebootManager = new RebootManager();
-        filterManager = new FilterManager();
-        squadManager = new SquadManager();
+        this.commandManager = new CommandManager();
+        this.subCommandManager = new SubCommandManager();
+        this.listenerModule = new ListenerModule();
+
+        this.googleAuthenticator = new GoogleAuthenticator();
+
+        this.rankManager = new RankManager();
+        this.tagManager = new TagManager();
+        this.chatManager = new ChatModule();
+        this.requestHandler = new RequestManager();
+        this.tfaManager = new TFAManager();
+        this.logManager = new LogManager();
+        this.staffManager = new StaffManager();
+        this.notificationManager = new NotificationManager();
+        this.promptManager = new PromptManager(this);
+
+        this.serverManager = new ServerManager();
+        this.rebootManager = new RebootManager();
+        this.filterManager = new FilterManager();
+        this.squadManager = new SquadManager();
     }
 
     public void setupModules() {
         MenuManager.INSTANCE.onEnable(XenonBukkit.getInstance());
-        profileManager = new ProfileManager();
-        modules = new ArrayList<>();
+        this.profileManager = new ProfileManager();
+
+        this.modules = new ArrayList<>();
 
         this.loadModule(mongoModule);
         this.loadModule(redisModule);
         this.loadModule(chatManager);
-        this.loadModule(clientManager);
+
         this.loadModule(commandManager);
         this.loadModule(subCommandManager);
         this.loadModule(listenerModule);
+
         this.loadModule(requestHandler);
         this.loadModule(rankManager);
         this.loadModule(tagManager);
@@ -319,7 +308,6 @@ public class XenonBukkit extends JavaPlugin {
         this.loadModule(staffManager);
         this.loadModule(filterManager);
         this.loadModule(serverManager);
-        this.loadModule(announcementManager);
         this.loadModule(squadManager);
     }
 
@@ -329,7 +317,6 @@ public class XenonBukkit extends JavaPlugin {
         redisModule.registerListener(new TagPacketListener(tagManager));
         redisModule.registerListener(new GrantPacketListener());
         redisModule.registerListener(new ServerListener());
-        redisModule.registerListener(new QueuePacketListener());
 
         redisModule.subscribeJedis();
     }

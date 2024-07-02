@@ -39,16 +39,11 @@ public class ProfileRemoveCurrencyCommand extends SubCommand {
             return;
         }
 
-        int amount;
-        try {
-            amount = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e) {
-            sender.sendMessage(CC.translate(Locale.COMMANDS_INVALID_NUMBER));
-            return;
-        }
+        if (!this.checkNumber(sender, args[2])) return;
+        int amount = Math.abs(Integer.parseInt(args[2]));
 
         int currentCurrency = profile.getCurrency();
-        if (currentCurrency < amount) { // dont want it to go negative :( puta
+        if (currentCurrency < amount) {
             sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.remove-currency.invalid")));
             return;
         }

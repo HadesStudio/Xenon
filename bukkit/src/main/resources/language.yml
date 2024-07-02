@@ -1,11 +1,12 @@
 commands:
-  no-permission: "&c&cYou do not have sufficient permissions to execute this command."
-  argument-not-found: "&cSorry, the command argument '&f%argument%&c' could not be found."
-  only-player: "&cSorry, only players can execute this command."
-  only-console: "&cYou cannot execute this command."
-  never-played: "&cThe player by the name of '&c&l%player%&c' has never connected to the server."
-  offline-player: "&cThe player by the name of '&c&l%player%&c' is currently not connected to the server!"
-  invalid-integer: "&cYou have provided a invalid integer in your command argument."
+  no_permission: "&cYou do not have sufficient permissions to execute this command."
+  only_player: "&cThis command can only be executed by players."
+  only_console: "&cThis command can only be executed by the console."
+  argument_not_found: "&cArgument &f%argument% &ccould not be found."
+  never_played: "&c%player% has never played before."
+  offline_player: "&cThat player is currently offline"
+  not_valid_number: "&c%number% &eis not a valid number."
+
 
 chat:
   muted: "&cYou cannot speak in chat right now because it is currently muted!"
@@ -239,6 +240,9 @@ profile:
     - "&cTheir was an error loading your &6Profile&c."
     - "&cPlease join our discord. &c&lhttps://discord.helydev.com"
 
+edit-profile:
+  usage: "&cUsage: /editprofile <player>"
+
 profile-commands:
   main:
     usage:
@@ -271,21 +275,21 @@ profile-commands:
     usage: "&cCorrect Usage: /profile info <name>"
     command:
       - "&7&l&m-----------------------------------"
-      - "&7Viewing Profile: &6%player%"
+      - "&6Viewing Profile&7: &f%player%"
       - "&7"
-      - "&6UUID&7: &c%uuid%"
-      - "&6Current Rank&7: &c%current_rank%"
-      - "&6Active Grants&7: &c%active_grants%"
-      - "&6Profile Permissions&7: &c%profile_permissions_size%"
-      - "&6Bungee Permissions&7: &c%bungee_permissions_size%"
-      - "&6Player Permissions&7: &c%player_permissions_size%"
-      - "&6Current Tag&7: &c%tag%"
-      - "&6Friends&7: &c%friends_size%"
+      - "&6UUID&7: &f%uuid%"
+      - "&6Current Rank&7: &f%current_rank%"
+      - "&6Active Grants&7: &f%active_grants%"
+      - "&6Profile Permissions&7: &f%profile_permissions_size%"
+      - "&6Bungee Permissions&7: &f%bungee_permissions_size%"
+      - "&6Player Permissions&7: &f%player_permissions_size%"
+      - "&6Current Tag&7: &f%tag%"
+      - "&6Friends&7: &f%friends_size%"
       - "&7"
-      - "&6First Seen&7: &c%first_seen%"
-      - "&6Last Seen&7: &c%last_seen%"
-      - "&6Last Server&7: &c%last_server%"
-      - "&6Currency&7: &c%currency_amount%"
+      - "&6First Seen&7: &f%first_seen%"
+      - "&6Last Seen&7: &f%last_seen%"
+      - "&6Last Server&7: &f%last_server%"
+      - "&6Currency&7: &f%currency_amount%"
       - "&7"
       - "&7You can edit their profile by typing '&6/editprofile %player%&7'!"
       - "&7&l&m-----------------------------------"
@@ -321,25 +325,25 @@ punishments:
     pardon:
       ban:
         already-removed: "&cThis ban has already been removed by &c&n%remover%&c.."
-        enter-pardon-reason: "&cPlease enter in a reason for this &6Pardon&c:"
-        pardoned: "&cYou have successfully pardoned this players ban."
-        no-permission: "&cYou do not have permission to &6Pardon Bans&c."
+        enter-pardon-reason: "&cPlease enter in a reason for this &lPardon&c:"
+        pardoned: "&aYou have successfully pardoned this players ban."
+        no-permission: "&cYou do not have permission to &lPardon Bans&c."
       blacklist:
         already-removed: "&cThis blacklist has already been removed by &c&n%remover%&c.."
-        enter-pardon-reason: "&cPlease enter in a reason for this &6Pardon&c:"
-        pardoned: "&cYou have successfully pardoned this players blacklist."
-        no-permission: "&cYou do not have permission to &6Pardon Blacklists&c."
+        enter-pardon-reason: "&cPlease enter in a reason for this &lPardon&c:"
+        pardoned: "&aYou have successfully pardoned this players blacklist."
+        no-permission: "&cYou do not have permission to &lPardon Blacklists&c."
       mute:
         already-removed: "&cThis mute has already been removed by &c&n%remover%&c.."
-        enter-pardon-reason: "&cPlease enter in a reason for this &6Pardon&c:"
-        pardoned: "&cYou have successfully pardoned this players mute."
-        no-permission: "&cYou do not have permission to &6Pardon Mutes&c."
+        enter-pardon-reason: "&cPlease enter in a reason for this &lPardon&c:"
+        pardoned: "&aYou have successfully pardoned this players mute."
+        no-permission: "&cYou do not have permission to &lPardon Mutes&c."
   broadcast:
     blacklist:
-      message: "&c%target% &6was just blacklisted by &c%sender%&6."
+      message: "&c%target% &awas blacklisted by &4%sender%&a."
       attempted-join:
         enabled: true
-        message: "&6[Blacklist] &c%player% &7has just tried to join the server while they are blacklisted."
+        message: "&7[Punishment] &c&l%player% &chas just tried to join the server while they are &lblacklisted&c."
         hover:
           - "&7&l&m---------------------------------"
           - "&6Profile Blacklisted:"
@@ -354,7 +358,7 @@ punishments:
         message:
           - "&eReason: &c%reason%"
     blacklist-silent:
-      message: "&7[S] &c%target% &6was just blacklisted by &c%sender%&6."
+      message: "&c%target% &awas &esilently &ablacklisted by &4%sender%&a."
       hover:
         enabled: true
         message:
@@ -366,13 +370,13 @@ punishments:
         message:
           - "&eReason: &c%reason%"
     un-blacklist-silent:
-      message: "&7[S] &c%target% &6was just unblacklisted by &c%sender%&6."
+      message: "&c%target% &awas &esilently &aun-blacklisted by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
     ban:
-      message: "&c%target% &6was just banned by &c%sender%&6."
+      message: "&c%target% &awas banned by &4%sender%&a."
       attempted-join:
         enabled: true
         message: "&6[Ban] &c%player% &7has just tried to join the server while they are banned."
@@ -393,171 +397,174 @@ punishments:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     ban-silent:
-      message: "&7[S] &c%target% &6was just banned by &c%sender%&6."
+      message: "&c%target% &awas &esilently &abanned by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     temp-ban:
-      message: "&c%target% &6was just temporarily banned by &c%sender%&6."
+      message: "&c%target% &awas temporarily banned by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
     temp-ban-silent:
-      message: "&7[S] &c%target% &6was just temporarily banned by &c%sender%&6."
+      message: "&c%target% &awas &esilently &atemporarily banned by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
     unban:
-      message: "&c%target% &6was just unbanned by &c%sender%&6."
+      message: "&c%target% &awas unbanned by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
     unban-silent:
-      message: "&7[S] &c%target% &6was just unbanned by &c%sender%&6."
+      message: "&a%target% &awas &esilently &aunbanned by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
     mute:
-      message: "&c%target% &6was just muted by &c%sender%&6."
+      message: "&c%target% &ahas been muted by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     mute-silent:
-      message: "&7[S] &c%target% &6was just muted by &c%sender%&6."
+      message: "&c%target% &ahas been &esilently &amuted by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     temp-mute:
-      message: "&c%target% &6was just temporarily muted by &c%sender%&6."
+      message: "&c%target% &ahas been temporarily muted by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
     temp-mute-silent:
-      message: "&7[S] &c%target% &6was just temporarily muted by &c%sender%&6."
+      message: "&c%target% &ahas been &esilently &atemporarily muted by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
     unmute:
-      message: "&c%target% &6was just unmuted by &c%sender%&6."
+      message: "&c%target% &awas un-muted by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
     unmute-silent:
-      message: "&7[S] &c%target% &6was just unmuted by &c%sender%&6."
+      message: "&c%target% &awas &esilently &aun-muted by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
     warn:
-      message: "&c%target% &6was just given a warning by &c%sender%&6."
+      message: "&c%target% &awas warned by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     warn-silent:
-      message: "&7[S] &c%target% &6was just given a warning by &c%sender%&6."
+      message: "&c%target% &awas &esilently &awarned by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &cPermanent"
     temp-warn:
-      message: "&c%target% &6was just given a temporary warning by &c%sender%&6."
+      message: "&c%target% &awas temporarily warned by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
     temp-warn-silent:
-      message: "&7[S] &c%target% &6was just given a temporary warning by &c%sender%&6."
+      message: "&c%target% &awas &esilently &atemporarily warned by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
           - "&eDuration: &c%duration%"
     kick:
-      message: "&c%target% &6was just kicked by &c%sender%&6."
+      message: "&c%target% &awas kicked by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
     kick-silent:
-      message: "&7[S] &c%target% &6was just kicked by &c%sender%&6."
+      message: "&c%target% &awas &esilent &akicked by &4%sender%&a."
       hover:
         enabled: true
         message:
           - "&eReason: &c%reason%"
   kick:
     blacklist:
-      - "&cYour account has been blacklisted from the &6Hely Network&c."
+      - "&cYour account has been blacklisted from the &lAscend Network&c."
       - "&cReason: %reason%"
       - "&cThis type of punishment cannot be appealed."
     ban:
-      - "&cYour account has been suspended from the &6Hely Network&c."
+      - "&cYour account has been suspended from the &lAscend Network&c."
       - "&cReason: %reason%"
       - "&cAppeal at ts.helydev.com"
     temp-ban:
-      - "&cYour account has been suspended from the &6Hely Network&c."
+      - "&cYour account has been suspended from the &lAscend Network&c."
       - "&cReason: %reason%"
       - "&cExpires in %duration%"
     kick:
       - "&cYou have been kicked by &c&l%sender%&c."
       - "&cReason: %reason%"
   muted:
-    permanent: "&6You have been permanently muted by &c%sender% &6for &c%reason%&6."
-    temp: "&6You have been temporarily muted by &c%sender% &6for &c%reason% &6for &c%duration%&6."
+    permanent: "&cYou have been permanently muted by &l%sender% &cfor &l%reason%&c."
+    temp: "&cYou have been temporarily muted by &l%sender% &cfor &l%reason% &cfor &l%duration%&c."
   warned:
-    permanent: "&6You have been given a warning by &c%sender% &6for &c%reason%&6."
-    temp: "&cYou have been given a temporary warning by &c%sender% &6for &c%reason% &6for &c%duration%&6."
+    permanent: "&cYou have been permanently warned by &l%sender% &cfor &l%reason%&c."
+    temp: "&cYou have been temporarily warned by &l%sender% &cfor &l%reason% &cfor &l%duration%&c."
+
 history:
   usage: "&cUsage: /history <player>"
+
 blacklist:
-  usage: "&cUsage: /blacklist <player> <reason> <-s>"
+  usage: "&cUsage: /blacklist <player> <reason> (&b-s&c) (&b-c&c)"
   already-blacklisted: "&cThat player has already been blacklisted."
 un-blacklist:
-  usage: "&cUsage: /unblacklist <player> <reason> <-s>"
+  usage: "&cUsage: /unblacklist <player> <reason> (&b-s&c)"
   not-blacklisted: "&cThat player is not blacklisted."
-edit-profile:
-  usage: "&cUsage: /editprofile <player>"
 ban:
-  usage: "&cUsage: /ban <player> <reason> <-s>"
+  usage: "&cUsage: /ban <player> <reason> (&b-s&c) (&b-c&c)"
   already-banned: "&cThat player already has an active ban."
 temp-ban:
-  usage: "&cUsage: /tempban <player> <duration> <reason> <-s>"
+  usage: "&cUsage: /tempban <player> <duration> <reason> (&b-s&c) (&b-c&c)"
 un-ban:
-  usage: "&cUsage: /unban <player> <reason> <-s>"
+  usage: "&cUsage: /unban <player> <reason> (&b-s&c)"
   not-banned: "&cThat player is not banned."
 mute:
-  usage: "&cUsage: /mute <player> <duration> <reason> <-s>"
+  usage: "&cUsage: /mute <player> [optional:duration] <reason> (&b-s&c)"
   already-muted: "&cThat player is already muted"
 un-mute:
-  usage: "&cUsage: /unmute <player> <reason> <-s>"
+  usage: "&cUsage: /unmute <player> <reason> (&b-s&c)"
   not-muted: "&cThat player is not muted."
 warn:
-  usage: "&cUsage: /warn <player> <duration> <reason> <-s>"
+  usage: "&cUsage: /warn <player> [optional:duration] <reason> (&b-s&c)"
 kick:
-  usage: "&cUsage: /warn <player> <reason> <-s>"
+  usage: "&cUsage: /warn <player> <reason> (&b-s&c)"
+
+grants:
+  usage: "&cUsage: /grants <player>"
 
 grant:
-  usage: "&cCorrect Usage: /grant <add|player>"
+  usage: "&cUsage: /grant <add|player>"
   add:
     usage: "&cCorrect Usage: /grant add <player> <type> <name> <duration> <reason>"
     invalid-rank: "&cYou have specified a invalid rank name, please try again."
@@ -565,37 +572,7 @@ grant:
     invalid-time: "&cYou have specified a invalid duration for this grant."
     given: "&6You have successfully given &6&l%player% &6a grant for a duration of &6&l%time%&6."
     invalid-type: "&cYou have specified a invalid type: (Options: rank, tag, bukkitpermission, bungeepermission)"
-queue-system:
-  not-exist: "&cSorry, the queue by the name of '&6%server%&c' could not be found."
-  offline: "&cSorry, the server '&6%server%&c' is currently &noffline&c."
-  cannot-queue: "&cSorry, the server '&6%server%&c' has queueing disabled."
-  not-in: "&cYou are currently not in the queue for &6%server_name%&c."
-  bypassed-queue: "&aYou have bypassed the queue because of your &6Staff Permissions&a."
-  removed: "&cYou have just been removed from the &6%server% Queue&c."
-  joined: "&6You have successfully joined the &6&l%server_name% Queue&6!"
-  waiting:
-    - "&7&l&m--------------------------------------------"
-    - "&7Your current position is &6#%position% &7out of &6%queue_size%&7 players."
-    - "&7"
-    - "&7Want to get a higher queue priority?"
-    - "&6&nstore.helydev.com"
-    - "&7&l&m--------------------------------------------"
-  cleared: "&aYou have cleared all &6%queue_size% Players &afrom the &6%server% Queue&a."
-  already-queue: "&cSorry, you are already queueing for this server."
-  toggled:
-    enabled: "&aYou have successfully &a&nenabled&a the &6%server% Queue&a."
-    disabled: "&cYou have successfully &c&ndisabled&c the &6%server% Queue&c."
-  pause:
-    enabled: "&aYou have successfully &a&npaused&a the &6%server% Queue&a."
-    disabled: "&cYou have successfully &c&nunpaused&c the &6%server% Queue&c."
-  queue-rate-updated: "&6You have updated the &c%server% &6queue rate to: &a%amount% players every second"
-  sent: "&6You are now being connected to the &c%server% Server&6.."
-join-queue-command:
-  usage: "&cCorrect Usage: /joinqueue <server>"
-rate-queue-command:
-  usage: "&cCorrect Usage: /queuerate <server> <rate>"
-pause-queue-command:
-  usage: "&cCorrect Usage: /pausequeue <server>"
+
 frozen-command:
   command:
     usage: "&cCorrect Usage: /freeze <player|server>"

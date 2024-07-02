@@ -28,6 +28,7 @@ import org.bukkit.Bukkit;
 
 @AllArgsConstructor
 public class ServerListener implements PacketListener {
+
     @IncomingPacketHandler
     public void onServerUpdate(ServerStateChangePacket packet) {
         Server server = XenonBukkit.getInstance().getServerManager().getServer(packet.getName());

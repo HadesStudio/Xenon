@@ -1,11 +1,10 @@
-package net.ascend.core.bukkit.placeholder;
+package net.ascend.core.bukkit.hook.placeholder;
 
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.punishment.PunishmentType;
 import net.ascend.core.bukkit.server.Server;
-import net.ascend.core.bukkit.server.queue.Queue;
 import net.ascend.core.bukkit.util.TimeUtil;
 import net.ascend.core.bukkit.lib.CC;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -27,7 +26,7 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
 
     @Override
     public String getAuthor() {
-        return "Ascend LLC";
+        return "LeandroSSJ";
     }
 
     @Override
@@ -158,16 +157,6 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
 
         // Server Shit:
         for (Server server : this.plugin.getServerManager().getServers().values()) {
-            if (identifier.equalsIgnoreCase("queue_" + server.getName() + "_players_in_queue")) {
-                return String.valueOf(server.getPlayersInQueue());
-            }
-            if (identifier.equalsIgnoreCase("queue_" + server.getName() + "_join_rate")) {
-                return String.valueOf(server.getQueueRate());
-            }
-            if (identifier.equalsIgnoreCase("queue_position")) {
-                Queue queue = this.plugin.getQueue();
-                return String.valueOf(queue.getJoinPosition(profile));
-            }
             if (identifier.equalsIgnoreCase("server_" + server.getName() + "_max_players")) {
                 return String.valueOf(server.getMaxPlayers());
             }

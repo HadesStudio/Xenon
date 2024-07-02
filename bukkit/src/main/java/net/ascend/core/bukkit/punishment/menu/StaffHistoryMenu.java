@@ -33,6 +33,7 @@ import java.util.*;
 
 @AllArgsConstructor
 public class StaffHistoryMenu extends Menu {
+
     final Profile profile;
     final Map<UUID, Punishment> executedPunishments;
 

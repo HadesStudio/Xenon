@@ -9,7 +9,6 @@ import net.ascend.core.bukkit.profile.permission.bukkit.BukkitPermissionListener
 import net.ascend.core.bukkit.profile.tfa.listeners.TFAListener;
 import net.ascend.core.bukkit.punishment.PunishmentListener;
 import net.ascend.core.bukkit.rank.grant.listener.GrantListener;
-import net.ascend.core.bukkit.server.queue.listener.QueueListener;
 import net.ascend.core.bukkit.staff.freeze.FreezeListener;
 import net.ascend.core.bukkit.staff.staffmode.listener.StaffListener;
 import net.ascend.core.bukkit.util.prompt.PromptListener;
@@ -41,7 +40,6 @@ public class ListenerModule implements ModuleLoader {
                 new LogListeners(),
                 new StaffListener(),
                 new FreezeListener(),
-                new QueueListener(),
                 new GrantListener(),
                 new NoteListener());
     }

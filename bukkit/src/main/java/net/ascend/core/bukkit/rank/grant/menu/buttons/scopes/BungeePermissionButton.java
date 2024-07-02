@@ -18,9 +18,9 @@ import org.bukkit.inventory.ItemStack;
 
 @AllArgsConstructor
 public class BungeePermissionButton extends Button {
-    Profile profile;
-    Grant grant;
-    PermissionGrant permissionGrant;
+    final Profile profile;
+    final Grant grant;
+    final PermissionGrant permissionGrant;
 
     @Override
     public ItemStack getItemStack(Player player) {

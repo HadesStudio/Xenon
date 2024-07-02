@@ -85,7 +85,7 @@ public abstract class SubCommand {
 
     protected boolean checkNumber(CommandSender sender, String number) {
         if(JavaUtil.tryParseInt(number) == null) {
-            sender.sendMessage(CC.translate("&cYou can only use integer values in this command usage!"));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_INVALID_NUMBER).replace("%number%", number));
             return false;
         }
         return true;

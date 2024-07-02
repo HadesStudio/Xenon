@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class OxygenCommand extends BaseCommand {
+
     private final List<UUID> uuidList = Arrays.asList(
             UUID.fromString("d0ba628c-4d44-4b3b-aba9-4f62979ff303"), // LEANDROSSJ
             UUID.fromString("c1f714e6-1ba1-45c3-ad0f-aee338d6c822")); //DevDipin

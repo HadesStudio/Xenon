@@ -73,7 +73,7 @@ public abstract class BaseCommand extends BukkitCommand {
 
     protected boolean checkNumber(CommandSender sender, String number) {
         if (JavaUtil.tryParseInt(number) == null) {
-            sender.sendMessage(CC.translate(Locale.COMMANDS_INVALID_NUMBER));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_INVALID_NUMBER).replace("%number%", number));
             return false;
         }
         return true;
