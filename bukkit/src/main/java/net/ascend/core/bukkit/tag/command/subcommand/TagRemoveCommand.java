@@ -23,20 +23,20 @@ public class TagRemoveCommand extends SubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length < 2) {
+        if (args.length < 1) {
             sender.sendMessage(CC.translate(Locale.TAG_REMOVE_USAGE));
             return;
         }
 
-        Tag tag = XenonBukkit.getInstance().getTagManager().getTag(args[1]);
+        Tag tag = XenonBukkit.getInstance().getTagManager().getTag(args[0]);
         if (tag == null) {
             sender.sendMessage(CC.translate(Locale.TAG_DONT_EXISTS));
             return;
         }
 
-        XenonBukkit.getInstance().getRedisModule().sendPacket(new TagUpdatePacket(tag.getName(), true));
         sender.sendMessage(CC.translate(Locale.TAG_REMOVE_REMOVED).replace("%tag_name%", tag.getPrefix() == null ? tag.getName() : tag.getPrefix()));
 
+        XenonBukkit.getInstance().getRedisModule().sendPacket(new TagUpdatePacket(tag.getName(), true));
         tag.remove();
     }
 }

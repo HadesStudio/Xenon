@@ -14,6 +14,7 @@ import java.util.Map;
 
 @Getter
 public abstract class FilterablePaginatedMenu<T> extends PaginatedMenu {
+
     private final List<PageFilter<T>> filters  = (generateFilters() == null ? Lists.newArrayList() : generateFilters());
     @Setter private int scrollIndex = 0;
 
@@ -34,12 +35,6 @@ public abstract class FilterablePaginatedMenu<T> extends PaginatedMenu {
         menuContent.put(7, Button.getPlaceholder());
         menuContent.put(8, Button.getPlaceholder());
 
-        menuContent.put(9, Button.getPlaceholder());
-        menuContent.put(17, Button.getPlaceholder());
-        menuContent.put(18, Button.getPlaceholder());
-        menuContent.put(26, Button.getPlaceholder());
-        menuContent.put(27, Button.getPlaceholder());
-        menuContent.put(35, Button.getPlaceholder());
 
         menuContent.put(36, Button.getPlaceholder());
         menuContent.put(37, new PageButton(-1, this));

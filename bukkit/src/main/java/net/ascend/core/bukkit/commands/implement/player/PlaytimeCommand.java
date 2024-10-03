@@ -95,7 +95,7 @@ public class PlaytimeCommand extends BaseCommand {
                 sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[1]));
                 return;
             }
-            long duration = TimeUtil.parseTime(args[2]);
+            long duration = TimeUtil.parse(args[2]);
             if(duration == -1) {
                 sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("playtime-command.remove.invalid-time")));
                 return;
@@ -129,7 +129,7 @@ public class PlaytimeCommand extends BaseCommand {
                 sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[1]));
                 return;
             }
-            long duration = TimeUtil.parseTime(args[2]);
+            long duration = TimeUtil.parse(args[2]);
             if(duration == -1) {
                 sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("playtime-command.add.invalid-time")));
                 return;

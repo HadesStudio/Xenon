@@ -3,7 +3,7 @@ package net.ascend.core.bukkit.commands.implement.staff;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.Profile;
-import net.ascend.core.bukkit.profile.packet.implement.AdminChatPacket;
+import net.ascend.core.bukkit.profile.packet.implement.staff.AdminChatPacket;
 import net.ascend.core.bukkit.util.ChatUtil;
 import net.ascend.core.bukkit.util.command.BaseCommand;
 import net.ascend.core.bukkit.lib.CC;

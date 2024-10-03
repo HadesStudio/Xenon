@@ -17,7 +17,7 @@ public class VanishCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length == 0) {
+        /*if (args.length == 0) {
             Player player = (Player) sender;
             if (XenonBukkit.getInstance().getStaffManager().isVanished(player)) {
                 XenonBukkit.getInstance().getStaffManager().disabledVanish(player);
@@ -38,6 +38,6 @@ public class VanishCommand extends BaseCommand {
 
                 target.getPlayer().sendMessage(CC.translate(Locale.VANISH_ENABLED_O.replace("%player%", sender.getName())));
             }
-        }
+        }*/
     }
 }

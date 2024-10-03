@@ -3,7 +3,7 @@ package net.ascend.core.bukkit.profile.note.command;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.Profile;
-import net.ascend.core.bukkit.profile.menu.submenus.NotesMenu;
+import net.ascend.core.bukkit.profile.edit.submenus.NotesMenu;
 import net.ascend.core.bukkit.profile.note.Note;
 import net.ascend.core.bukkit.util.ChatUtil;
 import net.ascend.core.bukkit.util.TimeUtil;
@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class NotesCommand extends BaseCommand {
 
     public NotesCommand() {
-        super("notes", "xenon.command.notes");
+        super("notes", "xenon.notes");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class NotesCommand extends BaseCommand {
                 return;
             }
 
-            if (profile.getNotes().size() == 0) {
+            if (profile.getNotes().isEmpty()) {
                 sender.sendMessage(CC.translate(Locale.NOTES_DONT_EXISTS));
                 return;
             }
@@ -64,7 +64,7 @@ public class NotesCommand extends BaseCommand {
                     }
                 });
             } else {
-                new NotesMenu(profile).openMenu((Player) sender);
+                new NotesMenu(profile, false).openMenu((Player) sender);
             }
 
 
@@ -75,7 +75,7 @@ public class NotesCommand extends BaseCommand {
                 return;
             }
 
-            if (profile.getNotes().size() == 0) {
+            if (profile.getNotes().isEmpty()) {
                 sender.sendMessage(CC.translate(Locale.NOTES_DONT_EXISTS));
                 return;
             }
@@ -124,7 +124,7 @@ public class NotesCommand extends BaseCommand {
                 note.setAddedAt(System.currentTimeMillis());
                 note.setAddedBy(sender instanceof Player ? sender.getName() : "Console");
                 note.setAddedReason(ChatUtil.joinArray(args, " ", 3));
-                note.setAddedServer(XenonBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
+                note.setAddedServer(XenonBukkit.getInstance().getServerManager().getCurrentServerName());
 
                 profile.getNotes().add(note);
                 profile.save();

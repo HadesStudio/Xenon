@@ -13,30 +13,25 @@ import java.time.Duration;
 
 @RequiredArgsConstructor
 public class GrantDurationPrompt extends DurationPrompt {
+
     private final Profile profile;
     private final Grant grant;
 
     @Override
     public void handleBegin(Player player) {
-        for (String message : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("messages.prompts.duration.enter-duration")) {
-            player.sendMessage(CC.translate(message));
-        }
+        player.sendMessage(CC.translate("&aPlease type a valid duration for this grant in chat. &7(Example: 3d2h1m)"));
     }
 
     @Override
     public void handleCancel(Player player) {
-        for (String message : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("messages.prompts.duration.cancelled")) {
-            player.sendMessage(CC.translate(message));
-        }
+        player.sendMessage(CC.translate("&cYou have cancelled the process of giving a player a grant."));
     }
 
     @Override
     public Prompt<?> acceptInput(Player player, Duration value) {
         grant.setDuration(value.getSeconds() * 1000L);
 
-        for (String message : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("messages.prompts.duration.success")) {
-            player.sendMessage(CC.translate(message));
-        }
+        player.sendMessage(CC.translate("&aYou have successfully setup a duration for the grant. &7(1/2)"));
 
         return new GrantReasonPrompt(profile, grant);
     }

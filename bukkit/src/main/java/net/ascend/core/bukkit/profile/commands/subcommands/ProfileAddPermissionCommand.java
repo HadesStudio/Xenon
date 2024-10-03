@@ -4,17 +4,12 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.permission.ProfilePermission;
+import net.ascend.core.bukkit.util.TimeUtil;
 import net.ascend.core.bukkit.util.command.sub.SubCommand;
 import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
-
-/**
- * Created By LeandroSSJ
- * Created on 07/08/2023
- * Protect Name Xenon
- */
 
 public class ProfileAddPermissionCommand extends SubCommand {
 
@@ -24,35 +19,49 @@ public class ProfileAddPermissionCommand extends SubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length < 4) {
-            sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.usage")));
+        if (args.length < 3) {
+            sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-command.add-permission.usage")));
             return;
         }
 
-        Profile profile = XenonBukkit.getInstance().getProfileManager().getProfile(args[1]);
+        Profile profile = XenonBukkit.getInstance().getProfileManager().getProfile(args[0]);
         if (profile == null) {
-            sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[1]));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
             return;
         }
 
         for (ProfilePermission profilePermission : profile.getProfilePermissions()) {
-            if (profilePermission.getPermission().equalsIgnoreCase(args[2])) {
-                sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.already-has").replace("%player%", profile.getName())));
+            if (profilePermission.getPermission().equalsIgnoreCase(args[1])) {
+                sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-command.add-permission.already-has").replace("%player%", profile.getName())));
                 return;
             }
         }
 
-        if (XenonBukkit.getInstance().getServerManager().getServer(args[3]) == null) {
-            if (!args[3].equalsIgnoreCase("Global")) {
-                sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.invalid-server")));
+        String server = args[2];
+        if (XenonBukkit.getInstance().getServerManager().getServer(server) == null && !server.equalsIgnoreCase("Global")) {
+            sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-command.add-permission.invalid-server")));
+            return;
+        }
+
+        long duration = -1;
+        if (args.length >= 4) {
+            try {
+                duration = TimeUtil.parse(args[3]);
+            } catch (NumberFormatException e) {
                 return;
             }
         }
 
-        ProfilePermission permission = new ProfilePermission(args[2], args[3], false, -1);
+        boolean global = server.equalsIgnoreCase("Global");
+
+
+        ProfilePermission permission = new ProfilePermission(args[1], args[2], global, duration, System.currentTimeMillis());
         profile.getProfilePermissions().add(permission);
         profile.save();
-        sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.add-permission.added").replace("%player%", profile.getName()).replace("%permission%", args[2])));
+
+        sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-command.add-permission.added")
+                .replace("%player%", profile.getName())
+                .replace("%permission%", args[1])));
     }
 }
 

@@ -1,23 +1,8 @@
 package net.ascend.core.bukkit.profile.notifications.menu.submenus;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.crates.crates.menus.editor.settings.cratesettings.holograms
-//   Date: Saturday, June 18, 2022 - 9:31 AM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.notifications.Notification;
-import net.ascend.core.bukkit.profile.notifications.menu.NotificationListMenu;
+import net.ascend.core.bukkit.profile.notifications.menu.NotificationAdminMenu;
 import net.ascend.core.bukkit.lib.callback.Callback;
 import net.ascend.core.bukkit.lib.maker.ItemMaker;
 import net.ascend.core.bukkit.lib.menu.button.Button;
@@ -27,7 +12,6 @@ import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import net.ascend.core.bukkit.lib.sound.SoundManager;
 import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
-import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -73,7 +57,7 @@ public class CreationMenu extends PaginatedMenu {
     public Map<Integer, Button> getGlobalContent(Player player) {
         Map<Integer, Button> menuContent = new HashMap<>();
 
-        menuContent.put(0, new BackButton(new NotificationListMenu()));
+        menuContent.put(0, new BackButton(new NotificationAdminMenu()));
         menuContent.put(1, Button.getPlaceholder());
         menuContent.put(2, Button.getPlaceholder());
         menuContent.put(3, Button.getPlaceholder());
@@ -82,8 +66,7 @@ public class CreationMenu extends PaginatedMenu {
         menuContent.put(6, Button.getPlaceholder());
         menuContent.put(7, Button.getPlaceholder());
         menuContent.put(8, Button.getPlaceholder());
-        menuContent.put(9, Button.getPlaceholder());
-        menuContent.put(17, Button.getPlaceholder());
+
         menuContent.put(18, new PageButton(-1, this));
         menuContent.put(19, Button.getPlaceholder());
         menuContent.put(20, Button.getPlaceholder());
@@ -120,25 +103,23 @@ public class CreationMenu extends PaginatedMenu {
             lore.add("&7This message will appear #" + position + " in");
             lore.add("&7your notification!");
             lore.add("");
-            lore.add("&6Line Text&7: &b'" + line_text + "'");
+            lore.add("&6Line Text&7: &c'" + line_text + "'");
             lore.add("");
-            lore.add("&6Right-Click &7this item to remove this message line.");
+            lore.add("&7Right-Click this item to remove this message line.");
 
             return lore;
         }
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            List<String> current_lines = new ArrayList<>();
-            current_lines.addAll(message);
+            List<String> current_lines = new ArrayList<>(message);
 
-            if (message.size() == 0) {
+            if (message.isEmpty()) {
                 player.sendMessage(CC.translate("&cTheir has to be at least 1 notification line."));
                 SoundManager.INSTANCE.playSound(player, "BLAZE_HIT");
                 return;
             }
 
             current_lines.remove(line_text);
-
             message = current_lines;
 
             player.sendMessage(CC.translate("&cYou have successfully deleted this notification line!"));
@@ -175,15 +156,16 @@ public class CreationMenu extends PaginatedMenu {
         public void onClick(Player player, int slot, ClickType clickType) {
             player.closeInventory();
             player.sendMessage(CC.translate("&cPlease type the new text line for the notification!"));
-            player.sendMessage(CC.translate("&cPlaceholders: &b%player%"));
+            player.sendMessage(CC.translate("&cPlaceholders: &f%player%"));
             player.sendMessage(CC.translate("&7"));
-            player.sendMessage(CC.translate("&cYou can type '&4cancel&c' to cancel this."));
+            player.sendMessage(CC.translate("&cYou can type &l'cancel'&c to cancel this."));
 
             conversationString(player, (text_line) -> {
                 player.sendMessage(CC.translate(""));
                 player.sendMessage(CC.translate("&aYou have successfully added a new text line to this notification."));
-                player.sendMessage(CC.translate("&aNew Notification Line: &b" + text_line));
+                player.sendMessage(CC.translate("&aNew Notification Line: &f" + text_line));
                 player.sendMessage(CC.translate(""));
+
                 message.add(text_line);
             });
         }
@@ -198,7 +180,7 @@ public class CreationMenu extends PaginatedMenu {
 
                 @Override
                 public Prompt acceptInput(ConversationContext cc, String text) {
-                    message.add(text);
+                    callback.callback(text);
                     new CreationMenu(message, true).openMenu(p);
 
                     return Prompt.END_OF_CONVERSATION;
@@ -234,10 +216,9 @@ public class CreationMenu extends PaginatedMenu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             Notification notification = new Notification(message);
-            XenonBukkit.getInstance().getNotificationManager().getNotificationMap().put(notification.getId(), notification);
             notification.save();
+            XenonBukkit.getInstance().getNotificationManager().getNotificationMap().put(notification.getId(), notification);
 
-            player.closeInventory();
             new SelectionMenu(notification).openMenu(player);
         }
     }

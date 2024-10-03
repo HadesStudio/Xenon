@@ -191,4 +191,49 @@ public class ColorUtil {
 
         return WOOL_COLORS.indexOf(color);
     }
+
+    public static Color getColorFromChatColor(ChatColor chatColor) {
+        switch (chatColor) {
+            case BLACK:
+                return Color.BLACK;
+            case DARK_BLUE:
+                return Color.NAVY;
+            case DARK_GREEN:
+                return Color.GREEN;
+            case DARK_AQUA:
+                return Color.TEAL;
+            case DARK_RED:
+                return Color.MAROON;
+            case DARK_PURPLE:
+                return Color.PURPLE;
+            case GOLD:
+                return Color.ORANGE;
+            case GRAY:
+                return Color.SILVER;
+            case DARK_GRAY:
+                return Color.GRAY;
+            case BLUE:
+                return Color.BLUE;
+            case GREEN:
+                return Color.LIME;
+            case AQUA:
+                return Color.AQUA;
+            case RED:
+                return Color.RED;
+            case LIGHT_PURPLE:
+                return Color.FUCHSIA;
+            case YELLOW:
+                return Color.YELLOW;
+            case WHITE:
+                return Color.WHITE;
+            default:
+                return Color.WHITE;
+        }
+    }
+
+    private static final String COLOR_CODE_REGEX = "&[0-9A-FK-ORa-fk-or]";
+
+    public static String removeColorCodes(String input) {
+        return input.replaceAll(COLOR_CODE_REGEX, "");
+    }
 }

@@ -1,20 +1,5 @@
 package net.ascend.core.bukkit.filter.menu;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bukkit.filter.menu
-//   Date: Thursday, September 14, 2023 - 1:28 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import com.mongodb.client.model.Filters;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.filter.Filter;
@@ -35,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class FiltersMenu extends PaginatedMenu {
+
     @Override
     public String getName() {
         return "Filter Editor";
@@ -69,8 +55,7 @@ public class FiltersMenu extends PaginatedMenu {
         menuContent.put(6, Button.getPlaceholder());
         menuContent.put(7, Button.getPlaceholder());
         menuContent.put(8, Button.getPlaceholder());
-        menuContent.put(9, Button.getPlaceholder());
-        menuContent.put(17, Button.getPlaceholder());
+
         menuContent.put(18, new PageButton(-1, this));
         menuContent.put(19, Button.getPlaceholder());
         menuContent.put(20, Button.getPlaceholder());
@@ -79,7 +64,6 @@ public class FiltersMenu extends PaginatedMenu {
         menuContent.put(23, Button.getPlaceholder());
         menuContent.put(24, Button.getPlaceholder());
         menuContent.put(25, Button.getPlaceholder());
-
         menuContent.put(26, new PageButton(1, this));
 
 
@@ -100,14 +84,14 @@ public class FiltersMenu extends PaginatedMenu {
                     "&7chat filter will be listed below.",
                     "&7",
                     "&6Enabled&7: " + isEnabled(),
-                    "&6Phrase&7: &a" + filter.getPhrase(),
-                    "&6Match&7: &a" + filter.getMatch().getDisplay(),
-                    "&6Mute&7: &a" + filter.getMuteType().getDisplay(),
-                    "&6Duration&7: &a" + TimeUtil.getDetailedTime(filter.getDuration()),
+                    "&6Phrase&7: &f" + filter.getPhrase(),
+                    "&6Match&7: &f" + filter.getMatch().getDisplay(),
+                    "&6Mute&7: &f" + filter.getMuteType().getDisplay(),
+                    "&6Duration&7: &f" + TimeUtil.getDetailedTime(filter.getDuration()),
                     "&6Case Sensitive&7: " + isCaseSensitive(),
                     "&7",
-                    "&6Left-Click &7to edit this filter.",
-                    "&6Right-Click &7to delete this filter."
+                    "&7Left-Click to edit this filter.",
+                    "&7Right-Click to delete this filter."
 
             ));
             return builder.build();
@@ -118,9 +102,9 @@ public class FiltersMenu extends PaginatedMenu {
             if (clickType.isLeftClick()) {
                 new FilterEditorMenu(filter).openMenu(player);
             } else {
-                player.sendMessage(CC.translate("&6[Filter] &7You have successfully deleted the &c" + filter.getName() + " Filter&7."));
-                XenonBukkit.getInstance().getMongoModule().getFiltersCollection().deleteOne(Filters.eq("id", filter.getId().toString()));
-                XenonBukkit.getInstance().getFilterManager().getFilters().remove(XenonBukkit.getInstance().getFilterManager().getFilterByName(filter.getName()));
+                player.sendMessage(CC.translate("&aYou have successfully deleted the &l" + filter.getName() + " Filter&a."));
+
+                XenonBukkit.getInstance().getFilterManager().removeFilter(filter);
             }
         }
 
@@ -165,7 +149,8 @@ public class FiltersMenu extends PaginatedMenu {
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType.isLeftClick()) {
                 player.closeInventory();
-                player.sendMessage(CC.translate("&6[Filter] &7Please type in chat the message you wish to block:"));
+                player.sendMessage(CC.translate("&aPlease type in chat the message you wish to block:"));
+
                 ConversationFactory factory = new ConversationFactory(XenonBukkit.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
                     public String getPromptText(ConversationContext context) {
                         return "";
@@ -175,9 +160,10 @@ public class FiltersMenu extends PaginatedMenu {
                     public Prompt acceptInput(ConversationContext cc, String s) {
                         Filter filter = new Filter(s, s);
                         filter.save();
+
                         XenonBukkit.getInstance().getFilterManager().registerAllFilters();
 
-                        player.sendMessage(CC.translate("&6[Filter] &7You have successfully created a new filter that blocks '&6" + s + "&7'."));
+                        player.sendMessage(CC.translate("&aYou have successfully created a new filter that blocks '&l" + s + "&a'."));
                         new FiltersMenu().openMenu(player);
                         return Prompt.END_OF_CONVERSATION;
                     }

@@ -31,7 +31,7 @@ public class StaffModeCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length == 0) {
+        /*if (args.length == 0) {
             Player player = (Player) sender;
             if (XenonBukkit.getInstance().getStaffManager().isStaffModeActive(player)) {
                 XenonBukkit.getInstance().getStaffManager().disableStaffMode(player);
@@ -51,6 +51,6 @@ public class StaffModeCommand extends BaseCommand {
                 XenonBukkit.getInstance().getStaffManager().enableStaffMode(target.getPlayer());
                 sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("staff-mode.others.enabled").replace("%player%", sender.getName())));
             }
-        }
+        }*/
     }
 }

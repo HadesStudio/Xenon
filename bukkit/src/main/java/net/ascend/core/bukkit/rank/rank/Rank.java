@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.rank.gson.GSONUtil;
-import net.ascend.core.bukkit.rank.rank.perk.Perk;
 import net.ascend.core.bukkit.rank.rank.permission.PermissionData;
 import net.ascend.core.bukkit.util.ColorUtil;
 import org.bson.Document;
@@ -17,6 +16,7 @@ import org.bukkit.ChatColor;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created By LeandroSSJ
@@ -39,12 +39,9 @@ public class Rank {
     private boolean globalRank;
     private int weight = 1;
     private List<PermissionData> permissionsData = new ArrayList<>();
-    private List<String> bungeePermissions = new ArrayList<>();
     private List<String> inheritances = new ArrayList<>();
     private List<String> servers = new ArrayList<>();
     private ChatColor display_color = ChatColor.WHITE;
-    private int queuePriority = 0;
-    private List<Perk> perks = new ArrayList<>();
 
     public void save() {
         Document document = new Document();
@@ -57,13 +54,9 @@ public class Rank {
         document.put("weight", weight);
         document.put("display_color", ColorUtil.convertChatColor(display_color));
         document.put("globalRank", globalRank);
-        document.put("queuePriority", queuePriority);
         document.put("permissionsData", XenonBukkit.PLAIN_GSON.toJson(permissionsData, GSONUtil.PERMISSION_DATA));
-        document.put("bungeePermissions", XenonBukkit.PLAIN_GSON.toJson(bungeePermissions, GSONUtil.LIST_STRING_TYPE));
         document.put("inheritances", XenonBukkit.PLAIN_GSON.toJson(inheritances, GSONUtil.LIST_STRING_TYPE));
         document.put("servers", XenonBukkit.PLAIN_GSON.toJson(servers, GSONUtil.LIST_STRING_TYPE));
-        Type perksType = new TypeToken<List<Perk>>() {}.getType();
-        document.put("perks", XenonBukkit.PLAIN_GSON.toJson(this.perks, perksType));
 
         XenonBukkit.getInstance().getRankManager().saveRanksToConfig();
         plugin.getMongoModule().getRanksCollection().replaceOne(Filters.eq("name", name), document, new ReplaceOptions().upsert(true));
@@ -80,13 +73,9 @@ public class Rank {
             setWeight(document.getInteger("weight"));
             setDisplay_color(ChatColor.valueOf(document.getString("display_color")));
             setGlobalRank(document.getBoolean("globalRank"));
-            setQueuePriority(document.getInteger("queuePriority"));
             setPermissionsData(XenonBukkit.PLAIN_GSON.fromJson(document.getString("permissionsData"), GSONUtil.PERMISSION_DATA));
-            setBungeePermissions(XenonBukkit.PLAIN_GSON.fromJson(document.getString("bungeePermissions"), GSONUtil.LIST_STRING_TYPE));
             setInheritances(XenonBukkit.PLAIN_GSON.fromJson(document.getString("inheritances"), GSONUtil.LIST_STRING_TYPE));
             setServers(XenonBukkit.PLAIN_GSON.fromJson(document.getString("servers"), GSONUtil.LIST_STRING_TYPE));
-            Type perksType = new TypeToken<List<Perk>>() {}.getType();
-            setPerks(XenonBukkit.PLAIN_GSON.fromJson(document.getString("perks"), perksType));
         }
     }
 
@@ -94,39 +83,19 @@ public class Rank {
         return this.servers.stream().filter(server -> server.equalsIgnoreCase(name)).findFirst().orElse(null) != null;
     }
 
-    public boolean isServer() {
-        return this.globalRank || getServer(XenonBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
+    public void removeServer(String name) {
+        this.servers.removeIf(server -> server.equalsIgnoreCase(name));
     }
 
-    public PermissionData getPermission(String permission) {
-        for(PermissionData rankPermission : permissionsData) {
-            if(rankPermission.getPermission().equalsIgnoreCase(permission)) {
-                return rankPermission;
-            }
-        }
-
-        return null;
+    public boolean isOnServer() {
+        return this.globalRank || getServer(XenonBukkit.getInstance().getServerManager().getCurrentServerName());
     }
 
-    public boolean hasPermission(String permission) {
-        for(PermissionData rankPermission : permissionsData) {
-            if(rankPermission.getPermission().equalsIgnoreCase(permission)) {
-                return true;
-            }
-        }
-
-        for(String parent : getInheritances()) {
-            Rank rank = XenonBukkit.getInstance().getRankManager().getRank(parent);
-
-            if (rank.hasPermission(permission)) {
-                return true;
-            }
-        }
-
-        return false;
+    public boolean isOnServer(String server) {
+        return this.globalRank || getServer(server);
     }
 
-    public boolean hasPermission(PermissionData permission) {
-        return hasPermission(permission.getPermission());
+    public boolean hasPermission(String value) {
+        return this.permissionsData.stream().filter(PermissionData::isAvailable).filter(permission -> permission.getPermission().equalsIgnoreCase(value)).findFirst().orElse(null) != null;
     }
 }

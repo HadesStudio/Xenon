@@ -1,20 +1,5 @@
 package net.ascend.core.bukkit.commands.implement.player;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.commands.implement.player
-//   Date: Wednesday, August 02, 2023 - 7:53 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.Profile;
@@ -24,6 +9,7 @@ import net.ascend.core.bukkit.lib.CC;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
+import java.util.Date;
 
 public class SeenCommand extends BaseCommand {
 
@@ -46,7 +32,7 @@ public class SeenCommand extends BaseCommand {
 
         sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("seen-command.message")
                 .replace("%player%", profile.getName())
-                .replace("%time%", TimeUtil.formatDateDiff(profile.getLastSeen()))
+                .replace("%time%", TimeUtil.formatIntoCalendarString(new Date(profile.getLastSeen())))
                 .replace("%server%", profile.getLastServer()))
         );
     }

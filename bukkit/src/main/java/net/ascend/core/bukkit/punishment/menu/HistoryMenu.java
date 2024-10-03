@@ -26,43 +26,49 @@ import java.util.stream.Collectors;
  */
 @AllArgsConstructor
 public class HistoryMenu extends Menu {
+
     private Profile profile;
 
     @Override
     public String getName() {
-        return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.title").replace("%player_name%", profile.getName());
+        return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.title")
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
     }
 
     @Override
     public String getTitle(Player player) {
-        return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.title").replace("%player_name%", profile.getName());
+        return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.title")
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
     }
 
     @Override
     public Map<Integer, Button> getMenuContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.blacklist.slot"), new BlacklistButton());
-        buttons.put(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.bans.slot"), new BanButton());
-        buttons.put(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.kicks.slot"), new KickButton());
-        buttons.put(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.mutes.slot"), new MuteButton());
-        buttons.put(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.warns.slot"), new WarnButton());
+        buttons.put(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("history-menu.buttons.blacklist.slot"), new BlacklistButton());
+        buttons.put(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("history-menu.buttons.bans.slot"), new BanButton());
+        buttons.put(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("history-menu.buttons.kicks.slot"), new KickButton());
+        buttons.put(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("history-menu.buttons.mutes.slot"), new MuteButton());
+        buttons.put(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("history-menu.buttons.warns.slot"), new WarnButton());
 
         return buttons;
     }
 
     @Override
     public int getSize() {
-        return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.size") * 9;
+        return 3 * 9;
     }
 
     private class BlacklistButton extends Button {
+
         public String getMaterial() {
-            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.blacklist.material");
+            return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.blacklist.material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.blacklist.data");
+            return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("history-menu.buttons.blacklist.data");
         }
 
 
@@ -72,8 +78,9 @@ public class HistoryMenu extends Menu {
 
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.blacklist.name").replace("%blacklist_size%", String.valueOf(blacklists.size())));
-            for (String line : XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("selector.blacklist.lore")) {
+            builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.blacklist.name")
+                    .replace("%blacklist_size%", String.valueOf(blacklists.size())));
+            for (String line : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("history-menu.buttons.blacklist.lore")) {
                 builder.addLore(line
                         .replace("%status%", profile.getActiveBlacklist() != null ? "&a&nYes" : "&c&nNo")
                 );
@@ -83,9 +90,9 @@ public class HistoryMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getBoolean("selector.blacklist.settings.permission.enabled")) {
-                if (!player.hasPermission(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.blacklist.settings.permission.permission"))) {
-                    player.sendMessage(CC.translate(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.blacklist.settings.permission.message")));
+            if (XenonBukkit.getInstance().getMenuConfig().getConfiguration().getBoolean("history-menu.buttons.blacklist.permission.enabled")) {
+                if (!player.hasPermission(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.blacklist.permission.permission"))) {
+                    player.sendMessage(CC.translate(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.blacklist.permission.message")));
                     return;
                 }
                 new BlacklistsMenu(profile).openMenu(player);
@@ -96,11 +103,11 @@ public class HistoryMenu extends Menu {
 
     private class BanButton extends Button {
         public String getMaterial() {
-            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.bans.material");
+            return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.bans.material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.bans.data");
+            return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("history-menu.buttons.bans.data");
         }
 
 
@@ -110,8 +117,9 @@ public class HistoryMenu extends Menu {
 
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.bans.name").replace("%ban_size%", String.valueOf(bans.size())));
-            for (String line : XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("selector.bans.lore")) {
+            builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.bans.name")
+                    .replace("%ban_size%", String.valueOf(bans.size())));
+            for (String line : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("history-menu.buttons.bans.lore")) {
                 builder.addLore(line
                         .replace("%status%", profile.getActiveBan() != null ? "&a&nYes" : "&c&nNo")
                 );
@@ -121,9 +129,9 @@ public class HistoryMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getBoolean("selector.bans.settings.permission.enabled")) {
-                if (!player.hasPermission(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.bans.settings.permission.permission"))) {
-                    player.sendMessage(CC.translate(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.bans.settings.permission.message")));
+            if (XenonBukkit.getInstance().getMenuConfig().getConfiguration().getBoolean("history-menu.buttons.bans.permission.enabled")) {
+                if (!player.hasPermission(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.bans.permission.permission"))) {
+                    player.sendMessage(CC.translate(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.bans.permission.message")));
                     return;
                 }
             }
@@ -133,11 +141,11 @@ public class HistoryMenu extends Menu {
 
     private class KickButton extends Button {
         public String getMaterial() {
-            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.kicks.material");
+            return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.kicks.material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.kicks.data");
+            return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("history-menu.buttons.kicks.data");
         }
 
 
@@ -147,8 +155,9 @@ public class HistoryMenu extends Menu {
 
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.kicks.name").replace("%kick_size%", String.valueOf(kicks.size())));
-            for (String line : XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("selector.kicks.lore")) {
+            builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.kicks.name")
+                    .replace("%kick_size%", String.valueOf(kicks.size())));
+            for (String line : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("history-menu.buttons.kicks.lore")) {
                 builder.addLore(line);
             }
             return builder.build();
@@ -156,9 +165,9 @@ public class HistoryMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getBoolean("selector.kicks.settings.permission.enabled")) {
-                if (!player.hasPermission(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.kicks.settings.permission.permission"))) {
-                    player.sendMessage(CC.translate(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.kicks.settings.permission.message")));
+            if (XenonBukkit.getInstance().getMenuConfig().getConfiguration().getBoolean("history-menu.buttons.kicks.permission.enabled")) {
+                if (!player.hasPermission(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.kicks.permission.permission"))) {
+                    player.sendMessage(CC.translate(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.kicks.permission.message")));
                     return;
                 }
             }
@@ -170,11 +179,11 @@ public class HistoryMenu extends Menu {
     private class MuteButton extends Button {
 
         public String getMaterial() {
-            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.mutes.material");
+            return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.mutes.material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.mutes.data");
+            return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("history-menu.buttons.mutes.data");
         }
 
 
@@ -184,8 +193,9 @@ public class HistoryMenu extends Menu {
 
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.mutes.name").replace("%mute_size%", String.valueOf(mutes.size())));
-            for (String line : XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("selector.mutes.lore")) {
+            builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.mutes.name")
+                    .replace("%mute_size%", String.valueOf(mutes.size())));
+            for (String line : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("history-menu.buttons.mutes.lore")) {
                 builder.addLore(line.replace("%status%", profile.getActiveMute() != null ? "&a&nYes" : "&c&nNo"));
             }
             return builder.build();
@@ -193,9 +203,9 @@ public class HistoryMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getBoolean("selector.mutes.settings.permission.enabled")) {
-                if (!player.hasPermission(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.mutes.settings.permission.permission"))) {
-                    player.sendMessage(CC.translate(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.mutes.settings.permission.message")));
+            if (XenonBukkit.getInstance().getMenuConfig().getConfiguration().getBoolean("history-menu.buttons.mutes.permission.enabled")) {
+                if (!player.hasPermission(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.mutes.permission.permission"))) {
+                    player.sendMessage(CC.translate(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.mutes.permission.message")));
                     return;
                 }
             }
@@ -205,11 +215,11 @@ public class HistoryMenu extends Menu {
 
     private class WarnButton extends Button {
         public String getMaterial() {
-            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.warns.material");
+            return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.warns.material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("selector.warns.data");
+            return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("history-menu.buttons.warns.data");
         }
 
 
@@ -219,8 +229,9 @@ public class HistoryMenu extends Menu {
 
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.warns.name").replace("%warning_size%", String.valueOf(warnings.size())));
-            for (String line : XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("selector.warns.lore")) {
+            builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.warns.name")
+                    .replace("%warning_size%", String.valueOf(warnings.size())));
+            for (String line : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("history-menu.buttons.warns.lore")) {
                 builder.addLore(line);
             }
             return builder.build();
@@ -228,12 +239,13 @@ public class HistoryMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            if (XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getBoolean("selector.warns.settings.permission.enabled")) {
-                if (!player.hasPermission(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.warns.settings.permission.permission"))) {
-                    player.sendMessage(CC.translate(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("selector.warns.settings.permission.message")));
+            if (XenonBukkit.getInstance().getMenuConfig().getConfiguration().getBoolean("selector.warns.permission.enabled")) {
+                if (!player.hasPermission(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.warns.permission.permission"))) {
+                    player.sendMessage(CC.translate(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("history-menu.buttons.warns.permission.message")));
                     return;
                 }
             }
+
             new WarningsMenu(profile).openMenu(player);
         }
     }

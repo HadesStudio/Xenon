@@ -1,20 +1,5 @@
 package net.ascend.core.bukkit.util;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.utils
-//   Date: Tuesday, July 04, 2023 - 4:50 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -27,29 +12,21 @@ import java.util.regex.Pattern;
 
 public class TimeUtil {
 
-    private static Pattern timePattern = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?(?:([0-9]+)\\s*(?:s[a-z]*)?)?", 2);
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-    private static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm aaa");
 
     public static String formatIntoCalendarString(Date date) {
         return (dateFormat.format(date));
     }
 
-    public static String removeTimePattern(String input) {
-        return timePattern.matcher(input).replaceFirst("").trim();
-    }
-
-    public static long handleParseTime(String input) {
-        if (Character.isLetter(input.charAt(0))) {
+    public static long parse(String input) {
+        if (input == null || input.isEmpty()) {
             return -1L;
         }
 
         long result = 0L;
-
         StringBuilder number = new StringBuilder();
 
-        // Can't do lambda here because of variable
-        for (int i = 0; i < input.length(); ++i) {
+        for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
 
             if (Character.isDigit(c)) {
@@ -58,7 +35,7 @@ public class TimeUtil {
                 String str;
 
                 if (Character.isLetter(c) && !(str = number.toString()).isEmpty()) {
-                    result += handleConvert(Integer.parseInt(str), c);
+                    result += convert(Integer.parseInt(str), c);
                     number = new StringBuilder();
                 }
             }
@@ -67,14 +44,12 @@ public class TimeUtil {
         return result;
     }
 
-    private static long handleConvert(int value, char charType) {
-        switch (charType) {
+    private static long convert(int value, char unit) {
+        switch (unit) {
             case 'y':
                 return value * TimeUnit.DAYS.toMillis(365L);
             case 'M':
                 return value * TimeUnit.DAYS.toMillis(30L);
-            case 'w':
-                return value * TimeUnit.DAYS.toMillis(7L);
             case 'd':
                 return value * TimeUnit.DAYS.toMillis(1L);
             case 'h':
@@ -83,9 +58,9 @@ public class TimeUtil {
                 return value * TimeUnit.MINUTES.toMillis(1L);
             case 's':
                 return value * TimeUnit.SECONDS.toMillis(1L);
-            default:
-                return -1L;
         }
+
+        return -1L;
     }
 
     public static String formatTimeMillis(long millis) {
@@ -129,126 +104,46 @@ public class TimeUtil {
         return time.toString().trim();
     }
 
-    public static long parseTime(String time) {
-        long totalTime = 0L;
-        boolean found = false;
-        Matcher matcher = Pattern.compile("\\d+\\D+").matcher(time);
 
-        while (matcher.find()) {
-            String s = matcher.group();
-            Long value = Long.parseLong(s.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)")[0]);
-            String type = s.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)")[1];
+    public static String getMoreDetailedTime(long millis) {
+        long seconds = millis / 1000L;
 
-            switch (type) {
-                case "s": {
-                    totalTime += value;
-                    found = true;
-                    continue;
-                }
-                case "m": {
-                    totalTime += value * 60L;
-                    found = true;
-                    continue;
-                }
-                case "h": {
-                    totalTime += value * 60L * 60L;
-                    found = true;
-                    continue;
-                }
-                case "d": {
-                    totalTime += value * 60L * 60L * 24L;
-                    found = true;
-                    continue;
-                }
-                case "w": {
-                    totalTime += value * 60L * 60L * 24L * 7L;
-                    found = true;
-                    continue;
-                }
-                case "mo": {
-                    totalTime += value * 60L * 60L * 24L * 30L;
-                    found = true;
-                    continue;
-                }
-                case "y": {
-                    totalTime += value * 60L * 60L * 24L * 365L;
-                    found = true;
-                }
-            }
+        if (seconds <= 0) {
+            return "0 seconds";
         }
 
-        return found ? (totalTime * 1000L) + 1000L : -1L;
-    }
+        long minutes = seconds / 60;
+        seconds = seconds % 60;
+        long hours = minutes / 60;
+        minutes = minutes % 60;
+        long day = hours / 24;
+        hours = hours % 24;
+        long years = day / 365;
+        day = day % 365;
 
-    public static long parseDateDiff(String time, boolean future) {
-        Matcher m = timePattern.matcher(time);
+        StringBuilder time = new StringBuilder();
 
-        int years = 0;
-        int months = 0;
-        int weeks = 0;
-        int days = 0;
-        int hours = 0;
-        int minutes = 0;
-        int seconds = 0;
-
-        boolean found = false;
-
-        while (m.find()) {
-            if (m.group() == null || m.group().isEmpty()) continue;
-
-            for (int c = 0; c < m.groupCount(); ++c) {
-                if (m.group(c) == null || m.group(c).isEmpty()) continue;
-
-                found = true;
-                break;
-            }
-
-            if (!found) continue;
-
-            if (m.group(1) != null && !m.group(1).isEmpty()) years = Integer.parseInt(m.group(1));
-            if (m.group(2) != null && !m.group(2).isEmpty()) months = Integer.parseInt(m.group(2));
-            if (m.group(3) != null && !m.group(3).isEmpty()) weeks = Integer.parseInt(m.group(3));
-            if (m.group(4) != null && !m.group(4).isEmpty()) days = Integer.parseInt(m.group(4));
-            if (m.group(5) != null && !m.group(5).isEmpty()) hours = Integer.parseInt(m.group(5));
-            if (m.group(6) != null && !m.group(6).isEmpty()) minutes = Integer.parseInt(m.group(6));
-            if (m.group(7) == null || m.group(7).isEmpty()) break;
-
-            seconds = Integer.parseInt(m.group(7));
-            break;
+        if (years != 0) {
+            time.append(years).append(years == 1 ? " year" : " years").append(day == 0 ? "" : ", ");
         }
 
-        if (!found) return -5L;
-
-        GregorianCalendar var13 = new GregorianCalendar();
-
-        if (years > 0) var13.add(1, years * (future ? 1 : -1));
-        if (months > 0) var13.add(2, months * (future ? 1 : -1));
-        if (weeks > 0) var13.add(3, weeks * (future ? 1 : -1));
-        if (days > 0) var13.add(5, days * (future ? 1 : -1));
-        if (hours > 0) var13.add(11, hours * (future ? 1 : -1));
-        if (minutes > 0) var13.add(12, minutes * (future ? 1 : -1));
-        if (seconds > 0) var13.add(13, seconds * (future ? 1 : -1));
-
-        GregorianCalendar max = new GregorianCalendar();
-
-        max.add(1, 10);
-        return var13.after(max) ? max.getTimeInMillis() : var13.getTimeInMillis();
-    }
-
-    static int dateDiff(int type, Calendar fromDate, Calendar toDate, boolean future) {
-        int diff = 0;
-        long savedDate = fromDate.getTimeInMillis();
-
-        while (future && !fromDate.after(toDate) || !future && !fromDate.before(toDate)) {
-            savedDate = fromDate.getTimeInMillis();
-
-            fromDate.add(type, future ? 1 : -1);
-
-            ++diff;
+        if (day != 0) {
+            time.append(day).append(day == 1 ? " day" : " days").append(hours == 0 ? "" : ", ");
         }
 
-        fromDate.setTimeInMillis(savedDate);
-        return --diff;
+        if (hours != 0) {
+            time.append(hours).append(hours == 1 ? " hour" : " hours").append(minutes == 0 ? "" : ", ");
+        }
+
+        if (minutes != 0) {
+            time.append(minutes).append(minutes == 1 ? " minute" : " minutes").append(seconds == 0 ? "" : ", ");
+        }
+
+        if (seconds != 0) {
+            time.append(seconds).append(seconds == 1 ? " second" : " seconds");
+        }
+
+        return time.toString().trim();
     }
 
     public static String getDetailedTime(long millis) {
@@ -292,235 +187,4 @@ public class TimeUtil {
         return time.toString().trim();
     }
 
-    public static String getMoreDetailedTime(long millis) {
-        long seconds = millis / 1000L;
-
-        if (seconds <= 0) {
-            return "0 seconds";
-        }
-
-        long minutes = seconds / 60;
-        seconds = seconds % 60;
-        long hours = minutes / 60;
-        minutes = minutes % 60;
-        long day = hours / 24;
-        hours = hours % 24;
-        long years = day / 365;
-        day = day % 365;
-
-        StringBuilder time = new StringBuilder();
-
-        if (years != 0) {
-            time.append(years).append(years == 1 ? " year" : " years").append(day == 0 ? "" : ",");
-        }
-
-        if (day != 0) {
-            time.append(day).append(day == 1 ? " day" : " days").append(hours == 0 ? "" : ",");
-        }
-
-        if (hours != 0) {
-            time.append(hours).append(hours == 1 ? " hour" : " hours").append(minutes == 0 ? "" : ",");
-        }
-
-        if (minutes != 0) {
-            time.append(minutes).append(minutes == 1 ? " minute" : " minutes").append(seconds == 0 ? "" : ",");
-        }
-
-        if (seconds != 0) {
-            time.append(seconds).append(seconds == 1 ? " second" : " seconds");
-        }
-
-        return time.toString().trim();
-    }
-
-    public static String getMoreDetailedTime(long millis, boolean milis) {
-        long seconds = millis / 1000L;
-
-        if (seconds <= 0) {
-            return "0 seconds";
-        }
-
-        long minutes = seconds / 60;
-        if (!milis) {
-            seconds = seconds % 60;
-        }
-        long hours = minutes / 60;
-        minutes = minutes % 60;
-        long day = hours / 24;
-        hours = hours % 24;
-        long years = day / 365;
-        day = day % 365;
-
-        StringBuilder time = new StringBuilder();
-
-        if (years != 0) {
-            time.append(years).append(years == 1 ? " year" : " years").append(day == 0 ? "" : ",");
-        }
-
-        if (day != 0) {
-            time.append(day).append(day == 1 ? " day" : " days").append(hours == 0 ? "" : ",");
-        }
-
-        if (hours != 0) {
-            time.append(hours).append(hours == 1 ? " hour" : " hours").append(minutes == 0 ? "" : ",");
-        }
-
-        if (minutes != 0) {
-            time.append(minutes).append(minutes == 1 ? " minute" : " minutes").append(seconds == 0 ? "" : ",");
-        }
-
-        if (!milis) {
-            time.append(seconds).append(seconds == 1 ? " second" : " seconds");
-        } else {
-            time.append(DECIMAL_FORMAT.format(millis / 1000D)).append(seconds <= 1 ? " second" : " seconds");
-        }
-
-        return time.toString().trim();
-    }
-
-
-    public static String formatDateDiff(long date) {
-        GregorianCalendar c = new GregorianCalendar();
-
-        c.setTimeInMillis(date);
-
-        GregorianCalendar now = new GregorianCalendar();
-
-        return TimeUtil.formatDateDiff(now, c);
-    }
-
-    public static String formatDateDiff(Calendar fromDate, Calendar toDate) {
-        boolean future = false;
-
-        if (toDate.equals(fromDate)) return "now";
-        if (toDate.after(fromDate)) future = true;
-
-        StringBuilder sb = new StringBuilder();
-
-        int[] types = new int[]{1, 2, 5, 11, 12, 13};
-
-        String[] names = new String[]{"year", "years", "month", "months", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds"};
-        int accuracy = 0;
-
-        for (int i = 0; i < types.length && accuracy <= 2; ++i) {
-            int diff = TimeUtil.dateDiff(types[i], fromDate, toDate, future);
-            if (diff <= 0) continue;
-
-            ++accuracy;
-
-            sb.append(" ").append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
-        }
-
-        return sb.length() == 0 ? "now" : sb.toString().trim();
-    }
-
-    public static String formatSimplifiedDateDiff(long date) {
-        GregorianCalendar c = new GregorianCalendar();
-
-        c.setTimeInMillis(date);
-
-        GregorianCalendar now = new GregorianCalendar();
-
-        return TimeUtil.formatSimplifiedDateDiff(now, c);
-    }
-
-    public static String formatSimplifiedDateDiff(Calendar fromDate, Calendar toDate) {
-        boolean future = false;
-
-        if (toDate.equals(fromDate)) return "now";
-        if (toDate.after(fromDate)) future = true;
-
-        StringBuilder sb = new StringBuilder();
-
-        int[] types = new int[]{1, 2, 5, 11, 12, 13};
-
-        String[] names = new String[]{"y", "y", "m", "m", "d", "d", "h", "h", "m", "m", "s", "s"};
-        int accuracy = 0;
-
-        for (int i = 0; i < types.length && accuracy <= 2; ++i) {
-            int diff = TimeUtil.dateDiff(types[i], fromDate, toDate, future);
-
-            if (diff <= 0) continue;
-
-            ++accuracy;
-            sb.append(" ").append(diff).append("").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
-        }
-
-        return sb.length() == 0 ? "now" : sb.toString().trim();
-    }
-
-    public static String readableTime(long time) {
-        int second = 1000;
-        int minute = 60 * second;
-        int hour = 60 * minute;
-        int day = 24 * hour;
-        long ms = time;
-
-        StringBuilder text = new StringBuilder("");
-
-        if (time > day) {
-            text.append(time / day).append(time / day > 1 ? "days " : "day ");
-            ms = time % day;
-        }
-
-        if (ms > hour) {
-            text.append(ms / hour).append(ms / hour > 1 ? "hours " : "hour ");
-            ms %= hour;
-        }
-
-        if (ms > minute) {
-            text.append(ms / minute).append(ms / minute > 1 ? "minutes " : "minute ");
-            ms %= minute;
-        }
-
-        if (ms > second) text.append(ms / second).append(ms / second > 1 ? "seconds " : "second ");
-
-        return text.toString();
-    }
-
-    public static String readableTime(BigDecimal time) {
-        String text = "";
-
-        if (time.doubleValue() <= 60.0) {
-            time = time.add(BigDecimal.valueOf(0.1));
-
-            return text + " " + time + "s";
-        }
-
-        if (time.doubleValue() <= 3600.0) {
-            int minutes = time.intValue() / 60;
-            int seconds = time.intValue() % 60;
-
-            DecimalFormat formatter = new DecimalFormat("00");
-
-            return text + " " + formatter.format(minutes) + ":" + formatter.format(seconds) + "m";
-        }
-
-        return null;
-    }
-
-    public static String formatTime(int timer) {
-        int hours = timer / 3600;
-        int secondsLeft = timer - hours * 3600;
-        int minutes = secondsLeft / 60;
-        int seconds = secondsLeft - minutes * 60;
-
-        String formattedTime = "";
-
-        if (hours > 0) {
-            if (hours < 10)
-                formattedTime += "0";
-            formattedTime += hours + ":";
-        }
-
-        if (minutes < 10)
-            formattedTime += "0";
-        formattedTime += minutes + ":";
-
-        if (seconds < 10)
-            formattedTime += "0";
-        formattedTime += seconds;
-
-        return formattedTime;
-    }
 }

@@ -1,26 +1,10 @@
 package net.ascend.core.bukkit.profile.log;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bukkit.profile.log
-//   Date: Tuesday, August 22, 2023 - 3:21 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.log.category.LogCategories;
-import net.ascend.core.bukkit.profile.log.types.LogActionTypes;
 import net.ascend.core.bukkit.util.TimeUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,32 +16,31 @@ import java.util.*;
 @Getter
 @Setter
 public class Log {
+
     private UUID userUUID;
     private String userName;
     private Integer id;
+    private String server;
     private List<String> message;
-    private LogActionTypes logType;
+    private LogType logType;
     private LogCategories logCategory;
     private Long date;
     private boolean loaded = false;
 
-    public Log(Integer id, UUID userUUID, List<String> message, Long date, String logCategory) {
+    public Log(Integer id, UUID userUUID, String server, List<String> message, Long date, String logCategory) {
         this.id = id;
         this.userUUID = userUUID;
+        this.server = server;
         this.message = message;
         this.logCategory = LogCategories.valueOf(logCategory);
         this.date = date;
     }
 
-
     public void save() {
-        save(false);
-    }
-
-    public void save(boolean leave) {
         Document document = new Document();
         document.put("userUUID", userUUID.toString());
         document.put("userName", userName);
+        document.put("server", server);
         Type messageListType = new TypeToken<List<String>>() {}.getType();
         document.put("message", XenonBukkit.PLAIN_GSON.toJson(this.message, messageListType));
         document.put("logDate", date);
@@ -66,40 +49,24 @@ public class Log {
         document.put("logID", id);
 
         XenonBukkit.getInstance().getMongoModule().getLogsCollection().replaceOne(Filters.eq("logID", id.toString()), document, new ReplaceOptions().upsert(true));
-        if (leave) {
-            XenonBukkit.getInstance().getLogManager().getLogMap().remove(id);
-        }
-    }
-
-    private void load() {
-        Document document = XenonBukkit.getInstance().getMongoModule().getLogsCollection().find(Filters.eq("logID", id.toString())).first();
-
-        if (document != null) {
-            userUUID = UUID.fromString(document.getString("userUUID"));
-            userName = document.getString("userName");
-            Type messageListType = new TypeToken<List<String>>() {}.getType();
-            message = XenonBukkit.PLAIN_GSON.fromJson(document.getString("message"), messageListType);
-            date = document.getLong("logDate");
-            logCategory = LogCategories.valueOf(document.getString("logCategory"));
-            logType = LogActionTypes.valueOf(document.getString("logType"));
-            id = document.getInteger("logID");
-        }
-
-        loaded = true;
     }
 
     public List<String> formatMessage(List<String> message) {
         List<String> finalMessage = new ArrayList<>();
 
-        finalMessage.add("&7&l&m------------------------");
-        finalMessage.add("&6Username&7: &a" + userName);
-        finalMessage.add("&6Log Type&7: &a" + logType.getDisplay_name());
-        finalMessage.add("&6Date&7: &a" + TimeUtil.formatSimplifiedDateDiff(date) + " ago");
-        finalMessage.add("&7");
+        for (String string : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("logs-menu.button.first_lore")) {
+            string = string.replace("%player_name%", userName)
+                    .replace("%server%", server)
+                    .replace("%date%", TimeUtil.formatIntoCalendarString(new Date(date)));
+
+            finalMessage.add(string);
+        }
+
         for (String messages : message) {
             finalMessage.add(messages);
         }
-        finalMessage.add("&7&l&m------------------------");
+
+        finalMessage.add(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("logs-menu.button.last_lore"));
 
         return finalMessage;
     }

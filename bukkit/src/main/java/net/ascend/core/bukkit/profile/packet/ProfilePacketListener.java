@@ -8,6 +8,11 @@ import net.ascend.core.bukkit.profile.packet.implement.*;
 import net.ascend.core.bukkit.lib.CC;
 import net.ascend.core.bukkit.lib.Messages;
 import lombok.AllArgsConstructor;
+import net.ascend.core.bukkit.profile.packet.implement.staff.*;
+import net.ascend.core.bukkit.staff.request.packet.StaffRequestClaimPacket;
+import net.ascend.core.bukkit.staff.request.packet.StaffRequestClosePacket;
+import net.ascend.core.bukkit.staff.request.packet.StaffRequestPacket;
+import net.ascend.core.bukkit.staff.request.packet.StaffRequestReportPacket;
 import org.bukkit.entity.Player;
 
 /**
@@ -17,18 +22,6 @@ import org.bukkit.entity.Player;
  */
 @AllArgsConstructor
 public class ProfilePacketListener implements PacketListener {
-
-
-    @IncomingPacketHandler
-    public void onServerWhitelist(WhitelistBroadcastPacket packet){
-        String name = packet.getPlayerName();
-        String message = packet.getMessage();
-        String server = packet.getServer();
-
-        Messages.sendMessage(message
-                .replace("%player%", name)
-                .replace("%server_name%", server), "xenon.commands.whitelist");
-    }
 
     @IncomingPacketHandler
     public void onStaffJoin(StaffJoinPacket packet){
@@ -74,6 +67,7 @@ public class ProfilePacketListener implements PacketListener {
                 .replace("%message%", message), "xenon.staffchat");
     }
 
+
     @IncomingPacketHandler
     public void onAdminChat(AdminChatPacket packet){
         String name = packet.getPlayerName();
@@ -87,7 +81,7 @@ public class ProfilePacketListener implements PacketListener {
     }
 
     @IncomingPacketHandler
-    public void onStaffMessagePacket(StaffRawMessagePacket packet){
+    public void onStaffMessagePacket(StaffRawMessagePacket packet) {
         String server = packet.getServerName();
         String permission = packet.getPermission();
         String message = packet.getMessage();
@@ -96,31 +90,19 @@ public class ProfilePacketListener implements PacketListener {
     }
 
     @IncomingPacketHandler
-    public void onStaffMessagePacket(StaffMessagePacket packet){
+    public void onStaffMessagePacket(StaffRequestPacket packet){
         String name = packet.getPlayerName();
         String server = packet.getServerName();
         String message = packet.getMessage();
 
-        Messages.sendMessage(Locale.HELPOP_STAFF_ALERT
-                .replace("%player%", name)
-                .replace("%server%", server)
-                .replace("%message%", message), "xenon.staff");
+        for (String string : Locale.HELPOP_STAFF_ALERT) {
+            Messages.sendMessage(string
+                    .replace("%player_name%", name)
+                    .replace("%server%", server)
+                    .replace("%request%", message), "xenon.staff");
+        }
     }
 
-    @IncomingPacketHandler
-    public void onChatSpyMessage(StaffChatSpyMessagePacket packet){
-        String sender = packet.getSenderName();
-        String target = packet.getTargetName();
-        String server = packet.getServerName();
-        String message = packet.getMessage();
-
-        Messages.sendMessage(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("chat-spy.message")
-                        .replace("%sender%", sender)
-                        .replace("%target%", target)
-                        .replace("%server%", server)
-                        .replace("%message%", message),
-                "xenon.staff.chatspy");
-    }
 
     @IncomingPacketHandler
     public void onStaffRequestClaimPacket(StaffRequestClaimPacket packet){
@@ -151,11 +133,13 @@ public class ProfilePacketListener implements PacketListener {
         String message = packet.getMessage();
         String reportedPlayer = packet.getReportedPlayer();
 
-        Messages.sendMessage(Locale.REPORT_STAFF_ALERT
-                .replace("%player%", name)
-                .replace("%server%", server)
-                .replace("%message%", message)
-                .replace("%reported_player%", reportedPlayer), "xenon.staff");
+        for (String string : Locale.REPORT_STAFF_ALERT) {
+            Messages.sendMessage(string
+                    .replace("%player_name%", name)
+                    .replace("%server%", server)
+                    .replace("%reason%", message)
+                    .replace("%target_name%", reportedPlayer), "xenon.staff");
+        }
     }
 
     @IncomingPacketHandler
@@ -178,11 +162,6 @@ public class ProfilePacketListener implements PacketListener {
 
     @IncomingPacketHandler
     public void onFriendSend(FriendRequestSendPacket packet) {
-        packet.notifyPlayer();
-    }
-
-    @IncomingPacketHandler
-    public void onNotificationSend(NotificationSendPacket packet) {
         packet.notifyPlayer();
     }
 }

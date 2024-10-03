@@ -1,4 +1,0 @@
-server-name: "Kitmap" # This is the name of THIS server that it is running on.
-use-queue-system: true # Do you want to use the server queue system?
-use-reboot-system: true # Do you want to use the timed reboot system on this server?
-hub-name-format: "Hub" # This is the name your hub server must have.

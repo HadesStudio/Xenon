@@ -46,34 +46,32 @@ public abstract class PaginatedMenu extends Menu {
 
     @Override
     public Map<Integer, Button> getMenuContent(Player player) {
-        int minIndex = (int)((this.page - 1) * (double)this.getMaxPerPage(player));
-        int maxIndex = (int)(this.page * (double)this.getMaxPerPage(player));
-        maxIndex += 4;
+        int min = Double.valueOf(Integer.valueOf((page - 1) * getMaxPerPage(player)).doubleValue()).intValue();
+        int max = Double.valueOf(Integer.valueOf((page) * getMaxPerPage(player)).doubleValue()).intValue();
+
+        int top = 0;
+
         Map<Integer, Button> menuContent = new ConcurrentHashMap<>();
-        AtomicInteger index = new AtomicInteger(0);
-        int numberToAdd = this.page * 10 + 1;
 
         for (Map.Entry<Integer, Button> entry : getPaginatedContent(player).entrySet()) {
-            int ind = index.getAndIncrement();
-            if (ind >= minIndex && ind < maxIndex) {
-                ind -= (int)(this.getMaxPerPage(player) * (double)(this.page - 1)) - 10;
-                if (ind == 16) {
-                    index.set((this.page == 1) ? 9 : (9 + numberToAdd));
-                }
-                if (ind == 25) {
-                    index.set((this.page == 1) ? 18 : (18 + numberToAdd));
-                }
+            int ind = entry.getKey();
+
+            if (ind >= min && ind < max) {
+                ind -= Double.valueOf(Integer.valueOf((getMaxPerPage(player)) * (page - 1)).doubleValue() - 9).intValue();
+
                 menuContent.put(ind, entry.getValue());
+
+                if (ind > top) {
+                    top = ind;
+                }
             }
         }
-
 
         Map<Integer, Button> global = getGlobalContent(player);
 
         for (Map.Entry<Integer, Button> entry : global.entrySet()) {
             menuContent.put(entry.getKey(), entry.getValue());
         }
-
         return menuContent;
     }
     @Override
@@ -96,15 +94,9 @@ public abstract class PaginatedMenu extends Menu {
         menuContent.put(7, Button.getPlaceholder());
         menuContent.put(8, Button.getPlaceholder());
 
-        menuContent.put(9, Button.getPlaceholder());
-        menuContent.put(17, Button.getPlaceholder());
-        menuContent.put(18, Button.getPlaceholder());
-        menuContent.put(26, Button.getPlaceholder());
-        menuContent.put(27, Button.getPlaceholder());
-        menuContent.put(35, Button.getPlaceholder());
 
-        menuContent.put(36, Button.getPlaceholder());
-        menuContent.put(37, new PageButton(-1, this));
+        menuContent.put(36, new PageButton(-1, this));
+        menuContent.put(37, Button.getPlaceholder());
         menuContent.put(38, Button.getPlaceholder());
 
         menuContent.put(39, Button.getPlaceholder());
@@ -112,8 +104,8 @@ public abstract class PaginatedMenu extends Menu {
         menuContent.put(41, Button.getPlaceholder());
 
         menuContent.put(42, Button.getPlaceholder());
-        menuContent.put(43, new PageButton(1, this));
-        menuContent.put(44, Button.getPlaceholder());
+        menuContent.put(43, Button.getPlaceholder());
+        menuContent.put(44, new PageButton(1, this));
 
         return menuContent;
     }

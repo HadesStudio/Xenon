@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 
 public class FilterCommand extends BaseCommand {
+
     public FilterCommand(){
         super("filter", Arrays.asList("chatfilter", "filters"),"xenon.command.filter", true);
     }

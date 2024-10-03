@@ -21,19 +21,19 @@ public class TagSetWeightCommand extends SubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length < 3) {
+        if (args.length < 2) {
             sender.sendMessage(CC.translate(Locale.TAG_SETWEIGHT_USAGE));
             return;
         }
 
-        Tag tag = XenonBukkit.getInstance().getTagManager().getTag(args[1]);
+        Tag tag = XenonBukkit.getInstance().getTagManager().getTag(args[0]);
         if (tag == null) {
             sender.sendMessage(CC.translate(Locale.TAG_DONT_EXISTS));
             return;
         }
 
-        if(!this.checkNumber(sender, args[2])) return;
-        int weight = Integer.parseInt(args[2]);
+        if(!this.checkNumber(sender, args[1])) return;
+        int weight = Integer.parseInt(args[1]);
 
         tag.setWeight(weight);
         tag.save();

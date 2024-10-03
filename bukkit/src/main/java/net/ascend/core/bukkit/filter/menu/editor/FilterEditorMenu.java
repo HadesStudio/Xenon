@@ -1,20 +1,5 @@
 package net.ascend.core.bukkit.filter.menu.editor;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bukkit.filter.menu.editor
-//   Date: Thursday, September 14, 2023 - 1:44 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.filter.Filter;
 import net.ascend.core.bukkit.filter.menu.editor.mutetype.MatchSelectionMenu;
@@ -38,15 +23,12 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class FilterEditorMenu extends Menu {
+
     {
         setClickUpdate(true);
     }
-    @Override
-    public FillerTemplate getFillerTemplate() {
-        return FillerTemplate.FILL;
-    }
 
-    Filter filter;
+    private Filter filter;
 
     @Override
     public String getName() {
@@ -61,6 +43,11 @@ public class FilterEditorMenu extends Menu {
     @Override
     public int getSize() {
         return 27;
+    }
+
+    @Override
+    public FillerTemplate getFillerTemplate() {
+        return FillerTemplate.FILL;
     }
 
     @Override
@@ -91,7 +78,7 @@ public class FilterEditorMenu extends Menu {
                     "&7Click here to edit this filter's",
                     "&7name.",
                     "&7",
-                    "&6Current Name&7: &a" + filter.getName()
+                    "&6Current Name&7: &f" + filter.getName()
             ));
             return builder.build();
         }
@@ -99,7 +86,7 @@ public class FilterEditorMenu extends Menu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             player.closeInventory();
-            player.sendMessage(CC.translate("&6[Filter] &7Please type the new name of this filter in chat:"));
+            player.sendMessage(CC.translate("&aPlease type the new name of this filter in chat:"));
             ConversationFactory factory = new ConversationFactory(XenonBukkit.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
                 public String getPromptText(ConversationContext context) {
                     return "";
@@ -110,7 +97,7 @@ public class FilterEditorMenu extends Menu {
                     filter.setName(s);
                     filter.save();
 
-                    player.sendMessage(CC.translate("&6[Filter] &7You have successfully changed the name of this filter to '&6" + s + "&7'."));
+                    player.sendMessage(CC.translate("&aYou have successfully changed the name of this filter to '&l" + s + "&a'."));
                     new FilterEditorMenu(filter).openMenu(player);
                     return Prompt.END_OF_CONVERSATION;
                 }
@@ -134,7 +121,7 @@ public class FilterEditorMenu extends Menu {
                     "&7Click here to edit this filter's",
                     "&7text it filter's.",
                     "&7",
-                    "&6Current Filtered Text&7: &a" + filter.getPhrase()
+                    "&6Current Filtered Text&7: &f" + filter.getPhrase()
             ));
             return builder.build();
         }
@@ -142,7 +129,7 @@ public class FilterEditorMenu extends Menu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             player.closeInventory();
-            player.sendMessage(CC.translate("&6[Filter] &7Please type the new phrase of this filter in chat:"));
+            player.sendMessage(CC.translate("&aPlease type the new phrase of this filter in chat:"));
             ConversationFactory factory = new ConversationFactory(XenonBukkit.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
                 public String getPromptText(ConversationContext context) {
                     return "";
@@ -153,7 +140,7 @@ public class FilterEditorMenu extends Menu {
                     filter.setPhrase(s);
                     filter.save();
 
-                    player.sendMessage(CC.translate("&6[Filter] &7You have successfully changed the filter phrase of this filter to '&6" + s + "&7'."));
+                    player.sendMessage(CC.translate("&aYou have successfully changed the filter phrase of this filter to '&l" + s + "&a'."));
                     new FilterEditorMenu(filter).openMenu(player);
                     return Prompt.END_OF_CONVERSATION;
                 }
@@ -177,7 +164,7 @@ public class FilterEditorMenu extends Menu {
                     "&7Click here to edit this filter's",
                     "&7match type.",
                     "&7",
-                    "&6Current Match Type&7: &a" + filter.getMatch().getDisplay()
+                    "&6Current Match Type&7: &f" + filter.getMatch().getDisplay()
             ));
             return builder.build();
         }
@@ -201,7 +188,7 @@ public class FilterEditorMenu extends Menu {
                     "&7Click here to edit this filter's",
                     "&7mute mode.",
                     "&7",
-                    "&6Current Mute Mode&7: &a" + filter.getMuteType().getDisplay()
+                    "&6Current Mute Mode&7: &f" + filter.getMuteType().getDisplay()
             ));
             return builder.build();
         }
@@ -225,7 +212,7 @@ public class FilterEditorMenu extends Menu {
                     "&7Click here to edit this filter's",
                     "&7duration.",
                     "&7",
-                    "&6Current Mute Duration&7: &a" + TimeUtil.formatTimeMillis(filter.getDuration())
+                    "&6Current Mute Duration&7: &f" + TimeUtil.getDetailedTime(filter.getDuration())
             ));
             return builder.build();
         }
@@ -233,7 +220,7 @@ public class FilterEditorMenu extends Menu {
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             player.closeInventory();
-            player.sendMessage(CC.translate("&6[Filter] &7Please type the new phrase of this filter in chat:"));
+            player.sendMessage(CC.translate("&aPlease type the new phrase of this filter in chat:"));
             ConversationFactory factory = new ConversationFactory(XenonBukkit.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
                 public String getPromptText(ConversationContext context) {
                     return "";
@@ -241,9 +228,9 @@ public class FilterEditorMenu extends Menu {
 
                 @Override
                 public Prompt acceptInput(ConversationContext cc, String s) {
-                    long duration = TimeUtil.parseTime(s);
+                    long duration = TimeUtil.parse(s);
                     if (duration == -1) {
-                        player.sendMessage(CC.translate("&6[Filter] &7You have specified a invalid duration for this filter, please try again.. (Example: 1h15m)"));
+                        player.sendMessage(CC.translate("&cYou have specified a invalid duration for this filter, please try again. (Example: 1h15m)"));
                         new FilterEditorMenu(filter).openMenu(player);
                         return Prompt.END_OF_CONVERSATION;
                     }
@@ -251,7 +238,7 @@ public class FilterEditorMenu extends Menu {
                     filter.setDuration(duration);
                     filter.save();
 
-                    player.sendMessage(CC.translate("&6[Filter] &7You have successfully changed the filter duration of this filter to '&6" + s + "&7'."));
+                    player.sendMessage(CC.translate("&aYou have successfully changed the filter duration of this filter to '&l" + s + "&a'."));
                     new FilterEditorMenu(filter).openMenu(player);
                     return Prompt.END_OF_CONVERSATION;
                 }
@@ -283,7 +270,7 @@ public class FilterEditorMenu extends Menu {
                     "&7Click here to toggle this filter's",
                     "&7case sensitive status.",
                     "&7",
-                    "&6Case Sensitive&7: &a" + isCaseSensitive()
+                    "&6Case Sensitive&7: &f" + isCaseSensitive()
             ));
             return builder.build();
         }
@@ -293,13 +280,15 @@ public class FilterEditorMenu extends Menu {
             if (filter.isCaseSensitive()) {
                 filter.setCaseSensitive(false);
                 filter.save();
+
                 player.updateInventory();
-                player.sendMessage(CC.translate("&6[Filter] &7You have now &cdisabled &7this filter's case sensitive status!"));
+                player.sendMessage(CC.translate("&cYou have now &ldisabled &cthis filter's case sensitive status."));
             } else {
                 filter.setCaseSensitive(true);
                 filter.save();
+
                 player.updateInventory();
-                player.sendMessage(CC.translate("&6[Filter] &7You have now &aenabled &7this filter's case sensitive status!"));
+                player.sendMessage(CC.translate("&aYou have now &lenabled &athis filter's case sensitive status."));
             }
         }
 
@@ -338,7 +327,7 @@ public class FilterEditorMenu extends Menu {
                     "&7Click here to toggle this filter's",
                     "&7enabled status.",
                     "&7",
-                    "&6Status&7: &a" + isEnabled()
+                    "&6Status&7: &f" + isEnabled()
             ));
             return builder.build();
         }
@@ -349,12 +338,12 @@ public class FilterEditorMenu extends Menu {
                 filter.setEnabled(false);
                 filter.save();
                 player.updateInventory();
-                player.sendMessage(CC.translate("&6[Filter] &7You have now &cdisabled &7this filter!"));
+                player.sendMessage(CC.translate("&cYou have now &ldisabled &cthis filter."));
             } else {
                 filter.setEnabled(true);
                 filter.save();
                 player.updateInventory();
-                player.sendMessage(CC.translate("&6[Filter] &7You have now &aenabled &7this filter!"));
+                player.sendMessage(CC.translate("&aYou have now &lenabled &athis filter."));
             }
         }
 

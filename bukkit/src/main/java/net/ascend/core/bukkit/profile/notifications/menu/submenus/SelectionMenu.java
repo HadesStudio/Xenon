@@ -25,7 +25,8 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class SelectionMenu extends Menu {
-    Notification notification;
+
+    private Notification notification;
 
     @Override
     public FillerTemplate getFillerTemplate() {
@@ -86,13 +87,13 @@ public class SelectionMenu extends Menu {
                 if (b) {
                     player.sendMessage(CC.translate(""));
                     player.sendMessage(CC.translate("&aYou have successfully sent this notification."));
-                    player.sendMessage(CC.translate("&aPlayer: &b" + specified));
+                    player.sendMessage(CC.translate("&aPlayer: &f" + specified));
                     player.sendMessage(CC.translate(""));
 
                     Profile profile = XenonBukkit.getInstance().getProfileManager().getProfile(specified);
-                    XenonBukkit.getInstance().getProfileManager().sendNotification(profile.getUniqueId(), notification.getMessage(), notification.getId());
+                    XenonBukkit.getInstance().getNotificationManager().sendNotification(profile.getUniqueId(), notification.getMessage(), notification.getId());
                 } else {
-                    player.closeInventory();
+                    new SelectionMenu(notification).openMenu(player);
                 }
             }).openMenu(player));
         }
@@ -106,11 +107,14 @@ public class SelectionMenu extends Menu {
 
                 @Override
                 public Prompt acceptInput(ConversationContext cc, String text) {
-                    callback.callback(text);
                     if (XenonBukkit.getInstance().getProfileManager().getProfile(text) == null) {
                         p.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", text));
                         new SelectionMenu(notification).openMenu(p);
+                        return Prompt.END_OF_CONVERSATION;
                     }
+
+                    callback.callback(text);
+                    new SelectionMenu(notification).openMenu(p);
 
                     return Prompt.END_OF_CONVERSATION;
                 }
@@ -147,16 +151,15 @@ public class SelectionMenu extends Menu {
         }
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            player.closeInventory();
             new ConfirmationMenu("Send notification?", (b) -> {
                 if (b) {
                     player.sendMessage(CC.translate(""));
                     player.sendMessage(CC.translate("&aYou have successfully sent this notification."));
                     player.sendMessage(CC.translate(""));
 
-                    XenonBukkit.getInstance().getProfileManager().sendNotificationAll(notification.getMessage(), notification.getId());
+                    XenonBukkit.getInstance().getNotificationManager().sendNotificationAll(notification.getMessage(), notification.getId());
                 } else {
-                    player.closeInventory();
+                    new SelectionMenu(notification).openMenu(player);
                 }
             }).openMenu(player);
         }

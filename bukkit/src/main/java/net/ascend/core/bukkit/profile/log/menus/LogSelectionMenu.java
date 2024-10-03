@@ -1,21 +1,7 @@
 package net.ascend.core.bukkit.profile.log.menus;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.profile.log.menus
-//   Date: Monday, July 31, 2023 - 6:47 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.XenonBukkit;
+import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.log.Log;
 import net.ascend.core.bukkit.profile.log.category.LogCategories;
 import net.ascend.core.bukkit.lib.maker.ItemMaker;
@@ -32,26 +18,31 @@ import java.util.*;
 
 @AllArgsConstructor
 public class LogSelectionMenu extends Menu {
-    @Override
-    public FillerTemplate getFillerTemplate() {
-        return FillerTemplate.FILL;
-    }
 
-    private OfflinePlayer offlinePlayer;
+    private Profile profile;
 
     @Override
     public String getName() {
-        return XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.title");
-    }
-
-    @Override
-    public int getSize() {
-        return XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getInt("categories.size");
+        return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("select-log-menu.title")
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
     }
 
     @Override
     public String getTitle(Player player) {
-        return XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("categories.title");
+        return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("select-log-menu.title")
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
+    }
+
+    @Override
+    public int getSize() {
+        return 9*3;
+    }
+
+    @Override
+    public FillerTemplate getFillerTemplate() {
+        return FillerTemplate.FILL;
     }
 
     @Override
@@ -59,7 +50,7 @@ public class LogSelectionMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
 
         for (LogCategories value : LogCategories.values()) {
-            buttons.put(value.getSlot(), new CategoryButton(offlinePlayer, value));
+            buttons.put(value.getSlot(), new CategoryButton(profile, value));
         }
         return buttons;
     }
@@ -67,20 +58,21 @@ public class LogSelectionMenu extends Menu {
 
     @AllArgsConstructor
     public static class CategoryButton extends Button {
-        final OfflinePlayer offlinePlayer;
-        final LogCategories logCategories;
+
+        private final Profile profile;
+        private final LogCategories logCategories;
 
         public List<String> getLore() {
-            final List<String> string = new ArrayList<>();
             int size = 0;
             for (Log log : XenonBukkit.getInstance().getLogManager().getLogMap().values()) {
-                if (log.getUserUUID().equals(offlinePlayer.getUniqueId())) {
+                if (log.getUserUUID().equals(profile.getUniqueId())) {
                     if (log.getLogCategory() == logCategories || logCategories == LogCategories.ALL) {
                         size = size + 1;
                     }
                 }
             }
 
+            List<String> string = new ArrayList<>();
             for (String line : logCategories.getLore()) {
                 string.add(line
                         .replace("%log_size%", String.valueOf(size))
@@ -102,7 +94,7 @@ public class LogSelectionMenu extends Menu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            new LogDisplayMenu(logCategories, offlinePlayer).openMenu(player);
+            new LogDisplayMenu(logCategories, profile).openMenu(player);
         }
     }
 }

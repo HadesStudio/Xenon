@@ -68,28 +68,6 @@ public class XenonAPI {
         return this.getProfile(uuid).getPunishments();
     }
 
-    public boolean isProfileDiscordSynced(UUID uuid) {
-        Profile profile = this.getProfile(uuid);
-
-        return profile != null && profile.isDiscordSynced();
-    }
-
-    public String getProfileDiscordUserID(UUID uuid) {
-        if (this.getProfile(uuid).isDiscordSynced()) {
-            return this.getProfile(uuid).getDiscordID();
-        } else {
-            return "Unknown, the user has not linked their discord.";
-        }
-    }
-
-    public String getProfileDiscordName(UUID uuid) {
-        if (this.getProfile(uuid).isDiscordSynced()) {
-            return this.getProfile(uuid).getDiscordName();
-        } else {
-            return "Unknown, the user has not linked their discord.";
-        }
-    }
-
     public boolean isProfileOnline(UUID uuid) {
         return !this.getProfile(uuid).getCurrentServer().equalsIgnoreCase("None");
     }

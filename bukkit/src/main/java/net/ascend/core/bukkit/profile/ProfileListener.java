@@ -3,9 +3,9 @@ package net.ascend.core.bukkit.profile;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.packet.implement.FriendSessionPacket;
-import net.ascend.core.bukkit.profile.packet.implement.StaffJoinPacket;
-import net.ascend.core.bukkit.profile.packet.implement.StaffLeavePacket;
-import net.ascend.core.bukkit.profile.packet.implement.StaffSwitchPacket;
+import net.ascend.core.bukkit.profile.packet.implement.staff.StaffJoinPacket;
+import net.ascend.core.bukkit.profile.packet.implement.staff.StaffLeavePacket;
+import net.ascend.core.bukkit.profile.packet.implement.staff.StaffSwitchPacket;
 import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.punishment.PunishmentType;
 import net.ascend.core.bukkit.punishment.packet.implement.PunishmentAttemptedJoinPacket;
@@ -51,7 +51,7 @@ public class ProfileListener implements Listener {
         Profile profile = plugin.getProfileManager().getProfile(uuid, name);
 
         if (profile == null || !profile.isLoaded()) {
-            String finalMessage = ChatUtil.buildDescription(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile.failed-load"));
+            String finalMessage = ChatUtil.buildDescription(plugin.getLanguageConfig().getConfiguration().getStringList("profile.failed-load"));
 
             event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
             event.setKickMessage(CC.translate(finalMessage));
@@ -71,9 +71,6 @@ public class ProfileListener implements Listener {
         }
 
         profile.setupAlts();
-        if (profile.getAlts().size() == 0 || profile.getAlts().isEmpty()) {
-            profile.setupAlts();
-        }
     }
 
     @EventHandler
@@ -84,40 +81,34 @@ public class ProfileListener implements Listener {
         Profile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
 
         if (profile != null) {
-            profile.setupPermissionAttachments(player);
+           profile.setupPermissionAttachments(player);
 
-            if (profile.getFirstSeen() == null) {
+            if (profile.getFirstSeen().equals(0L)) {
                 profile.setFirstSeen(System.currentTimeMillis());
             }
 
-            String serverName = XenonBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name");
+            String serverName = XenonBukkit.getInstance().getServerManager().getCurrentServerName();
             if (player.hasPermission("xenon.staff.alerts")) {
-                if (profile.getCurrentServer().equalsIgnoreCase("Unknown")) {
+                if (profile.getCurrentServer().equalsIgnoreCase("None")) {
                     plugin.getRedisModule().sendPacket(new StaffJoinPacket(player.getName(), serverName));
                 } else {
                     plugin.getRedisModule().sendPacket(new StaffSwitchPacket(player.getName(), serverName, profile.getCurrentServer()));
                 }
             }
+
+            profile.setCurrentServer(serverName);
             profile.getSession().startTimings();
-
-            if (!profile.getNotifications().isEmpty()) {
-                XenonBukkit.getInstance().getServer().getScheduler().runTaskLater(XenonBukkit.getInstance(), () -> {
-                    if (!player.isOnline()) {
-                        return;
-                    }
-
-                    SoundManager.INSTANCE.playSound(player, "NOTE_PLING");
-
-                    for (String message : XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile-system.notifications.join")) {
-                        player.sendMessage(CC.translate(message.replace("%notification_amount%", String.valueOf(profile.getNotifications().size()))));
-                    }
-                }, 5);
-            }
+            profile.save();
 
             plugin.getRedisModule().sendPacket(new FriendSessionPacket(player.getName(), serverName, false));
-            profile.setCurrentServer(serverName);
 
-            profile.save();
+            if (!profile.getNotifications().isEmpty()) { // FINISHED PLEASE
+                SoundManager.INSTANCE.playSound(player, "NOTE_PLING");
+
+                for (String message : XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("notification.join")) {
+                    player.sendMessage(CC.translate(message.replace("%notification_amount%", String.valueOf(profile.getNotifications().size()))));
+                }
+            }
         }
     }
 
@@ -132,14 +123,13 @@ public class ProfileListener implements Listener {
         if (profile.isLoaded()) {
             profile.setLastSeen(System.currentTimeMillis());
 
-            String serverName = XenonBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name");
+            String serverName = XenonBukkit.getInstance().getServerManager().getCurrentServerName();
             if (player.hasPermission("xenon.staff.alerts")) {
                 plugin.getRedisModule().sendPacket(new StaffLeavePacket(player.getName(), serverName));
             }
 
             profile.getSession().stopTimings();
             profile.setCurrentServer("None");
-
 
             new BukkitRunnable() {
                 @Override
@@ -188,8 +178,6 @@ public class ProfileListener implements Listener {
             event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, CC.translate(finalMessage));
 
             plugin.getProfileManager().getProfileMap().remove(uuid);
-
-
 
             return true;
         }

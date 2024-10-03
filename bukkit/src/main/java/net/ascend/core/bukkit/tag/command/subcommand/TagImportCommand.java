@@ -3,6 +3,7 @@ package net.ascend.core.bukkit.tag.command.subcommand;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.tag.Tag;
+import net.ascend.core.bukkit.tag.TagType;
 import net.ascend.core.bukkit.tag.packet.implement.TagImportPacket;
 import net.ascend.core.bukkit.util.command.sub.SubCommand;
 import net.ascend.core.bukkit.lib.CC;
@@ -32,8 +33,10 @@ public class TagImportCommand extends SubCommand {
         YamlConfiguration config = XenonBukkit.getInstance().getTagConfig().getConfiguration();
         config.getKeys(false).forEach(key -> {
             Tag tag = new Tag(config.getString(key + ".name"));
+            tag.setType(TagType.valueOf(config.getString(key + ".type")));
             tag.setPrefix(config.getString(key + ".prefix"));
             tag.setWeight(config.getInt(key + ".weight"));
+            tag.setCoins(config.getInt(key + ".coins"));
             tag.save();
 
             XenonBukkit.getInstance().getTagManager().getTags().add(tag);

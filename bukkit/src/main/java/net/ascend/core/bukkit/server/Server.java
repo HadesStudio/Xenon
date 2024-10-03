@@ -1,27 +1,10 @@
 package net.ascend.core.bukkit.server;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bungee.server.data.server
-//   Date: Monday, August 14, 2023 - 11:25 AM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.ReplaceOptions;
-import net.ascend.core.bukkit.XenonBukkit;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.bson.Document;
+import net.ascend.core.bukkit.XenonBukkit;
+import net.ascend.core.bukkit.server.packet.impl.ServerStateChangePacket;
 
 @Getter
 @Setter
@@ -31,32 +14,21 @@ public class Server {
     private String name = "";
     private long lastHeartbeat = System.currentTimeMillis();
     private long startTime = 0;
-    private ServerState state = ServerState.UNKNOWN;
+    private ServerState state;
     private int onlinePlayers = 0;
-    private int maxPlayers = 25;
+    private int maxPlayers = 0;
     private double tps = 0D;
-    private double fullTick = 0D;
+    private long usedMemory = 0L;
+    private long allocatedMemory = 0L;
 
-    public Server(String name) {
+    public Server(String name, boolean init) {
         this.name = name;
-    }
 
-    public void save() {
-        Document document = new Document();
-        document.put("name", name);
-        document.put("state", state.toString());
-        document.put("maxPlayers", maxPlayers);
+        if (init) {
+            this.state = ServerState.ONLINE;
+            this.startTime = System.currentTimeMillis();
 
-        XenonBukkit.getInstance().getMongoModule().getServerCollection().replaceOne(Filters.eq("name", name), document, new ReplaceOptions().upsert(true));
-    }
-
-    public void load() {
-        Document document = XenonBukkit.getInstance().getMongoModule().getServerCollection().find(Filters.eq("name", name)).first();
-
-        if (document != null) {
-            name = document.getString("name");
-            state = ServerState.valueOf(document.getString("state"));
-            maxPlayers = document.getInteger("maxPlayers");
+            XenonBukkit.getInstance().getRedisModule().sendPacket(new ServerStateChangePacket(name, true));
         }
     }
 

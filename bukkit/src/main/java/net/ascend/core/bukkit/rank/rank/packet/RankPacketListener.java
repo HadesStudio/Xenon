@@ -7,7 +7,6 @@ import net.ascend.core.bukkit.modules.database.redis.packet.annotation.IncomingP
 import net.ascend.core.bukkit.rank.rank.Rank;
 import net.ascend.core.bukkit.rank.rank.packet.implement.RankDeletePacket;
 import net.ascend.core.bukkit.rank.rank.packet.implement.RankUpdatePacket;
-import lombok.AllArgsConstructor;
 import org.bson.Document;
 
 /**
@@ -15,7 +14,6 @@ import org.bson.Document;
  * Created on 14/07/2023
  * Protect Name Xenon
  */
-@AllArgsConstructor
 public class RankPacketListener implements PacketListener {
 
     @IncomingPacketHandler
@@ -24,7 +22,7 @@ public class RankPacketListener implements PacketListener {
 
         Rank rank = XenonBukkit.getInstance().getRankManager().getRank(rankName);
 
-        if (rank == null) { // CREATE NEW RANK IN OTHERS SERVER
+        if (rank == null) {
             XenonBukkit.getInstance().getRankManager().getRanks().add(new Rank(rankName));
             rank = XenonBukkit.getInstance().getRankManager().getRank(rankName);
         }

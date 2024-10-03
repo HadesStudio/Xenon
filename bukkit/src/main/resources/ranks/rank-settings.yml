@@ -4,23 +4,23 @@ commands:
     - "&6&lRank System Help"
     - "&7All commands and usages are listed below."
     - ""
-    - "&6* &f/rank create <name> &7- Create a rank with specified name."
-    - "&6* &f/rank delete <name> &7- Delete a rank."
-    - "&6* &f/rank inherit <add|list|remove> <rank> <inheritance> &7- Modify inheritances for a rank."
-    - "&6* &f/rank rename <rank> <new_name> &7- Rename a existing rank to a new name."
-    - "&6* &f/rank bungeeperms <add|list|remove> <rank> <permission> &7- Modify a ranks bungee permissions."
-    - "&6* &f/rank list &7- View a list of all created ranks."
-    - "&6* &f/rank import &7- Import all ranks from ranks.yml"
-    - "&6* &f/rank export &7- Export all ranks to ranks.yml"
-    - "&6* &f/rank info <name> &7- View all info from a rank."
-    - "&6* &f/rank perms <add|list|remove> <rank> <permission> &7- Modify a ranks permissions."
-    - "&6* &f/rank setprefix <name> <prefix> &7- Updates a prefix for a rank."
-    - "&6* &f/rank setsuffix <name> <suffix> &7- Updates a suffix for a rank."
-    - "&6* &f/rank settype <name> <type> &7- Updates the rank type of a rank."
-    - "&6* &f/rank setweight <name> <weight> &7- Updates the rank weight of a rank."
-    - "&6* &f/rank setcolor <name> <color> &7- Changes the color of a rank."
-    - "&6* &f/rank promote <player> <reason> &7- Promotes a user up +1 rank."
-    - "&6* &f/rank demote <player> <reason> &7- Demotes a user down -1 rank."
+    - "&7* &f/rank create <name> &7- &fCreate a rank with specified name."
+    - "&7* &f/rank delete <name> &7- &fDelete a rank."
+    - "&7* &f/rank info <name> &7- &fView all info from a rank."
+    - "&7* &f/rank rename <rank> <new_name> &7- &fRename a existing rank to a new name."
+    - "&7* &f/rank list &7- &fView a list of all created ranks."
+    - "&7* &f/rank inherit <add|list|remove> <rank> <inheritance> &7- &fModify inheritances for a rank."
+    - "&7* &f/rank perms <add|list|remove> <rank> <permission> &7- &fModify a ranks permissions."
+    - "&7* &f/rank bungeeperms <add|list|remove> <rank> <permission> &7- &fModify a ranks bungee permissions."
+    - "&7* &f/rank setprefix <name> <prefix> &7- &fUpdates a prefix for a rank."
+    - "&7* &f/rank setsuffix <name> <suffix> &7- &fUpdates a suffix for a rank."
+    - "&7* &f/rank setweight <name> <weight> &7- &fUpdates the rank weight of a rank."
+    - "&7* &f/rank setcolor <name> <color> &7- &fChanges the color of a rank."
+    - "&7* &f/rank settype <name> <type> &7- &fUpdates the rank type of a rank."
+    - "&7* &f/rank promote <player> <reason> &7- &fPromotes a user up +1 rank."
+    - "&7* &f/rank demote <player> <reason> &7- &fDemotes a user down -1 rank."
+    - "&7* &f/rank import &7- &fImport all ranks from ranks.yml"
+    - "&7* &f/rank export &7- &fExport all ranks to ranks.yml"
     - "&7&l&m-----------------------------------"
   create:
     usage: "&cCorrect Usage: /rank create <name>"
@@ -47,10 +47,7 @@ commands:
     invalid-rank: "&cYou cannot promote this person anymore ranks. Make sure that the weights are +1 from each other."
     cannot-give: "&cSorry, you can only promote ranks that are below the rank of &6%rank%&c."
     promoted: "&6You have successfully promoted &6&l%player% &6to the rank of &6&l%name%&6."
-  perks:
-    usage: "&cCorrect Usage: /rank perks <rank>"
-  edit-perks:
-    usage: "&cCorrect Usage: /rank editperks <rank>"
+
   import:
     imported: "&aYou have successfully imported all ranks from &7ranks.yml&a."
   export:
@@ -59,38 +56,38 @@ commands:
     usage: "&cCorrect Usage: /rank inherit <add|list|remove> <rank> <inheritance>"
     already-inherit: "&cThis rank already inherits that rank."
     no-inherits: "&cThis rank does not have any inheritances."
-    added-inherit: "&aYou have successfully added the inheritance of &6%inhterit_rank_name% &ato &6%rank_name%&a."
+    added-inherit: "&aYou have successfully added the inheritance of &l%inhterit_rank_name% &ato &l%rank_name%&a."
     list-format: "&6* &a%rank% Rank"
     removed-inherit: "&cYou have removed the rank inheritance for this rank."
     not-have: "&cThis rank does not have that inheritancce?"
   setprefix:
     usage: "&cCorrect Usage: /rank setprefix <rank> <display>"
-    set: "&aYou have updated this ranks prefix to: &6%prefix%"
+    set: "&aYou have updated this ranks prefix to: &l%prefix%"
   setsuffix:
     usage: "&cCorrect Usage: /rank setsuffix <rank> <display>"
-    set: "&aYou have updated this ranks suffix to: &6%suffix%"
+    set: "&aYou have updated this ranks suffix to: &l%suffix%"
   setweight:
     usage: "&cCorrect usage: /rank setweight <rank> <weight>"
-    set: "&aYou have updated this ranks weight to: &6%weight%"
+    set: "&aYou have updated this ranks weight to: &l%weight%"
   setqueuepriority:
     usage: "&cCorrect Usage: /rank setqueuepriority <rank> <priority>"
-    set: "&aYou have updated this ranks queue priority to: &6%priority%"
+    set: "&aYou have updated this ranks queue priority to: &l%priority%"
   settype:
     usage: "&cCorrect usage: /rank settype <rank> <type>"
-    set: "&aYou have updated this ranks type to: &6%type%"
+    set: "&aYou have updated this ranks type to: &l%type%"
   info:
+    usage: "&cCorrect usage: /rank info <rank>"
     message:
       - "&7&l&m---------------------------------"
-      - "&6&n%rank% Rank:"
+      - "&6%rank% Rank:"
       - "&7This rank has the following configurations."
       - ""
-      - "&aType: &6%type%"
-      - "&aPrefix: &6%prefix%"
-      - "&aSuffix: &6%suffix%"
-      - "&aWeight: &6%weight%"
-      - "&aBungee Permissions: &6%bungee_perms% Permissions"
-      - "&aServer Permissions: &6%server_perms% Permissions"
-      - "&aInheritances: &6%inherits% Inheritances"
+      - "&6Type: &f%type%"
+      - "&6Prefix: &f%prefix%"
+      - "&6Suffix: &f%suffix%"
+      - "&6Weight: &f%weight%"
+      - "&6Permissions: &f%perms% Permissions"
+      - "&6Inheritances: &f%inherits% Inheritances"
       - "&7&l&m---------------------------------"
   bungee-permissions:
     usage: "&cCorrect Usage: /rank bungeepermissions <add|list|remove> <rank> <permission>"
@@ -110,46 +107,4 @@ commands:
     not-have: "&cThis rank does not have that permission?"
   dont-exists: "&cA rank with that name doesn't exists."
 
-menu:
-  rank-list:
-    rank-button:
-      title: "%rank_name% Rank" # %rank_name%
-      material: "WOOL"
-      data:
-        ###################################################
-        #                    WARNING                      #
-        # This feature is only available if you are using #
-        #      the material value of "WHITE_WOOL".        #
-        ###################################################
-        match-display-color: true
-        ###################################################
-        #                    WARNING                      #
-        #   The data of the material will only change if  #
-        #     you have the above option set to false.     #
-        ###################################################
-        data: 0
-      lore:
-        # Available placeholders:
-        # %rank_color%, %rank_weight%, %rank_prefix%, %rank_suffix%, %%rank_inheritances%%, %rank_permissions_size%
-        - "&7&l&m-----------------------------------------"
-        - "&6Color: &f%rank_color%"
-        - "&6Weight: &f%rank_weight%"
-        - "&6Prefix: &f%rank_prefix%"
-        - "&6Suffix: &f%rank_suffix%"
-        - "&6Inheritances: &f%rank_inheritances%"
-        - "&6Permissions: &f%rank_permissions_size%"
-        - ""
-        - "&6Left-Click &7to view full permissions of this rank."
-        - "&6Right-Click &7to view this ranks inheritances."
-        - "&7&l&m-----------------------------------------"
-  perk-editor:
-    new-perk:
-      material: "ANVIL"
-      data: 0
-      display-name: "&6New Perk"
-      lore:
-        - "&7Want to put a new perk in the display"
-        - "&7menu?"
-        - ""
-        - "&6Left-Click &7to add a new perk."
 

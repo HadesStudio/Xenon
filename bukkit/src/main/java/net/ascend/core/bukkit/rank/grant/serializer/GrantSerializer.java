@@ -2,14 +2,14 @@ package net.ascend.core.bukkit.rank.grant.serializer;
 
 import net.ascend.core.bukkit.modules.database.mongo.serializer.DocumentSerializer;
 import net.ascend.core.bukkit.rank.grant.Grant;
-import net.ascend.core.bukkit.rank.grant.types.PermissionGrant;
-import net.ascend.core.bukkit.rank.grant.types.RankGrant;
-import net.ascend.core.bukkit.rank.grant.types.TagGrant;
+import net.ascend.core.bukkit.rank.grant.type.RankGrant;
+import net.ascend.core.bukkit.rank.grant.type.TagGrant;
 import org.bson.Document;
 
 import java.util.UUID;
 
 public class GrantSerializer implements DocumentSerializer<Grant> {
+
     public static GrantSerializer INSTANCE = new GrantSerializer();
 
     @Override
@@ -20,19 +20,12 @@ public class GrantSerializer implements DocumentSerializer<Grant> {
             RankGrant rankGrant = (RankGrant) source;
 
             document.put("rank-name", rankGrant.getRankName());
-        } else if (source instanceof PermissionGrant) {
-            PermissionGrant permissionGrant = (PermissionGrant) source;
-
-            document.put("permission", permissionGrant.getPermission());
-            document.put("bungeecord", permissionGrant.isBungeecord());
         } else if (source instanceof TagGrant) {
             TagGrant tagGrant = (TagGrant) source;
 
             document.put("tag-name", tagGrant.getTagName());
         }
 
-
-        // Default Grant Class Shit:
         document.put("duration", source.getDuration());
         document.put("servers", source.getServers());
 
@@ -58,9 +51,7 @@ public class GrantSerializer implements DocumentSerializer<Grant> {
 
         if (document.containsKey("rank-name")) {
             grant = new RankGrant(UUID.fromString(document.getString("id")), document.getString("rank-name"));
-        } else if (document.containsKey("permission")) {
-            grant = new PermissionGrant(UUID.fromString(document.getString("id")), document.getString("permission"), document.getBoolean("bungeecord", false));
-        } else if (document.containsKey("tag-name")) {
+        }  else if (document.containsKey("tag-name")) {
             grant = new TagGrant(UUID.fromString(document.getString("id")), document.getString("tag-name"));
         }
 

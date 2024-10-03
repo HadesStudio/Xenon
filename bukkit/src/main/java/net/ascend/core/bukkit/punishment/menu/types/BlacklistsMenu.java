@@ -1,20 +1,5 @@
 package net.ascend.core.bukkit.punishment.menu.types;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.punishment.menu.types
-//   Date: Saturday, July 15, 2023 - 2:17 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.punishment.packet.implement.PunishmentRemovePacket;
@@ -33,20 +18,26 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class BlacklistsMenu extends PaginatedMenu {
+
     private Profile profile;
 
     @Override
     public String getName() {
-        return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.title").replace("%player_name%", profile.getName());
+        return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("blacklists-menu.title")
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
     }
 
     @Override
     public String getTitle(Player player) {
-        return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.title").replace("%player_name%", profile.getName());
+        return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("blacklists-menu.title")
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
     }
 
     @Override
@@ -56,63 +47,81 @@ public class BlacklistsMenu extends PaginatedMenu {
 
     @Override
     public Map<Integer, Button> getPaginatedContent(Player player) {
-        List<Punishment> blacklists = profile.getPunishments().stream().sorted(Comparator.comparingLong(Punishment::getAddedAt).reversed()).filter(punishment -> punishment.getType() == PunishmentType.BLACKLIST).collect(Collectors.toList());
         Map<Integer, Button> buttons = new HashMap<>();
 
-        blacklists.forEach(module -> buttons.put(buttons.size(), new BlacklistButton(module)));
+        List<Punishment> blacklists = profile.getPunishments().stream()
+                .sorted(Comparator.comparingLong(Punishment::getAddedAt).reversed())
+                .filter(punishment -> punishment.getType() == PunishmentType.BLACKLIST)
+                .collect(Collectors.toList());
+
+        AtomicInteger index = new AtomicInteger(1);
+
+        for (Punishment punishment : blacklists) {
+            buttons.put(buttons.size(), new BlacklistButton(punishment, index.getAndIncrement()));
+        }
 
         return buttons;
     }
 
     @AllArgsConstructor
     private static class BlacklistButton extends Button {
+
         private final Punishment punishment;
+        private final int id;
 
         public String getBlacklistedMaterial() {
-            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.permanent.material");
+            return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("blacklists-menu.button.blacklisted.material");
         }
 
         public String getPardonedMaterial() {
-            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.pardoned.material");
+            return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("blacklists-menu.button.pardoned.material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("blacklists.button.blacklisted.data");
+            return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("blacklists-menu.button.blacklisted.data");
         }
 
         public short getPardonedData() {
-            return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("blacklists.button.pardoned.data");
+            return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("blacklists-menu.button.pardoned.data");
         }
 
 
         @Override
         public ItemStack getItemStack(Player player) {
-            if (punishment.isRemoved()) { // THE BLACKLIST WAS PARDONED GG
+            if (punishment.isRemoved()) {
                 ItemMaker builder = ItemMaker.of(getPardonedMaterial());
                 builder.setData(getPardonedData());
-                builder.setDisplayName(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("bans.button.pardoned.name"));
-                for (String line : XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("bans.button.pardoned.lore")) {
+                builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("blacklists-menu.button.pardoned.name")
+                        .replace("%blacklist_id%", String.valueOf(id)));
+
+                for (String line : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("blacklists-menu.button.pardoned.lore")) {
                     builder.addLore(line
                             .replace("%banner%", punishment.getAddedByString())
                             .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                             .replace("%reason%", punishment.getAddedReason())
                             .replace("%added_date%", TimeUtil.formatIntoCalendarString(new Date(punishment.getAddedAt())))
+                            .replace("%server%", punishment.getAddedServer())
                             .replace("%pardoner%", punishment.getRemovedByString())
                             .replace("%pardoned_at%", TimeUtil.formatIntoCalendarString(new Date(punishment.getRemovedAt())))
                             .replace("%pardoned_reason%", punishment.getRemovedReason())
+                            .replace("%blacklist_id%", String.valueOf(id))
                     );
                 }
                 return builder.build();
             } else {
                 ItemMaker builder = ItemMaker.of(getBlacklistedMaterial());
                 builder.setData(getData());
-                builder.setDisplayName(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("blacklists.button.blacklisted.name"));
-                for (String line : XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("blacklists.button.blacklisted.lore")) {
+                builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("blacklists-menu.button.blacklisted.name")
+                        .replace("%blacklist_id%", String.valueOf(id)));
+
+                for (String line : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("blacklists-menu.button.blacklisted.lore")) {
                     builder.addLore(line
                             .replace("%banner%", punishment.getAddedByString())
                             .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                             .replace("%reason%", punishment.getAddedReason())
                             .replace("%added_date%", TimeUtil.formatIntoCalendarString(new Date(punishment.getAddedAt())))
+                            .replace("%server%", punishment.getAddedServer())
+                            .replace("%blacklist_id%", String.valueOf(id))
                     );
                 }
                 return builder.build();
@@ -121,11 +130,12 @@ public class BlacklistsMenu extends PaginatedMenu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            if (punishment.isRemoved()) { // Retarded player is trying to remove a already pardoned ban???
+            if (punishment.isRemoved()) {
                 player.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("punishments.history-menu.pardon.ban.already-removed").replace("%remover%", punishment.getRemovedByString())));
                 return;
             }
-            if (!player.hasPermission("xenon.pardon.blacklists")) {
+
+            if (!player.hasPermission("xenon.punishments.unblacklist")) {
                 player.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("punishments.history-menu.pardon.ban.no-permission")));
                 return;
             }

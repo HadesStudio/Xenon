@@ -31,12 +31,12 @@ public class StaffBuildCommand extends BaseCommand {
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
-        if (!XenonBukkit.getInstance().getStaffManager().isStaffBuild(player)) {
+       /*if (!XenonBukkit.getInstance().getStaffManager().isStaffBuild(player)) {
             XenonBukkit.getInstance().getStaffManager().enableStaffBuild(player);
             player.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("staff-build.enabled")));
         } else {
             XenonBukkit.getInstance().getStaffManager().disableStaffBuild(player);
             player.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("staff-build.disabled")));
-        }
+        }*/
     }
 }

@@ -30,8 +30,10 @@ public class TagExportCommand extends SubCommand {
 
         XenonBukkit.getInstance().getTagManager().getTags().forEach(tag -> {
             config.set(tag.getName() + ".name", tag.getName());
+            config.set(tag.getName() + ".type", tag.getType().name());
             config.set(tag.getName() + ".prefix", tag.getPrefix());
             config.set(tag.getName() + ".weight", tag.getWeight());
+            config.set(tag.getName() + ".coins", tag.getCoins());
         });
 
         try {

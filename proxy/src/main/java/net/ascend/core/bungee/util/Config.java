@@ -1,20 +1,5 @@
 package net.ascend.core.bungee.util;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bungee.utils
-//   Date: Saturday, August 05, 2023 - 2:08 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import com.google.common.io.ByteStreams;
 import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;

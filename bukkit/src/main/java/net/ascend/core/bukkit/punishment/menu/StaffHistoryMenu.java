@@ -1,30 +1,16 @@
 package net.ascend.core.bukkit.punishment.menu;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bukkit.punishment.menu
-//   Date: Wednesday, September 06, 2023 - 3:54 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.punishment.PunishmentType;
-import net.ascend.core.bukkit.punishment.menu.submenu.StaffHistoryViewingMenu;
+import net.ascend.core.bukkit.punishment.menu.staff.StaffHistoryViewingMenu;
 import net.ascend.core.bukkit.util.TimeUtil;
 import net.ascend.core.bukkit.lib.maker.ItemMaker;
 import net.ascend.core.bukkit.lib.menu.Menu;
 import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -35,62 +21,96 @@ import java.util.*;
 public class StaffHistoryMenu extends Menu {
 
     final Profile profile;
-    final Map<UUID, Punishment> executedPunishments;
+    final Map<UUID, List<Punishment>> executedPunishments;
 
     @Override
     public String getName() {
-        return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.title").replace("%player%", profile.getName());
+        return "Staff History";
     }
 
     @Override
     public String getTitle(Player player) {
-        return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.title").replace("%player%", profile.getName());
+        String title = XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("staffhistory-menu.title");
+        return title
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
     }
 
     @Override
     public Map<Integer, Button> getMenuContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
+        ConfigurationSection buttonsSection = XenonBukkit.getInstance().getMenuConfig().getConfiguration().getConfigurationSection("staffhistory-menu.buttons");
 
-        buttons.put(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.buttons.data-button.slot"), new Data_Button(profile, executedPunishments));
-        buttons.put(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.buttons.bans-button.slot"), new Bans_Button(profile, executedPunishments));
-        buttons.put(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.buttons.warns-button.slot"), new Warns_Button(profile, executedPunishments));
-        buttons.put(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.buttons.mutes-button.slot"), new Mutes_Button(profile, executedPunishments));
-        buttons.put(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.buttons.pardons-button.slot"), new Pardons_Button(profile, executedPunishments));
-        buttons.put(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.buttons.all-button.slot"), new All_Button(profile, executedPunishments));
+        if (buttonsSection != null) {
+            for (String key : buttonsSection.getKeys(false)) {
+                ConfigurationSection buttonSection = buttonsSection.getConfigurationSection(key);
+                if (buttonSection == null) continue;
+
+                int slot = buttonSection.getInt("slot");
+
+                switch (key) {
+                    case "profile":
+                        buttons.put(slot, new DataButton(profile, executedPunishments, buttonSection));
+                        break;
+                    case "bans":
+                        buttons.put(slot, new BansButton(profile, executedPunishments, buttonSection));
+                        break;
+                    case "mutes":
+                        buttons.put(slot, new MutesButton(profile, executedPunishments, buttonSection));
+                        break;
+                    case "warnings":
+                        buttons.put(slot, new WarnsButton(profile, executedPunishments, buttonSection));
+                        break;
+                    case "pardon":
+                        buttons.put(slot, new PardonsButton(profile, executedPunishments, buttonSection));
+                        break;
+                    case "all_punishments":
+                        buttons.put(slot, new AllButton(profile, executedPunishments, buttonSection));
+                        break;
+                }
+            }
+        }
 
         return buttons;
     }
 
     @AllArgsConstructor
-    public static class Data_Button extends Button {
+    public static class DataButton extends Button {
+
         final Profile profile;
-        final Map<UUID, Punishment> executedPunishments;
+        final Map<UUID, List<Punishment>> executedPunishments;
+        final ConfigurationSection config;
 
         @Override
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of("SKULL_ITEM");
-            builder.setData((short)3);
+            builder.setData((short) 3);
             builder.setOwner(profile.getName());
-            builder.setDisplayName(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.buttons.data-button.display-name").replace("%player%", profile.getName()));
-            for (String line : XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getStringList("menu.buttons.data-button.lore")) {
-                builder.addLore(line
-                        .replace("%rank%", String.valueOf(profile.getActiveRank().getName()))
+            builder.setDisplayName(config.getString("display_name").replace("%player%", profile.getName()));
+            List<String> lore = new ArrayList<>();
+            for (String line : config.getStringList("lore")) {
+                lore.add(line
+                        .replace("%current_rank%", profile.getActiveRank().getName())
                         .replace("%playtime%", TimeUtil.getMoreDetailedTime(profile.getTotalPlayTime()))
-                        .replace("%last_seen%", TimeUtil.formatSimplifiedDateDiff(profile.getLastSeen()))
+                        .replace("%last_seen%", TimeUtil.formatIntoCalendarString(new Date(profile.getLastSeen())))
                 );
             }
+            builder.setLore(lore);
             return builder.build();
         }
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             List<Punishment> punishments = new ArrayList<>();
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                if (punishment.getValue().getType() == PunishmentType.BAN || punishment.getValue().getType() == PunishmentType.BLACKLIST) {
-                    punishments.add(punishment.getValue());
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                for (Punishment punishment : punishmentList) {
+                    if (punishment.getType() == PunishmentType.BAN || punishment.getType() == PunishmentType.BLACKLIST) {
+                        punishments.add(punishment);
+                    }
                 }
             }
-            new StaffHistoryViewingMenu(profile, punishments).openMenu(player);
+
+            new StaffHistoryViewingMenu(profile, punishments, executedPunishments).openMenu(player);
         }
 
         @Override
@@ -100,23 +120,27 @@ public class StaffHistoryMenu extends Menu {
     }
 
     @AllArgsConstructor
-    public static class Bans_Button extends Button {
+    public static class BansButton extends Button {
+
         final Profile profile;
-        final Map<UUID, Punishment> executedPunishments;
+        final Map<UUID, List<Punishment>> executedPunishments;
+        final ConfigurationSection config;
 
         public String getMaterial() {
-            return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.bans-button.material");
+            return config.getString("material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.button.bans-button.data");
+            return (short) config.getInt("data");
         }
 
         public int getTotal() {
             int amount = 0;
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                if (punishment.getValue().getType() == PunishmentType.BAN || punishment.getValue().getType() == PunishmentType.BLACKLIST) {
-                    amount = amount + 1;
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                for (Punishment punishment : punishmentList) {
+                    if (punishment.getType() == PunishmentType.BAN || punishment.getType() == PunishmentType.BLACKLIST) {
+                        amount++;
+                    }
                 }
             }
             return amount;
@@ -126,24 +150,26 @@ public class StaffHistoryMenu extends Menu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.buttons.bans-button.display-name"));
-            for (String line : XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getStringList("menu.buttons.bans-button.lore")) {
-                builder.addLore(line
-                        .replace("%size%", String.valueOf(getTotal()))
-                );
+            builder.setDisplayName(config.getString("display_name"));
+            List<String> lore = new ArrayList<>();
+            for (String line : config.getStringList("lore")) {
+                lore.add(line.replace("%total%", String.valueOf(getTotal())));
             }
+            builder.setLore(lore);
             return builder.build();
         }
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             List<Punishment> punishments = new ArrayList<>();
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                if (punishment.getValue().getType() == PunishmentType.BAN || punishment.getValue().getType() == PunishmentType.BLACKLIST) {
-                    punishments.add(punishment.getValue());
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                for (Punishment punishment : punishmentList) {
+                    if (punishment.getType() == PunishmentType.BAN || punishment.getType() == PunishmentType.BLACKLIST) {
+                        punishments.add(punishment);
+                    }
                 }
             }
-            new StaffHistoryViewingMenu(profile, punishments).openMenu(player);
+            new StaffHistoryViewingMenu(profile, punishments, executedPunishments).openMenu(player);
         }
 
         @Override
@@ -153,23 +179,26 @@ public class StaffHistoryMenu extends Menu {
     }
 
     @AllArgsConstructor
-    public static class Warns_Button extends Button {
+    public static class WarnsButton extends Button {
         final Profile profile;
-        final Map<UUID, Punishment> executedPunishments;
+        final Map<UUID, List<Punishment>> executedPunishments;
+        final ConfigurationSection config;
 
         public String getMaterial() {
-            return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.warns-button.material");
+            return config.getString("material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.button.warns-button.data");
+            return (short) config.getInt("data");
         }
 
         public int getTotal() {
             int amount = 0;
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                if (punishment.getValue().getType() == PunishmentType.WARN) {
-                    amount = amount + 1;
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                for (Punishment punishment : punishmentList) {
+                    if (punishment.getType() == PunishmentType.WARN) {
+                        amount++;
+                    }
                 }
             }
             return amount;
@@ -179,24 +208,26 @@ public class StaffHistoryMenu extends Menu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.buttons.warns-button.display-name"));
-            for (String line : XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getStringList("menu.buttons.warns-button.lore")) {
-                builder.addLore(line
-                        .replace("%size%", String.valueOf(getTotal()))
-                );
+            builder.setDisplayName(config.getString("display_name"));
+            List<String> lore = new ArrayList<>();
+            for (String line : config.getStringList("lore")) {
+                lore.add(line.replace("%total%", String.valueOf(getTotal())));
             }
+            builder.setLore(lore);
             return builder.build();
         }
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             List<Punishment> punishments = new ArrayList<>();
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                if (punishment.getValue().getType() == PunishmentType.WARN) {
-                    punishments.add(punishment.getValue());
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                for (Punishment punishment : punishmentList) {
+                    if (punishment.getType() == PunishmentType.WARN) {
+                        punishments.add(punishment);
+                    }
                 }
             }
-            new StaffHistoryViewingMenu(profile, punishments).openMenu(player);
+            new StaffHistoryViewingMenu(profile, punishments, executedPunishments).openMenu(player);
         }
 
         @Override
@@ -206,23 +237,26 @@ public class StaffHistoryMenu extends Menu {
     }
 
     @AllArgsConstructor
-    public static class Mutes_Button extends Button {
+    public static class MutesButton extends Button {
         final Profile profile;
-        final Map<UUID, Punishment> executedPunishments;
+        final Map<UUID, List<Punishment>> executedPunishments;
+        final ConfigurationSection config;
 
         public String getMaterial() {
-            return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.mutes-button.material");
+            return config.getString("material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.button.mutes-button.data");
+            return (short) config.getInt("data");
         }
 
         public int getTotal() {
             int amount = 0;
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                if (punishment.getValue().getType() == PunishmentType.MUTE) {
-                    amount = amount + 1;
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                for (Punishment punishment : punishmentList) {
+                    if (punishment.getType() == PunishmentType.MUTE) {
+                        amount++;
+                    }
                 }
             }
             return amount;
@@ -232,24 +266,26 @@ public class StaffHistoryMenu extends Menu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.buttons.mutes-button.display-name"));
-            for (String line : XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getStringList("menu.buttons.mutes-button.lore")) {
-                builder.addLore(line
-                        .replace("%size%", String.valueOf(getTotal()))
-                );
+            builder.setDisplayName(config.getString("display_name"));
+            List<String> lore = new ArrayList<>();
+            for (String line : config.getStringList("lore")) {
+                lore.add(line.replace("%total%", String.valueOf(getTotal())));
             }
+            builder.setLore(lore);
             return builder.build();
         }
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             List<Punishment> punishments = new ArrayList<>();
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                if (punishment.getValue().getType() == PunishmentType.MUTE) {
-                    punishments.add(punishment.getValue());
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                for (Punishment punishment : punishmentList) {
+                    if (punishment.getType() == PunishmentType.MUTE) {
+                        punishments.add(punishment);
+                    }
                 }
             }
-            new StaffHistoryViewingMenu(profile, punishments).openMenu(player);
+            new StaffHistoryViewingMenu(profile, punishments, executedPunishments).openMenu(player);
         }
 
         @Override
@@ -259,23 +295,27 @@ public class StaffHistoryMenu extends Menu {
     }
 
     @AllArgsConstructor
-    public static class Pardons_Button extends Button {
+    public static class PardonsButton extends Button {
+
         final Profile profile;
-        final Map<UUID, Punishment> executedPunishments;
+        final Map<UUID, List<Punishment>> executedPunishments;
+        final ConfigurationSection config;
 
         public String getMaterial() {
-            return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.pardons-button.material");
+            return config.getString("material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.button.pardons-button.data");
+            return (short) config.getInt("data");
         }
 
         public int getTotal() {
             int amount = 0;
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                if (punishment.getValue().getRemovedBy().equalsIgnoreCase(profile.getName())) {
-                    amount = amount + 1;
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                for (Punishment punishment : punishmentList) {
+                    if (punishment.getAddedBy().equals(profile.getUniqueId())) {
+                        amount++;
+                    }
                 }
             }
             return amount;
@@ -285,24 +325,26 @@ public class StaffHistoryMenu extends Menu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.buttons.pardons-button.display-name"));
-            for (String line : XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getStringList("menu.buttons.pardons-button.lore")) {
-                builder.addLore(line
-                        .replace("%size%", String.valueOf(getTotal()))
-                );
+            builder.setDisplayName(config.getString("display_name"));
+            List<String> lore = new ArrayList<>();
+            for (String line : config.getStringList("lore")) {
+                lore.add(line.replace("%total%", String.valueOf(getTotal())));
             }
+            builder.setLore(lore);
             return builder.build();
         }
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             List<Punishment> punishments = new ArrayList<>();
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                if (punishment.getValue().getRemovedBy().equalsIgnoreCase(profile.getName())) {
-                    punishments.add(punishment.getValue());
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                for (Punishment punishment : punishmentList) {
+                    if (punishment.getRemovedBy() != null && punishment.getRemovedBy().equals(profile.getName())) {
+                        punishments.add(punishment);
+                    }
                 }
             }
-            new StaffHistoryViewingMenu(profile, punishments).openMenu(player);
+            new StaffHistoryViewingMenu(profile, punishments, executedPunishments).openMenu(player);
         }
 
         @Override
@@ -312,22 +354,24 @@ public class StaffHistoryMenu extends Menu {
     }
 
     @AllArgsConstructor
-    public static class All_Button extends Button {
+    public static class AllButton extends Button {
+
         final Profile profile;
-        final Map<UUID, Punishment> executedPunishments;
+        final Map<UUID, List<Punishment>> executedPunishments;
+        final ConfigurationSection config;
 
         public String getMaterial() {
-            return XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.button.all-button.material");
+            return config.getString("material");
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getInt("menu.button.all-button.data");
+            return (short) config.getInt("data");
         }
 
         public int getTotal() {
             int amount = 0;
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                amount = amount + 1;
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                amount += punishmentList.size();
             }
             return amount;
         }
@@ -336,22 +380,25 @@ public class StaffHistoryMenu extends Menu {
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getString("menu.buttons.all-button.display-name"));
-            for (String line : XenonBukkit.getInstance().getStaffHistoryConfig().getConfiguration().getStringList("menu.buttons.all-button.lore")) {
-                builder.addLore(line
-                        .replace("%size%", String.valueOf(getTotal()))
-                );
+            builder.setDisplayName(config.getString("display_name"));
+
+            List<String> lore = new ArrayList<>();
+            for (String line : config.getStringList("lore")) {
+                lore.add(line.replace("%total%", String.valueOf(getTotal())));
             }
+
+            builder.setLore(lore);
             return builder.build();
         }
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             List<Punishment> punishments = new ArrayList<>();
-            for (Map.Entry<UUID, Punishment> punishment : executedPunishments.entrySet()) {
-                punishments.add(punishment.getValue());
+            for (List<Punishment> punishmentList : executedPunishments.values()) {
+                punishments.addAll(punishmentList);
             }
-            new StaffHistoryViewingMenu(profile, punishments).openMenu(player);
+
+            new StaffHistoryViewingMenu(profile, punishments, executedPunishments).openMenu(player);
         }
 
         @Override
@@ -360,4 +407,3 @@ public class StaffHistoryMenu extends Menu {
         }
     }
 }
-

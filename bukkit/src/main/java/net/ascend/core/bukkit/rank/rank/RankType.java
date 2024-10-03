@@ -10,4 +10,5 @@ public enum RankType {
     STAFF,
     NORMAL,
     DEFAULT;
+
 }

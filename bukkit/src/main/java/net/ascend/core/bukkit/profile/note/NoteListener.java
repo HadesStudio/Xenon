@@ -23,7 +23,7 @@ public class NoteListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Profile profile = XenonBukkit.getInstance().getProfileManager().getProfile(event.getPlayer().getUniqueId());
         if (profile != null) {
-            if (profile.getNotes().size() > 0) {
+            if (!profile.getNotes().isEmpty()) {
                 Locale.NOTES_CHECK_MESSAGE.forEach(message -> {
                     if (!message.toLowerCase().contains("%notes%")) {
                         Messages.sendMessage(message.replace("%player%", profile.getName()), "xenon.staff.notes");

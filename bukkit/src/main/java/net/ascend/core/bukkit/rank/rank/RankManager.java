@@ -87,14 +87,14 @@ public class RankManager implements ModuleLoader {
         rank.setPrefix("&7[&6" + name + "&7] ");
         rank.setSuffix("");
         rank.setDefaultRank(default_rank);
-        rank.setDisplay_color(ChatColor.GOLD);
+        rank.setGlobalRank(true);
+        rank.setDisplay_color(ChatColor.WHITE);
         rank.setWeight(1);
         if (default_rank) {
-            rank.setType(RankType.NORMAL);
+            rank.setType(RankType.DEFAULT);
         } else {
             rank.setType(RankType.NORMAL);
         }
-        rank.setQueuePriority(1);
 
         this.ranks.add(rank);
         saveRanks();
@@ -117,20 +117,18 @@ public class RankManager implements ModuleLoader {
 
             if (config.getString(key + ".permissions-data", null) == null) {
                 config.getStringList(key + ".permissions-data").forEach(permission -> {
-                    rank.getPermissionsData().add(new PermissionData(permission, true, new ArrayList<>()));
+                    rank.getPermissionsData().add(new PermissionData(permission, false, new ArrayList<>()));
                 });
             } else if (GSONUtil.isJson(config.getString(key + ".permissions-data"), GSONUtil.PERMISSION_DATA)) {
                 rank.setPermissionsData(XenonBukkit.PLAIN_GSON.fromJson(config.getString(key + ".permissions-data"), GSONUtil.PERMISSION_DATA));
             } else {
                 config.getStringList(key + ".permissions-data").forEach(permission -> {
-                    rank.getPermissionsData().add(new PermissionData(permission, true, new ArrayList<>()));
+                    rank.getPermissionsData().add(new PermissionData(permission, false, new ArrayList<>()));
                 });
             }
-            rank.setPerks(XenonBukkit.PLAIN_GSON.fromJson(config.getString(key + ".perks"), GSONUtil.RANK_PERKS_DATA));
-            rank.setBungeePermissions(config.getStringList(key + ".bungee-permissions"));
+
             rank.setPrefix(config.getString(key + ".prefix"));
             rank.setSuffix(config.getString(key + ".suffix"));
-            rank.setQueuePriority(config.getInt(key + ".queue-priority"));
             rank.setDefaultRank(config.getBoolean(key + ".default-rank"));
             rank.setInheritances(config.getStringList(key + ".inheritances"));
             rank.setWeight(config.getInt(key + ".weight"));
@@ -166,13 +164,10 @@ public class RankManager implements ModuleLoader {
             file.set(rankData.getName() + ".suffix", rankData.getSuffix());
             file.set(rankData.getName() + ".default-rank", rankData.isDefaultRank());
             file.set(rankData.getName() + ".global-rank", rankData.isGlobalRank());
-            file.set(rankData.getName() + ".queue-priority", rankData.getQueuePriority());
             file.set(rankData.getName() + ".weight", rankData.getWeight());
             file.set(rankData.getName() + ".permissions-data", XenonBukkit.PLAIN_GSON.toJson(rankData.getPermissionsData(), GSONUtil.PERMISSION_DATA));
-            file.set(rankData.getName() + ".bungee-permissions", XenonBukkit.PLAIN_GSON.toJson(rankData.getBungeePermissions(), GSONUtil.LIST_STRING_TYPE));
             file.set(rankData.getName() + ".inheritances", XenonBukkit.PLAIN_GSON.toJson(rankData.getInheritances(), GSONUtil.LIST_STRING_TYPE));
             file.set(rankData.getName() + ".servers", XenonBukkit.PLAIN_GSON.toJson(rankData.getServers(), GSONUtil.LIST_STRING_TYPE));
-            file.set(rankData.getName() + ".perks", XenonBukkit.PLAIN_GSON.toJson(rankData.getPerks(), GSONUtil.RANK_PERKS_DATA));
         });
         try {
             XenonBukkit.getInstance().getRanksConfig().save();

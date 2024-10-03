@@ -1,21 +1,7 @@
 package net.ascend.core.bukkit.server.reboot.task;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bukkit.server.reboot.task
-//   Date: Tuesday, September 12, 2023 - 3:44 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.XenonBukkit;
+import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.util.TimeUtil;
 import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
@@ -29,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class RebootTask extends BukkitRunnable {
-    private static final List<? extends Number> ANNOUNCE_TIMES = Arrays.asList( // measured in seconds puta
+
+    private static final List<? extends Number> ANNOUNCE_TIMES = Arrays.asList(
             60 * 60,
             45 * 60,
             30 * 60,
@@ -57,8 +44,9 @@ public class RebootTask extends BukkitRunnable {
     @Override
     public void run() {
         if (ANNOUNCE_TIMES.contains(timeBeforeReboot)) {
-            for (String message : XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("reboot.rebooting")) {
+            for (String message : Locale.REBOOT_INFO_MESSAGE) {
                 String formattedMessage = message.replace("%time%", TimeUtil.getMoreDetailedTime(timeBeforeReboot * 1000L));
+
                 Bukkit.broadcastMessage(CC.translate(formattedMessage));
             }
         }

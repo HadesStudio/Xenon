@@ -6,11 +6,8 @@ import net.ascend.core.bukkit.profile.ProfileListener;
 import net.ascend.core.bukkit.profile.log.listeners.LogListeners;
 import net.ascend.core.bukkit.profile.note.NoteListener;
 import net.ascend.core.bukkit.profile.permission.bukkit.BukkitPermissionListener;
-import net.ascend.core.bukkit.profile.tfa.listeners.TFAListener;
 import net.ascend.core.bukkit.punishment.PunishmentListener;
 import net.ascend.core.bukkit.rank.grant.listener.GrantListener;
-import net.ascend.core.bukkit.staff.freeze.FreezeListener;
-import net.ascend.core.bukkit.staff.staffmode.listener.StaffListener;
 import net.ascend.core.bukkit.util.prompt.PromptListener;
 import net.ascend.core.bukkit.lib.menu.MenuListener;
 import org.bukkit.event.Listener;
@@ -35,11 +32,9 @@ public class ListenerModule implements ModuleLoader {
                 new ProfileListener(plugin),
                 new PunishmentListener(),
                 new MenuListener(plugin),
-                new TFAListener(),
+                //new TFAListener(),
                 new PromptListener(XenonBukkit.getInstance().getPromptManager()),
                 new LogListeners(),
-                new StaffListener(),
-                new FreezeListener(),
                 new GrantListener(),
                 new NoteListener());
     }

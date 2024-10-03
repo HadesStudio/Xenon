@@ -15,58 +15,30 @@ import java.util.concurrent.ThreadLocalRandom;
 @Getter
 @Setter
 public class Notification {
-    private static final char[] CHARS = "0123456789".toCharArray();
 
     private String id;
     private List<String> message;
-    private Long date;
-    private Long last_update;
+    private long date;
+    private long lastUpdate;
 
     public Notification(List<String> message) {
-        this.id = getRandomID();
+        this.id = XenonBukkit.getInstance().getNotificationManager().getRandomID();
         this.message = message;
         this.date = System.currentTimeMillis();
-        this.last_update = System.currentTimeMillis();
+        this.lastUpdate = System.currentTimeMillis();
     }
-
 
     public void save() {
-        save(false);
-    }
-
-    public void save(boolean leave) {
         Document document = new Document();
-        document.put("notificationID", id);
-        Type messageListType = new TypeToken<List<String>>() {}.getType();
+        document.put("uniqueId", id);
+
+        Type messageListType = new TypeToken<List<String>>() {
+        }.getType();
         document.put("messages", XenonBukkit.PLAIN_GSON.toJson(this.message, messageListType));
         document.put("date", date);
-        document.put("last_update", last_update);
+        document.put("lastUpdate", lastUpdate);
 
-        XenonBukkit.getInstance().getMongoModule().getNotificationsCollection().replaceOne(Filters.eq("notificationID", id), document, new ReplaceOptions().upsert(true));
-        if (leave) {
-            XenonBukkit.getInstance().getNotificationManager().getNotificationMap().remove(id);
-        }
-    }
-
-    private void load() {
-        Document document = XenonBukkit.getInstance().getMongoModule().getNotificationsCollection().find(Filters.eq("notificationID", id.toString())).first();
-
-        if (document != null) {
-            id = document.getString("notificationID");
-            Type messageListType = new TypeToken<List<String>>() {}.getType();
-            message = XenonBukkit.PLAIN_GSON.fromJson(document.getString("messages"), messageListType);
-            date = document.getLong("date");
-            last_update = document.getLong("last_update");
-        }
-    }
-
-
-    private String getRandomID() {
-        StringBuilder code = new StringBuilder();
-        for (int i = 0; i < 5; i++) {
-            code.append(CHARS[ThreadLocalRandom.current().nextInt(CHARS.length)]);
-        }
-        return code.toString();
+        XenonBukkit.getInstance().getMongoModule().getNotificationsCollection().replaceOne(Filters.eq("uniqueId", id), document, new ReplaceOptions().upsert(true));
     }
 }
 

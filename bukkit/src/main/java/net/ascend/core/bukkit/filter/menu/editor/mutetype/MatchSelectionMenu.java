@@ -1,20 +1,5 @@
 package net.ascend.core.bukkit.filter.menu.editor.mutetype;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bukkit.filter.menu.editor.mutetype
-//   Date: Thursday, September 14, 2023 - 1:53 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.filter.Filter;
 import net.ascend.core.bukkit.filter.menu.editor.FilterEditorMenu;
 import net.ascend.core.bukkit.filter.types.Match;
@@ -35,7 +20,8 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class MatchSelectionMenu extends PaginatedMenu {
-    final Filter filter;
+
+    private final Filter filter;
 
     @Override
     public String getName() {
@@ -71,8 +57,7 @@ public class MatchSelectionMenu extends PaginatedMenu {
         menuContent.put(6, Button.getPlaceholder());
         menuContent.put(7, Button.getPlaceholder());
         menuContent.put(8, Button.getPlaceholder());
-        menuContent.put(9, Button.getPlaceholder());
-        menuContent.put(17, Button.getPlaceholder());
+
         menuContent.put(18, new PageButton(-1, this));
         menuContent.put(19, Button.getPlaceholder());
         menuContent.put(20, Button.getPlaceholder());
@@ -107,7 +92,7 @@ public class MatchSelectionMenu extends PaginatedMenu {
             filter.setMatch(match);
             filter.save();
 
-            player.sendMessage(CC.translate("&6[Filter] &7You have successfully updated this filter's match type to &6" + match.getDisplay() + "&7."));
+            player.sendMessage(CC.translate("&aYou have successfully updated this filter's match type to &l" + match.getDisplay() + "&a."));
             player.closeInventory();
             new FilterEditorMenu(filter).openMenu(player);
         }

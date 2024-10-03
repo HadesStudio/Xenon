@@ -66,7 +66,8 @@ public class SubCommandHandler extends BukkitCommand {
         SubCommand sub = this.getSubCommand(args[0]);
 
         if(sub == null) {
-            sender.sendMessage(CC.translate(Locale.COMMANDS_ARGUMENT_NOT_FOUND));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_ARGUMENT_NOT_FOUND
+                    .replace("%argument%", args[0])));
             return true;
         }
 

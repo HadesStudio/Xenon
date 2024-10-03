@@ -23,21 +23,21 @@ public class TagCreateCommand extends SubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length < 2) {
+        if (args.length < 1) {
             sender.sendMessage(CC.translate(Locale.TAG_CREATE_USAGE));
             return;
         }
 
-        Tag tag = XenonBukkit.getInstance().getTagManager().getTag(args[1]);
+        Tag tag = XenonBukkit.getInstance().getTagManager().getTag(args[0]);
         if (tag != null) {
             sender.sendMessage(CC.translate(Locale.TAG_CREATE_ALREADY_EXIST));
             return;
         }
 
-        tag = new Tag(args[1]);
+        tag = new Tag(args[0]);
         tag.save();
 
         XenonBukkit.getInstance().getRedisModule().sendPacket(new TagUpdatePacket(tag.getName(), false));
-        sender.sendMessage(CC.translate(Locale.TAG_CREATE_CREATED).replace("%tag_name%", args[1]));
+        sender.sendMessage(CC.translate(Locale.TAG_CREATE_CREATED).replace("%tag_name%", args[0]));
     }
 }

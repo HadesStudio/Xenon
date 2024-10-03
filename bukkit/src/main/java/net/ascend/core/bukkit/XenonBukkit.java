@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import lombok.Getter;
-import net.ascend.core.bukkit.chat.ChatModule;
+import net.ascend.core.bukkit.chat.ChatManager;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.filter.FilterManager;
 import net.ascend.core.bukkit.modules.ModuleLoader;
@@ -16,23 +16,19 @@ import net.ascend.core.bukkit.hook.placeholder.PlaceholderHook;
 import net.ascend.core.bukkit.profile.ProfileManager;
 import net.ascend.core.bukkit.profile.log.LogManager;
 import net.ascend.core.bukkit.profile.notifications.NotificationManager;
+import net.ascend.core.bukkit.profile.notifications.packet.NotificationPacketListener;
 import net.ascend.core.bukkit.profile.packet.ProfilePacketListener;
-import net.ascend.core.bukkit.profile.squads.SquadManager;
-import net.ascend.core.bukkit.profile.tfa.TFAManager;
 import net.ascend.core.bukkit.punishment.packet.PunishmentPacketListener;
-import net.ascend.core.bukkit.rank.grant.packets.listener.GrantPacketListener;
+import net.ascend.core.bukkit.rank.grant.packet.GrantPacketListener;
 import net.ascend.core.bukkit.rank.rank.RankManager;
-import net.ascend.core.bukkit.server.Server;
-import net.ascend.core.bukkit.server.ServerListener;
+import net.ascend.core.bukkit.rank.rank.packet.RankPacketListener;
+import net.ascend.core.bukkit.server.packet.ServerPacketListener;
 import net.ascend.core.bukkit.server.ServerManager;
-import net.ascend.core.bukkit.server.ServerState;
-import net.ascend.core.bukkit.server.packet.ServerStateChangePacket;
 import net.ascend.core.bukkit.server.reboot.RebootManager;
-import net.ascend.core.bukkit.staff.requests.RequestManager;
-import net.ascend.core.bukkit.staff.staffmode.StaffManager;
+import net.ascend.core.bukkit.staff.request.RequestManager;
+import net.ascend.core.bukkit.staff.vanish.VanishManager;
 import net.ascend.core.bukkit.tag.TagManager;
 import net.ascend.core.bukkit.tag.packet.TagPacketListener;
-import net.ascend.core.bukkit.task.NameMCReminderTask;
 import net.ascend.core.bukkit.util.command.CommandManager;
 import net.ascend.core.bukkit.util.command.SubCommandManager;
 import net.ascend.core.bukkit.util.prompt.PromptManager;
@@ -84,26 +80,19 @@ public class XenonBukkit extends JavaPlugin {
     private Config ranksConfig;
     private Config rankSettingsConfig;
     private Config tagConfig;
-    private Config profileMenuConfig;
-    private Config historyMenuConfig;
+    private Config menuConfig;
+
+
+
     private Config requestsMenuConfig;
-    private Config logsMenuConfig;
-    private Config editProfileMenuConfig;
     private Config tagsMenuConfig;
-    private Config serversMenuConfig;
-    private Config coinShopConfig;
-    private Config serverConfig;
-    private Config staffHistoryConfig;
-    private Config vipMenuConfig;
-    private Config grantMenuConfig;
-    private Config squadMenuConfig;
 
     private TaskUtil taskUtil;
 
     private List<ModuleLoader> modules;
-    private GoogleAuthenticator googleAuthenticator;
     private MongoModule mongoModule;
     private RedisModule redisModule;
+
     private ProfileManager profileManager;
     private RankManager rankManager;
     private TagManager tagManager;
@@ -112,16 +101,14 @@ public class XenonBukkit extends JavaPlugin {
     private SubCommandManager subCommandManager;
     private ListenerModule listenerModule;
     private RequestManager requestHandler;
-    private TFAManager tfaManager;
     private LogManager logManager;
-    private StaffManager staffManager;
     private RebootManager rebootManager;
-    private Server serverData;
     private FilterManager filterManager;
-    private ChatModule chatManager;
+    private ChatManager chatManager;
     private NotificationManager notificationManager;
     private PromptManager promptManager;
-    private SquadManager squadManager;
+
+    private VanishManager vanishManager;
 
     public static final Gson PLAIN_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(Location.class, new LocationAdapter()).registerTypeHierarchyAdapter(Vector.class, new VectorAdapter()).registerTypeAdapter(BlockVector.class, new BlockVectorAdapter()).serializeNulls().create();
 
@@ -151,25 +138,16 @@ public class XenonBukkit extends JavaPlugin {
         initModules();
         setupModules();
         setupPackets();
-        registerTasks();
 
-        this.logManager.registerAllLogs();
         this.getServer().getMessenger().registerOutgoingPluginChannel(this,"BungeeCord");
 
-        this.serverData = new Server(XenonBukkit.getInstance().getServerConfig().getConfiguration().getString("server-name"));
-        this.serverData.setStartTime(System.currentTimeMillis());
-        this.serverData.load();
-        this.serverData.save();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PlaceholderHook();
             new PlaceHolderAPIExpansion(this).register();
         }
 
-        this.getRedisModule().sendPacket(new ServerStateChangePacket(serverData.getName(), ServerState.ONLINE));
-
-        LAST_START_TIME = System.currentTimeMillis();
-
+        this.LAST_START_TIME = System.currentTimeMillis();
         this.fullyEnabled = true;
     }
 
@@ -179,9 +157,6 @@ public class XenonBukkit extends JavaPlugin {
         PlaceholderHook.setENABLED(false);
 
         try {
-            this.getServerData().save();
-            this.getRedisModule().sendPacket(new ServerStateChangePacket(serverData.getName(), ServerState.OFFLINE));
-
             for (ModuleLoader module : modules) {
                 if (module != null) {
                     module.onDisable();
@@ -214,32 +189,13 @@ public class XenonBukkit extends JavaPlugin {
             this.configList.add(rankSettingsConfig);
             this.tagConfig = new Config(XenonBukkit.getInstance(), "tags");
             this.configList.add(tagConfig);
-            this.serverConfig = new Config(XenonBukkit.getInstance(), "server-data");
-            this.configList.add(serverConfig);
-            this.profileMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "profile-menu");
-            this.configList.add(profileMenuConfig);
-            this.historyMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "history-menu");
-            this.configList.add(historyMenuConfig);
             this.requestsMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "requests-menu");
             this.configList.add(requestsMenuConfig);
-            this.logsMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "log-menu");
-            this.configList.add(logsMenuConfig);
-            this.editProfileMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "edit-profile-menu");
-            this.configList.add(editProfileMenuConfig);
+            this.menuConfig = new Config(XenonBukkit.getInstance(), "menus");
+            this.configList.add(menuConfig);
             this.tagsMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "tags-menu");
             this.configList.add(tagsMenuConfig);
-            this.serversMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "servers-menu");
-            this.configList.add(serversMenuConfig);
-            this.coinShopConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "coin-shop");
-            this.configList.add(coinShopConfig);
-            this.staffHistoryConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "staff-history-menu");
-            this.configList.add(staffHistoryConfig);
-            this.vipMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "vip-menu");
-            this.configList.add(vipMenuConfig);
-            this.grantMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "grant-menu");
-            this.configList.add(grantMenuConfig);
-            this.squadMenuConfig = new Config(XenonBukkit.getInstance(), "menus" + File.separator + "squads-menu");
-            this.configList.add(squadMenuConfig);
+
 
             Locale.load();
         } catch (IOException | InvalidConfigurationException e) {
@@ -254,10 +210,6 @@ public class XenonBukkit extends JavaPlugin {
         }
     }
 
-    public void registerTasks() {
-        new NameMCReminderTask().runTaskTimerAsynchronously(XenonBukkit.getInstance(), 20L * 60 * XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"), 20L * 60 * XenonBukkit.getInstance().getConfiguration().getConfiguration().getInt("name-mc.reminder-timer"));
-    }
-
     public void initModules() {
         this.taskUtil = new TaskUtil(XenonBukkit.getInstance());
 
@@ -268,22 +220,23 @@ public class XenonBukkit extends JavaPlugin {
         this.subCommandManager = new SubCommandManager();
         this.listenerModule = new ListenerModule();
 
-        this.googleAuthenticator = new GoogleAuthenticator();
 
         this.rankManager = new RankManager();
         this.tagManager = new TagManager();
-        this.chatManager = new ChatModule();
-        this.requestHandler = new RequestManager();
-        this.tfaManager = new TFAManager();
-        this.logManager = new LogManager();
-        this.staffManager = new StaffManager();
-        this.notificationManager = new NotificationManager();
-        this.promptManager = new PromptManager(this);
-
         this.serverManager = new ServerManager();
         this.rebootManager = new RebootManager();
+
+        this.chatManager = new ChatManager();
         this.filterManager = new FilterManager();
-        this.squadManager = new SquadManager();
+
+        this.logManager = new LogManager();
+        this.notificationManager = new NotificationManager();
+
+        this.vanishManager = new VanishManager();
+        this.requestHandler = new RequestManager();
+
+
+        this.promptManager = new PromptManager(this);
     }
 
     public void setupModules() {
@@ -304,19 +257,20 @@ public class XenonBukkit extends JavaPlugin {
         this.loadModule(rankManager);
         this.loadModule(tagManager);
         this.loadModule(notificationManager);
-        this.loadModule(tfaManager);
-        this.loadModule(staffManager);
         this.loadModule(filterManager);
         this.loadModule(serverManager);
-        this.loadModule(squadManager);
+        this.loadModule(logManager);
+
     }
 
     public void setupPackets() {
         redisModule.registerListener(new ProfilePacketListener());
+        redisModule.registerListener(new RankPacketListener());
         redisModule.registerListener(new PunishmentPacketListener(this));
         redisModule.registerListener(new TagPacketListener(tagManager));
         redisModule.registerListener(new GrantPacketListener());
-        redisModule.registerListener(new ServerListener());
+        redisModule.registerListener(new ServerPacketListener(serverManager));
+        redisModule.registerListener(new NotificationPacketListener());
 
         redisModule.subscribeJedis();
     }

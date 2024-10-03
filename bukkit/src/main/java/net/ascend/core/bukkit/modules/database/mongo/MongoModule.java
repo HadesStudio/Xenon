@@ -25,14 +25,9 @@ public class MongoModule implements ModuleLoader {
     public MongoCollection<Document> punishmentsCollection;
     public MongoCollection<Document> tagsCollection;
     public MongoCollection<Document> requestsCollection;
-    public MongoCollection<Document> playerLogsCollection;
-    public MongoCollection<Document> storeCollection;
     public MongoCollection<Document> logsCollection;
-    public MongoCollection<Document> couponsCollection;
     public MongoCollection<Document> filtersCollection;
-    public MongoCollection<Document> serverCollection;
     public MongoCollection<Document> notificationsCollection;
-    public MongoCollection<Document> squadsCollection;
 
     @Override
     public void onEnable() {
@@ -65,14 +60,9 @@ public class MongoModule implements ModuleLoader {
         punishmentsCollection = mongoDatabase.getCollection("punishments");
         tagsCollection = mongoDatabase.getCollection("tags");
         requestsCollection = mongoDatabase.getCollection("requests");
-        playerLogsCollection = mongoDatabase.getCollection("playerLogs");
-        storeCollection = mongoDatabase.getCollection("store");
         logsCollection = mongoDatabase.getCollection("playerLogs");
-        couponsCollection = mongoDatabase.getCollection("storeCoupons");
         filtersCollection = mongoDatabase.getCollection("chatFilters");
-        serverCollection = mongoDatabase.getCollection("servers");
         notificationsCollection = mongoDatabase.getCollection("notifications");
-        squadsCollection = mongoDatabase.getCollection("squads");
 
         enabled = true;
     }

@@ -4,7 +4,7 @@ import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.log.category.LogCategories;
-import net.ascend.core.bukkit.profile.log.types.LogActionTypes;
+import net.ascend.core.bukkit.profile.log.LogType;
 import net.ascend.core.bukkit.punishment.Punishment;
 import net.ascend.core.bukkit.punishment.packet.implement.PunishmentRemovePacket;
 import net.ascend.core.bukkit.util.ChatUtil;
@@ -61,25 +61,24 @@ public class UnMuteCommand extends BaseCommand {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             XenonBukkit.getInstance().getLogManager().logPlayerAction(player.getUniqueId(), player.getName(), Arrays.asList(
-                    "&6Staff Member&7: &a" + player.getName(),
-                    "&6Unmuted Player&7: &a" + profile.getName(),
-                    "&6Reason&7: &a" + punishment.getAddedReason(),
-                    "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.UNMUTED_PLAYER, LogCategories.PUNISHMENT_LOGS);
+                    "&6Unmuted Player&7: &c" + profile.getName(),
+                    "&6Reason&7: &c" + punishment.getAddedReason(),
+                    "&6Silent&7: &c" + punishment.isSilent()
+            ), LogType.UNMUTED_PLAYER, LogCategories.PUNISHMENT_LOGS);
 
             XenonBukkit.getInstance().getLogManager().logPlayerAction(profile.getUniqueId(), profile.getName(), Arrays.asList(
-                    "&6Staff Member&7: &a" + player.getName(),
-                    "&6Unmuted Player&7: &a" + profile.getName(),
-                    "&6Reason&7: &a" + punishment.getAddedReason(),
-                    "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.PUNISHMENT_REMOVED, LogCategories.PUNISHMENT_LOGS);
+                    "&6Type&7: &cUn Mute",
+                    "&6Staff Member&7: &c" + player.getName(),
+                    "&6Reason&7: &c" + punishment.getAddedReason(),
+                    "&6Silent&7: &c" + punishment.isSilent()
+            ), LogType.PUNISHMENT_REMOVED, LogCategories.PUNISHMENT_LOGS);
         } else {
             XenonBukkit.getInstance().getLogManager().logPlayerAction(profile.getUniqueId(), profile.getName(), Arrays.asList(
+                    "&6Type&7: &cUn Mute",
                     "&6Staff Member&7: &4Console",
-                    "&6Unmuted Player&7: &a" + profile.getName(),
-                    "&6Reason&7: &a" + punishment.getAddedReason(),
-                    "&6Silent&7: &a" + punishment.isSilent()
-            ),LogActionTypes.PUNISHMENT_REMOVED, LogCategories.PUNISHMENT_LOGS);
+                    "&6Reason&7: &c" + punishment.getAddedReason(),
+                    "&6Silent&7: &c" + punishment.isSilent()
+            ), LogType.PUNISHMENT_REMOVED, LogCategories.PUNISHMENT_LOGS);
         }
 
         XenonBukkit.getInstance().getRedisModule().sendPacket(new PunishmentRemovePacket(punishment.getUniqueId(), sender.getName(), profile.getUniqueId()));

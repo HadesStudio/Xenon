@@ -1,25 +1,11 @@
 package net.ascend.core.bukkit.filter;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bukkit.filter
-//   Date: Thursday, September 14, 2023 - 12:59 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.filter.types.Match;
 import net.ascend.core.bukkit.filter.types.MuteType;
+import net.ascend.core.bukkit.lib.Messages;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.util.TimeUtil;
 import net.ascend.core.bukkit.lib.CC;
@@ -55,10 +41,6 @@ public class Filter implements Comparable<Filter> {
     }
 
     public void save() {
-        save(false);
-    }
-
-    public void save(boolean remove) {
         Document document = new Document();
         document.put("id", id.toString());
         document.put("name", name);
@@ -70,9 +52,6 @@ public class Filter implements Comparable<Filter> {
         document.put("caseSensitive", caseSensitive);
 
         XenonBukkit.getInstance().getMongoModule().getFiltersCollection().replaceOne(Filters.eq("id", id.toString()), document, new ReplaceOptions().upsert(true));
-        if (remove) {
-            XenonBukkit.getInstance().getFilterManager().getFilters().remove(id);
-        }
     }
 
     public boolean matches(String message) {
@@ -122,49 +101,28 @@ public class Filter implements Comparable<Filter> {
         return duration > other.getDuration() ? 1 : -1;
     }
 
-    public String colorize(String message) {
-        Matcher matcher;
-        if (pattern != null)
-            matcher = pattern.matcher(message);
-        else matcher = Pattern.compile((match == Match.STARTS_WITH ? "^" : "") + phrase
-                        + (match == Match.ENDS_WITH ? "$" : ""),
-                caseSensitive ? 0 : Pattern.CASE_INSENSITIVE).matcher(message);
-
-        while (matcher.find()) {
-            message = message.replaceFirst(matcher.group(), CC.translate("&6&n") + matcher.group() + CC.translate("&6"));
-        }
-        return CC.translate("&6" + message);
-    }
-
-    public void chat_punish(String message, Profile sender) {
-        String filter_message = XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("filters.filtered-chat-message").replace("%sender%", sender.getName()).replace("%filtered_text%", message);
+    public void chatPunish(String message, Profile sender) {
+        String filter_message = XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("filter.filtered-chat-message")
+                .replace("%sender%", sender.getName())
+                .replace("%filtered_text%", message);
 
         if (muteType == MuteType.MUTE) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mute " + sender.getName() + " " + TimeUtil.getDetailedTime(duration) + " Chat Filter -s");
         }
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.hasPermission("xenon.staff")) {
-                player.sendMessage(CC.translate(filter_message));
-            }
-        }
-
-        Bukkit.getConsoleSender().sendMessage(CC.translate(filter_message));
+        Messages.sendMessage(filter_message, "xenon.filter.alert");
     }
 
     public void punish(String message, Profile sender, Profile target) {
-        String filter_message = XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("filters.filtered-message").replace("%sender%", sender.getName()).replace("%target%", target.getName()).replace("%filtered_text%", message);
+        String filter_message = XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("filter.filtered-message")
+                .replace("%sender%", sender.getName())
+                .replace("%target%", target.getName())
+                .replace("%filtered_text%", message);
 
         if (muteType == MuteType.MUTE) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mute " + sender.getName() + " " + TimeUtil.getDetailedTime(duration) + " Chat Filter -s");
         }
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.hasPermission("xenon.staff")) {
-                player.sendMessage(CC.translate(filter_message));
-            }
-        }
-
-        Bukkit.getConsoleSender().sendMessage(CC.translate(filter_message));
+        Messages.sendMessage(filter_message, "xenon.filter.alert");
     }
 }

@@ -41,19 +41,19 @@ public class HideStaffCommand extends BaseCommand {
 
             player.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("hidestaff-command.enabled")));
 
-            for (UUID id : XenonBukkit.getInstance().getStaffManager().getVanishedPlayers()) {
+            /*for (UUID id : XenonBukkit.getInstance().getStaffManager().getVanishedPlayers()) {
                 if (Bukkit.getPlayer(id) == null) continue;
                 player.showPlayer(Bukkit.getPlayer(id));
-            }
+            }*/
             return;
         }
 
         hidden.add(player.getUniqueId());
         player.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("hidestaff-command.disabled")));
 
-        for (UUID id : XenonBukkit.getInstance().getStaffManager().getVanishedPlayers()) {
+        /*for (UUID id : XenonBukkit.getInstance().getStaffManager().getVanishedPlayers()) {
             if (Bukkit.getPlayer(id) == null) continue;
             player.hidePlayer(Bukkit.getPlayer(id));
-        }
+        }*/
     }
 }

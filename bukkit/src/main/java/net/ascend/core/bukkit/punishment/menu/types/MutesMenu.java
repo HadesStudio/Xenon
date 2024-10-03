@@ -1,20 +1,5 @@
 package net.ascend.core.bukkit.punishment.menu.types;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.punishment.menu.types
-//   Date: Saturday, July 15, 2023 - 2:18 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.punishment.packet.implement.PunishmentRemovePacket;
@@ -33,20 +18,26 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class MutesMenu extends PaginatedMenu {
+
     private Profile profile;
 
     @Override
     public String getName() {
-        return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.title").replace("%player_name%", profile.getName());
+        return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("mutes-menu.title")
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
     }
 
     @Override
     public String getTitle(Player player) {
-        return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.title").replace("%player_name%", profile.getName());
+        return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("mutes-menu.title")
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
     }
 
     @Override
@@ -56,10 +47,17 @@ public class MutesMenu extends PaginatedMenu {
 
     @Override
     public Map<Integer, Button> getPaginatedContent(Player player) {
-        List<Punishment> mutes = profile.getPunishments().stream().sorted(Comparator.comparingLong(Punishment::getAddedAt).reversed()).filter(punishment -> punishment.getType() == PunishmentType.MUTE).collect(Collectors.toList());
         Map<Integer, Button> buttons = new HashMap<>();
 
-        mutes.forEach(module -> buttons.put(buttons.size(), new MutesButton(module)));
+        List<Punishment> mutes = profile.getPunishments().stream()
+                .sorted(Comparator.comparingLong(Punishment::getAddedAt).reversed())
+                .filter(punishment -> punishment.getType() == PunishmentType.MUTE)
+                .collect(Collectors.toList());
+
+        AtomicInteger index = new AtomicInteger(1);
+        for (Punishment punishment : mutes) {
+            buttons.put(buttons.size(), new MutesButton(punishment, index.getAndIncrement()));
+        }
 
         return buttons;
     }
@@ -68,53 +66,56 @@ public class MutesMenu extends PaginatedMenu {
     private static class MutesButton extends Button {
 
         private final Punishment punishment;
+        private final int id;
 
         public String getPermanentMaterial() {
-            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.permanent.material");
+            return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("mutes-menu.button.permanent.material");
         }
 
         public String getTimeMaterial() {
-            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.time-mute.material");
+            return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("mutes-menu.button.time-mute.material");
         }
 
         public String getPardonedMaterial() {
-            return XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.pardoned.material");
+            return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("mutes-menu.button.pardoned.material");
         }
 
         public short getPermanentData() {
             if (punishment.isActive()) {
-                return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("mutes.button.permanent.data.active");
+                return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("mutes-menu.button.permanent.data.active");
             }
             return 0;
         }
 
         public short getData() {
             if (punishment.isActive()) {
-                return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("mutes.button.time-mute.data.active");
+                return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("mutes-menu.button.time-mute.data.active");
             } else if (punishment.isClear()) {
-                return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("mutes.button.time-mute.data.expired");
+                return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("mutes-menu.button.time-mute.data.expired");
             }
             return 0;
         }
 
         public short getPardonedData() {
-            return (short) XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getInt("mutes.button.pardoned.data");
+            return (short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("mutes-menu.button.pardoned.data");
         }
 
 
         @Override
         public ItemStack getItemStack(Player player) {
-            if (punishment.isPermanent() && !punishment.isRemoved()) { // PERM MUTE OMG!!
+            if (punishment.isPermanent() && !punishment.isRemoved()) {
                 ItemMaker builder = ItemMaker.of(getPermanentMaterial());
                 builder.setData(getPermanentData());
-                builder.setDisplayName(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.permanent.name"));
-                for (String line : XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("mutes.button.permanent.lore")) {
+                builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("mutes-menu.button.permanent.name")
+                        .replace("%muted_id%", String.valueOf(id)));
+                for (String line : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("mutes-menu.button.permanent.lore")) {
                     builder.addLore(line
                             .replace("%muter%", punishment.getAddedByString())
                             .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
                             .replace("%reason%", punishment.getAddedReason())
                             .replace("%server%", punishment.getAddedServer())
                             .replace("%added_date%", TimeUtil.formatIntoCalendarString(new Date(punishment.getAddedAt())))
+                            .replace("%muted_id%", String.valueOf(id))
                     );
                 }
                 return builder.build();
@@ -123,8 +124,9 @@ public class MutesMenu extends PaginatedMenu {
             if (punishment.isActive()) {
                 ItemMaker builder = ItemMaker.of(getTimeMaterial());
                 builder.setData(getData());
-                builder.setDisplayName(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.time-mute.name"));
-                for (String line : XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("mutes.button.time-mute.lore")) {
+                builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("mutes-menu.button.time-mute.name")
+                        .replace("%muted_id%", String.valueOf(id)));
+                for (String line : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("mutes-menu.button.time-mute.lore")) {
                     builder.addLore(line
                             .replace("%muter%", punishment.getAddedByString())
                             .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
@@ -132,15 +134,17 @@ public class MutesMenu extends PaginatedMenu {
                             .replace("%server%", punishment.getAddedServer())
                             .replace("%added_date%", TimeUtil.formatIntoCalendarString(new Date(punishment.getAddedAt())))
                             .replace("%expires%", punishment.getRemaining())
+                            .replace("%muted_id%", String.valueOf(id))
                     );
                 }
 
                 return builder.build();
-            } else { // THE MUTE WAS PARDONED GG
+            } else {
                 ItemMaker builder = ItemMaker.of(getPardonedMaterial());
                 builder.setData(getPardonedData());
-                builder.setDisplayName(XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getString("mutes.button.pardoned.name"));
-                for (String line : XenonBukkit.getInstance().getHistoryMenuConfig().getConfiguration().getStringList("mutes.button.pardoned.lore")) {
+                builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("mutes-menu.button.pardoned.name")
+                        .replace("%muted_id%", String.valueOf(id)));
+                for (String line : XenonBukkit.getInstance().getMenuConfig().getConfiguration().getStringList("mutes-menu.button.pardoned.lore")) {
                     builder.addLore(line
                             .replace("%muter%", punishment.getAddedByString())
                             .replace("%silent%", punishment.isSilent() ? "&a&nYes" : "&c&nNo")
@@ -150,6 +154,7 @@ public class MutesMenu extends PaginatedMenu {
                             .replace("%pardoner%", punishment.getRemovedByString())
                             .replace("%pardoned_at%", TimeUtil.formatIntoCalendarString(new Date(punishment.getRemovedAt())))
                             .replace("%pardoned_reason%", punishment.getRemovedReason())
+                            .replace("%muted_id%", String.valueOf(id))
                     );
                 }
                 return builder.build();
@@ -158,7 +163,7 @@ public class MutesMenu extends PaginatedMenu {
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            if (punishment.isRemoved()) { // Retarded player is trying to remove a already pardoned mute???
+            if (punishment.isRemoved()) {
                 player.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("punishments.history-menu.pardon.mute.already-removed").replace("%remover%", punishment.getRemovedByString())));
                 return;
             }

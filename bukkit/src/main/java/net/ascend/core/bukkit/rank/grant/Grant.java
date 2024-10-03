@@ -76,7 +76,7 @@ public class Grant {
             return TimeUtil.formatTimeMillis(getRemaining());
         }
 
-        return TimeUtil.readableTime(getRemaining());
+        return TimeUtil.getMoreDetailedTime(getRemaining());
     }
 
     public String getDurationText(boolean simple) {
@@ -88,7 +88,7 @@ public class Grant {
             return TimeUtil.formatTimeMillis(duration);
         }
 
-        return TimeUtil.readableTime(duration);
+        return TimeUtil.getMoreDetailedTime(duration);
     }
 
     public String getAddedByString() {

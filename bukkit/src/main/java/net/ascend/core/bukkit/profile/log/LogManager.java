@@ -1,94 +1,108 @@
 package net.ascend.core.bukkit.profile.log;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.profile.log
-//   Date: Monday, July 31, 2023 - 4:57 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.gson.reflect.TypeToken;
 import net.ascend.core.bukkit.XenonBukkit;
+import net.ascend.core.bukkit.modules.ModuleLoader;
 import net.ascend.core.bukkit.profile.log.category.LogCategories;
-import net.ascend.core.bukkit.profile.log.types.LogActionTypes;
 import lombok.Getter;
+import net.ascend.core.bukkit.util.ColorUtil;
+import net.ascend.core.bukkit.util.TimeUtil;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public final class LogManager {
+public class LogManager implements ModuleLoader {
+
     private static final File directory = new File(new File("xenon-logs"), "playerLogs");
 
     @Getter private final Map<Integer, Log> logMap = new HashMap<>();
 
-    public Log getLogById(int id) {
-        return this.logMap.get(id) == null ? new Log(id, null, Collections.singletonList("Unkonw"), System.currentTimeMillis(), null) : this.logMap.get(id);
+    private boolean saveFolder;
+
+    @Override
+    public void onEnable() {
+        registerAllLogs();
+
+        saveFolder = XenonBukkit.getInstance().getConfiguration().getConfiguration().getBoolean("log.save-in-folder");
+    }
+
+    @Override
+    public void onDisable() {
+
+    }
+
+    @Override
+    public void onReload() {
+
     }
 
     public void registerAllLogs() {
-        long startTime = System.currentTimeMillis();
-        int size = 0;
         for (Document document : XenonBukkit.getInstance().getMongoModule().getLogsCollection().find()) {
             Integer id = document.getInteger("logID");
             Type messageListType = new TypeToken<List<String>>() {}.getType();
-            Log log = new Log(id, UUID.fromString(document.getString("userUUID")), (XenonBukkit.PLAIN_GSON.fromJson(document.getString("message"), messageListType)), document.getLong("logDate"), document.getString("logCategory"));
+            Log log = new Log(id,
+                    UUID.fromString(document.getString("userUUID")),
+                    document.getString("server"),
+                    (XenonBukkit.PLAIN_GSON.fromJson(document.getString("message"), messageListType)),
+                    document.getLong("logDate"),
+                    document.getString("logCategory"));
+
             log.setUserName(document.getString("userName"));
-            log.setLogType(LogActionTypes.valueOf(document.getString("logType")));
-            size = size + 1;
+            log.setLogType(LogType.valueOf(document.getString("logType")));
             this.logMap.put(id, log);
         }
-        startTime = startTime - System.currentTimeMillis();
     }
 
 
-    public void logPlayerAction(UUID playerUUID, String userName, List<String> message, LogActionTypes type, LogCategories logCategories) {
+    public void logPlayerAction(UUID playerUUID, String userName, List<String> message, LogType type, LogCategories logCategories) {
         Bukkit.getScheduler().runTaskAsynchronously(XenonBukkit.getInstance(), () -> {
-            long startTime = System.currentTimeMillis();
-            Log log = new Log((this.logMap.size() + 1), playerUUID, message, System.currentTimeMillis(), logCategories.toString());
+            String server = XenonBukkit.getInstance().getServerManager().getCurrentServerName();
+            Log log = new Log((this.logMap.size() + 1), playerUUID,
+                    server,
+                    message,
+                    System.currentTimeMillis(),
+                    logCategories.toString());
+
             log.setLogType(type);
             log.setUserName(userName);
             log.save();
+
             logMap.put(log.getId(), log);
 
-            logToFile(playerUUID, userName, message, type);
-            startTime = startTime - System.currentTimeMillis();
+            if (saveFolder) {
+                logToFile(playerUUID, userName, server, message, type);
+            }
         });
     }
 
-    private static void logToFile(UUID playerUUID, String userName, List<String> message, LogActionTypes logType) {
+    private static void logToFile(UUID playerUUID, String userName, String server, List<String> message, LogType logType) {
         File logFolder = new File(directory, playerUUID.toString());
         File logFile = new File(logFolder, "general.log");
         try {
             StringBuilder logLine = new StringBuilder();
 
             logLine.append('[');
-            logLine.append(userName);
-            logLine.append(", ");
-            logLine.append(DateTimeFormatter.ISO_INSTANT.format(Instant.now())); // ISO 8601
-            logLine.append(", ");
+            logLine.append(TimeUtil.formatIntoCalendarString(new Date(System.currentTimeMillis())));
+            logLine.append(" @ ");
+            logLine.append(server);
+            logLine.append("] (");
             logLine.append(logType);
-            logLine.append("] ");
+            logLine.append(") ");
+
+            logLine.append(userName);
+            logLine.append(": ");
+
 
             for (String line : message) {
-                logLine.append("message");
-                logLine.append(": ");
-                logLine.append(line);
+                logLine.append(ColorUtil.removeColorCodes(line));
                 logLine.append(" ");
             }
 
@@ -103,7 +117,12 @@ public final class LogManager {
                     Charsets.UTF_8
             );
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(LogManager.class.getName()).log(Level.SEVERE, "Failed to log to file for player: " + playerUUID, ex);
+
         }
+    }
+
+    public Log getLogById(int id) {
+        return Optional.ofNullable(this.logMap.get(id)).orElse(new Log(id, null, "Unknown", Collections.singletonList("Unknown"), System.currentTimeMillis(), null));
     }
 }

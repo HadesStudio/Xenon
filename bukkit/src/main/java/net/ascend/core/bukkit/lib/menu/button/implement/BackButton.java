@@ -21,7 +21,7 @@ public class BackButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return ItemMaker.of("REDSTONE_BLOCK")
+        return ItemMaker.of("ARROW")
                 .setDisplayName("&cBack").build();
     }
 

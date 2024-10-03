@@ -5,19 +5,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+//import okhttp3.OkHttpClient;
+//import okhttp3.Request;
+//import okhttp3.Response;
 
 import java.io.IOException;
 
 public class VPNUtil {
 
-    private static final OkHttpClient CLIENT = new OkHttpClient();
+    //private static final OkHttpClient CLIENT = new OkHttpClient();
     private static final JsonParser JSON_PARSER = new JsonParser();
 
     public static Result getResult(String ip) throws IOException {
-        Request request = new Request.Builder()
+        /*Request request = new Request.Builder()
                 .url("https://beta.iprisk.info/v1/" + ip)
                 .build();
 
@@ -37,7 +37,8 @@ public class VPNUtil {
         String asn = getOrUnknown(object.get("autonomous_system_number"));
         String org = getOrUnknown(object.get("autonomous_system_organization"));
 
-        return new Result(dataCenter || publicProxy || torExitRelay, country, asn, org);
+        return new Result(dataCenter || publicProxy || torExitRelay, country, asn, org);*/
+        return null;
     }
 
     private static String getOrUnknown(JsonElement element) {

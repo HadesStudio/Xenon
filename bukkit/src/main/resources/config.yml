@@ -1,46 +1,64 @@
 debug-mode: true # Do not edit the status of this via the config, use the debug mode command in game.
 
+server-name: "Hub"
+
 command-system:
   disabled-commands:
     - "test"
 
 name-mc:
   enabled: true # Do you want to enable the NameMC System?
-  reminder: true # Do you want to send reminders when someone hasn't voted for your server?
-  reminder-timer: 5 # This is how many minutes it is before another reminder is sent.
   link: "https://api.namemc.com/server/helydev.com/likes?profile=" # Replace "helydev.com" with your server name.
   commands: # These are the commands executed when someone votes.
     - "rank give %player% Free"
-  messages:
-    reminder: # %player%
-      - "&7You have not voted for our server yet!"
-      - "&7You can type &a/namemc &7for your free rewards!"
-    liked:
-      - "&7Thank you for liking our server on &aNameMC&7!"
-      - "&7You have been given your rewards."
-    broadcast:
-      - "&a%player% &7has just voted for our server on &6NameMC&7!"
-    not-linked: "&cYou have not liked our server on &6NameMC &cyet, you must do that before claiming your rewards."
+
 chat-system:
-  enabled: true # Do you want to use the built in chat system?
-  mute-bypass-permission: "xenon.chat.highrank"
-  vip-format: "&8[&7%symbol%&8]&r"
-  chat-format: "%tags%%vip%%rank_prefix% %player%%rank_suffix%&7: &f"
-two-factor:
   enabled: true
-  settings:
-    permission: "xenon.staff.auth" # The permission that the player needs to be required to use the 2FA system.
-    require-op: true # Do you want OP's to be required to use the 2FA system?
-    join-sound:
-      enabled: true # Do you want to play the join sound?
-      name: "ANVIL_LAND" # The name of the sound played when the player joins.
-  qr-code-map:
-    name: "&6Scan QR Code"
-    lore:
-      - "&7&l&m----------------------------"
-      - "&7Scan the QR code supplied on this"
-      - "&7map to complete your &6Authentication&7."
-      - "&7&l&m----------------------------"
+  default_slow: 5
+  chat-format: "%tags% %rank_prefix% %player%%rank_suffix%&7: &f"
+
+log:
+  save-in-folder: true
+  # WARNING: Do NOT put color codes.
+  # If you put color codes, it will break your database..
+  used-command: "Executed Command"
+  op-player-command: "Gave Player OP"
+  banned-player: "Banned a player"
+  unbanned-player: "Unbanned a player"
+  blacklisted-player: "Blacklisted a player"
+  unblacklisted-player: "Unblacklisted a player"
+  muted-player: "Muted a player"
+  unmuted-player: "Unmuted a player"
+  warned-player: "Warned a player"
+  kicked-player: "Kicked a player"
+  punishment-given: "Received a punishment"
+  punishment-remove: "Punishment was removed"
+  joined-server: "Connected to server"
+  leave-server: "Disconnected from server"
+  grant-given: "Received a rank grant"
+  grant-removed: "Rank grant removed"
+  given-rank: "Gave someone a rank"
+  received-currency: "Received ingame currency"
+  currency-removed: "Ingame currency was taken"
+  staff-currency-update: "Updated a players currency"
+
+
+profile:
+  default-currency: 0
+  send-notifications:
+    add-currency:
+      - "&7While you where offline, you where"
+      - "&7given in-game currency!"
+      - "&7In-game currency can be used in &6/shop&c."
+      - "&7"
+      - "&6Amount: &c%amount%"
+    remove-currency:
+      - "&7While you where offline, currency"
+      - "&7was removed from your proflie!"
+      - "&f"
+      - "&6Amount: &c%amount%"
+
+
 punishments:
   safety:
     cannot-punish: "&cYou cannot punish a player with a higher rank weight than you."
@@ -49,184 +67,23 @@ punishments:
     allow-blacklisted: false
   default-reason: "Not Found"
   send-notifications:
-    enabled: true # Do you want to send notifications using the notification system about punishments?
+    enabled: true
     ban-notification:
-      - "&cYou received a ban!"
+      - "&7You received a ban!"
       - ""
-      - "&cBanned By: &7%banner%"
-      - "&cDuration: &7%duration%"
-      - "&cServer: &7%server%"
+      - "&6Reason: &c%reason%"
+      - "&6Duration: &c%duration%"
+      - "&6Server: &c%server%"
     warning-notification:
-      - "&cYou received a warning!"
+      - "&7You received a warning!"
       - ""
-      - "&cBanned By: &7%banner%"
-      - "&cDuration: &7%duration%"
-      - "&cServer: &7%server%"
+      - "&6Reason: &c%reason%"
+      - "&6Duration: &c%duration%"
+      - "&6Server: &c%server%"
     mute-notification:
-      - "&cYou received a warning!"
+      - "&7You received a warning!"
       - ""
-      - "&cBanned By: &7%banner%"
-      - "&cDuration: &7%duration%"
-      - "&cServer: &7%server%"
-statistics-settings:
-  server-1:
-    enabled: true # Do you want to enable statistics for this server?
-    material-display: "DIAMOND_SWORD" # The material that is displayed for this server.
-    display-name: "&6&lHCF" # The name of the server.
-    use-hcf-core: true # This should ONLY be set to true if you are using a compatible HCF core on the server provided.
-    inventory-slot: 0 # The slot that the item is displayed in.
-  server-2:
-    enabled: false # Do you want to enable statistics for this server?
-    material-display: "BOW" # The material that is displayed for this server.
-    display-name: "&4&lPractice" # The name of the server.
-    use-hcf-core: false # This should ONLY be set to true if you are using a compatible HCF core on the server provided.
-    inventory-slot: 1 # The slot that the item is displayed in.
-  server-3:
-    enabled: false # Do you want to enable statistics for this server?
-    material-display: "GOLDEN_SWORD" # The material that is displayed for this server.
-    display-name: "&c&lKitmap" # The name of the server.
-    use-hcf-core: true # This should ONLY be set to true if you are using a compatible HCF core on the server provided.
-    inventory-slot: 2 # The slot that the item is displayed in.
-  server-4:
-    enabled: false # Do you want to enable statistics for this server?
-    material-display: "LAVA_BUCKET" # The material that is displayed for this server.
-    display-name: "&3&lSurvival" # The name of the server.
-    use-hcf-core: false # This should ONLY be set to true if you are using a compatible HCF core on the server provided.
-    inventory-slot: 3 # The slot that the item is displayed in.
-staff_mode:
-  enabled: true
-  on_join:
-    staff_mode: true # Enable staffmode when joining the server
-    vanish: true # Enable vanish when joining the server
-  silent_view_title: "&8Silent View"
-  hotbar:
-    teleportation:
-      enabled: true
-      slot: 1
-      item:
-        material: "COMPASS"
-        data: 0
-        name: "&6Teleportation Compass"
-        lore:
-          - "&7Right Click = Move through nearest block."
-          - "&7Left Click = Move to block your looking at."
-    inspection:
-      enabled: true
-      slot: 2
-      item:
-        material: "BOOK"
-        data: 0
-        name: "&6Inspection Tool"
-        lore:
-          - "&7Right-Click to view a player's inventory."
-    freeze_player:
-      enabled: true
-      slot: 5
-      item:
-        material: "PACKED_ICE"
-        data: 0
-        name: "&6Freeze Player"
-        lore:
-          - "&7Right-Click to freeze the clicked player."
-    worldedit_wand:
-      enabled: true
-      permission_only:
-        enabled: true # Do you want to only give players the wand if they have a specific permission?
-        permission: "xenon.admin.wand"
-      slot: 3
-      item:
-        material: "WOOD_AXE"
-        data: 0
-        name: "&6WorldEdit Wand"
-        lore:
-          - "&7Right-Click to use your worldedit wand."
-    random_teleportation:
-      enabled: true
-      slot: 9
-      item:
-        material: "NETHER_STAR"
-        data: 0
-        name: "&6Random Teleport"
-        lore:
-          - "&7Right-Click to teleport to a random player."
-    online_staff:
-      enabled: true
-      slot: 4
-      item:
-        material: "SKULL_ITEM"
-        data: 0
-        name: "&6Online Staff"
-        lore:
-          - "&7Right-Click to view online staff members."
-    vanish:
-      enabled: true # Do you want to enable the main vanish button?
-      enabled_button:
-        enabled: true
-        slot: 8
-        item:
-          material: "INK_SACK"
-          data: 10
-          name: "&6Vanished: &aTrue"
-          lore:
-            - "&7Right-Click to disable your vanish mode."
-      disabled_button:
-        enabled: true
-        slot: 8
-        item:
-          material: "INK_SACK"
-          data: 8
-          name: "&6Vanished: &cFalse"
-          lore:
-            - "&7Right-Click to enable your vanish mode."
-  inventory_view:
-    title: "&8%player_name% - Inventory"
-    fill:
-      enabled: true # Do you want to use the inventory filler?
-      data: 7 # This is the item data of your glass pane.
-    buttons:
-      helmet_slot: 46
-      chestplate_slot: 47
-      leggings_slot: 48
-      boots_slot: 49
-      health:
-        slot: 50
-        item:
-          material: "SPECKLED_MELON"
-          data: 0
-          name: "&6Health"
-          lore:
-            - "&6Health&7: &e%health%"
-      food:
-        slot: 51
-        item:
-          material: "COOKED_BEEF"
-          data: 0
-          name: "&6Food"
-          lore:
-            - "&6Food Level&7: &e%food_level%"
-            - "&6Saturation&7: &e%saturation%"
-      active_effects:
-        slot: 52
-        item:
-          material: "BLAZE_POWDER"
-          data: 0
-          name: "&6Active Potion Effect's"
-          lore: "&6%effect_name% &7(%effect_level%)&7: &c%duration%"
-      player_info:
-        slot: 53
-        item:
-          name: "&6Player Info"
-          lore:
-            - "&6Rank&7: &b%rank_prefix%"
-            - "&6Rank Name&7: &b%rank_name%"
-            - "&6Playtime&7: &b%playtime%"
-  online_menu:
-    title: "&8Online Staff"
-    name: "&r%rank_prefix%%target_name%"
-    lore:
-      - "&7&m-------------------------------"
-      - "&eVanished&7: &r%vanish%"
-      - "&eMod Mode&7: &r%staffmode%"
-      - ""
-      - "&7Click to teleport"
-      - "&7&m-------------------------------"
+      - "&6Reason: &c%reason%"
+      - "&6Duration: &c%duration%"
+      - "&6Server: &c%server%"
+

@@ -31,12 +31,26 @@ public class Locale {
     public static String TAG_REMOVE_USAGE;
     public static String TAG_DONT_EXISTS;
     public static String TAG_REMOVE_REMOVED;
+    public static String TAG_SETTYPE_USAGE;
+    public static String TAG_SETTYPE_INVALID_TYPE;
+    public static String TAG_SETTYPE_UPDATED;
     public static String TAG_SETPREFIX_USAGE;
     public static String TAG_SETPREFIX_UPDATED;
     public static String TAG_SETWEIGHT_USAGE;
     public static String TAG_SETWEIGHT_UPDATED;
+    public static String TAG_SETCOINS_USAGE;
+    public static String TAG_SETCOINS_UPDATED;
     public static String TAG_IMPORT_IMPORTED;
     public static String TAG_EXPORT_EXPORTED;
+
+    public static String TAG_MENU_RESET_TAG;
+    public static List<String> TAG_MENU_DONT_HAVE_ENOUGH;
+    public static List<String> TAG_MENU_START_PROMPT;
+    public static String TAG_MENU_PURCHASED;
+    public static String TAG_MENU_ALREADY_HAVE_APPLIED;
+    public static String TAG_MENU_APPLIED;
+
+
 
     public static String ADMIN_CHAT_ENABLED;
     public static String ADMIN_CHAT_DISABLED;
@@ -82,9 +96,12 @@ public class Locale {
     public static String HISTORY_USAGE;
 
     public static String REQUEST_INVALID_MESSAGE;
+
     public static String HELPOP_USAGE;
-    public static String HELPOP_STAFF_ALERT;
     public static String HELPOP_CREATED;
+    public static List<String> HELPOP_STAFF_ALERT;
+
+
     public static String REQUEST_CLOSED;
     public static String REQUEST_PLAYER_ALERT_CLOSED;
 
@@ -94,13 +111,17 @@ public class Locale {
     public static String REQUEST_ALREADY_CLAIMED;
 
     public static String REPORT_USAGE;
-    public static String REPORT_STAFF_ALERT;
-    public static String REPORT_CREATED;
     public static String REPORT_NOT_ONLINE;
     public static String REPORT_SELF;
+    public static String REPORT_CREATED;
+    public static List<String> REPORT_STAFF_ALERT;
+
+
     public static String REQUEST_NOTE_PROMT;
     public static String REQUEST_NOTE_ADDED;
     public static String REQUEST_CLOSED_BROADCAST;
+
+
     public static String EDITPROFILE_USAGE;
 
     public static List<String> NOTES_USAGE;
@@ -128,14 +149,56 @@ public class Locale {
     public static String TELEPORT_POS_USAGE;
     public static String TELEPORT_POSITION;
 
+    public static List<String> REBOOT_USAGE;
+    public static String REBOOT_START_USAGE;
+    public static String REBOOT_START_STARTED;
+    public static String REBOOT_START_STAFF_ALERT;
+    public static String REBOOT_CANCEL_NOT_REBOOTING;
+    public static String REBOOT_CANCEL_CANCELLED;
+    public static String REBOOT_CANCEL_STAFF_ALERT;
+    public static List<String> REBOOT_CANCEL_ALERT;
+    public static List<String> REBOOT_INFO_MESSAGE;
+
+    public static List<String> SERVER_MANAGER_USAGE;
+    public static List<String> SERVER_MANAGER_LIST_MESSAGE;
+    public static String SERVER_MANAGER_LIST_FORMAT;
+    public static String SERVER_MANAGER_INFO_USAGE;
+    public static List<String> SERVER_MANAGER_INFO_MESSAGE;
+    public static String SERVER_MANAGER_RUNCMD_USAGE;
+    public static String SERVER_MANAGER_RUNCMD_EXECUTED;
+    public static String SERVER_MANAGER_RUNCMD_ALERT;
+    public static String SERVER_MANAGER_DONT_EXISTS;
+
     public static String VANISH_ENABLED;
     public static String VANISH_DISABLED;
-    public static String VANISH_ENABLED_O;
-    public static String VANISH_DISABLED_O;
+    public static String VANISH_ENABLED_OTHERS;
+    public static String VANISH_DISABLED_OTHERS;
 
-    public static void load(){
+
+    public static void load() {
         Config language = XenonBukkit.getInstance().getLanguageConfig();
         Config config = XenonBukkit.getInstance().getConfiguration();
+
+        REBOOT_USAGE = language.getConfiguration().getStringList("reboot-command.usage");
+        REBOOT_START_USAGE = language.getConfiguration().getString("reboot-command.start.usage");
+        REBOOT_START_STARTED = language.getConfiguration().getString("reboot-command.start.started");
+        REBOOT_START_STAFF_ALERT = language.getConfiguration().getString("reboot-command.start.staff_alert");
+        REBOOT_CANCEL_NOT_REBOOTING = language.getConfiguration().getString("reboot-command.cancel.not_rebooting");
+        REBOOT_CANCEL_CANCELLED = language.getConfiguration().getString("reboot-command.cancel.cancelled");
+        REBOOT_CANCEL_STAFF_ALERT = language.getConfiguration().getString("reboot-command.cancel.staff_alert");
+        REBOOT_CANCEL_ALERT = language.getConfiguration().getStringList("reboot-command.cancel.alert");
+        REBOOT_INFO_MESSAGE = language.getConfiguration().getStringList("reboot-command.info.message");
+
+        SERVER_MANAGER_USAGE = language.getConfiguration().getStringList("servermanager-command.usage");
+        SERVER_MANAGER_LIST_MESSAGE = language.getConfiguration().getStringList("servermanager-command.list.message");
+        SERVER_MANAGER_LIST_FORMAT = language.getConfiguration().getString("servermanager-command.list.format");
+        SERVER_MANAGER_INFO_USAGE = language.getConfiguration().getString("servermanager-command.info.usage");
+        SERVER_MANAGER_INFO_MESSAGE = language.getConfiguration().getStringList("servermanager-command.info.message");
+        SERVER_MANAGER_RUNCMD_USAGE = language.getConfiguration().getString("servermanager-command.runcommand.usage");
+        SERVER_MANAGER_RUNCMD_EXECUTED = language.getConfiguration().getString("servermanager-command.runcommand.executed");
+        SERVER_MANAGER_RUNCMD_ALERT = language.getConfiguration().getString("servermanager-command.runcommand.alert");
+
+        SERVER_MANAGER_DONT_EXISTS = language.getConfiguration().getString("servermanager-command.dont-exists");
 
         COMMANDS_NO_PERMISSION = language.getConfiguration().getString("commands.no_permission");
         COMMANDS_ONLY_PLAYER = language.getConfiguration().getString("commands.only_player");
@@ -145,11 +208,6 @@ public class Locale {
         COMMANDS_OFFLINE_PLAYER = language.getConfiguration().getString("commands.offline_player");
         COMMANDS_INVALID_NUMBER = language.getConfiguration().getString("commands.not_valid_number");
 
-
-        VANISH_DISABLED_O = language.getConfiguration().getString("vanish.others.disabled");
-        VANISH_ENABLED_O = language.getConfiguration().getString("vanish.others.enabled");
-        VANISH_DISABLED = language.getConfiguration().getString("vanish.disabled");
-        VANISH_ENABLED = language.getConfiguration().getString("vanish.enabled");
 
         TELEPORT_HERE_TO = language.getConfiguration().getString("teleport.teleport-here-to");
         TELEPORT_HERE_FROM = language.getConfiguration().getString("teleport.teleport-here-from");
@@ -175,7 +233,7 @@ public class Locale {
         NOTES_ADD_ADDED = language.getConfiguration().getString("notes-command.add.added");
         NOTES_USAGE = language.getConfiguration().getStringList("notes-command.usage");
 
-        EDITPROFILE_USAGE = language.getConfiguration().getString("edit-profile.usage");
+        EDITPROFILE_USAGE = language.getConfiguration().getString("editprofile-command.usage");
         REQUEST_CLOSED_BROADCAST = language.getConfiguration().getString("requests.closed-broadcast");
         REQUEST_UNCLAIMED = language.getConfiguration().getString("requests.claim.unclaimed");
         REQUEST_ALREADY_CLAIMED = language.getConfiguration().getString("requests.claim.already-claimed");
@@ -186,14 +244,15 @@ public class Locale {
 
         REPORT_USAGE = language.getConfiguration().getString("requests.report.usage");
         REPORT_SELF = language.getConfiguration().getString("requests.report.report-self");
-        REPORT_STAFF_ALERT = language.getConfiguration().getString("requests.report.broadcast");
+        REPORT_STAFF_ALERT = language.getConfiguration().getStringList("requests.report.staff-message");
         REPORT_CREATED = language.getConfiguration().getString("requests.report.created");
         REPORT_NOT_ONLINE = language.getConfiguration().getString("requests.report.not-online");
 
-        REQUEST_INVALID_MESSAGE = language.getConfiguration().getString("requests.invalid-message");
         HELPOP_USAGE = language.getConfiguration().getString("requests.helpop.usage");
-        HELPOP_STAFF_ALERT = language.getConfiguration().getString("requests.helpop.broadcast");
+        HELPOP_STAFF_ALERT = language.getConfiguration().getStringList("requests.helpop.staff-message");
         HELPOP_CREATED = language.getConfiguration().getString("requests.helpop.created");
+
+        REQUEST_INVALID_MESSAGE = language.getConfiguration().getString("requests.invalid-message");
         REQUEST_CLOSED = language.getConfiguration().getString("requests.closed");
         REQUEST_PLAYER_ALERT_CLOSED = language.getConfiguration().getString("requests.closed-player");
         REQUEST_CLAIMED = language.getConfiguration().getString("requests.claim.claimed");
@@ -260,12 +319,25 @@ public class Locale {
         TAG_CREATE_CREATED = language.getConfiguration().getString("tag.create.created");
         TAG_REMOVE_USAGE = language.getConfiguration().getString("tag.remove.usage");
         TAG_REMOVE_REMOVED = language.getConfiguration().getString("tag.remove.removed");
+
+        TAG_SETTYPE_USAGE = language.getConfiguration().getString("tag.settype.usage");
+        TAG_SETTYPE_INVALID_TYPE = language.getConfiguration().getString("tag.settype.invalid_type");
+        TAG_SETTYPE_UPDATED = language.getConfiguration().getString("tag.settype.updated");
         TAG_SETPREFIX_USAGE = language.getConfiguration().getString("tag.setprefix.usage");
         TAG_SETPREFIX_UPDATED = language.getConfiguration().getString("tag.setprefix.updated");
         TAG_SETWEIGHT_USAGE = language.getConfiguration().getString("tag.setweight.usage");
         TAG_SETWEIGHT_UPDATED = language.getConfiguration().getString("tag.setweight.updated");
+        TAG_SETCOINS_USAGE = language.getConfiguration().getString("tag.setcoins.usage");
+        TAG_SETCOINS_UPDATED = language.getConfiguration().getString("tag.setcoins.updated");
         TAG_IMPORT_IMPORTED = language.getConfiguration().getString("tag.import.imported");
         TAG_EXPORT_EXPORTED = language.getConfiguration().getString("tag.export.exported");
+
+        TAG_MENU_RESET_TAG = language.getConfiguration().getString("tag.menu.reset_tag");
+        TAG_MENU_DONT_HAVE_ENOUGH = language.getConfiguration().getStringList("tag.menu.dont_have_enough");
+        TAG_MENU_START_PROMPT = language.getConfiguration().getStringList("tag.menu.start_prompt");
+        TAG_MENU_PURCHASED = language.getConfiguration().getString("tag.menu.purchased");
+        TAG_MENU_ALREADY_HAVE_APPLIED = language.getConfiguration().getString("tag.menu.already_have_applied");
+        TAG_MENU_APPLIED = language.getConfiguration().getString("tag.menu.applied");
 
         ADMIN_CHAT_ENABLED = language.getConfiguration().getString("admin-chat.enabled");
         ADMIN_CHAT_DISABLED = language.getConfiguration().getString("admin-chat.disabled");

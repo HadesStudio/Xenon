@@ -17,32 +17,33 @@ import org.bson.Document;
 public class Tag {
 
     private final String name;
+    private TagType type;
     private String display;
     private String prefix;
     private String permission;
-    private int weight;
+    private int weight, coins;
 
     private XenonBukkit plugin = XenonBukkit.getInstance();
-
 
     public Tag(String name) {
         this.name = name;
 
+        this.type = TagType.NORMAL;
         this.display = "&6Default Tag";
         this.permission = "xenon.tag." + name;
         this.prefix = "&8[&fDefault Tag&8]";
         this.weight = 1;
-
-        save();
     }
 
     public void save() {
         Document document = new Document();
         document.put("name", this.name);
+        document.put("type", this.type.name());
         document.put("display", this.display);
         document.put("permission", this.permission);
         document.put("prefix", this.prefix);
         document.put("weight", this.weight);
+        document.put("coins", this.coins);
 
         plugin.getMongoModule().getTagsCollection().replaceOne(Filters.eq("name", name), document, new UpdateOptions().upsert(true));
     }
@@ -51,10 +52,12 @@ public class Tag {
         Document document = plugin.getMongoModule().getTagsCollection().find(Filters.eq("name", name)).first();
 
         if (document != null) {
-            setPermission(document.getString("permission"));
+            setType(TagType.valueOf(document.getString("type")));
             setDisplay(CC.translate(document.getString("display")));
+            setPermission(document.getString("permission"));
             setPrefix(CC.translate(document.getString("prefix")));
             setWeight(document.getInteger("weight"));
+            setCoins(document.getInteger("coins"));
         }
     }
 

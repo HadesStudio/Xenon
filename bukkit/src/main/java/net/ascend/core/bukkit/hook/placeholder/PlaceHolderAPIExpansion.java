@@ -52,20 +52,6 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
         if (identifier.equalsIgnoreCase("staff_vanish")) {
             return !profile.getStaffProfile().isVanish() ? CC.translate("&aTrue") : CC.translate("&cFalse");
         }
-        if (identifier.equalsIgnoreCase("staff_next_auth_needed")) {
-            return !profile.isNeedsVerify() ? CC.translate("&aNow") : DurationFormatUtils.formatDurationWords(profile.getNextAuthenticationNeeded() - System.currentTimeMillis(), true, true);
-        }
-
-        // VIP Placeholders:
-        if (identifier.equalsIgnoreCase("vip_access")) {
-            return !profile.hasVIPStatus() ? CC.translate("&aTrue") : CC.translate("&cFalse");
-        }
-        if (identifier.equalsIgnoreCase("vip_cooldown")) {
-            return !profile.hasVIPStatus() ? CC.translate("&aAvailable") : DurationFormatUtils.formatDurationWords(profile.getVipCooldown() - System.currentTimeMillis(), true, true);
-        }
-        if (identifier.equalsIgnoreCase("vip_color")) {
-            return profile == null ? "None" + "" : profile.getVipColor() + "";
-        }
 
         // Punishment Placeholders:
         if (identifier.equalsIgnoreCase("punishment_ban_status")) {
@@ -111,7 +97,7 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
             return profile == null ? 0 + "" : profile.getCurrency() + "";
         }
         if (identifier.equalsIgnoreCase("profile_tag_formated")) {
-            return profile == null ? "Unknown" : profile.getTagFormated();
+            return profile == null ? "Unknown" : profile.getActiveTag().getPrefix();
         }
         if (identifier.equalsIgnoreCase("profile_tag_name")) {
             return profile == null ? "Unknown" : profile.getTag();
@@ -142,21 +128,13 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
         if (identifier.equalsIgnoreCase("profile_playtime")) {
             return profile == null ? 0 + "" : TimeUtil.getMoreDetailedTime(profile.getTotalPlayTime()) + "";
         }
-        if (identifier.equalsIgnoreCase("profile_queue_priority")) {
-            return profile == null ? 0 + "" : profile.getQueuePriority() + "";
-        }
-        if (identifier.equalsIgnoreCase("profile_discord_synced")) {
-            return !profile.isDiscordSynced() ? CC.translate("&aTrue") : CC.translate("&cFalse");
-        }
+
         if (identifier.equalsIgnoreCase("profile_frozen")) {
             return !profile.isFrozen() ? CC.translate("&aTrue") : CC.translate("&cFalse");
         }
-        if (identifier.equalsIgnoreCase("profile_vpn_whitelist")) {
-            return !profile.isVpnWhitelist() ? CC.translate("&aTrue") : CC.translate("&cFalse");
-        }
 
         // Server Shit:
-        for (Server server : this.plugin.getServerManager().getServers().values()) {
+        /*for (Server server : this.plugin.getServerManager().getServers().values()) {
             if (identifier.equalsIgnoreCase("server_" + server.getName() + "_max_players")) {
                 return String.valueOf(server.getMaxPlayers());
             }
@@ -166,7 +144,7 @@ public class PlaceHolderAPIExpansion extends PlaceholderExpansion {
             if (identifier.equalsIgnoreCase("server_" + server.getName() + "_state")) {
                 return String.valueOf(server.getState().getDisplayName());
             }
-        }
+        }*/
         return null;
     }
 

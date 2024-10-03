@@ -3,11 +3,12 @@ package net.ascend.core.bukkit.rank.grant.menu.grant;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.menu.grant.rank.RankGrantMenu;
-import net.ascend.core.bukkit.rank.grant.promts.GrantPermissionPrompt;
+import net.ascend.core.bukkit.rank.grant.menu.grant.tag.TagGrantMenu;
 import net.ascend.core.bukkit.lib.maker.ItemMaker;
 import net.ascend.core.bukkit.lib.menu.Menu;
 import net.ascend.core.bukkit.lib.menu.button.Button;
 import lombok.AllArgsConstructor;
+import net.ascend.core.bukkit.rank.grant.menu.grants.GrantViewSelectMenu;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -17,54 +18,56 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class GrantMenu extends Menu {
-    Profile profile;
+
+    private Profile profile;
 
     @Override
     public String getName() {
-        return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.title").replace("%player%", profile.getName());
+        return "Select Grant Type"; // FINISHED PROFILE NAME
     }
 
     @Override
     public String getTitle(Player player) {
-        return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.title").replace("%player%", profile.getName());
+        return "Select Grant Type"; // FINISHED PROFILE NAME
     }
 
     @Override
     public int getSize() {
-        return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getInt("menus.selection-menu.rows") * 9;
+        return 3 * 9;
     }
 
     @Override
     public Map<Integer, Button> getMenuContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getInt("menus.selection-menu.buttons.rank-grant.slot"), new RankGrantsButton(profile));
-        buttons.put(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getInt("menus.selection-menu.buttons.permission-grant.slot"), new PermissionGrantsButton(profile));
-        buttons.put(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getInt("menus.selection-menu.buttons.tag-grant.slot"), new TagGrantsMenu(profile));
+        buttons.put(11, new RankGrantsButton(profile));
+        buttons.put(15, new TagGrantsMenu(profile));
 
         return buttons;
     }
 
     @AllArgsConstructor
     public static class RankGrantsButton extends Button {
-        Profile profile;
+
+        private final Profile profile;
 
         public String getMaterial() {
-            return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.rank-grant.material");
+            return "LEATHER_CHESTPLATE";
         }
 
-        public short getData() {
-            return (short) XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getInt("menus.selection-menu.buttons.rank-grant.data");
-        }
 
         @Override
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
-            builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.rank-grant.display-name"));
-            for (String line : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.selection-menu.buttons.rank-grant.lore")) {
-                builder.addLore(line);
-            }
+
+            builder.setDisplayName("&6Rank Grants");
+            builder.setLore(
+                    "&7This menu will direct you to where",
+                    "&7you can see, or add a rank grant to",
+                    "&7a players profile.",
+                    "",
+                    "&7Left-Click to view this menu.");
+
             return builder.build();
         }
 
@@ -77,64 +80,36 @@ public class GrantMenu extends Menu {
     }
 
     @AllArgsConstructor
-    public static class PermissionGrantsButton extends Button {
-        Profile profile;
-
-        public String getMaterial() {
-            return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.permission-grant.material");
-        }
-
-        public short getData() {
-            return (short) XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getInt("menus.selection-menu.buttons.permission-grant.data");
-        }
-
-        @Override
-        public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of(getMaterial());
-            builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.permission-grant.display-name"));
-            for (String line : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.selection-menu.buttons.permission-grant.lore")) {
-                builder.addLore(line);
-            }
-            return builder.build();
-        }
-
-        @Override
-        public void onClick(Player player, int slot, ClickType clickType) {
-            if (clickType == ClickType.LEFT) {
-                player.closeInventory();
-                new GrantPermissionPrompt(profile).startPrompt(player);
-            }
-        }
-    }
-
-    @AllArgsConstructor
     public static class TagGrantsMenu extends Button {
-        Profile profile;
+
+        private final Profile profile;
 
         public String getMaterial() {
-            return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.tag-grant.material");
+            return "NAME_TAG";
         }
 
         public short getData() {
-            return (short) XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getInt("menus.selection-menu.buttons.tag-grant.data");
+            return (short) 0;
         }
 
         @Override
         public ItemStack getItemStack(Player player) {
             ItemMaker builder = ItemMaker.of(getMaterial());
             builder.setData(getData());
-            builder.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.selection-menu.buttons.tag-grant.display-name"));
-            for (String line : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.selection-menu.buttons.tag-grant.lore")) {
-                builder.addLore(line);
-            }
+            builder.setDisplayName("&6Tag Grants");
+            builder.setLore(
+                    "&7This menu will direct you to where",
+                    "&7you can see, or add a tag grant to",
+                    "&7a players profile.",
+                    "",
+                    "&7Left-Click to view this menu.");
             return builder.build();
         }
 
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
             if (clickType == ClickType.LEFT) {
-                new net.ascend.core.bukkit.rank.grant.menu.tag.TagGrantsMenu(profile).openMenu(player);
+                new TagGrantMenu(profile).openMenu(player);
             }
         }
     }

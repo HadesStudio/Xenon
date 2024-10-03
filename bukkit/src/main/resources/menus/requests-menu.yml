@@ -1,12 +1,11 @@
-main-menu:
+requests-menu:
   title: "Staff Requests"
-  size: 27
   buttons:
     requests:
       slot: 12
       material: "NETHER_STAR"
       data: 0
-      display-name: "&6Active Requests"
+      display_name: "&6Active Requests"
       lore:
         - "&7Click here to view all active staff"
         - "&7requests."
@@ -16,132 +15,135 @@ main-menu:
       slot: 14
       material: "REDSTONE_BLOCK"
       data: 0
-      display-name: "&cClosed Requests"
+      display_name: "&cClosed Requests"
       lore:
         - "&7Click here to view all closed staff"
         - "&7requests."
         - ""
         - "&6Closed Requests: &c%request_size%"
-closed-requests:
-  title: "Closed Staff Requests"
-  buttons:
-    requests:
-      material: "PAPER"
-      data: 0
-      display-name: "&6%request_player% Request &7(#%request_identifier%)"
-      lores:
-        report:
-          default-lore:
-            - "&7%message%"
-            - "&7"
-            - "&7Type: &6Player Report"
-            - "&7Reported Player: &6%reported_player%"
-            - "&7Claimed: &cNo"
-            - "&7Notes: &6%notes_size%"
-            - "&7Date Closed: &c%date_closed%"
-            - "&7"
-            - "&6Left-Click &ato reopen this request."
-          claimed-lore:
-            - "&7%message%"
-            - "&7"
-            - "&7Type: &6Player Report"
-            - "&7Reported Player: &6%reported_player%"
-            - "&7Claimed: &aYes"
-            - " &7- By: &a%player_claimed%"
-            - "&7Notes: &6%notes_size%"
-            - "&7Date Closed: &c%date_closed%"
-            - "&7"
-            - "&6Left-Click &ato reopen this request."
-        requests:
-          default-lore:
-            - "&7%message%"
-            - ""
-            - "&7Type: &6Staff Request"
-            - "&7Claimed: &cNo"
-            - "&7Notes: &6%notes_size%"
-            - "&7Date Closed: &c%date_closed%"
-            - ""
-            - "&6Left-Click &ato reopen this request."
-          claimed-lore:
-            - "&7%message%"
-            - ""
-            - "&7Type: &6Staff Request"
-            - "&7Claimed: &aYes"
-            - " &7- By: &a%player_claimed%"
-            - "&7Notes: &6%notes_size%"
-            - "&7Date Closed: &c%date_closed%"
-            - ""
-            - "&6Left-Click &ato reopen this request."
-active-requests:
+
+active-requests-menu:
   title: "Active Staff Requests"
   buttons:
     requests:
       material: "PAPER"
       data: 0
-      display-name: "&6%request_player% Request &7(#%request_identifier%)"
+      display_name: "&6%request_player% Request &7(#%request_identifier%)"
       lores:
         report:
-          default-lore:
+          default_lore:
             - "&7%message%"
             - "&7"
-            - "&7Type: &6Player Report"
-            - "&7Reported Player: &6%reported_player%"
-            - "&7Claimed: &cNo"
-            - "&7Notes: &6%notes_size%"
-            - "&7Date Created: &c%date_created%"
+            - "&6Type: &cReport"
+            - "&6Reported Player: &c%reported_player%"
+            - "&6Claimed: &cNo"
+            - "&6Notes: &c%notes_size%"
+            - "&6Date Created: &c%date_created%"
             - "&7"
-            - "&6Left-Click &ato claim request."
-            - "&6Middle-Click &ato close request."
-            - "&6Right-Click &ato view notes."
-          claimed-lore:
+            - "&7Left-Click to claim request."
+            - "&7Middle-Click to close request."
+            - "&7Right-Click to view notes."
+          claimed_lore:
             - "&7%message%"
             - "&7"
-            - "&7Type: &6Player Report"
-            - "&7Reported Player: &6%reported_player%"
-            - "&7Claimed: &aYes"
-            - " &7- By: &a%player_claimed%"
-            - "&7Notes: &6%notes_size%"
-            - "&7Date Created: &c%date_created%"
+            - "&6Type: &cReport"
+            - "&6Reported Player: &c%reported_player%"
+            - "&6Claimed: &aYes"
+            - " &7- &6By: &c%player_claimed%"
+            - "&6Notes: &c%notes_size%"
+            - "&6Date Created: &c%date_created%"
             - "&7"
-            - "&6Left-Click &ato claim request."
-            - "&6Middle-Click &ato close request."
-            - "&6Right-Click &ato view notes."
+            - "&7Left-Click to claim request."
+            - "&7Middle-Click to close request."
+            - "&7Right-Click to view notes."
         requests:
-          default-lore:
+          default_lore:
             - "&7%message%"
             - ""
-            - "&7Type: &6Staff Request"
-            - "&7Claimed: &cNo"
-            - "&7Notes: &6%notes_size%"
-            - "&7Date Created: &c%date_created%"
+            - "&6Type: &cRequest"
+            - "&6Claimed: &cNo"
+            - "&6Notes: &c%notes_size%"
+            - "&6Date Created: &c%date_created%"
             - ""
-            - "&6Left-Click &ato claim request."
-            - "&6Middle-Click &ato close request."
-            - "&6Right-Click &ato view notes."
-          claimed-lore:
+            - "&7Left-Click to claim request."
+            - "&7Middle-Click to close request."
+            - "&7Right-Click to view notes."
+          claimed_lore:
             - "&7%message%"
             - ""
-            - "&7Type: &6Staff Request"
-            - "&7Claimed: &aYes"
-            - " &7- By: &a%player_claimed%"
-            - "&7Notes: &6%notes_size%"
-            - "&7Date Created: &c%date_created%"
+            - "&6Type: &cRequest"
+            - "&6Claimed: &aYes"
+            - " &7- &6By: &c%player_claimed%"
+            - "&6Notes: &c%notes_size%"
+            - "&6Date Created: &c%date_created%"
             - ""
-            - "&6Left-Click &ato claim request."
-            - "&6Middle-Click &ato close request."
-            - "&6Right-Click &ato view notes."
+            - "&7Left-Click to claim request."
+            - "&7Middle-Click to close request."
+            - "&7Right-Click to view notes."
     notes:
       material: "PAPER"
       data: 0
-      display-name: "&6Request Note"
+      display_name: "&6Note"
       lore:
         - "&7%message%"
         - ""
-        - "&6Left-Click &7to remove this note."
-    new-note:
+        - "&7Left-Click to remove this note."
+    new_note:
       material: "NAME_TAG"
       data: 0
-      display-name: "&6&lNew Note"
+      display_name: "&6&lNew Note"
       lore:
         - "&7Click here to create a new note"
         - "&7on this player request."
+
+closed-requests-menu:
+  title: "Closed Staff Requests"
+  buttons:
+    requests:
+      material: "PAPER"
+      data: 0
+      display_name: "&6%request_player% Request &7(#%request_identifier%)"
+      lores:
+        report:
+          default_lore:
+            - "&7%message%"
+            - "&7"
+            - "&6Type: &cReport"
+            - "&6Reported Player: &c%reported_player%"
+            - "&6Claimed: &cNo"
+            - "&6Notes: &c%notes_size%"
+            - "&6Date Closed: &c%date_closed%"
+            - "&7"
+            - "&7Left-Click to reopen this request."
+          claimed_lore:
+            - "&7%message%"
+            - "&7"
+            - "&6Type: &cReport"
+            - "&6Reported Player: &c%reported_player%"
+            - "&6Claimed: &aYes"
+            - " &7- &6By: &c%player_claimed%"
+            - "&6Notes: &c%notes_size%"
+            - "&6Date Closed: &c%date_closed%"
+            - "&7"
+            - "&7Left-Click to reopen this request."
+        requests:
+          default_lore:
+            - "&7%message%"
+            - ""
+            - "&6Type: &cRequest"
+            - "&6Claimed: &cNo"
+            - "&6Notes: &c%notes_size%"
+            - "&6Date Closed: &c%date_closed%"
+            - ""
+            - "&7Left-Click to reopen this request."
+          claimed_lore:
+            - "&7%message%"
+            - ""
+            - "&6Type: &cRequest"
+            - "&6Claimed: &aYes"
+            - " &7- &6By: &c%player_claimed%"
+            - "&6Notes: &c%notes_size%"
+            - "&6Date Closed: &c%date_closed%"
+            - ""
+            - "&7Left-Click to reopen this request."
+

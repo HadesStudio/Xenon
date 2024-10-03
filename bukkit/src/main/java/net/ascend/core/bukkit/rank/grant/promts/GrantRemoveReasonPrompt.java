@@ -3,7 +3,7 @@ package net.ascend.core.bukkit.rank.grant.promts;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.rank.grant.Grant;
-import net.ascend.core.bukkit.rank.grant.packets.GrantUpdatePacket;
+import net.ascend.core.bukkit.rank.grant.packet.impl.GrantUpdatePacket;
 import net.ascend.core.bukkit.util.prompt.Prompt;
 import net.ascend.core.bukkit.util.prompt.defaults.StringPrompt;
 import net.ascend.core.bukkit.lib.callback.Callback;
@@ -20,18 +20,13 @@ public class GrantRemoveReasonPrompt extends StringPrompt {
 
     @Override
     public void handleBegin(Player player) {
-        player.closeInventory();
-
-        for (String message : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("messages.prompts.remove-reason.enter-reason")) {
-            player.sendMessage(CC.translate(message));
-        }
+        player.sendMessage(CC.translate("&aPlease type a valid duration for removing this grant in chat."));
     }
 
     @Override
     public void handleCancel(Player player) {
-        for (String message : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("messages.prompts.remove-reason.cancelled")) {
-            player.sendMessage(CC.translate(message));
-        }
+        player.sendMessage(CC.translate("&cYou have cancelled the process of removing a players grant."));
+
         callback.callback(true);
     }
 
@@ -48,11 +43,9 @@ public class GrantRemoveReasonPrompt extends StringPrompt {
         profile.updateGrants();
         profile.activateNextRankGrant();
 
-        for (String message : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("messages.prompts.remove-reason.removed")) {
-            player.sendMessage(CC.translate(message));
-        }
-        callback.callback(true);
+        player.sendMessage(CC.translate("&aYou have successfully removed the player grant!"));
 
+        callback.callback(true);
         return null;
     }
 }

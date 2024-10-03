@@ -21,6 +21,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -51,7 +52,7 @@ public class PunishmentPacketListener implements PacketListener {
 
                 String broadcast = broadcastMsg.replace("%player%", profile.getName());
                 String hover = ChatUtil.buildDescription(hoverMsg)
-                        .replace("%ban_date%", TimeUtil.formatDateDiff(profile.getActiveBlacklist().getAddedAt()))
+                        .replace("%ban_date%", TimeUtil.formatIntoCalendarString(new Date(profile.getActiveBlacklist().getAddedAt())))
                         .replace("%banned_by%", profile.getActiveBlacklist().getAddedByString())
                         .replace("%reason%", profile.getActiveBlacklist().getAddedReason());
 
@@ -68,11 +69,11 @@ public class PunishmentPacketListener implements PacketListener {
 
                 String broadcast = broadcastMsg.replace("%player%", profile.getName());
                 String hover = ChatUtil.buildDescription(hoverMsg)
-                        .replace("%ban_date%", TimeUtil.formatDateDiff(profile.getActiveBan().getAddedAt()))
+                        .replace("%ban_date%", TimeUtil.formatIntoCalendarString(new Date(profile.getActiveBan().getAddedAt())))
                         .replace("%banned_by%", profile.getActiveBan().getAddedByString())
                         .replace("%reason%", profile.getActiveBan().getAddedReason())
                         .replace("%remaining%", profile.getActiveBan().getRemaining())
-                        .replace("%duration%", TimeUtil.getDetailedTime(profile.getActiveBan().getDuration()));
+                        .replace("%duration%", TimeUtil.getMoreDetailedTime(profile.getActiveBan().getDuration()));
 
                 ComponentBuilder builder = (new ComponentBuilder(CC.translate(broadcast)));
                 builder.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(CC.translate(hover)).create()));
@@ -93,7 +94,6 @@ public class PunishmentPacketListener implements PacketListener {
 
         profile.getPunishments().removeIf(other -> Objects.equals(other, punishment));
         profile.getPunishments().add(punishment);
-
 
         String broadcastKey = punishment.getKey(false);
         PunishmentBroadcast punishmentBroadcast = Locale.PUNISHMENT_BROADCAST.get(broadcastKey);

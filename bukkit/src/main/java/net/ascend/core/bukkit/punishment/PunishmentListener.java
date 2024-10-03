@@ -16,7 +16,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  */
 public class PunishmentListener implements Listener {
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         Profile profile = XenonBukkit.getInstance().getProfileManager().getProfile(player.getUniqueId());

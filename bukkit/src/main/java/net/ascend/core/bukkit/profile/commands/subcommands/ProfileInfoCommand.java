@@ -11,40 +11,33 @@ import org.bukkit.command.CommandSender;
 import java.util.Collections;
 import java.util.Date;
 
-/**
- * Created By LeandroSSJ
- * Created on 07/08/2023
- * Protect Name Xenon
- */
-
 public class ProfileInfoCommand extends SubCommand {
+
     public ProfileInfoCommand() {
         super("info", Collections.singletonList("check"), "xenon.profile.info");
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length < 2) {
-            sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-commands.info.usage")));
+        if (args.length < 1) {
+            sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("profile-command.info.usage")));
             return;
         }
 
-        Profile profile = XenonBukkit.getInstance().getProfileManager().getProfile(args[1]);
+        Profile profile = XenonBukkit.getInstance().getProfileManager().getProfile(args[0]);
         if (profile == null) {
-            sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[1]));
+            sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
             return;
         }
 
-        for (String message : XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile-commands.info.command")) {
+        for (String message : XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getStringList("profile-command.info.command")) {
             sender.sendMessage(CC.translate(message)
                     .replace("%player%", profile.getName())
                     .replace("%uuid%", profile.getUniqueId().toString())
                     .replace("%current_rank%", profile.getActiveRank().getName())
-                    .replace("%active_grants%", String.valueOf(profile.getGrants().size()))
+                    .replace("%grants%", String.valueOf(profile.getGrants().size()))
                     .replace("%profile_permissions_size%", String.valueOf(profile.getProfilePermissions().size()))
-                    .replace("%bungee_permissions_size%", String.valueOf(profile.getBungeePermissions().size()))
-                    .replace("%player_permissions_size%", String.valueOf(profile.getPlayerPermissions().size()))
-                    .replace("%tag%", profile.getTagFormated())
+                    .replace("%tag%", profile.getActiveTag() != null ? profile.getActiveTag().getPrefix() : "")
                     .replace("%friends_size%", String.valueOf(profile.getFriends().size()))
                     .replace("%first_seen%", TimeUtil.formatIntoCalendarString(new Date(profile.getFirstSeen())))
                     .replace("%last_seen%", TimeUtil.formatIntoCalendarString(new Date(profile.getLastSeen())))

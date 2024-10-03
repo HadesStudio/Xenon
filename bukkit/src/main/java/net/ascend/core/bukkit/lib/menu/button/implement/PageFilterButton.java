@@ -18,6 +18,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class PageFilterButton<T> extends Button {
+
     private FilterablePaginatedMenu<T> menu;
 
     @Override
@@ -35,27 +36,26 @@ public class PageFilterButton<T> extends Button {
             String icon;
 
             if (filter.isEnabled()) {
-                color = ChatColor.GOLD.toString();
+                color = ChatColor.GREEN.toString();
                 icon = StringEscapeUtils.unescapeJava("\u2713");
             } else {
-                color = ChatColor.RED.toString();
+                color = ChatColor.GRAY.toString();
                 icon = StringEscapeUtils.unescapeJava("\u2717");
             }
 
             if (menu.getFilters().get(menu.getScrollIndex()).equals(filter)) {
-                decoration = ChatColor.YELLOW + StringEscapeUtils.unescapeJava("» ") + " ";
+                decoration = ChatColor.GRAY + StringEscapeUtils.unescapeJava("» ") + " ";
             }
 
             lore.add(decoration + color + icon + " " + filter.getName());
         }
 
         lore.add("");
-        lore.add("&6Left-Click &7to change filter option.");
-        lore.add("&6Right-Click &7to toggle your filter.");
-        lore.add("");
+        lore.add("&7Left-Click to change filter option.");
+        lore.add("&7Right-Click to toggle your filter.");
 
         return ItemMaker.of("HOPPER")
-                .setDisplayName("&6Page Filters")
+                .setDisplayName("&aPage Filters")
                 .setLore(lore)
                 .build();
     }

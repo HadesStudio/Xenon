@@ -4,13 +4,12 @@ import java.util.UUID;
 
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
-import net.ascend.core.bukkit.rank.grant.menu.GrantScopesMenu;
+import net.ascend.core.bukkit.rank.grant.menu.grant.GrantScopesMenu;
 import net.ascend.core.bukkit.rank.grant.menu.grant.tag.TagGrantMenu;
-import net.ascend.core.bukkit.rank.grant.types.TagGrant;
+import net.ascend.core.bukkit.rank.grant.type.TagGrant;
 import net.ascend.core.bukkit.tag.Tag;
 import net.ascend.core.bukkit.lib.maker.ItemMaker;
 import net.ascend.core.bukkit.lib.menu.button.Button;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +17,9 @@ import org.bukkit.inventory.ItemStack;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+
 public class TagGrantSelectButton extends Button {
+
 	private final Tag tag;
 	private final Profile profile;
 	
@@ -27,15 +28,11 @@ public class TagGrantSelectButton extends Button {
 
 		ItemMaker builder = ItemMaker.of("NAME_TAG");
 
-		builder.setDisplayName(XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.tag-grant-selection.buttons.grant.display-name").replace("%tag%", tag.getName()));
-		for (String lore : XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getStringList("menus.tag-grant-selection.buttons.grant.lore")) {
-			builder.addLore(lore
-					.replace("%tag_name%", tag.getDisplay())
-					.replace("%prefix%", tag.getPrefix())
-					.replace("%permission%", tag.getPermission())
-					.replace("%weight%", String.valueOf(tag.getWeight()))
-			);
-		}
+		builder.setDisplayName(tag.getName());
+		builder.setLore(
+				"",
+				"&7Click to grant &f" + tag.getName() + " &7to &f" + profile.getColoredName() + "&7!",
+				"");
 
 		return builder.build();
 	}

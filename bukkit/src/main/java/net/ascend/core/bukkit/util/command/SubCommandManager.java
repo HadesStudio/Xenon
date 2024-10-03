@@ -1,27 +1,11 @@
 package net.ascend.core.bukkit.util.command;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bukkit.utils.command
-//   Date: Saturday, August 05, 2023 - 3:52 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.chat.commands.ChatCommand;
 import net.ascend.core.bukkit.modules.ModuleLoader;
 import net.ascend.core.bukkit.profile.commands.ProfileCommand;
-import net.ascend.core.bukkit.profile.notifications.commands.NotificationsAdminSubCommand;
-import net.ascend.core.bukkit.profile.profilesystem.commands.FriendsCommand;
-import net.ascend.core.bukkit.profile.squads.commands.SquadCommands;
-import net.ascend.core.bukkit.rank.rank.commands.RankCommand;
+import net.ascend.core.bukkit.profile.myprofile.commands.FriendsCommand;
+import net.ascend.core.bukkit.rank.rank.command.RankCommand;
+import net.ascend.core.bukkit.server.command.ServerManagerCommand;
 import net.ascend.core.bukkit.tag.command.TagCommand;
 
 public class SubCommandManager implements ModuleLoader {
@@ -29,20 +13,17 @@ public class SubCommandManager implements ModuleLoader {
     private ProfileCommand profileCommand;
     private RankCommand rankCommand;
     private TagCommand tagCommand;
-    private FriendsCommand friendsCommand;
     private ChatCommand chatCommand;
-    private NotificationsAdminSubCommand notificationsAdminSubCommand;
-    private SquadCommands squadCommands;
+    private ServerManagerCommand serverManagerCommand;
+
 
     @Override
     public void onEnable() {
         this.profileCommand = new ProfileCommand();
         this.rankCommand = new RankCommand();
         this.tagCommand = new TagCommand();
-        this.friendsCommand = new FriendsCommand();
         this.chatCommand = new ChatCommand();
-        this.notificationsAdminSubCommand = new NotificationsAdminSubCommand();
-        this.squadCommands = new SquadCommands();
+        this.serverManagerCommand = new ServerManagerCommand();
     }
 
     @Override
@@ -50,10 +31,8 @@ public class SubCommandManager implements ModuleLoader {
         this.profileCommand.disable();
         this.rankCommand.disable();
         this.tagCommand.disable();
-        this.friendsCommand.disable();
         this.chatCommand.disable();
-        this.notificationsAdminSubCommand.disable();
-        this.squadCommands.disable();
+        this.serverManagerCommand.disable();
     }
 
     @Override

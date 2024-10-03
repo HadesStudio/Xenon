@@ -1,0 +1,738 @@
+myprofile-menu: # %profile_name% - %profile_color%
+  title: "%profile_name% - Profile" # %profile_name% - %profile_color%
+  fill:
+    style: "SPECIFIC" # Options: FILLED, SPECIFIC
+    glowing: false
+    slots: [ 1, 2,  8, 9, 10, 18, 28, 36, 37, 38, 44, 45] # This will only work if you have the 'style' set to 'FILLED'.
+  buttons:
+    social:
+      slot: 20
+      material: "PAINTING"
+      data: 0
+      display_name: "&6Social Media"
+      lore:
+        - "&7Release your social media links to others."
+        - ""
+        - " &6Social Linked: &c%total_linked%/5"
+        - ""
+        - "&7Left-Click here to view extended information."
+    profile:
+      slot: 13
+      material: "SKULL_ITEM" # If you want the players head to appear, use "SKULL_ITEM".
+      data: 0
+      display_name: "&6Profile"
+      lore:
+        - "&7View all of your useful information."
+        - ""
+        - " &6First Joined: &c%first_join%"
+        - ""
+        - " &6Rank: &c%rank%"
+        - " &6Rank Duration: &c%rank_time%"
+        - ""
+        - "&7Left-Click here to view extended information."
+    friends:
+      slot: 24
+      material: "EYE_OF_ENDER"
+      data: 0
+      display_name: "&6Friends"
+      lore:
+        - "&7You can manage all of your friends using this."
+        - ""
+        - " &6Friends: &c%friends_size%"
+        - " &6Friend Requests: &c%friend_requests_size%"
+        - ""
+        - "&7Left-Click to view all your friends."
+        - "&7Right-Click to view all friend requests."
+    notifications:
+      slot: 31
+      material: "WATCH"
+      data: 0
+      display_name: "&6Notificationz"
+      lore:
+        - "&7View all of your notifications."
+        - ""
+        - " &6Unread Notifications: &c%unread_size%"
+        - ""
+        - "&7Click here to view all notifications."
+
+social-media-menu:
+  title: "Social Media" # %profile_name% - %profile_color%
+  buttons:
+    discord:
+      slot: 0
+      material: "SKULL_ITEM"
+      data: 0
+      skull-owner: "MHF_Discord" # Leave blank to just use data.
+      display_name: "&6Discord"
+      lore:
+        - "&6Discord Tag: &c%discord%"
+        - ""
+        - "&7Left-Click here to change your discord."
+        - "&7Right-Click here to remove your discord."
+    twitter:
+      slot: 1
+      material: "SKULL_ITEM"
+      data: 0
+      skull-owner: "MHF_Twitter" # Leave blank to just use data.
+      display_name: "&6Twitter"
+      lore:
+        - "&6Twitter Link: &c%link%"
+        - ""
+        - "&7Left-Click here to change your twitter link."
+        - "&7Right-Click here to remove your twitter link."
+    youtube:
+      slot: 2
+      material: "SKULL_ITEM"
+      data: 0
+      skull-owner: "MHF_YouTube" # Leave blank to just use data.
+      display_name: "&6YouTube"
+      lore:
+        - "&6YouTube Link: &c%link%"
+        - ""
+        - "&7Left-Click here to change your Youtube link."
+        - "&7Right-Click here to remove your Youtube link."
+    twitch:
+      slot: 3
+      material: "SKULL_ITEM"
+      data: 0
+      skull-owner: "MHF_Twitch" # Leave blank to just use data.
+      display_name: "&6Twitch"
+      lore:
+        - "&6Twitch Link: &c%link%"
+        - ""
+        - "&7Left-Click here to change your Twitch link."
+        - "&7Right-Click here to remove your Twitch link."
+    instagram:
+      slot: 4
+      material: "SKULL_ITEM"
+      data: 0
+      skull-owner: "MHF_Instagram" # Leave blank to just use data.
+      display_name: "&6Instagram"
+      lore:
+        - "&6Twitch Link: &c%link%"
+        - ""
+        - "&7Left-Click here to change your Instagram link."
+        - "&7Right-Click here to remove your Instagram link."
+
+friends-menu:
+  title: "Friends" # %profile_name% - %profile_color%
+  button:
+    display_name: "&6%friend_name%"
+    lore: # %friend_name%
+      - "&7Left-Click &7to remove this player from"
+      - "&7your Friends List."
+      - "&7Right-Click to view the players profile."
+
+friends-request-menu:
+  title: "Friend Requests" # %profile_name% - %profile_color%
+  button:
+    display_name: "&6%friend_name%"
+    lore: # %friend_name%
+      - "&7Left-Click to accept this friend request."
+      - "&7Right-Click to view the players profile."
+
+notification-menu:
+  title: "Notifications" # %profile_name% - %profile_color%
+  buttons:
+    read-all:
+      material: "NETHER_STAR"
+      data: 0
+      display_name: "&6Read All"
+      lore: # %notification_size%
+        - "&7Click here to mark all notifications"
+        - "&7as &cread&7."
+    notification:
+      material: "PAPER"
+      data: 0
+      display_name: "&6New Notification #%number% - %date%"
+      read-line-lore: "&7Left-Click to mark this notification as read."
+
+
+profile-menu:
+  title: "%profile_name% - Profile" # %profile_name% - %profile_color%
+  buttons:
+    details:
+      slot: 4
+      material: "SKULL_ITEM"
+      data: 0
+      use-profile-skull: true # Set this to TRUE if you are using the player skull and want the players head to appear.
+      display_name: "&6%player_name%"
+      lore:
+        # Available placeholders: %player_name%, %last_seen_date%, %first_join_date%, %note_size%, %current_server%, %siblings_size%
+        - "&7This menu contains all information"
+        - "&7about a users profile current cached data."
+        - ""
+        - "&6First Join&7: &c%first_join% ago"
+        - "&6Last Seen&7: &c%last_seen% ago"
+        - "&6Current Server&7: &c%current_server%"
+        - "&6Current Rank&7: &c%current_rank%"
+        - "&6Current Tag&7: &c%current_tag%"
+        - "&6Alts&7: &c%alts% Alts"
+        - "&6Notes&7: &c%note% Notes"
+        - ""
+    grants:
+      slot: 11
+      material: "NETHER_STAR"
+      data: 0
+      display_name: "&6Player Grants"
+      lore:
+        - "&7Click here to view this players"
+        - "&7expired, and active grants."
+        - ""
+        - "&6Grants: &f%grants% Grants"
+        - ""
+        - "&7Left-Click to view all grants profile."
+    alts:
+      slot: 12
+      material: "ENCHANTED_BOOK"
+      data: 0
+      display_name: "&6Alts"
+      lore:
+        - "&7Click here to view this players"
+        - "&7siblings, so you can confirm"
+        - "&7they are not using alt accounts!"
+        - ""
+        - "&6Alts: &f%alts% Alts"
+        - ""
+        - "&7Left-Click to view all profile alts."
+    notes:
+      slot: 13
+      material: "NAME_TAG"
+      data: 0
+      display_name: "&6Player Notes"
+      lore:
+        - "&7Click here to view this players"
+        - "&7profile notes."
+        - ""
+        - "&6Notes: &f%notes% Notes"
+        - ""
+        - "&7Left-Click to view all profile notes."
+    permissions:
+      slot: 14
+      material: "REDSTONE"
+      data: 0
+      display_name: "&6Profile Permissions"
+      lore:
+        - "&7Below, is all the different options"
+        - "&7to view this players permissions."
+        - ""
+        - "&6Profile Permissions: &f%permissions% Permissions"
+        - ""
+        - "&7Left-Click to view all profile permissions."
+    history:
+      slot: 15
+      material: "PAPER"
+      data: 0
+      display_name: "&6Punishments History"
+      lore:
+        - "&7Below, is all the different options"
+        - "&7to view this players permissions."
+        - ""
+        - "&6Punishment: &f%punishments% Permissions"
+        - ""
+        - "&7Left-Click to view all profile punishments."
+
+notes-menu:
+  title: "%profile_name% - Notes" # %profile_name% - %profile_color%
+  buttons:
+    note:
+      material: "PAPER"
+      data: 0
+      display_name: "&6Note &7#%id%"
+      lore:
+        - "&7%message%"
+        - ""
+        - "&6Staff Member: &c%staff_member%"
+        - "&6Creation Date: &c%creation_date%"
+        - "&6Server: &c%creation_server%"
+        - ""
+        - "&7Left-Click to remove this note."
+    create:
+      material: "NAME_TAG"
+      data: 0
+      display_name: "&6Create New Note"
+      lore:
+        - "&7Click here to create a new note on"
+        - "&7this player's profile."
+
+alts-menu:
+  title: "%profile_name% - Alts" # %profile_name% - %profile_color%
+  buttons:
+    alt:
+      display_name: "%profile_color%%profile_name%" # %profile_name% - %profile_color%
+      lore:
+        - ""
+        - "&6Last Server&7: &c%last_server%"
+        - "&6Last Seen&7: &c%last_seen%"
+        - "&6Blacklisted&7: &c%blacklist_status%"
+        - "&6Banned&7: &c%ban_status%"
+        - "&6Muted&7: &c%mute_status%"
+        - "&6Warnings&7: &c%warnings%"
+        - ""
+
+permission-menu:
+  title: "%profile_name% - Permissions" # %profile_name% - %profile_color%
+  buttons:
+    permission:
+      material: "NAME_TAG"
+      data: 0
+      display_name: "&6'%permission%' &7(&c%status%&7)"
+      lore:
+        - ""
+        - "&6Active&7: &c%status%"
+        - "&6Expiration&7: &c%expires%"
+        - "&6Server&7: &c%server%"
+        - ""
+        - "&7Right-Click to remove this permission."
+        - ""
+
+history-menu:
+  title: "%profile_name% - History" # %profile_name% - %profile_color%
+  buttons:
+    blacklist:
+      slot: 9
+      name: "&6Blacklists &7(&a%blacklist_size%&7)"
+      material: "WOOL"
+      data: 1
+      lore:
+        - "&7Click here to view all previous and"
+        - "&7current blacklists."
+        - ""
+        - "&6Currently Blacklisted: &7%status%"
+      permission:
+        enabled: true
+        permission: "xenon.history.blacklists"
+        message: "&cYou do not have permissions to view &lBlacklists&c."
+    bans:
+      slot: 11
+      name: "&6Bans &7(&a%ban_size%&7)"
+      material: "WOOL"
+      data: 2
+      lore:
+        - "&7Click here to view all previous and"
+        - "&7current bans."
+        - ""
+        - "&6Currently Banned: &7%status%"
+      permission:
+        enabled: true
+        permission: "xenon.history.bans"
+        message: "&cYou do not have permissions to view &lBans&c."
+    kicks:
+      slot: 13
+      name: "&6Kicks &7(&a%kick_size%&7)"
+      material: "WOOL"
+      data: 3
+      lore:
+        - "&7Click here to view all previous kicks."
+      permission:
+        enabled: true
+        permission: "xenon.history.kicks"
+        message: "&cYou do not have permissions to view &lKicks&c."
+    mutes:
+      slot: 15
+      name: "&6Mutes &7(&a%mute_size%&7)"
+      material: "WOOL"
+      data: 4
+      lore:
+        - "&7Click here to view all previous and"
+        - "&7current mutes."
+        - ""
+        - "&6Currently Muted: &7%status%"
+      permission:
+        enabled: true
+        permission: "xenon.history.mutes"
+        message: "&cYou do not have permissions to view &lMutes&c."
+    warns:
+      slot: 17
+      name: "&6Warnings &7(&a%warning_size%&7)"
+      material: "WOOL"
+      data: 5
+      lore:
+        - "&7Click here to view all warnings."
+      permission:
+        enabled: true
+        permission: "xenon.history.kicks"
+        message: "&cYou do not have permissions to view &lKicks&c."
+
+bans-menu:
+  title: "%profile_name% - Bans" # %profile_name% - %profile_color%
+  button:
+    permanent:
+      name: "&6Permanent Ban #%ban_id%"
+      material: "WOOL"
+      data:
+        active: 14
+      lore:
+        - "&7&l&m---------------------------------"
+        - "&6Banned By: &c%banner%"
+        - "&6Silent: &c%silent%"
+        - "&6Reason: &c%reason%"
+        - "&6Added Date: &c%added_date%"
+        - "&6Server: &c%server%"
+        - ""
+        - "&7Click here to &6Pardon &7this permanent ban."
+        - "&7&l&m---------------------------------"
+    time-ban:
+      name: "&6Temporary Ban #%ban_id%"
+      material: "WOOL"
+      data:
+        active: 14
+        expired: 4
+      lore:
+        - "&7&l&m---------------------------------"
+        - "&6Banned By: &c%banner%"
+        - "&6Silent: &c%silent%"
+        - "&6Reason: &c%reason%"
+        - "&6Added Date: &c%added_date%"
+        - "&6Server: &c%server%"
+        - "&6Expires: &c%expires%"
+        - ""
+        - "&7Click here to &6Pardon &7this ban."
+        - "&7&l&m---------------------------------"
+    pardoned:
+      name: "&6Pardoned Ban #%ban_id%"
+      material: "WOOL"
+      data: 11
+      lore:
+        - "&7&l&m---------------------------------"
+        - "&6Banned By: &c%banner%"
+        - "&6Silent: &c%silent%"
+        - "&6Reason: &c%reason%"
+        - "&6Added Date: &c%added_date%"
+        - "&6Server: &c%server%"
+        - ""
+        - "&6Pardoned By: &c%pardoner%"
+        - "&6Pardoned At: &c%pardoned_at%"
+        - "&6Pardon Reason: &c%pardoned_reason%"
+        - "&7&l&m---------------------------------"
+blacklists-menu:
+  title: "%profile_name% - Blacklists" # %profile_name% - %profile_color%
+  button:
+    blacklisted:
+      name: "&6Blacklist #%blacklist_id%"
+      material: "WOOL"
+      data: 14
+      lore:
+        - "&7&l&m---------------------------------"
+        - "&6Blacklisted By: &c%banner%"
+        - "&6Silent: &c%silent%"
+        - "&6Reason: &c%reason%"
+        - "&6Added Date: &c%added_date%"
+        - ""
+        - "&7Click here to &6Pardon &7this blacklist."
+        - "&7&l&m---------------------------------"
+    pardoned:
+      name: "&6Pardoned Blacklist #%blacklist_id%"
+      material: "WOOL"
+      data: 11
+      lore:
+        - "&7&l&m---------------------------------"
+        - "&6Blacklisted By: &c%banner%"
+        - "&6Silent: &c%silent%"
+        - "&6Reason: &c%reason%"
+        - "&6Added Date: &c%added_date%"
+        - ""
+        - "&6Pardoned By: &c%pardoner%"
+        - "&6Pardoned At: &c%pardoned_at%"
+        - "&6Pardon Reason: &c%pardoned_reason%"
+        - "&7&l&m---------------------------------"
+kicks-menu:
+  title: "%profile_name% - Kicks" # %profile_name% - %profile_color%
+  button:
+    kicked:
+      name: "&6Player Kicked #%kicked_id%"
+      material: "WOOL"
+      data: 14
+      lore:
+        - "&7&l&m---------------------------------"
+        - "&6Kicked By: &c%kicker%"
+        - "&6Silent: &c%silent%"
+        - "&6Reason: &c%reason%"
+        - "&6Date: &c%added_date%"
+        - "&7&l&m---------------------------------"
+mutes-menu:
+  title: "%profile_name% - Mutes" # %profile_name% - %profile_color%
+  button:
+    permanent:
+      name: "&6Permanent Mute #%muted_id%"
+      material: "WOOL"
+      data:
+        active: 14
+      lore:
+        - "&7&l&m---------------------------------"
+        - "&6Muted By: &c%muter%"
+        - "&6Silent: &c%silent%"
+        - "&6Reason: &c%reason%"
+        - "&6Added Date: &c%added_date%"
+        - "&6Server: &c%server%"
+        - ""
+        - "&7Click here to &6Pardon &7this mute."
+        - "&7&l&m---------------------------------"
+    time-mute:
+      name: "&6Temporary Mute #%muted_id%"
+      material: "WOOL"
+      data:
+        active: 14
+        expired: 4
+      lore:
+        - "&7&l&m---------------------------------"
+        - "&6Muted By: &c%muter%"
+        - "&6Silent: &c%silent%"
+        - "&6Reason: &c%reason%"
+        - "&6Added Date: &c%added_date%"
+        - "&6Expires: &c%expires%"
+        - ""
+        - "&7Click here to &6Pardon &7this mute."
+        - "&7&l&m---------------------------------"
+    pardoned:
+      name: "&6Pardoned Mute #%muted_id%"
+      material: "WOOL"
+      data: 11
+      lore:
+        - "&7&l&m---------------------------------"
+        - "&6Muted By: &c%muter%"
+        - "&6Silent: &c%silent%"
+        - "&6Reason: &c%reason%"
+        - "&6Added Date: &c%added_date%"
+        - "&6Server: &c%server%"
+        - ""
+        - "&6Pardoned By: &c%pardoner%"
+        - "&6Pardoned At: &c%pardoned_at%"
+        - "&6Pardon Reason: &c%pardoned_reason%"
+        - "&7&l&m---------------------------------"
+warnings-menu:
+  title: "%profile_name% - Warnings" # %profile_name% - %profile_color%
+  button:
+    warned:
+      name: "&6Player Warned #%warnings_id%"
+      material: "WOOL"
+      data: 14
+      lore:
+        - "&7&l&m---------------------------------"
+        - "&6Warned By: &c%warned_by%"
+        - "&6Silent: &c%silent%"
+        - "&6Reason: &c%reason%"
+        - "&6Date: &c%added_date%"
+        - "&7&l&m---------------------------------"
+
+
+staffhistory-menu:
+  title: "%profile_name% - Staff History" # %profile_name% - %profile_color%
+  buttons:
+    profile:
+      slot: 4
+      display_name: "&6Staff History: %player%"
+      lore:
+        - "&7&l&m----------------------------------"
+        - "&7You are viewing all &6Staff History &7from"
+        - "&7this player."
+        - "&7This is all the punishments they have given"
+        - "&7to players."
+        - "&7"
+        - "&6Highest Rank&7: &c%current_rank%"
+        - "&6Playtime&7: &c%playtime%"
+        - "&6Last Seen&7: &c%last_seen% ago"
+        - "&7&l&m----------------------------------"
+    bans:
+      slot: 10
+      material: "BOOK"
+      data: 0
+      display_name: "&6All Bans"
+      lore:
+        - "&7&l&m----------------------------------"
+        - "&7Click here to view all &6Ban Punishments &7from"
+        - "&7this player."
+        - "&7"
+        - "&6All Bans&7: &c%total%"
+        - "&7&l&m----------------------------------"
+    mutes:
+      slot: 12
+      material: "BOOK"
+      data: 0
+      display_name: "&6All Mutes"
+      lore:
+        - "&7&l&m----------------------------------"
+        - "&7Click here to view all &6Mute Punishments &7from"
+        - "&7this player."
+        - "&7"
+        - "&6All Mutes&7: &c%total%"
+        - "&7&l&m----------------------------------"
+    warnings:
+      slot: 14
+      material: "BOOK"
+      data: 0
+      display_name: "&6All Warnings"
+      lore:
+        - "&7&l&m----------------------------------"
+        - "&7Click here to view all &6Warning Punishments &7from"
+        - "&7this player."
+        - "&7"
+        - "&6All Warnings&7: &c%total%"
+        - "&7&l&m----------------------------------"
+    pardon:
+      slot: 16
+      material: "BOOK_AND_QUILL"
+      data: 0
+      display_name: "&6All Pardon"
+      lore:
+        - "&7&l&m----------------------------------"
+        - "&7Click here to view all &6Punishment Pardons &7from"
+        - "&7this player."
+        - "&7"
+        - "&6All Pardons&7: &c%total%"
+        - "&7&l&m----------------------------------"
+    all_punishments:
+      slot: 22
+      material: "NETHER_STAR"
+      data: 0
+      display_name: "&6All Punishments"
+      lore:
+        - "&7&l&m----------------------------------"
+        - "&7Click here to view all &6Punishments &7from"
+        - "&7this player."
+        - "&7"
+        - "&6All Punishments&7: &c%total%"
+        - "&7&l&m----------------------------------"
+
+staffhistory-viewing-menu:
+  title: "Viewing: %profile_name%" # %profile_name% - %profile_color%
+  button:
+    punishment:
+      material: "PAPER"
+      data: 0
+      display_name: "&6Issued a %type%"
+      lore:
+        not_pardoned:
+          - "&7&l&m----------------------------------"
+          - "&7This punishment was executed by this player."
+          - "&7"
+          - "&6Target: &c%target%"
+          - "&6Reason: &c%reason%"
+          - "&6Silent: &c%silent%"
+          - "&6Added Date: &c%added_date%"
+          - "&6Duration: &c%duration%"
+          - "&7&l&m----------------------------------"
+        pardoned:
+          - "&7&l&m----------------------------------"
+          - "&7This punishment was executed by this player."
+          - "&7"
+          - "&6Target: &c%target%"
+          - "&6Reason: &c%reason%"
+          - "&6Silent: &c%silent%"
+          - "&6Added Date: &c%added_date%"
+          - "&6Duration: &c%duration%"
+          - ""
+          - "&6Pardoned By: &c%pardoner%"
+          - "&6Pardoned At: &c%pardoned_at%"
+          - "&6Pardon Reason: &c%pardoned_reason%"
+          - "&7&l&m----------------------------------"
+
+tag-menu:
+  title: "Tag Menu"
+  buttons:
+    reset_tag:
+      material: "ANVIL"
+      data: 0
+      display_name: "&cReset your tag"
+      lore:
+        - "&7Click to reset your tag!"
+    tag:
+      material: "NAME_TAG"
+      data: 0
+      cant_afford:
+        display_name: "&c%tag_name% Tag"
+        lore:
+          - "&7Chat Format: &f%chat_format%"
+          - ""
+          - "&7Coins: &f%tag_coins% &6⛃"
+          - ""
+          - "&cYou can't afford the %tag_name% tag."
+          - "&cYou need %coins% more Coin(s)."
+          - ""
+          - "&cPurchase coins at &lstore.ascendproyect.org&c."
+      click_buy:
+        display_name: "&c%tag_name% Tag"
+        lore:
+          - "&7Chat Format: &f%chat_format%"
+          - ""
+          - "&7Coins: &f%tag_coins% &6⛃"
+          - ""
+          - "&eClick to buy %tag_name% tag."
+      select:
+        display_name: "&a%tag_name% Tag"
+        lore:
+          - "&7Chat Format: &f%chat_format%"
+          - ""
+          - "&eClick to select the %tag_name% tag"
+
+select-log-menu:
+  title: "%profile_name% - Log Type"
+  buttons:
+    all-logs:
+      slot: 13
+      material: "NETHER_STAR"
+      data: 0
+      display_name: "&6All Logs"
+      lore:
+        - "&7Click here to view all logs."
+        - ""
+        - "&6Logs: &c%log_size% Logs"
+    rank-logs:
+      slot: 9
+      material: "ENCHANTED_BOOK"
+      data: 0
+      display_name: "&6Rank Logs"
+      lore:
+        - "&7Click here to view all rank logs."
+        - ""
+        - "&6Logs: &c%log_size% Logs"
+    command-logs:
+      slot: 11
+      material: "BOOK"
+      data: 0
+      display_name: "&6Command Logs"
+      lore:
+        - "&7Click here to view all command logs."
+        - ""
+        - "&6Logs: &c%log_size% Logs"
+    connection-logs:
+      slot: 15
+      material: "REDSTONE"
+      data: 0
+      display_name: "&6Connection Logs"
+      lore:
+        - "&7Click here to view all connection logs."
+        - ""
+        - "&6Logs: &c%log_size% Logs"
+    punishment-logs:
+      slot: 17
+      material: "REDSTONE_BLOCK"
+      data: 0
+      display_name: "&6Punishment Logs"
+      lore:
+        - "&7Click here to view all punishment logs."
+        - ""
+        - "&6Logs: &c%log_size% Logs"
+    currency-logs:
+      slot: 22
+      material: "GOLD_BLOCK"
+      data: 0
+      display_name: "&6Currency Logs"
+      lore:
+        - "&7Click here to view all currency logs."
+        - ""
+        - "&6Logs: &c%log_size% Logs"
+
+logs-menu:
+  title: "%profile_name% - Logs"
+  button:
+    material: "PAPER"
+    data: 0
+    display_name: "&6Log - %log_display%"
+    first_lore:
+      - "&7&l&m------------------------"
+      - "&6Name&7: &c%player_name%"
+      - "&6Server&7: &c%server%"
+      - "&6Date&7: &c%date%"
+      - "&7"
+    last_lore: "&7&l&m------------------------"

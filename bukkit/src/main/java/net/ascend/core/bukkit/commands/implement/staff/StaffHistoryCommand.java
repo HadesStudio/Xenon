@@ -1,20 +1,7 @@
 package net.ascend.core.bukkit.commands.implement.staff;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.bukkit.commands.implement.staff
-//   Date: Wednesday, September 06, 2023 - 3:45 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.configuration.Locale;
 import net.ascend.core.bukkit.profile.Profile;
@@ -26,10 +13,8 @@ import org.bson.Document;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public class StaffHistoryCommand  extends BaseCommand {
     public StaffHistoryCommand() {
@@ -48,23 +33,31 @@ public class StaffHistoryCommand  extends BaseCommand {
             sender.sendMessage(CC.translate(Locale.COMMANDS_PLAYER_NEVER_PLAYED).replace("%player%", args[0]));
             return;
         }
+
         sender.sendMessage(CC.translate(XenonBukkit.getInstance().getLanguageConfig().getConfiguration().getString("staff-history-command.scanning").replace("%player%", profile.getName())));
-        Map<UUID, Punishment> executedPunishments = new HashMap<>();
 
-        for (Document document : XenonBukkit.getInstance().getMongoModule().getPunishmentsCollection().find()) {
-            Profile foundProfile = XenonBukkit.getInstance().getProfileManager().getProfile(UUID.fromString(document.getString("uniqueId")));
-            if (foundProfile.getPunishments().isEmpty()) {
-                continue;
+        CompletableFuture.runAsync(() -> {
+            Map<UUID, List<Punishment>> executedPunishments = new HashMap<>();
+            MongoCursor<Document> cursor = XenonBukkit.getInstance().getMongoModule().getPunishmentsCollection().find(
+                    Filters.eq("addedBy", profile.getUniqueId().toString())
+            ).iterator();
+
+            while (cursor.hasNext()) {
+                Document document = cursor.next();
+                Punishment punishment = new Punishment();
+                punishment.load(document);
+
+                UUID targetUUID = punishment.getTargetUUID();
+
+                executedPunishments.computeIfAbsent(targetUUID, k -> new ArrayList<>()).add(punishment);
             }
 
-            for (Punishment punishment : foundProfile.getPunishments()) {
-                if (punishment.getAddedBy().equals(profile.getName())) {
-                    executedPunishments.put(foundProfile.getUniqueId(), punishment);
-                }
-            }
-        }
-
-        new StaffHistoryMenu(profile, executedPunishments).openMenu((Player) sender);
+            new StaffHistoryMenu(profile, executedPunishments).openMenu((Player) sender);
+        }).exceptionally(ex -> {
+            ex.printStackTrace();
+            sender.sendMessage(CC.translate("An error occurred while fetching punishments."));
+            return null;
+        });
     }
 }
 

@@ -1,23 +1,8 @@
 package net.ascend.core.bukkit.profile.notifications.menu.submenus;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.crates.crates.menus.editor.settings.cratesettings.holograms
-//   Date: Saturday, June 18, 2022 - 9:31 AM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.notifications.Notification;
-import net.ascend.core.bukkit.profile.notifications.menu.NotificationListMenu;
+import net.ascend.core.bukkit.profile.notifications.menu.NotificationAdminMenu;
 import net.ascend.core.bukkit.lib.callback.Callback;
 import net.ascend.core.bukkit.lib.maker.ItemMaker;
 import net.ascend.core.bukkit.lib.menu.button.Button;
@@ -27,7 +12,6 @@ import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import net.ascend.core.bukkit.lib.sound.SoundManager;
 import net.ascend.core.bukkit.lib.CC;
 import lombok.AllArgsConstructor;
-import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -40,6 +24,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class MessageEditorMenu extends PaginatedMenu {
+
     private final Notification notification;
 
     @Override
@@ -72,7 +57,7 @@ public class MessageEditorMenu extends PaginatedMenu {
     public Map<Integer, Button> getGlobalContent(Player player) {
         Map<Integer, Button> menuContent = new HashMap<>();
 
-        menuContent.put(0, new BackButton(new NotificationListMenu()));
+        menuContent.put(0, new BackButton(new NotificationAdminMenu()));
         menuContent.put(1, Button.getPlaceholder());
         menuContent.put(2, Button.getPlaceholder());
         menuContent.put(3, Button.getPlaceholder());
@@ -81,8 +66,7 @@ public class MessageEditorMenu extends PaginatedMenu {
         menuContent.put(6, Button.getPlaceholder());
         menuContent.put(7, Button.getPlaceholder());
         menuContent.put(8, Button.getPlaceholder());
-        menuContent.put(9, Button.getPlaceholder());
-        menuContent.put(17, Button.getPlaceholder());
+
         menuContent.put(18, new PageButton(-1, this));
         menuContent.put(19, Button.getPlaceholder());
         menuContent.put(20, Button.getPlaceholder());
@@ -92,14 +76,13 @@ public class MessageEditorMenu extends PaginatedMenu {
         menuContent.put(24, Button.getPlaceholder());
         menuContent.put(25, Button.getPlaceholder());
         menuContent.put(26, new PageButton(1, this));
-
-
         return menuContent;
     }
 
 
     @AllArgsConstructor
     private static class MessageLineButton extends Button {
+
         private final Notification notification;
         private final String line_text;
         private final int position;
@@ -120,32 +103,29 @@ public class MessageEditorMenu extends PaginatedMenu {
             lore.add("&7This message will appear #" + position + " in");
             lore.add("&7your notification!");
             lore.add("");
-            lore.add("&6Line Text&7: &b'" + line_text + "'");
+            lore.add("&6Line Text&7: &c'" + line_text + "'");
             lore.add("");
-            lore.add("&6Right-Click &7this item to remove this message line.");
+            lore.add("&7Right-Click this item to remove this message line.");
 
             return lore;
         }
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            List<String> current_lines = new ArrayList<>();
-            current_lines.addAll(notification.getMessage());
+            List<String> current_lines = new ArrayList<>(notification.getMessage());
 
-            if (notification.getMessage().size() == 0) {
+            if (notification.getMessage().isEmpty()) {
                 player.sendMessage(CC.translate("&cTheir has to be at least 1 notification line."));
                 SoundManager.INSTANCE.playSound(player, "BLAZE_HIT");
                 return;
             }
 
             current_lines.remove(line_text);
-
             notification.setMessage(current_lines);
+            notification.setLastUpdate(System.currentTimeMillis());
+            notification.save();
 
-            notification.setLast_update(System.currentTimeMillis());
             player.sendMessage(CC.translate("&cYou have successfully deleted this notification line!"));
             SoundManager.INSTANCE.playSound(player, "BLAZE_HIT");
-
-            notification.save();
         }
 
         @Override
@@ -153,8 +133,10 @@ public class MessageEditorMenu extends PaginatedMenu {
             return clickType.isCreativeAction() || clickType.isRightClick() || clickType.isLeftClick();
         }
     }
+
     @AllArgsConstructor
     private static class NewLineButton extends Button {
+
         private final Notification notification;
 
         @Override
@@ -178,22 +160,22 @@ public class MessageEditorMenu extends PaginatedMenu {
         }
         @Override
         public void onClick(Player player, int slot, ClickType clickType) {
-            List<String> newMessage;
-            newMessage = notification.getMessage();
+            List<String> newMessage = new ArrayList<>(notification.getMessage());
 
             player.closeInventory();
             player.sendMessage(CC.translate("&cPlease type the new text line for the notification!"));
-            player.sendMessage(CC.translate("&cPlaceholders: &b%player%"));
+            player.sendMessage(CC.translate("&cPlaceholders: &l%player%"));
             player.sendMessage(CC.translate("&7"));
-            player.sendMessage(CC.translate("&cYou can type '&4cancel&c' to cancel this."));
+            player.sendMessage(CC.translate("&cYou can type &l'cancel' &cto cancel this."));
 
             conversationString(player, (text_line) -> {
                 player.sendMessage(CC.translate(""));
                 player.sendMessage(CC.translate("&aYou have successfully added a new text line to this notification."));
-                player.sendMessage(CC.translate("&aNew Notification Line: &b" + text_line));
+                player.sendMessage(CC.translate("&aNew Notification Line: &f" + text_line));
                 player.sendMessage(CC.translate(""));
+
                 newMessage.add(text_line);
-                notification.setLast_update(System.currentTimeMillis());
+                notification.setLastUpdate(System.currentTimeMillis());
                 notification.setMessage(newMessage);
                 notification.save();
             });
@@ -209,8 +191,7 @@ public class MessageEditorMenu extends PaginatedMenu {
 
                 @Override
                 public Prompt acceptInput(ConversationContext cc, String text) {
-                    notification.getMessage().add(text);
-                    notification.save();
+                    callback.callback(text);
                     new MessageEditorMenu(notification).openMenu(p);
 
                     return Prompt.END_OF_CONVERSATION;

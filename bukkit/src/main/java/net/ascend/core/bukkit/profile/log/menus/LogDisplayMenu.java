@@ -1,21 +1,8 @@
 package net.ascend.core.bukkit.profile.log.menus;
 
-//============================================================
-// This file was created by DevDipin!
-// Hely Development Developer, and Management Team Member.
-//
-// If any questions, please contact on discord.
-//
-// File Information:
-//   Path: dev.hely.core.profile.log.menus
-//   Date: Monday, July 31, 2023 - 6:47 PM
-//
-// Contact Information:
-//   Discord: Andrew!!#4468
-//   Hely Development Discord: https://discord.gg/J9XMt8FCxN
-//============================================================
-
 import net.ascend.core.bukkit.XenonBukkit;
+import net.ascend.core.bukkit.lib.menu.button.implement.BackButton;
+import net.ascend.core.bukkit.profile.Profile;
 import net.ascend.core.bukkit.profile.log.Log;
 import net.ascend.core.bukkit.profile.log.category.LogCategories;
 import net.ascend.core.bukkit.lib.maker.ItemMaker;
@@ -23,7 +10,6 @@ import net.ascend.core.bukkit.lib.menu.button.Button;
 import net.ascend.core.bukkit.lib.menu.button.implement.PageButton;
 import net.ascend.core.bukkit.lib.menu.implement.PaginatedMenu;
 import lombok.AllArgsConstructor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -32,25 +18,28 @@ import java.util.*;
 
 @AllArgsConstructor
 public class LogDisplayMenu extends PaginatedMenu {
-    private LogCategories categories;
-    private OfflinePlayer offlinePlayer;
 
-    static int size = 0;
+    private LogCategories categories;
+    private Profile profile;
 
     @Override
     public String getName() {
-        return XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-viewer.title");
+        return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("logs-menu.title")
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
     }
 
     @Override
     public String getTitle(Player player) {
-        return XenonBukkit.getInstance().getLogsMenuConfig().getConfiguration().getString("log-viewer.title");
+        return XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("logs-menu.title")
+                .replace("%profile_name%", profile.getName())
+                .replace("%profile_color%", profile.getColor());
     }
 
     @Override
     public Map<Integer, Button> getGlobalContent(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        buttons.put(0, new Back_Button(offlinePlayer));
+        buttons.put(0, new BackButton(new LogSelectionMenu(profile)));
         buttons.put(1, Button.getPlaceholder());
         buttons.put(2, Button.getPlaceholder());
         buttons.put(3, Button.getPlaceholder());
@@ -60,22 +49,15 @@ public class LogDisplayMenu extends PaginatedMenu {
         buttons.put(8, Button.getPlaceholder());
         buttons.put(4, Button.getPlaceholder());
 
-        buttons.put(9, Button.getPlaceholder());
-        buttons.put(17, Button.getPlaceholder());
-        buttons.put(18, Button.getPlaceholder());
-        buttons.put(26, Button.getPlaceholder());
-        buttons.put(27, Button.getPlaceholder());
-        buttons.put(35, Button.getPlaceholder());
-
-        buttons.put(36, Button.getPlaceholder());
-        buttons.put(37, new PageButton(-1, this));
+        buttons.put(36, new PageButton(-1, this));
+        buttons.put(37, Button.getPlaceholder());
         buttons.put(38, Button.getPlaceholder());
         buttons.put(39, Button.getPlaceholder());
         buttons.put(40, Button.getPlaceholder());
         buttons.put(41, Button.getPlaceholder());
         buttons.put(42, Button.getPlaceholder());
-        buttons.put(43, new PageButton(1, this));
-        buttons.put(44, Button.getPlaceholder());
+        buttons.put(43, Button.getPlaceholder());
+        buttons.put(44, new PageButton(1, this));
 
         return buttons;
     }
@@ -86,10 +68,9 @@ public class LogDisplayMenu extends PaginatedMenu {
 
         for (Map.Entry<Log, Long> sortedList : getSortedLogs().entrySet()) {
             Log logEntry = sortedList.getKey();
-            if (logEntry.getUserUUID().equals(offlinePlayer.getUniqueId())) {
+            if (logEntry.getUserUUID().equals(profile.getUniqueId())) {
                 if (categories == LogCategories.ALL || logEntry.getLogCategory() == categories) {
                     buttons.put(buttons.size(), new LogButton(logEntry));
-                    size = size + 1;
                 }
             }
         }
@@ -110,9 +91,10 @@ public class LogDisplayMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of("PAPER");
-            builder.setData((short) 0);
-            builder.setDisplayName("&6Log - " + log.getLogType().getDisplay_name());
+            ItemMaker builder = ItemMaker.of(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("logs-menu.button.material"));
+            builder.setData((short) XenonBukkit.getInstance().getMenuConfig().getConfiguration().getInt("logs-menu.button.data"));
+            builder.setDisplayName(XenonBukkit.getInstance().getMenuConfig().getConfiguration().getString("logs-menu.button.display_name")
+                    .replace("%log_display%", log.getLogType().getDisplay_name()));
             builder.setLore(getLore());
 
             return builder.build();
@@ -124,29 +106,8 @@ public class LogDisplayMenu extends PaginatedMenu {
         }
     }
 
-    @AllArgsConstructor
-    public static class Back_Button extends Button {
-        private OfflinePlayer offlinePlayer;
-
-        @Override
-        public ItemStack getItemStack(Player player) {
-            ItemMaker builder = ItemMaker.of("BED");
-            builder.setData((short) 0);
-            builder.setDisplayName("&cBack");
-            builder.setLore(Collections.singletonList(
-                    "&7Click here to return to the main menu."
-            ));
-            return builder.build();
-        }
-
-        @Override
-        public void onClick(Player player, int slot, ClickType clickType) {
-            new LogSelectionMenu(offlinePlayer).openMenu(player);
-        }
-    }
-
     public Map<Log, Long> getSortedLogs() {
-        final Map<Long, Log> firstLogs = new HashMap<>(); // date, long
+        Map<Long, Log> firstLogs = new HashMap<>(); // date, long
 
         for (Log log : XenonBukkit.getInstance().getLogManager().getLogMap().values()) {
             firstLogs.put(log.getDate(), log);
@@ -156,7 +117,7 @@ public class LogDisplayMenu extends PaginatedMenu {
 
         list.sort((o1, o2) -> (o2.getKey().compareTo(o1.getKey())));
 
-        Collections.reverse(list);
+        //Collections.reverse(list);
 
         LinkedHashMap<Log, Long> sortedHashMap = new LinkedHashMap<>();
 

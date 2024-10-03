@@ -13,20 +13,14 @@ import org.bson.Document;
 
 import java.util.UUID;
 
-/**
- * Created By LeandroSSJ
- * Created on 03/07/2023
- * Protect Name Xenon
- */
-
 @Data
 @Setter
 @NoArgsConstructor
 public class Punishment {
 
     private PunishmentType type;
-    private UUID uniqueId, targetUUID;
-    private String addedBy, removedBy, addedReason, removedReason, addedServer;
+    private UUID uniqueId, targetUUID, addedBy;
+    private String addedReason, addedServer, removedBy, removedReason = "Expired Punishment.";
     private long addedAt, removedAt, duration = -1;
     private boolean silent = true, clear = false, removed = false;
 
@@ -38,7 +32,11 @@ public class Punishment {
         document.put("uniqueId", uniqueId.toString());
         document.put("type", type.name());
         document.put("targetUUID", targetUUID.toString());
-        document.put("addedBy", addedBy);
+
+        if (addedBy != null) {
+            document.put("addedBy", addedBy.toString());
+        }
+
         document.put("addedServer", addedServer);
         document.put("addedReason", addedReason);
         document.put("addedAt", addedAt);
@@ -70,7 +68,11 @@ public class Punishment {
             setType(PunishmentType.valueOf(document.getString("type")));
             setUniqueId(UUID.fromString(document.getString("uniqueId")));
             setTargetUUID(UUID.fromString(document.getString("targetUUID")));
-            setAddedBy(document.getString("addedBy"));
+
+            if (document.containsKey("addedBy")) {
+                setAddedBy(UUID.fromString(document.getString("addedBy")));
+            }
+
             setAddedServer(document.getString("addedServer"));
             setAddedReason(document.getString("addedReason"));
             setAddedAt(document.getLong("addedAt"));

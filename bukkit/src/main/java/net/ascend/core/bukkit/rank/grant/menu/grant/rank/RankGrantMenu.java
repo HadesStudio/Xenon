@@ -1,6 +1,9 @@
 package net.ascend.core.bukkit.rank.grant.menu.grant.rank;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import net.ascend.core.bukkit.XenonBukkit;
 import net.ascend.core.bukkit.profile.Profile;
@@ -23,12 +26,12 @@ public class RankGrantMenu extends PaginatedMenu {
 	
 	@Override
 	public String getName() {
-		return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.rank-grant-selection.title");
+		return "Select Rank";
 	}
 
 	@Override
 	public String getTitle(Player player) {
-		return XenonBukkit.getInstance().getGrantMenuConfig().getConfiguration().getString("menus.rank-grant-selection.title");
+		return "Select Rank";
 	}
 
 	@Override
@@ -36,9 +39,14 @@ public class RankGrantMenu extends PaginatedMenu {
 		Map<Integer, Button> buttons = Maps.newHashMap();
 		
 		getMenuContent().put(4, new BackButton(new GrantMenu(profile)));
-		
+
 		RankManager rankManager = XenonBukkit.getInstance().getRankManager();
-		for (Rank rank : rankManager.getRanks()) {
+		List<Rank> sortedRanks = rankManager.getRanks().stream()
+				.filter(rank -> !rank.isDefaultRank())
+				.sorted(Comparator.comparingInt(Rank::getWeight))
+				.collect(Collectors.toList());
+
+		for (Rank rank : sortedRanks) {
 			buttons.put(buttons.size(), new RankGrantSelectButton(rank, profile));
 		}
 		

@@ -1,8 +1,12 @@
 Xenon:
   name: "Xenon"
+  type: NORMAL
   prefix: "&8[&6Xenon&8]"
   weight: 10
+  coins: 50
 Ascend:
   name: "Ascend"
+  type: NORMAL
   prefix: "&8[&6#Ascend&8]"
   weight: 5
+  coins: 50
