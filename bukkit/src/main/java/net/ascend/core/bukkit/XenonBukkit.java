@@ -3,6 +3,7 @@ package net.ascend.core.bukkit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
+import es.hulk.licensesystem.LicenseImplementation;
 import lombok.Getter;
 import net.ascend.core.bukkit.chat.ChatManager;
 import net.ascend.core.bukkit.configuration.Locale;
@@ -121,14 +122,12 @@ public class XenonBukkit extends JavaPlugin {
             e.printStackTrace();
         }
 
-        Object[] rest = new SkyLicense("http://207.244.252.245:5555/api/license", this.licenseConfig.getConfiguration().getString("license")).verify();
-        if (!rest[0].equals("V") || !(rest[1] instanceof Boolean)) {
-            Bukkit.getPluginManager().disablePlugin(this);
-            Bukkit.getScheduler().cancelTasks(this);
-            return;
-        }
+        final String stringLicense = this.licenseConfig.getConfiguration().getString("license");
+        LicenseImplementation license = new LicenseImplementation(
+            false, stringLicense, getDescription().getName(), getDescription().getVersion()
+        );
 
-        if (!(Boolean) rest[1]) {
+        if (!license.isLicenseValid()) {
             Bukkit.getPluginManager().disablePlugin(this);
             Bukkit.getScheduler().cancelTasks(this);
             return;
@@ -290,202 +289,5 @@ public class XenonBukkit extends JavaPlugin {
 
     public long getUptime() {
         return System.currentTimeMillis() - LAST_START_TIME;
-    }
-
-    public class SkyLicense {
-        private final String apiUrl;
-        private final String apiKey;
-        private final String license;
-        private final String product;
-        private final String version;
-
-        public SkyLicense(String apiUrl, String license) {
-            this.apiKey = "7jn2zWa@{(RyCHtxq}g^CTnS/yUxuR}uAa]";
-            this.apiUrl = apiUrl;
-            this.license = license;
-            this.product = instance.getDescription().getName();
-            this.version = instance.getDescription().getVersion();
-        }
-
-        public Object[] verify() {
-            ConsoleCommandSender bukkitCommandSender = Bukkit.getConsoleSender();
-
-            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-            bukkitCommandSender.sendMessage(CC.translate("&6Attempting to verify your license.."));
-            bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-
-
-            String javaVersion = System.getProperty("java.version");
-            String hwid = getHWID();
-            String os = System.getProperty("os.name");
-
-            String postData = createJSONData(javaVersion, hwid, os);
-
-            try {
-                HttpURLConnection connection = createConnection();
-                sendData(connection, postData);
-                String[] res = handleResponse(connection);
-                if (res.length >= 2 && (res[0] != null && res[1] != null)) {
-
-                    if (res[1].equals("000")) {
-                        bukkitCommandSender.sendMessage(CC.translate("&6Successfully verified your license key.."));
-                        bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Loading plugin.."));
-                        bukkitCommandSender.sendMessage(CC.translate(""));
-                        bukkitCommandSender.sendMessage(CC.translate("&6&lXenon (Rank Core)"));
-                        bukkitCommandSender.sendMessage(CC.translate(""));
-
-                        if (res.length >= 3 && !version.equals(res[2])) {
-                            bukkitCommandSender.sendMessage(CC.translate("&cThis plugin is outdated!"));
-                            bukkitCommandSender.sendMessage(CC.translate("&cPlease download the new updated version in our discord."));
-                            bukkitCommandSender.sendMessage(CC.translate("&cSupport will NOT be offered on outdated versions."));
-                            bukkitCommandSender.sendMessage(CC.translate(""));
-                            bukkitCommandSender.sendMessage(CC.translate("&6New Version&7:&r " + res[2]));
-                        }
-
-                        bukkitCommandSender.sendMessage(CC.translate("&6Author&7:&r DevDipin, LeandroSSJ"));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Current Version&7:&r " + instance.getDescription().getVersion()));
-                        bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-                        return new Object[]{"V", true};
-                    } else {
-                        bukkitCommandSender.sendMessage(CC.translate("&cTheir was an error while verifying your license."));
-                        bukkitCommandSender.sendMessage(CC.translate(""));
-                        bukkitCommandSender.sendMessage(CC.translate("&7\u2605 &6Error Message&7:&r " + res[0]));
-                        bukkitCommandSender.sendMessage(CC.translate("&7\u2605 &6Error Code&7:&r " + res[1]));
-                        bukkitCommandSender.sendMessage(CC.translate(""));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Create a ticket in Discord!"));
-                        bukkitCommandSender.sendMessage(CC.translate("&6Discord:&r ascendproyect.org/discord"));
-                        bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-                        return new Object[]{"I", 135};
-                    }
-                } else {
-                    bukkitCommandSender.sendMessage(CC.translate("&cTheir was an error while verifying your license."));
-                    bukkitCommandSender.sendMessage(CC.translate(""));
-                    bukkitCommandSender.sendMessage(CC.translate("&cThe License API is currently offline."));
-                    bukkitCommandSender.sendMessage(CC.translate("&cPlease be patient, it will be back available soon."));
-                    bukkitCommandSender.sendMessage(CC.translate(""));
-                    bukkitCommandSender.sendMessage(CC.translate("&6Create a ticket in Discord!"));
-                    bukkitCommandSender.sendMessage(CC.translate("&6Discord:&r ascendproyect.org/discord"));
-                    bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-                    return new Object[]{"I", 135};
-                }
-            } catch (IOException | ParseException e) {
-                bukkitCommandSender.sendMessage(CC.translate("&cTheir was an error while verifying your license."));
-                bukkitCommandSender.sendMessage(CC.translate(""));
-                bukkitCommandSender.sendMessage(CC.translate("&7\u2605 &6Error&7:&r " + e.getMessage()));
-                bukkitCommandSender.sendMessage(CC.translate(""));
-                bukkitCommandSender.sendMessage(CC.translate("&6Create ticket in Discord!"));
-                bukkitCommandSender.sendMessage(CC.translate("&6Discord:&r ascendproyect.org/discord"));
-                bukkitCommandSender.sendMessage(CC.translate("&7&m=================================================================================="));
-                return new Object[]{"I", 135};
-            }
-        }
-
-        private String createJSONData(String javaVersion, String hwid, String os) {
-            return "{\"licensekey\":\"" + license + "\","
-                    + "\"product\":\"" + product + "\","
-                    + "\"version\":\"" + version + "\","
-                    + "\"java\":\"" + javaVersion + "\","
-                    + "\"hwid\":\"" + hwid + "\","
-                    + "\"OS\":\"" + os + "\"}";
-        }
-
-        private HttpURLConnection createConnection() throws IOException {
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("authorization", apiKey);
-            connection.setDoOutput(true);
-            return connection;
-        }
-
-
-        private void sendData(HttpURLConnection connection, String postData) throws IOException {
-            try (OutputStream out = connection.getOutputStream()) {
-                byte[] input = postData.getBytes("utf-8");
-                out.write(input, 0, input.length);
-            }
-        }
-
-        private String[] handleResponse(HttpURLConnection connection) throws IOException, ParseException {
-            int responseCode = connection.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) return new String[]{ String.valueOf(responseCode) };
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            String jsonResponse = response.toString();
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject;
-            try {
-                jsonObject = (JSONObject) parser.parse(jsonResponse);
-            } catch (org.json.simple.parser.ParseException e) {
-                return null;
-            }
-
-            // Extract and print values from the JSON response
-            String message = (String) jsonObject.get("message");
-            String code = (String) jsonObject.get("code");
-            String lastVersion = (String) jsonObject.get("latestVersion");
-
-            String expectedSocket = createExpectedSocket(product, license);
-            if (message == null || code == null) return new String[]{"Error"};
-
-            if (!code.equals("000")) return new String[]{ message, code };
-
-            String socket = decodeSocket((String) jsonObject.get("socket"));
-            if (socket == null || !expectedSocket.equals(socket)) return new String[]{ message, code };
-
-            if (lastVersion == null) return new String[]{ message, code };
-            return new String[]{ message, code, lastVersion };
-        }
-
-
-        private String decodeSocket(String base64Socket) throws UnsupportedEncodingException {
-            byte[] socketBytes = Base64.getDecoder().decode(base64Socket);
-            return new String(socketBytes, "utf-16le");
-        }
-
-        private String createExpectedSocket(String product, String license) {
-            String expectedSocket = product + System.currentTimeMillis();
-            expectedSocket = expectedSocket.substring(0, expectedSocket.length() - 5)
-                    + license.substring(0, license.length() - 7);
-            return expectedSocket;
-        }
-
-        // Función para obtener el HWID
-        private String getHWID() {
-            StringBuilder hwidBuilder = new StringBuilder();
-
-            try {
-                Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-                while (networkInterfaces.hasMoreElements()) {
-                    NetworkInterface iface = networkInterfaces.nextElement();
-                    Enumeration<InetAddress> addresses = iface.getInetAddresses();
-                    while (addresses.hasMoreElements()) {
-                        InetAddress address = addresses.nextElement();
-                        if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
-                            byte[] macAddress = iface.getHardwareAddress();
-                            if (macAddress != null) {
-                                for (byte b : macAddress) {
-                                    hwidBuilder.append(String.format("%02X", b));
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (SocketException e) {
-                e.printStackTrace();
-            }
-
-            return hwidBuilder.toString();
-        }
     }
 }
